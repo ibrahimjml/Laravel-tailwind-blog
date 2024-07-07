@@ -28,7 +28,8 @@ $noResults = $posts->isEmpty();
 
 return view('blog', [
     'posts' => $posts,
-    'noResults' => $noResults
+    'noResults' => $noResults,
+    'sorts'=>'latest'
 ]);
   }
 
