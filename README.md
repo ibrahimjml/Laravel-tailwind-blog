@@ -14,6 +14,32 @@
 
 This Laravel Blog Application is a full-featured web application that provides users with a platform to create, manage, and interact with blog posts. It offers a variety of functionalities designed to enhance user experience and engagement. Below is a detailed overview of the features implemented in this project:
 
+##installation##
+1. **install node modules:**
+
+    ```
+    npm install 
+    ```
+2. **Run migrations:**
+
+    ```sh
+    php artisan migrate
+    ```
+
+3. **Create the storage symbolic link:**
+
+    **Important Note:** Ensure you run these commands to set up the storage link correctly.
+    
+    ```sh
+    rm public/storage
+    php artisan storage:link
+    ```
+
+4. **Serve the application:**
+
+    ```sh
+    php artisan serve
+    ```
 --important note--
 if you change your profile picture and its not showing run these commands it will recreate storage link :
 
