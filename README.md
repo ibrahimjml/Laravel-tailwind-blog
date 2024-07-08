@@ -17,8 +17,8 @@ This Laravel Blog Application is a full-featured web application that provides u
 --important note--
 if you change your profile picture and its not showing run these commands it will recreate storage link :
 
-rm public/storage
-php artisan storage:link
+1- rm public/storage
+2- php artisan storage:link
 
 ### Features
 
