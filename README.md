@@ -14,6 +14,12 @@
 
 This Laravel Blog Application is a full-featured web application that provides users with a platform to create, manage, and interact with blog posts. It offers a variety of functionalities designed to enhance user experience and engagement. Below is a detailed overview of the features implemented in this project:
 
+--important note--
+if you change your profile picture and its not showing run these commands it will recreate storage link :
+
+rm public/storage
+php artisan storage:link
+
 ### Features
 
 #### User Authentication and Profile Management
