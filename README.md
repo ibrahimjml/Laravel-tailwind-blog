@@ -37,7 +37,10 @@ user experience.
 #### Post Sorting and Searching and pagination
 - **Sort Posts:** Users can sort posts by latest, oldest, and most liked.
 - **Search Functionality:** Users can search for posts using keywords.
--- **Pagination:** implemented scout driver to let user paginate between pages. 
+- **Pagination:** implemented scout driver to let user paginate between pages. 
+
+#### 🚀 All Pages Styled With TailwindCss ,more experience ,more responsive.
+🔥🔥 Upcoming very soon Realtime notification,follow/unfollow,account public/private.
 
 ## INSTALLATION
 1.📦 Install dependencies
