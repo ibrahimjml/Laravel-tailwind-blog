@@ -17,8 +17,8 @@ This Laravel Blog Application is a full-featured web application that provides u
 ### Features
 
 #### User Authentication/Authorization and Profile Management
-- **User Registration and Login:** Secure user authentication with email verification.
-- **Profile Management:** Users can view and update their profiles name ,email, including changing their profile images.
+- **User Registration and Login:** Secure user authentication register/login styled with Tailwind.
+- **Profile Management:** Users can view their profiles including posts,number of posts,total likes/comments,and update their profiles settings name ,email, including changing their profile images.
 - **Password Management:** Users can change their passwords and reset them if forgotten.
 - **Middleware/Policies:** Implement custom middleware for post owner to delete his own post,implement policies to user who can delete comment/reply ,edit profile setting.
 - 
