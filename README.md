@@ -20,7 +20,7 @@ This Laravel Blog Application is a full-featured web application that provides u
 - **User Registration and Login:** Secure user authentication with email verification.
 - **Profile Management:** Users can view and update their profiles name ,email, including changing their profile images.
 - **Password Management:** Users can change their passwords and reset them if forgotten.
-- **Middleware/Policies:** Give privileges to user who can comment/delete comment , delete post , like/unlike ,edit profile.
+- **Middleware/Policies:** Implement custom middleware for post owner to delete his own post,implement policies to user who can delete comment/reply ,edit profile setting.
 - 
 #### Blog Posts
 - **Create, Read, Update, and Delete (CRUD) Operations:** Users can create new blog posts, edit existing ones, and delete posts they have authored.
