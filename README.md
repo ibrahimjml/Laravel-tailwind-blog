@@ -16,23 +16,66 @@ This Laravel Blog Application is a full-featured web application that provides u
 
 ### Features
 
-#### User Authentication and Profile Management
-- **User Registration and Login:** Secure user authentication with email verification.
-- **Profile Management:** Users can view and update their profiles, including changing their profile images.
+#### User Authentication/Authorization and Profile Management
+- **User Registration and Login:** Secure user authentication register/login styled with Tailwind.
+- **Profile Management:** Users can view their profiles including posts,number of posts,total likes/comments,and update their profiles settings name ,email, including changing their profile images.
 - **Password Management:** Users can change their passwords and reset them if forgotten.
-
+- **Middleware/Policies:** Implement custom middleware for post owner to delete his own post,implement policies to user who can delete comment/reply ,edit profile setting.
+- 
 #### Blog Posts
 - **Create, Read, Update, and Delete (CRUD) Operations:** Users can create new blog posts, edit existing ones, and delete posts they have authored.
-- **Save Posts:** Users can save posts to read later, with the ability to view and remove saved posts.
+- **Save Posts:** Users can save posts to saved using fetchApi, with the ability to view and remove saved posts.
+- **Slugs:** Implemented slugs for each post to create descriptive, enhancing search engine visibility and improving
+user experience.
+- **Like:** Using fetchApi user can Like/Unkike with animation falling hearts to improve user experience. 
 
 #### Comments and Replies
 - **Comment on Posts:** Users can add comments to blog posts.
 - **Reply to Comments:** Users can reply to comments, creating nested comment threads.
-- **Delete Comments:** Users can delete their own comments.
+- **Delete Comments/Replies:** Users can delete their own comments and replies.
 
-#### Post Sorting and Searching
+#### Post Sorting and Searching and pagination
 - **Sort Posts:** Users can sort posts by latest, oldest, and most liked.
-- **Search Functionality:** Users can search for posts using keywords.
+- **Search Functionality:** implemented scout driver,users can search for posts using keywords.
+- **Pagination:** Let user paginate between post pages,styled with tailwind. 
+
+#### 🚀 All Pages Styled With TailwindCss ,more experience ,more responsive.
+🔥🔥 Upcoming very soon Realtime notification,follow/unfollow,account public/private.
+
+## INSTALLATION
+1.📦 Install dependencies
+```
+composer install
+```
+2.🛠️ Create a copy of the .env file
+```
+cp .env.example .env
+```
+3.🔑 Generate the application key
+```
+php artisan key:generate
+```
+4.📦 install node_modules
+```
+npm install
+```
+5.🚀 Compile assets with Tailwind CSS
+```
+npm run dev
+```
+6.🗄️ Set up the database
+```
+php artisan migrate
+```
+7.🔗 Create symbolic link for storage
+```
+rm public/storage
+php artisan storage:link
+```
+8.💻 Run the application
+```
+php artisan serve
+```
 
 
 
