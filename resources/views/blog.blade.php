@@ -15,7 +15,7 @@
 
 <div class="flex flex-row-reverse justify-center">
   @auth
-  <a class="hidden sm:flex ml-0 sm:ml-auto w-36   bg-gray-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6" href="{{route('create')}}">create post</a>
+  <a class="hidden sm:flex ml-0 mr-2 sm:ml-auto w-36   bg-gray-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6" href="{{route('create')}}">create post</a>
 
   <a href="{{route('create')}}" class="mr-2 ml-auto active:scale-90" title="create post">
     <svg class="flex sm:hidden w-[40px] h-[40px] ml-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#45494f" d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM200 344V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H248v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
@@ -116,7 +116,7 @@
     <div>
       
       <p class="text-gray-500  truncate text-pretty text-l text-center sm:text-xl py-8 leading-6 font-medium">
-        {{$post->description}}
+        {{Str::limit($post->description,300)}}
       </p>
     </div>
     <button saved-post-id="{{$post->id}}" onclick="savedTo({{$post->id}})" class=" block bg-transparent border-2 text-gray-700 py-2 p-10 rounded-lg font-bold capitalize  hover:border-gray-700 transition duration-300 ">{{in_array($post->id,session('saved-to',[])) ? 'saved' : 'save'}}</button>

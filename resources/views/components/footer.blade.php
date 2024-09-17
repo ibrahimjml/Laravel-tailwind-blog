@@ -42,11 +42,11 @@
     <p>Ibrahim jamal</p>
   </div>
 </footer>
-<script src="{{url('mainjavascript.js')}}" defer></script>
-<script src="{{url('hiddenul.js')}}" defer></script>
-<script src="{{url('randomhearts.js')}}" defer></script>
-<script src="{{url('fetchlike.js')}}" defer></script>
-<script src="{{url('fetchsavedpost.js')}}" defer></script>
+<script src="{{asset('js/mainjavascript.js')}}" defer></script>
+<script src="{{asset('js/hiddenul.js')}}" defer></script>
+<script src="{{asset('js/randomhearts.js')}}" defer></script>
+<script src="{{asset('js/fetchlike.js')}}" defer></script>
+<script src="{{asset('js/fetchsavedpost.js')}}" defer></script>
 
 
 </body>
