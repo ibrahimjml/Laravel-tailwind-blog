@@ -5,11 +5,16 @@
   </div>
   @endif
 <div class="container mx-auto ">
-  <div class="pt-5 container mx-auto flex  flex-row sm:justify-center items-center pb-2 sm:pb-6">
-           
-     <div class=" mx-auto sm:mx-0 flex" >
-      <span class="text-sm italic sm:text-lg  ">
-        <b class="mr-2 sm:mr-0">BY :</b>{{$post->user->name}}
+  @can('view',$post)
+  <div class="flex justify-center items-center mt-3">
+    <a href="{{route('edit.post',$post->slug)}}" class="flex sm:hidden justify-center items-center bg-blue-700   w-32 text-slate-200 p-2 py-1 sm:py-3 px-2 sm:px-5  rounded-lg font-medium sm:font-bold capitalize ">edit</a>
+  </div>
+  @endcan
+
+  <div class=" container mx-auto flex  flex-row justify-center items-center pb-2 sm:pb-6 translate-x-7  mt-4">
+     <div class=" sm:mx-0 flex justify-center items-center" >
+      <span class="text-sm italic sm:text-lg ">
+        <strong class="">BY: </strong>{{$post->user->name}}
       </span>
       &nbsp;&nbsp;
       <span class="text-sm italic sm:text-lg flex items-center mr-0 sm:mr-36 ">
@@ -17,23 +22,28 @@
       </span>
      </div>
       
-      @if(auth()->user() && auth()->user()->id == $post->user_id)
       
-      <div class="flex  mt-4 items-center justify-center sm:mt-0 mx-auto sm:mx-0">
-        <div class="">
-          <form action="{{route('delete.post',$post->slug)}}" method="POST">
+      
+      <div class="flex  items-center justify-center translate-x-0 sm:translate-x-[-3rem] mx-auto sm:mx-0">
+        {{-- @if(auth()->user() && auth()->user()->id == $post->user_id) --}}
+        @can('delete',$post)
+        <div>
+          <form action="{{route('delete.post',$post->slug)}}" method="POST" onsubmit="return confirmDelete();">
             @csrf
             @method('DELETE')
             <button type="submit" class="hidden sm:flex justify-center bg-red-700 ml-9  w-32 text-slate-200 p-2 py-1 sm:py-3 px-2 sm:px-5  rounded-lg font-medium sm:font-bold capitalize place-self-start  ">Delete</button>
             <button type="submit" class="sm:hidden p-2 rounded-full bg-red-100 flex items-center mb-2"><svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ee4811" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></button>
           </form>
         </div>
-        
-        
+        @endcan
+        {{-- @endif --}}
+        @can('view',$post)
+        <a href="{{route('edit.post',$post->slug)}}" class="hidden sm:flex justify-center bg-blue-700 ml-9  w-32 text-slate-200 p-2 py-1 sm:py-3 px-2 sm:px-5  rounded-lg font-medium sm:font-bold capitalize place-self-start">edit</a>
+        @endcan
       </div>
       
     
-      @endif 
+      
     
   </div>
   <div>
@@ -182,6 +192,9 @@
 <x-footer/>
 
 <script>
+function confirmDelete(){
+  return confirm('Are you sure you want to delete this post ?');
+}
 
 document.addEventListener('DOMContentLoaded', function() {
   document.body.addEventListener('click', (eo)=> {

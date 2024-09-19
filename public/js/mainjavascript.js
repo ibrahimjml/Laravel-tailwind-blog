@@ -8,16 +8,26 @@ setTimeout(() => {
 
   parag.style.display="none";
 }, 1000);
+setTimeout(()=>{
+  parag.remove();
+  },2000);
 }
 
 if(parag2){
 setTimeout(() => {
 parag2.style.display="none";
-}, 3000);
+}, 1000);
+setTimeout(()=>{
+parag2.remove();
+},2000);
 }
 
 if(parag3){
 setTimeout(() => {
   parag3.style.display="none";
-}, 1000);}
+}, 1000);
+setTimeout(()=>{
+  parag3.remove();
+  },2000);
+}
 

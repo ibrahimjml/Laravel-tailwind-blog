@@ -50,9 +50,9 @@
               <a href="{{route('logout')}}" >Logout</a>
               </li>
             </ul>
-          <p href="#" >
+          <span class="cursor-pointer" >
             {{auth()->user()->name}}
-          </p>
+          </span>
         </li>
           @endauth
         @if(!auth()->user())
@@ -66,14 +66,7 @@
         >Blog</a>
         <a href="/getsavedposts" class="text-white hover:scale-125 transition duration-300 text-lg  pt-2">Saved</a>
         @endif
-        <a href="/" class="text-white hover:scale-125 transition duration-300  text-lg pt-2"
-          >Home</a
-        >
-        {{-- <a
-          href="#"
-          class="text-white bg-red-600 px-6 py-2 rounded-full hover:bg-slate-900"
-          >Call Me</a
-        > --}}
+    
       </div>
       <button id="mobile-btn" class="md:hidden">
         <svg

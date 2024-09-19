@@ -8,7 +8,7 @@
 @foreach ($posts as $post)
     
 
-<div class="container mx-auto sm:grid grid-cols-2 gap-16 py-5 px-5 border-b border-gray-300">
+<div class=" container mx-auto sm:grid grid-cols-2 gap-16 py-5 px-5 border-b border-gray-300">
 
   <div class="flex flex-col gap-4">
     <div class=" flex gap-4">

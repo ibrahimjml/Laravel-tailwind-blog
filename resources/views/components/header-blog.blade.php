@@ -10,8 +10,8 @@
   @vite('resources/css/app.css')
   <title>home</title>
 </head>
-<body id="body">
-  <nav class=" container mx-auto px-6 py-2 md:bg-indigo-600 md:bg-opacity-0 border-b-2">
+<body id="body" class="min-h-screen flex  flex-col">
+  <nav class=" px-6 py-2 bg-zinc-100  border-b-2">
     <div class="flex justify-between items-center ">
       <div class=" text-2xl font-bold">
       <span class="bg-white text-black pr-1 pl-1 rounded-l-md border border-t-3 border-b-3">Blog</span><span class="text-white bg-black pl-1 pr-1 rounded-r-md ">Post</span> 
@@ -20,6 +20,7 @@
       <div class="md:flex md:items-center  space-x-6 hidden">
         <ul class="md:flex md:items-center space-x-6">
         @auth
+        {{-- Hover Menu --}}
         <li class="text-black text-lg pt-2  relative" id="dropdown">
           <ul id="hiddenul2" style="display: none;" class="w-[200px]">
         
@@ -52,9 +53,9 @@
             <a href="{{route('logout')}}" >Logout</a>
             </li>
           </ul>
-        <a href="/" >
+        <span class="cursor-pointer" >
           {{auth()->user()->name}}
-        </a>
+        </span>
       </li>
         @endauth
         @if(!auth()->user())
@@ -68,16 +69,14 @@
         <li class="text-black hover:scale-125 transition duration-300  text-lg pt-2 lemon">
         <a href="/blog" 
         >Blog</a></li>
-        
-        
-      
+        <li class="text-black hover:scale-125 transition duration-300 text-lg  pt-2 lemon">
+          <a href="/getsavedposts" >
+            Saved</a></li>
         @endif
         <li class="text-black hover:scale-125 transition duration-300  text-lg pt-2 lemon">
         <a href="/" 
           >Home</a></li>
-          <li class="text-black hover:scale-125 transition duration-300 text-lg  pt-2 lemon">
-        <a href="/getsavedposts" >
-          Saved</a></li>
+          
         {{-- <a
           href="#"
           class="text-black bg-red-600 px-6 py-2 rounded-full hover:bg-slate-900"
@@ -98,6 +97,8 @@
         </svg>
       </button>
     </div>
+
+    {{-- Burger Menu --}}
     <div class="md:hidden">
       <div
         id="mobile-menu"

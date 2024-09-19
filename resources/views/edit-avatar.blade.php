@@ -27,9 +27,11 @@
       </p>
       @enderror
     </div>
+    @can('update', $user)
     <div>
-      <input type="submit" value="update post" class="block cursor-pointer w-36 mr-auto ml-auto bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
+      <input type="submit" value="update avatar" class="block cursor-pointer w-36 mr-auto ml-auto bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
     </div>
+    @endcan
   </form>
 
   <div>

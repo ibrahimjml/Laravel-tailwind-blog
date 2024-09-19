@@ -24,9 +24,11 @@
           {{ $message }}
       </p>
       @enderror
+      @can('update',$user)
       <div class=" w-42 mx-auto bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
         <button type="submit" class=" cursor-pointer">update name</button>
       </div>
+      @endcan
   </div>
   </form>
   <form action="/edit-email/{{auth()->user()->id}}" method="POST">
@@ -46,9 +48,11 @@
         {{ $message }}
     </p>
     @enderror
+    @can('update',$user)
     <div class=" w-42 mx-auto bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
       <button type="submit" class=" cursor-pointer">update email</button>
     </div>
+    @endcan
 </div>
   </form>
   <form action="/change-phone/{{auth()->user()->id}}" method="POST">
@@ -68,9 +72,11 @@
       {{ $message }}
   </p>
   @enderror
+  @can('update',$user)
   <div class=" w-42 mx-auto bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
     <button type="submit" class=" cursor-pointer">update phone</button>
   </div>
+  @endcan
 </div>
   </form>
     <form action="/change-pass/{{auth()->user()->id}}" method="POST">
@@ -91,9 +97,11 @@
 
         <input id="password-confirm" type="password" class="rounded-sm p-2 border-2 form-input w-full"
             name="password_confirmation" required autocomplete="new-password">
+            @can('update',$user)
             <div class=" w-42 mx-auto bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
               <button type="submit" class=" cursor-pointer">update password</button>
             </div>
+            @endcan
           </div>
 </form>
 </div>

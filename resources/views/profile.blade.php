@@ -52,6 +52,10 @@
 </div>
 
 <hr>
+@if($posts->count() == 0)
+
+<h1 class=" text-4xl  p-6 font-semibold text-center w-54">No Posts</h1>
+@else
 <div class="mt-5 sm:grid grid-cols-4 gap-6 space-y-6 sm:space-y-0">
   @foreach($posts as $post)
   <div class="flex flex-wrap items-center justify-center ">
@@ -62,6 +66,7 @@
   </div>
   
   @endforeach
+  @endif
 </div>
 <x-footer/>
 

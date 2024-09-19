@@ -42,8 +42,8 @@ class PostController extends Controller
         $fields['title'] = strip_tags($fields['title']);
         $fields['description'] = strip_tags($fields['description']);
 
-        $slug = Str::slug($fields['title'], '-');
-        
+        $slug = Str::slug($fields['title']);
+        $uniqueslug=$this->generateuniqueslug($slug);
         
         $newimage= uniqid().'-'.$slug.'-'.$fields['image']->extension();
         $fields['image']->move(public_path('images'),$newimage);
@@ -52,28 +52,60 @@ class PostController extends Controller
         Post::create([
           'title'=>$request->input('title'),
           'description'=>$request->input('description'),
-          'slug'=>$slug,
+          'slug'=>$uniqueslug,
           'image_path'=>$newimage,
           'user_id'=>auth()->user()->id
         ]);
         
         return redirect('/blog')->with('success','posted successfuly');
         }
+          //generate unique slug
+        private function generateuniqueslug($slug){
+          $originslug =$slug;
+          $count =1;
+          while(Post::where('slug',$slug)->exists()){
+            $slug = $originslug.'-'.$count;
+            $count++;
+          }
+          return $slug;
+        }
 
          public function delete($slug){
 
            $post = Post::where('slug',$slug)->firstOrFail();
-
-           if (auth()->user()->id !== $post->user_id) {
-             return response()->json(['error' => 'Unauthorized'], 403);
-         }
-         
-        $this->authorize('delete',$post);
-        $post->delete();
+           $this->authorize('delete',$post);
+           $post->delete();
          
         return redirect('/blog')->with('success','Post deleted successfully');
     }
+public function editpost($slug){
+  $post = Post::where('slug',$slug)->firstOrFail();
+  $this->authorize('view',$post);
+  return view('updatepost',compact('post'));
+}
 
+public function update($slug,Request $request){
+  $fields=$request->validate([
+    'title'=>'required',
+    'description'=>'required',
+]);
+
+$fields['title'] = strip_tags($fields['title']);
+$fields['description'] = strip_tags($fields['description']);
+
+$post = Post::where('slug',$slug)->firstOrFail();
+
+$slug = Str::slug($fields['title']);
+$uniqueslug=$this->generateuniqueslug($slug);
+
+$post->title = $fields['title'];
+$post->description = $fields['description'];
+$post->slug=$uniqueslug;
+
+$this->authorize('update',$post);
+$post->save();
+return redirect('/blog')->with('success','Post updated successfully');
+}
 
     public function like(Post $post){
 

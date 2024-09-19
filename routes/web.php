@@ -17,47 +17,67 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// HOME
 Route::get('/',[PublicController::class,'index']);
 
+// Register
 Route::get('/register',[AuthController::class,'registerpage'])->name('register')->middleware('guest');
 Route::post('/register',[AuthController::class,'register'])->name('register')->middleware('guest');
 
+//Login
 Route::get('/login',[AuthController::class,'loginpage'])->name('login')->middleware('guest');
 Route::post('/login',[AuthController::class,'login'])->name('login')->middleware('guest');
 
+// Logout
 Route::get('/logout',[AuthController::class,'logout'])->name('logout')->middleware('auth');
 
+// Blog Page
 Route::get('/blog',[PostController::class,'blog'])->name('blog')->middleware('auth');
 
+// Post Page
 Route::get('/post/{slug}',[PublicController::class,'viewpost'])->name('blog')->middleware('auth');
 
-
+// Create Post
 Route::get('/create',[PostController::class,'createpage'])->name('create')->middleware('auth');
 Route::post('/create',[PostController::class,'create'])->name('create')->middleware('auth');
 
+// User Profile
 Route::get('/user/{user}',[PublicController::class,'viewpostByuser']);
 
-Route::get('/edit-avatar/{user}',[PublicController::class,'editpage'])->middleware('can:update,user');
+// Edit Profile Image
+Route::get('/edit-avatar/{user}',[PublicController::class,'editpage'])->middleware('can:view,user');
 Route::put('/edit-avatar/{user}',[PublicController::class,'edit'])->middleware('can:update,user');
 
+// Edit Profile Page
+Route::get('/edit-profile/{user}',[PublicController::class,'editprofilepage'])->middleware('can:view,user');
 
-Route::get('/edit-profile/{user}',[PublicController::class,'editprofilepage'])->middleware('can:update,user');
+// Edit User email,name,phone,pass
 Route::put('/edit-email/{user}',[PublicController::class,'editemail'])->middleware('can:update,user');
 Route::put('/change-name/{user}',[PublicController::class,'editname'])->middleware('can:update,user');
 Route::put('/change-phone/{user}',[PublicController::class,'editphone'])->middleware('can:update,user');
 Route::put('/change-pass/{user}',[PublicController::class,'editpassword'])->middleware('can:update,user');
 
-Route::delete('/post/delete/{slug}',[PostController::class,'delete'])->name('delete.post')->middleware('post.owner');
+// Delete Post
+Route::delete('/post/{slug}',[PostController::class,'delete'])->name('delete.post')->middleware('post.owner');
 
+// Edit Post
+Route::get('/post/edit/{slug}',[PostController::class,'editpost'])->name('edit.post');
+Route::put('/post/{slug}',[PostController::class,'update'])->name('update.post');
+
+// Like
 Route::post('/post/{post}/like',[PostController::class,'like'])->middleware('auth');
 
-
+// Search
 Route::get('/search/',[PublicController::class,'search'])->name('blog.search');
 
+// Comment
 Route::post('/comment/{post}',[CommentController::class,'comment'])->middleware('auth');
 
+// Delete Comment
 Route::delete('/comment/{comment}',[CommentController::class,'deletecomment'])->name('delete.comment')->middleware('can:delete,comment');
 
+// Save Post
 Route::post('/saved-post',[PostController::class,'save']);
 
+// Saved Posts Page
 Route::get('/getsavedposts',[PostController::class,'getsavedposts'])->middleware('auth');
