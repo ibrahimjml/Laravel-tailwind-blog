@@ -22,9 +22,9 @@ class AuthController extends Controller
       "age" => ["required", "integer", "between:18,64"]
       ]);
 
-      $fields['password']=bcrypt($fields['password']);
-      $fields['email']=strip_tags($fields['email']);
-      $fields['name']=strip_tags($fields['name']);
+      $fields['password']= bcrypt($fields['password']);
+      $fields['email']= htmlspecialchars(strip_tags($fields['email']));
+      $fields['name']= htmlspecialchars(strip_tags($fields['name']));
       $user =User::create($fields);
       auth()->login($user);
       return redirect('/')->with('success','Account created successfully');

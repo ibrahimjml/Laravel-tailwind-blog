@@ -34,21 +34,22 @@ class PostController extends Controller
   
         public function create(Request $request){
           $fields=$request->validate([
-            'title'=>'required',
-            'description'=>'required',
+            'title'=>'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
+            'description'=>'required|string',
             'image'=>'required|mimes:jpg,png,jpeg|max:5048'
-        ]);
+        ],
+        ['title.regex'=>'The title accept only letters,numbers and spaces',
+      ]);
 
-        $fields['title'] = strip_tags($fields['title']);
-        $fields['description'] = strip_tags($fields['description']);
+        $fields['title'] = htmlspecialchars(strip_tags($fields['title']));
+        $fields['description'] = htmlspecialchars(strip_tags($fields['description']));
 
         $slug = Str::slug($fields['title']);
         $uniqueslug=$this->generateuniqueslug($slug);
         
         $newimage= uniqid().'-'.$slug.'-'.$fields['image']->extension();
         $fields['image']->move(public_path('images'),$newimage);
-        
-        
+      
         Post::create([
           'title'=>$request->input('title'),
           'description'=>$request->input('description'),
@@ -86,12 +87,14 @@ public function editpost($slug){
 
 public function update($slug,Request $request){
   $fields=$request->validate([
-    'title'=>'required',
-    'description'=>'required',
+    'title'=>'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
+    'description'=>'required|string'
+],
+['title.regex'=>'The title accept only letters,numbers and spaces',
 ]);
 
-$fields['title'] = strip_tags($fields['title']);
-$fields['description'] = strip_tags($fields['description']);
+$fields['title'] =htmlspecialchars(strip_tags($fields['title'])) ;
+$fields['description'] =htmlspecialchars(strip_tags($fields['description'])) ;
 
 $post = Post::where('slug',$slug)->firstOrFail();
 
