@@ -68,5 +68,5 @@
   @endforeach
   @endif
 </div>
-<x-footer/>
 
+<x-footer/>

@@ -42,11 +42,12 @@ Route::get('/create',[PostController::class,'createpage'])->name('create')->midd
 Route::post('/create',[PostController::class,'create'])->name('create')->middleware('auth');
 
 // User Profile
-Route::get('/user/{user}',[PublicController::class,'viewpostByuser']);
+Route::get('/user/{user}',[PublicController::class,'viewpostByuser'])->name('profile');;
 
 // Edit Profile Image
 Route::get('/edit-avatar/{user}',[PublicController::class,'editpage'])->middleware('can:view,user');
-Route::put('/edit-avatar/{user}',[PublicController::class,'edit'])->middleware('can:update,user');
+Route::put('/edit-avatar/{user}/edit',[PublicController::class,'edit'])->middleware('can:update,user');
+Route::delete('/delete-avatar/{user}',[PublicController::class,'destroyavatar'])->name('delete.avatar')->middleware('can:delete,user');
 
 // Edit Profile Page
 Route::get('/edit-profile/{user}',[PublicController::class,'editprofilepage'])->middleware('can:view,user');

@@ -39,7 +39,10 @@ class PublicController extends Controller
   {
     $post = Post::where('slug', $slug)->first();
     $comments = Comment::orderBy('created_at', 'desc')->get();
-    return view('post', ['post' => $post, 'comments' => $comments]);
+    return view('post', [
+       'post' => $post,
+       'comments' => $comments
+      ]);
   }
 
   public function viewpostByuser(User $user)
@@ -49,12 +52,18 @@ class PublicController extends Controller
     $commentCount = $user->post()->withCount('comments')->get()->sum('comments_count');
     $posts = Post::where('user_id', $user->id)->get();
 
-    return view('profile', ['user' => $user, 'posts' => $posts, 'postcount' => $postCount, 'likescount' => $likeCount, 'commentscount' => $commentCount]);
+    return view('profile', [
+       'user' => $user, 
+       'posts' => $posts,
+       'postcount' => $postCount,
+       'likescount' => $likeCount, 
+       'commentscount' => $commentCount
+      ]);
   }
 
   public function editpage(User $user)
   {
-    $this->authorize('update', $user);
+    $this->authorize('view', $user);
     return view('edit-avatar', compact('user'));
   }
 
@@ -70,8 +79,17 @@ class PublicController extends Controller
     $user->avatar = $path;
     $user->save();
 
-    return view('profile', compact('user'))->with('success', 'image updated successfuly');
+    return redirect()->route('profile', ['user' => $user->id])->with('success', 'Image updated successfully.');
     
+  }
+  public function destroyavatar(User $user){
+    if($user->avatar && $user->avatar !== 'default.jpg'){
+      Storage::delete('public/images'.$user->avatar);
+    }
+    $this->authorize('delete',$user);
+    $user->avatar="default.jpg";
+    $user->save();
+    return redirect()->route('profile', ['user' => $user->id])->with('success', 'Avatar deleted.');
   }
 
   public function editprofilepage(User $user)
@@ -91,7 +109,7 @@ class PublicController extends Controller
     $this->authorize('update', $user);
     $user->save();
 
-    return redirect('/user/' . $user->id)->with('success', 'Email updated');
+    return redirect()->route('profile', ['user' => $user->id])->with('success', 'Email updated');
   }
 
   public function editname(Request $request, User $user)
@@ -103,7 +121,7 @@ class PublicController extends Controller
     $this->authorize('update', $user);
     $user->save();
 
-    return redirect('/user/' . $user->id)->with('success', 'name updated');
+    return redirect()->route('profile', ['user' => $user->id])->with('success', 'name updated');
   }
 
   public function editpassword(Request $request, User $user)
@@ -114,7 +132,7 @@ class PublicController extends Controller
     $user->password = bcrypt($request->password);
     $this->authorize('update', $user);
     $user->save();
-    return redirect('/user/' . $user->id)->with('success', 'password updated');
+    return redirect()->route('profile', ['user' => $user->id])->with('success', 'password updated');
   }
 
   public function editphone(Request $request, User $user)
@@ -126,6 +144,6 @@ class PublicController extends Controller
     $this->authorize('update', $user);
     $user->save();
 
-    return redirect('/user/' . $user->id)->with('success', 'phone updated');
+    return redirect()->route('profile', ['user' => $user->id])->with('success', 'phone updated');
   }
 }
