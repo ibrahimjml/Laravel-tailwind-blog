@@ -14,12 +14,14 @@ class ForgotPassword extends Mailable
 {
     use Queueable, SerializesModels;
     public $user;
+    public $token;
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
+    public function __construct($user,$token)
     {
         $this->user = $user;
+        $this->token = $token;
     }
 
     /**
@@ -40,7 +42,8 @@ class ForgotPassword extends Mailable
         return new Content(
             markdown: 'email.forgot',
             with:[
-              'user'=>$this->user
+              'user'=>$this->user,
+              'token'=>$this->token
             ],
         );
     }

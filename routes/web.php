@@ -28,7 +28,7 @@ Route::post('/register',[AuthController::class,'register'])->name('register.post
 Route::get('/login',[AuthController::class,'loginpage'])->name('login')->middleware('guest');
 Route::post('/login',[AuthController::class,'login'])->name('login.post')->middleware('guest');
 
-//Forgot password
+//Forget password
 Route::get('/forgotpassword',[AuthController::class,'forgot'])->name('forgot.password');
 Route::post('/forgotpassword',[AuthController::class,'forgotpass'])->name('forgot.password.post');
 
