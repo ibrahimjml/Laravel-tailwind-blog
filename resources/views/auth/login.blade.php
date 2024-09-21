@@ -14,7 +14,7 @@
                 </header>
 
                 <form class="border-2 w-full px-6 space-y-6 sm:px-10 sm:space-y-8" method="POST"
-                    action="{{ route('login') }}">
+                    action="{{ route('login.post') }}">
                     @csrf
 
                   
@@ -57,7 +57,11 @@
                             class="w-full select-none font-bold whitespace-no-wrap p-3 rounded-lg text-base leading-normal no-underline text-gray-100 bg-gray-700 hover:bg-gray-500 sm:py-4">
                             Login
                         </button>
-
+                        
+                          <a class="text-gray-500 mt-2 hover:text-blue-700 no-underline hover:underline" href="{{ route('forgot.password') }}">
+                            forgot your password ?
+                          </a>
+                      
                         <p class="w-full text-xs text-center text-gray-700 my-6 sm:text-sm sm:my-8">
                             {{ __('Dont have an account?') }}
                             <a class="text-gray-500 hover:text-blue-700 no-underline hover:underline" href="{{ route('register') }}">

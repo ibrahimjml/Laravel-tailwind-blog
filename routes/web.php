@@ -22,11 +22,19 @@ Route::get('/',[PublicController::class,'index']);
 
 // Register
 Route::get('/register',[AuthController::class,'registerpage'])->name('register')->middleware('guest');
-Route::post('/register',[AuthController::class,'register'])->name('register')->middleware('guest');
+Route::post('/register',[AuthController::class,'register'])->name('register.post')->middleware('guest');
 
 //Login
 Route::get('/login',[AuthController::class,'loginpage'])->name('login')->middleware('guest');
-Route::post('/login',[AuthController::class,'login'])->name('login')->middleware('guest');
+Route::post('/login',[AuthController::class,'login'])->name('login.post')->middleware('guest');
+
+//Forgot password
+Route::get('/forgotpassword',[AuthController::class,'forgot'])->name('forgot.password');
+Route::post('/forgotpassword',[AuthController::class,'forgotpass'])->name('forgot.password.post');
+
+//Reset password
+Route::get('/reset/{token}',[AuthController::class,'reset'])->name('reset.password');
+Route::post('/reset/{token}',[AuthController::class,'reset_pass'])->name('reset.password.post');
 
 // Logout
 Route::get('/logout',[AuthController::class,'logout'])->name('logout')->middleware('auth');

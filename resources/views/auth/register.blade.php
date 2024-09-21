@@ -9,7 +9,7 @@
                 </header>
 
                 <form class="w-full px-6 space-y-6 sm:px-10 sm:space-y-4  border-2 h-fit" method="POST"
-                    action="{{ route('register') }}">
+                    action="{{ route('register.post') }}">
                     @csrf
 
                     <div class="flex flex-wrap">

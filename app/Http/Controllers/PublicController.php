@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
@@ -127,8 +128,13 @@ class PublicController extends Controller
   public function editpassword(Request $request, User $user)
   {
     $request->validate([
+      "current_password"=>["required"],
       "password" => ["alpha_num", "min:8", "max:32", "confirmed"]
     ]);
+
+    if (!Hash::check($request->current_password, $user->password)) {
+      return back()->with(['error' => 'Current password is incorrect.']);
+  }
     $user->password = bcrypt($request->password);
     $this->authorize('update', $user);
     $user->save();

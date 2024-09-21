@@ -16,10 +16,10 @@ setTimeout(()=>{
 if(parag2){
 setTimeout(() => {
 parag2.style.display="none";
-}, 1000);
+}, 3000);
 setTimeout(()=>{
 parag2.remove();
-},2000);
+},3500);
 }
 
 if(parag3){

@@ -1,4 +1,9 @@
 <x-header-blog/>
+@if(session()->has('error'))
+<div id="parag2"  class="fixed bg-red-500 p-[10px] text-center   transform translate-x-[30vw] sm:translate-x-[38vw] translate-y-[60vh] sm:translate-y-[72vh] z-20 rounded-lg">
+<p  class="text-center  font-bold text-2xl text-white">{{session('error')}}</p>
+</div>
+@endif
 <div class="container mx-auto pt-[40px]">
   <h1 class=" text-3xl font-bold text-center py-5 capitalize">edit profile</h1>
 </div>
@@ -8,9 +13,7 @@
   <form action="/change-name/{{auth()->user()->id}}" method="POST">
     @csrf
     @method('PUT')
-     
-  
-  
+
     <div class="flex flex-wrap">
       <label for="name" class=" text-gray-700 text-sm font-bold mb-2 sm:mb-4">
         Name:
@@ -83,20 +86,26 @@
       @csrf
       @method('PUT')
       <div class="flex flex-wrap">
-      <label for="phone" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
-        Password:
+        <label for="current_password" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
+          Current Password
+        </label>
+        <input id="current_password" type="password"
+        class="rounded-sm p-2 border-2 form-input w-full @error('current_password') border-red-500 @enderror" name="current_password"
+        required >
+      <label for="password" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
+       New Password:
       </label>
       <input id="password" type="password"
       class="rounded-sm p-2 border-2 form-input w-full @error('password') border-red-500 @enderror" name="password"
-      required autocomplete="new-password">
+      required >
       
     
         <label for="password-confirm" class="mt-2 block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
           Confirm Password:
         </label>
 
-        <input id="password-confirm" type="password" class="rounded-sm p-2 border-2 form-input w-full"
-            name="password_confirmation" required autocomplete="new-password">
+        <input id="password-confirmation" type="password" class="rounded-sm p-2 border-2 form-input w-full"
+            name="password_confirmation" required >
             @can('update',$user)
             <div class=" w-42 mx-auto bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
               <button type="submit" class=" cursor-pointer">update password</button>
