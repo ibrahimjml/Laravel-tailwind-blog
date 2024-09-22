@@ -19,8 +19,11 @@ class PostController extends Controller
       }
       elseif($sortoption == 'oldest'){
         $posts = Post::orderBy('created_at','asc')->paginate(5);
-      }
-
+      }elseif ($sortoption == 'mostliked') {
+        
+        $posts = Post::withCount('likes')->orderBy('likes_count', 'desc')->paginate(5);
+    }
+      $posts->appends(['sort' => $sortoption]);
     
       return view('blog',['posts'=>$posts,'sorts'=>$sortoption]);
       

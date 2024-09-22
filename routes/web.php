@@ -71,7 +71,7 @@ Route::delete('/post/{slug}',[PostController::class,'delete'])->name('delete.pos
 
 // Edit Post
 Route::get('/post/edit/{slug}',[PostController::class,'editpost'])->name('edit.post');
-Route::put('/post/{slug}',[PostController::class,'update'])->name('update.post');
+Route::put('/post/update/{slug}',[PostController::class,'update'])->name('update.post');
 
 // Like
 Route::post('/post/{post}/like',[PostController::class,'like'])->middleware('auth');

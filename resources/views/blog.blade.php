@@ -55,6 +55,7 @@
     <select id="sort" name="sort" class="cursor-pointer bg-gray-50 border border-gray-300 block text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="this.form.submit()">
       <option value="latest" {{$sorts == 'latest' ? 'selected' : ''}}>Latest</option> 
       <option value="oldest" {{$sorts == 'oldest' ? 'selected' : ''}}>Oldest</option>
+      <option value="mostliked" {{ $sorts == 'mostliked' ? 'selected' : '' }}>Most Liked</option>
     </select>
   </form>
 </div>
@@ -115,7 +116,7 @@
     <h2 class="text-xl md:text-2xl font-bold text-gray-700 mt-6 md:mt-10 text-center">{{$post->title}}</h2>
     <div>
       
-      <p class="text-gray-500  truncate text-pretty text-l text-center sm:text-xl py-8 leading-6 font-medium">
+      <p class="text-gray-500 break-words truncate text-pretty text-l  sm:text-xl py-8 leading-6 font-medium">
         {{Str::limit($post->description,300)}}
       </p>
     </div>

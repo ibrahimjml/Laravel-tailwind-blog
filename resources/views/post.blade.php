@@ -13,9 +13,12 @@
 
   <div class=" container mx-auto flex  flex-row justify-center items-center pb-2 sm:pb-6 translate-x-7  mt-4">
      <div class=" sm:mx-0 flex justify-center items-center" >
+      @if(auth()->user() && auth()->user()->id !== $post->user_id)
       <span class="text-sm italic sm:text-lg ">
-        <strong class="">BY: </strong>{{$post->user->name}}
+        <strong class="">BY: </strong>
+        <a href="{{route('profile',$post->user_id)}}">{{$post->user->name}}</a>
       </span>
+      @endif
       &nbsp;&nbsp;
       <span class="text-sm italic sm:text-lg flex items-center mr-0 sm:mr-36 ">
         <b>ON :</b> &nbsp;{{$post->created_at->format('F d, Y \a\t h:i A')}}
@@ -58,7 +61,7 @@
 @else
 <button onclick="fetchLike({{$post->id}})" class="likeBTN  mx-auto  sm:mx-auto  block bg-transparent border-2 text-red-700 py-2 px-5 rounded-lg font-bold capitalize  hover:border-red-700 hover:text-red-500 transition duration-300 mt-4">Like</button>
 @endif
-    <p class=" break-words  w-[80vw] sm:w-[60vw] mx-auto text-gray-700 text-lg sm:text-2xl text-center leading-6 py-[30px]">
+    <p class="  w-[80vw] sm:w-[60vw] mx-auto text-gray-700 text-xl font-semibold sm:text-2xl  leading-6 py-[30px]">
       {{$post->description}}
     </p>
   </div>
