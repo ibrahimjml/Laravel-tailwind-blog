@@ -19,7 +19,7 @@ class PostFactory extends Factory
             'title' => $this->faker->sentence(2),
             'description' => $this->faker->paragraph(20),
             'slug' => Str::slug($title),
-            'image_path'=>'66efee96953fb-world-war-3-jpg',
+            'image_path'=>'10-2500x1667.jpg',
             'user_id' => User::factory(), 
         ];
     }

@@ -17,17 +17,17 @@ This Laravel Blog Application is a full-featured web application that provides u
 ### Features
 
 #### User Authentication/Authorization and Profile Management
-- **User Registration and Login:** Secure user authentication register/login styled with Tailwind.
-- **Profile Management:** Users can view their profiles including posts,number of posts,total likes/comments,and update their profiles settings name ,email, including changing their profile images.
+- **User Registration and Login:** Manually implemented Secure user authentication register/login for full customization and best experience.
+- **Profile Management:** Users can view their profiles including posts,number of posts,total likes/comments,and edit profile settings name ,email, change password only authorized can access it, including changing their profile image,update and delete current one.
 - **Password Management:** Users can change their passwords and reset them if forgotten.
-- **Middleware/Policies:** Implement custom middleware for post owner to delete his own post,implement policies to user who can delete comment/reply ,edit profile setting.
-- 
+- **Middleware/Policies:** Implement custom middleware for posts, and implement policies to users/posts for authorization and more secure.
+
 #### Blog Posts
-- **Create, Read, Update, and Delete (CRUD) Operations:** Users can create new blog posts, edit existing ones, and delete posts they have authored.
-- **Save Posts:** Users can save posts to saved using fetchApi, with the ability to view and remove saved posts.
-- **Slugs:** Implemented slugs for each post to create descriptive, enhancing search engine visibility and improving
+- **Create, Read, Update, and Delete (CRUD) Operations:** Users can create new blog post, edit existing one, and delete post they have authored.
+- **Save Posts:** Implement Save/Unsave button using fetchApi, user can access to saved page, with the ability to view and remove saved posts.
+- **Slugs:** Implemented a unique slug for each post to create descriptive, enhancing search engine visibility and improving
 user experience.
-- **Like:** Using fetchApi user can Like/Unkike with animation falling hearts to improve user experience. 
+- **Like:** Implement Like/Unkike button using fetchApi with Like animation falling hearts for better user experience. 
 
 #### Comments and Replies
 - **Comment on Posts:** Users can add comments to blog posts.
@@ -35,12 +35,12 @@ user experience.
 - **Delete Comments/Replies:** Users can delete their own comments and replies.
 
 #### Post Sorting and Searching and pagination
-- **Sort Posts:** Users can sort posts by latest, oldest, and most liked.
+- **Sort Posts:** User can sort posts by latest, oldest, and most liked.
 - **Search Functionality:** implemented scout driver,users can search for posts using keywords.
-- **Pagination:** Let user paginate between post pages,styled with tailwind. 
+- **Pagination:** User can paginate between post pages. 
 
 #### 🚀 All Pages Styled With TailwindCss ,more experience ,more responsive.
-🔥🔥 Upcoming very soon Realtime notification,follow/unfollow,account public/private.
+🔥🔥 Upcoming very soon Realtime notification ,follow/unfollow,account public/private.
 
 ## INSTALLATION
 1.📦 Install dependencies
@@ -72,7 +72,11 @@ php artisan migrate
 rm public/storage
 php artisan storage:link
 ```
-8.💻 Run the application
+8.🗄️ optional for testing seed databse
+```
+php artisan db:seed
+```
+9.💻 Run the application
 ```
 php artisan serve
 ```
