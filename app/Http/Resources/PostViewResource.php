@@ -16,9 +16,11 @@ class PostViewResource extends JsonResource
     {
       return[
         'id' => $this->id,
-      'title' => $this->title,
-      'description' => $this->description,
-      'slug' =>$this->slug
+        'title' => $this->title,
+        'description' => $this->description,
+        'slug' =>$this->slug,
+        'image'=>$this->image_path,
+        'likes'=>$this->likes()->count()
       ];
       
     }

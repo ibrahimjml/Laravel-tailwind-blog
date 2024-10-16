@@ -26,7 +26,7 @@ class PostUpdateRequest extends FormRequest
         return [
             'title'=>'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50|min:6',
             'description'=>'required|string|min:10',
-          
+            'image'=>'required|mimes:jpg,png,jpeg|max:5048'
         ];
     }
 

@@ -27,12 +27,19 @@ class PostControllerApi extends Controller
     }
 
     public function create(PostRequest $request){
-  
+
+  if($request->hasFile("image")){
+    $slug = Str::slug($request->input('title'));
+    $imagefile = $request->file("image");
+    $imagename = uniqid().'-'.$slug.'.'.$imagefile->getClientOriginalExtension();
+    $imagefile->move(public_path('images'),$imagename);
+  }
     $post = Post::create([
       'user_id' => auth()->id(),
       'title' => $request->input('title'),
       'description' => $request->input('description'),
-      'slug' => Str::slug($request->input('title'))
+      'slug' => Str::slug($request->input('title')),
+      'image_path'=>$imagename
   ]);
       return response([
         'data' => new PostViewResource($post)
