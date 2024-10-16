@@ -80,11 +80,18 @@ php artisan db:seed
 ```
 php artisan serve
 ```
+## Laravel RESTful API for this project <img height="20" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1200px-Laravel.svg.png" />
 
+All Requests start with http://127.0.0.1:8000/api
 
-
-
-
+`Login`
+- `POST /api/login` - login to get token access.
+`posts`
+-`GET /api/blog` - Get all posts.No authentication required.
+-`GET /api/posts/{post}` - Get single post.No authentication required.
+-`POST /api/create` - Create new post , authentication required.
+-`PUT /api/post/update/{post}` - Update your own post, authentication required.
+-`DELETE /api/post/{post}` - Delete your own post, authentication required.
 
 ## Security Vulnerabilities
 
