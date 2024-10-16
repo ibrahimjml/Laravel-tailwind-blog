@@ -10,10 +10,6 @@
 ## About Laravel
 # Laravel Blog Application
 
-## Project Description
-
-This Laravel Blog Application is a full-featured web application that provides users with a platform to create, manage, and interact with blog posts. It offers a variety of functionalities designed to enhance user experience and engagement. Below is a detailed overview of the features implemented in this project:
-
 ### Features
 
 #### User Authentication/Authorization and Profile Management
