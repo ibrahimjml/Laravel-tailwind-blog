@@ -10,10 +10,6 @@
 ## About Laravel
 # Laravel Blog Application
 
-## Project Description
-
-This Laravel Blog Application is a full-featured web application that provides users with a platform to create, manage, and interact with blog posts. It offers a variety of functionalities designed to enhance user experience and engagement. Below is a detailed overview of the features implemented in this project:
-
 ### Features
 
 #### User Authentication/Authorization and Profile Management
@@ -72,7 +68,7 @@ php artisan migrate
 rm public/storage
 php artisan storage:link
 ```
-8.🗄️ optional for testing seed databse
+8.🗄️ optional for testing 
 ```
 php artisan db:seed
 ```
@@ -80,11 +76,19 @@ php artisan db:seed
 ```
 php artisan serve
 ```
+## Laravel RESTful API for this project <img height="20" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1200px-Laravel.svg.png" />
 
+All Requests start with http://127.0.0.1:8000/api
 
-
-
-
+`Login`
+- `POST /api/login` - login to get token access.
+  
+ `posts`
+- `GET /api/blog` - Get all posts.No authentication required.
+- `GET /api/posts/{post}` - Get single post.No authentication required.
+- `POST /api/create` - Create new post , authentication required.
+- `PUT /api/post/update/{post}` - Update your own post, authentication required.
+- `DELETE /api/post/{post}` - Delete your own post, authentication required.
 
 ## Security Vulnerabilities
 
