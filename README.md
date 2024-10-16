@@ -72,7 +72,7 @@ php artisan migrate
 rm public/storage
 php artisan storage:link
 ```
-8.🗄️ optional for testing seed databse
+8.🗄️ optional for testing 
 ```
 php artisan db:seed
 ```
@@ -86,7 +86,8 @@ All Requests start with http://127.0.0.1:8000/api
 
 `Login`
 - `POST /api/login` - login to get token access.
-`posts`
+  
+ `posts`
 - `GET /api/blog` - Get all posts.No authentication required.
 - `GET /api/posts/{post}` - Get single post.No authentication required.
 - `POST /api/create` - Create new post , authentication required.
