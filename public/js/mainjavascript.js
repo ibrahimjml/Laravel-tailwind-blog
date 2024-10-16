@@ -22,12 +22,15 @@ parag2.remove();
 },3500);
 }
 
-if(parag3){
+if(parag3 && !localStorage.getItem('successmessage')){
+  
 setTimeout(() => {
   parag3.style.display="none";
-}, 1000);
-setTimeout(()=>{
-  parag3.remove();
-  },2000);
+}, 3000);
+
+  localStorage.setItem('successmessage', true);
+}else if(parag3){
+parag3.remove();
 }
+
 

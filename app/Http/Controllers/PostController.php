@@ -50,7 +50,7 @@ class PostController extends Controller
         $slug = Str::slug($fields['title']);
         $uniqueslug=$this->generateuniqueslug($slug);
         
-        $newimage= uniqid().'-'.$slug.'-'.$fields['image']->extension();
+        $newimage= uniqid().'-'.$slug.'.'.$fields['image']->extension();
         $fields['image']->move(public_path('images'),$newimage);
       
         Post::create([

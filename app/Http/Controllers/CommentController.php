@@ -22,8 +22,8 @@ class CommentController extends Controller
     Comment::create($fields);
 
       
-
-      return back()->with('success','comment posted');
+     session()->flash('success','comment posted');
+      return back();
     }
 
     public function deletecomment(Comment $comment){
