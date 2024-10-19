@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
@@ -67,7 +68,7 @@ Route::put('/change-phone/{user}',[PublicController::class,'editphone'])->middle
 Route::put('/change-pass/{user}',[PublicController::class,'editpassword'])->middleware('can:update,user');
 
 // Delete Post
-Route::delete('/post/{slug}',[PostController::class,'delete'])->name('delete.post')->middleware('post.owner');
+Route::delete('/post/{slug}',[PostController::class,'delete'])->name('delete.post');
 
 // Edit Post
 Route::get('/post/edit/{slug}',[PostController::class,'editpost'])->name('edit.post');
@@ -90,3 +91,12 @@ Route::post('/saved-post',[PostController::class,'save']);
 
 // Saved Posts Page
 Route::get('/getsavedposts',[PostController::class,'getsavedposts'])->middleware('auth');
+
+// admin panel
+Route::controller(AdminController::class)->group(function(){
+
+  Route::get('/admin-panel','admin')->name("admin-page")->middleware("can:makeAdminActions");
+  Route::delete('admin/delete/{user}','destroy')->middleware("can:deleteuser,user");
+  Route::post('admin/block/{user}','block')->middleware('can:block,user');
+  Route::post('admin/unblock/{user}', 'unblock')->middleware('can:block,user');
+});

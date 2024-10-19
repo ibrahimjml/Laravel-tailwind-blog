@@ -72,6 +72,11 @@
         <li class="text-black hover:scale-125 transition duration-300 text-lg  pt-2 lemon">
           <a href="/getsavedposts" >
             Saved</a></li>
+            @if(auth()->user()->is_admin)
+            <li class="text-black hover:scale-125 transition duration-300 text-lg  pt-2 lemon">
+              <a href="/admin-panel" >
+                Admin Panel</a></li>
+                @endif
         @endif
         <li class="text-black hover:scale-125 transition duration-300  text-lg pt-2 lemon">
         <a href="/" 

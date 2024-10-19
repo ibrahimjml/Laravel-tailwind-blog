@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 
 class CommentPolicy
 {
@@ -45,6 +46,9 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment): bool
     {
+      if(Gate::allows("makeAdminActions")){
+        return true;
+    }
         return $user->id === $comment->user_id;
     }
 

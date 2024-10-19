@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 
 class PostPolicy
 {
@@ -21,6 +22,9 @@ class PostPolicy
      */
     public function view(User $user, Post $post): bool
     {
+      if(Gate::allows("makeAdminActions")){
+        return true;
+    }
       return $user->id === $post->user_id;
     }
 
@@ -37,6 +41,9 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
+      if(Gate::allows("makeAdminActions")){
+        return true;
+    }
       return $user->id === $post->user_id;
     }
 
@@ -45,7 +52,12 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
-        return $user->id === $post->user_id;
+      if(Gate::allows("makeAdminActions")){
+        return true;
+    }
+
+      return $user->id === $post->user_id;
+    
     }
 
     /**

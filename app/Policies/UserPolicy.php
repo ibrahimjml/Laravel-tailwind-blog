@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 
 class Userpolicy
 {
@@ -44,9 +45,23 @@ class Userpolicy
      */
     public function delete(User $user, User $model): bool
     {
+      if(Gate::allows("makeAdminAction")){
+        return true;
+    }
       return $user->id === $model->id;
     }
 
+    public function deleteuser(User $user, User $model): bool
+    {
+      return ($user->is_admin === 1 || $user->email == "admin@mail.ru")  && $user->id !== $model->id; 
+    }
+    
+
+    public function block(User $user, User $model): bool
+    {
+      return ($user->is_admin === 1 || $user->email == "admin@mail.ru")  && $user->id !== $model->id; 
+      
+    }
     /**
      * Determine whether the user can restore the model.
      */

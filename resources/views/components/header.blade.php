@@ -61,7 +61,10 @@
         <a href="{{route('register')}}" class="text-white hover:scale-125 transition duration-300    text-lg pt-2"
           >register</a>
         @else  
-        
+        @if(auth()->user()->is_admin)
+        <a href="/admin-panel" class="text-white hover:scale-125 transition duration-300  text-lg pt-2"
+        >Admin Panel</a>
+        @endif
         <a href="/blog" class="text-white hover:scale-125 transition duration-300  text-lg pt-2"
         >Blog</a>
         <a href="/getsavedposts" class="text-white hover:scale-125 transition duration-300 text-lg  pt-2">Saved</a>

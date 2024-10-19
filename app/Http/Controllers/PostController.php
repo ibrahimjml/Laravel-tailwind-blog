@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -74,12 +75,14 @@ class PostController extends Controller
           return $slug;
         }
 
-         public function delete($slug){
-
+         public function delete($slug, Request $request){
+        
            $post = Post::where('slug',$slug)->firstOrFail();
            $this->authorize('delete',$post);
            $post->delete();
-         
+         if(auth()->user()->is_admin){
+          return redirect('/admin-panel')->with('success','Post deleted successfully');
+         }
         return redirect('/blog')->with('success','Post deleted successfully');
     }
 public function editpost($slug){

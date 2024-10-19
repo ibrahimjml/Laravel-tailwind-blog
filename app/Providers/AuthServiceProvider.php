@@ -11,6 +11,7 @@ use App\Policies\CommentPolicy;
 use App\Policies\PostPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -33,6 +34,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define("makeAdminActions", function ($user) {
+          return ($user->email == "admin@mail.ru" || $user->is_admin === 1);
+      });
+  
     }
 }

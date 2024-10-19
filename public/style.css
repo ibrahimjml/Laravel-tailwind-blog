@@ -2,6 +2,7 @@
 
 html,body{
   font-family: 'Poppins',sans-serif !important;
+  overflow-x: hidden;
 }
 
 .hero-bg-image{
@@ -89,3 +90,18 @@ margin-inline: 0.5rem;
   text-transform: capitalize;
 }
 
+main.admin.collapsed {
+  grid-template-columns: 0% 100%;
+}
+
+main.admin.collapsed aside {
+  transform: translateX(-40vw);
+opacity: 0;
+}
+
+main.admin.collapsed section {
+  width: 100%;
+}
+.active{
+  background-color: #2888fe !important;
+}

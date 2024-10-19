@@ -36,6 +36,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\http\Middleware\CheckIfBlocked::class,
         ],
 
         'api' => [
@@ -55,6 +56,7 @@ class Kernel extends HttpKernel
     protected $middlewareAliases = [
         'post.owner' => \App\Http\Middleware\PostOwner::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
+        'check' => \App\Http\Middleware\CheckIfBlocked::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
