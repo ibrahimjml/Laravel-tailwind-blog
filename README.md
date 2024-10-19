@@ -80,9 +80,14 @@ php artisan serve
 
 All Requests start with http://127.0.0.1:8000/api
 
+## Admin Login
+`Use these credentails to log in as admin`
+
 `Login`
 - `POST /api/login` - login to get token access.
-  
+- Email: admin@mail.ru.
+- Pass : adminadmin123.
+
  `posts`
 - `GET /api/blog` - Get all posts.No authentication required.
 - `GET /api/posts/{post}` - Get single post.No authentication required.
