@@ -76,18 +76,18 @@ php artisan db:seed
 ```
 php artisan serve
 ```
-## Laravel RESTful API for this project <img height="20" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1200px-Laravel.svg.png" />
-
-All Requests start with http://127.0.0.1:8000/api
-
 ## Admin Login
 `Use these credentails to log in as admin`
 
-`Login`
 - `POST /api/login` - login to get token access.
 - Email: admin@mail.ru.
 - Pass : adminadmin123.
 
+## Laravel RESTful API for this project <img height="20" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1200px-Laravel.svg.png" />
+
+All Requests start with http://127.0.0.1:8000/api
+
+`Login`
  `posts`
 - `GET /api/blog` - Get all posts.No authentication required.
 - `GET /api/posts/{post}` - Get single post.No authentication required.
