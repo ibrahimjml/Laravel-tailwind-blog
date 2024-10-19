@@ -94,8 +94,8 @@ All Requests start with http://127.0.0.1:8000/api
 - `GET /api/blog` - Get all posts.No authentication required.
 - `GET /api/posts/{post}` - Get single post.No authentication required.
 - `POST /api/create` - Create new post , authentication required.
-- `PUT /api/post/update/{post}` - Update your own post, authentication required.
-- `DELETE /api/post/{post}` - Delete your own post, authentication required.
+- `PUT /api/post/update/{post}` - Update authorized post, authentication required.
+- `DELETE /api/post/{post}` - Delete authorized post, authentication required.
 
 ## Security Vulnerabilities
 
