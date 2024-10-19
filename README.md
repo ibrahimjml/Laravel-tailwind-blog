@@ -79,7 +79,7 @@ php artisan serve
 ## Admin Login
 `Use these credentails to log in as admin`
 
-- `POST /api/login` - login to get token access.
+
 - Email: admin@mail.ru.
 - Pass : adminadmin123.
 
@@ -88,6 +88,7 @@ php artisan serve
 All Requests start with http://127.0.0.1:8000/api
 
 `Login`
+- `POST /api/login` - login to get token access.
  `posts`
 - `GET /api/blog` - Get all posts.No authentication required.
 - `GET /api/posts/{post}` - Get single post.No authentication required.
