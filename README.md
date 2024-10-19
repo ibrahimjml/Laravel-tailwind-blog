@@ -12,11 +12,12 @@
 
 ### Features
 
-#### User Authentication/Authorization and Profile Management
+#### User Authentication/Authorization and Admin/profile Management
 - **User Registration and Login:** Manually implemented Secure user authentication register/login for full customization and best experience.
+- **Admin Panel:** Admin page management system where admin can manage users blok/delete users,manage posts delete/view/edit posts, and make user admin .
 - **Profile Management:** Users can view their profiles including posts,number of posts,total likes/comments,and edit profile settings name ,email, change password only authorized can access it, including changing their profile image,update and delete current one.
 - **Password Management:** Users can change their passwords and reset them if forgotten.
-- **Middleware/Policies:** Implement custom middleware for posts, and implement policies to users/posts for authorization and more secure.
+- **Middleware/Policies/Gate:** Implement custom middleware for posts and users , and implement policies/gate to users/posts for authorization and more secure.
 
 #### Blog Posts
 - **Create, Read, Update, and Delete (CRUD) Operations:** Users can create new blog post, edit existing one, and delete post they have authored.
