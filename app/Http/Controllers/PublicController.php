@@ -97,7 +97,8 @@ class PublicController extends Controller
   {
      
     $this->authorize('view',$user);
-    return view('edit-profile',compact('user'));
+  
+    return view('edit-profile',['user' => $user]);
   }
 
 

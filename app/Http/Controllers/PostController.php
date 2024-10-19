@@ -75,15 +75,17 @@ class PostController extends Controller
           return $slug;
         }
 
-         public function delete($slug, Request $request){
+         public function delete($slug){
         
            $post = Post::where('slug',$slug)->firstOrFail();
            $this->authorize('delete',$post);
            $post->delete();
          if(auth()->user()->is_admin){
           return redirect('/admin-panel')->with('success','Post deleted successfully');
+         }else{
+
+           return redirect('/blog')->with('success','Post deleted successfully');
          }
-        return redirect('/blog')->with('success','Post deleted successfully');
     }
 public function editpost($slug){
   $post = Post::where('slug',$slug)->firstOrFail();
@@ -93,7 +95,7 @@ public function editpost($slug){
 
 public function update($slug,Request $request){
   $fields=$request->validate([
-    'title'=>'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
+    'title'=>'nullable|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
     'description'=>'required|string'
 ],
 ['title.regex'=>'The title accept only letters,numbers and spaces',
@@ -105,11 +107,11 @@ $fields['description'] =htmlspecialchars(strip_tags($fields['description'])) ;
 $post = Post::where('slug',$slug)->firstOrFail();
 
 $slug = Str::slug($fields['title']);
-$uniqueslug=$this->generateuniqueslug($slug);
+
 
 $post->title = $fields['title'];
 $post->description = $fields['description'];
-$post->slug=$uniqueslug;
+$post->slug=$slug;
 
 $this->authorize('update',$post);
 $post->save();

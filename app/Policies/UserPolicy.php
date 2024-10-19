@@ -21,7 +21,7 @@ class Userpolicy
      */
     public function view(User $user, User $model): bool
     {
-      return $user->id === $model->id;
+      return $user->is_admin || $user->id === $model->id;
     }
 
     /**
@@ -37,7 +37,7 @@ class Userpolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->id === $model->id;
+      return $user->is_admin  || $user->id === $model->id;
     }
 
     /**
@@ -45,21 +45,18 @@ class Userpolicy
      */
     public function delete(User $user, User $model): bool
     {
-      if(Gate::allows("makeAdminAction")){
-        return true;
-    }
-      return $user->id === $model->id;
+      return $user->is_admin  || $user->id === $model->id;
     }
 
     public function deleteuser(User $user, User $model): bool
     {
-      return ($user->is_admin === 1 || $user->email == "admin@mail.ru")  && $user->id !== $model->id; 
+      return $user->is_admin === 1 && $user->id !== $model->id; 
     }
     
 
     public function block(User $user, User $model): bool
     {
-      return ($user->is_admin === 1 || $user->email == "admin@mail.ru")  && $user->id !== $model->id; 
+      return $user->is_admin === 1 && $user->id !== $model->id;  
       
     }
     /**

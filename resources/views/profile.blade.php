@@ -11,20 +11,20 @@
     @if($user->avatar !== "default.jpg")
     <img src="{{Storage::url($user->avatar)}}" alt=""  class="w-full h-full overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full border-4 border-gray-500">
     @can('update',$user)
-    <span class="absolute  bottom-[18px] right-[10px] flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white"><a href="/edit-avatar/{{auth()->user()->id}}"><i class="fa fa-plus" aria-hidden="true"></i></a></span>
+    <span class="absolute  bottom-[18px] right-[10px] flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white"><a href="/edit-avatar/{{$user->id}}"><i class="fa fa-plus" aria-hidden="true"></i></a></span>
     @endcan
     
     @else
     <img src="/storage/avatars/{{$user->avatar}}" alt=""  class="w-full h-full overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full border-4 border-gray-500">
     @can('update',$user)
-    <span class="absolute  bottom-[18px] right-[10px] flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white"><a href="/edit-avatar/{{auth()->user()->id}}"><i class="fa fa-plus" aria-hidden="true"></i></a></span>
+    <span class="absolute  bottom-[18px] right-[10px] flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white"><a href="/edit-avatar/{{$user->id}}"><i class="fa fa-plus" aria-hidden="true"></i></a></span>
   
     @endcan
     @endif
 
   </div>
   @can('update',$user)
-  <span class="flex justify-center mb-5"><a class="bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300" href="/edit-profile/{{auth()->user()->id}}">edit profile</a></span>
+  <span class="flex justify-center mb-5"><a class="bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300" href="/edit-profile/{{$user->id}}">edit profile</a></span>
   @endcan
   <h1 class=" text-3xl font-bold text-center pb-5 tracking-wide text-gray-700">{{$user->name}} <span class="font-semibold text-black">profile</span></h1>
 </div>

@@ -75,7 +75,11 @@
         <td class="border border-black bg-white text-black p-2">{{$user->id}}</td>
         <td class="border border-black bg-white text-black p-2">
           <div class="inline-block">
+            @if($user->avatar !== "default.jpg")
+            <img src="{{Storage::url($user->avatar)}}" class="w-[40px] h-[40px] overflow-hidden flex  justify-center items-center  shrink-0 grow-0 rounded-full">
+            @else
             <img src="storage/avatars/{{$user->avatar}}"  class="w-[40px] h-[40px] overflow-hidden flex  justify-center items-center  shrink-0 grow-0 rounded-full">
+            @endif
           </div>
         </td>
         <td class="border border-black bg-white text-black p-2">{{$user->name}}</td>

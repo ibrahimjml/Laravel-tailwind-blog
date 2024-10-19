@@ -54,18 +54,18 @@ Route::post('/create',[PostController::class,'create'])->name('create')->middlew
 Route::get('/user/{user}',[PublicController::class,'viewpostByuser'])->name('profile');;
 
 // Edit Profile Image
-Route::get('/edit-avatar/{user}',[PublicController::class,'editpage'])->middleware('can:view,user');
-Route::put('/edit-avatar/{user}/edit',[PublicController::class,'edit'])->middleware('can:update,user');
-Route::delete('/delete-avatar/{user}',[PublicController::class,'destroyavatar'])->name('delete.avatar')->middleware('can:delete,user');
+Route::get('/edit-avatar/{user}',[PublicController::class,'editpage']);
+Route::put('/edit-avatar/{user}/edit',[PublicController::class,'edit']);
+Route::delete('/delete-avatar/{user}',[PublicController::class,'destroyavatar'])->name('delete.avatar');
 
 // Edit Profile Page
-Route::get('/edit-profile/{user}',[PublicController::class,'editprofilepage'])->middleware('can:view,user');
+Route::get('/edit-profile/{user}',[PublicController::class,'editprofilepage']);
 
 // Edit User email,name,phone,pass
-Route::put('/edit-email/{user}',[PublicController::class,'editemail'])->middleware('can:update,user');
-Route::put('/change-name/{user}',[PublicController::class,'editname'])->middleware('can:update,user');
-Route::put('/change-phone/{user}',[PublicController::class,'editphone'])->middleware('can:update,user');
-Route::put('/change-pass/{user}',[PublicController::class,'editpassword'])->middleware('can:update,user');
+Route::put('/edit-email/{user}',[PublicController::class,'editemail']);
+Route::put('/change-name/{user}',[PublicController::class,'editname']);
+Route::put('/change-phone/{user}',[PublicController::class,'editphone']);
+Route::put('/change-pass/{user}',[PublicController::class,'editpassword']);
 
 // Delete Post
 Route::delete('/post/{slug}',[PostController::class,'delete'])->name('delete.post');
@@ -84,7 +84,7 @@ Route::get('/search/',[PublicController::class,'search'])->name('blog.search');
 Route::post('/comment/{post}',[CommentController::class,'comment'])->middleware('auth');
 
 // Delete Comment
-Route::delete('/comment/{comment}',[CommentController::class,'deletecomment'])->name('delete.comment')->middleware('can:delete,comment');
+Route::delete('/comment/{comment}',[CommentController::class,'deletecomment'])->name('delete.comment');
 
 // Save Post
 Route::post('/saved-post',[PostController::class,'save']);
@@ -95,8 +95,8 @@ Route::get('/getsavedposts',[PostController::class,'getsavedposts'])->middleware
 // admin panel
 Route::controller(AdminController::class)->group(function(){
 
-  Route::get('/admin-panel','admin')->name("admin-page")->middleware("can:makeAdminActions");
-  Route::delete('admin/delete/{user}','destroy')->middleware("can:deleteuser,user");
-  Route::post('admin/block/{user}','block')->middleware('can:block,user');
-  Route::post('admin/unblock/{user}', 'unblock')->middleware('can:block,user');
+  Route::get('/admin-panel','admin')->name("admin-page")->middleware('can:makeAdminActions,user');
+  Route::delete('admin/delete/{user}','destroy');
+  Route::post('admin/block/{user}','block');
+  Route::post('admin/unblock/{user}', 'unblock');
 });

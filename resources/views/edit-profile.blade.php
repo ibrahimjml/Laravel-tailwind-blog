@@ -10,7 +10,7 @@
 
 
 <div class="flex flex-col mx-auto pt-5 w-[50%] sm:w-[40%]">
-  <form action="/change-name/{{auth()->user()->id}}" method="POST">
+  <form action="/change-name/{{$user->id}}" method="POST">
     @csrf
     @method('PUT')
 
@@ -20,7 +20,7 @@
       </label>
 
       <input id="name" type="text" class="rounded-sm p-2 border-2 form-input w-full @error('name')  border-red-500 @enderror"
-          name="name" value="{{ old('name', auth()->user()->name) }}" required autocomplete="name" >
+          name="name" value="{{ old('name', $user->name) }}" required autocomplete="name" >
 
       @error('name')
       <p class="text-red-500 text-xs italic mt-4">
@@ -34,7 +34,7 @@
       @endcan
   </div>
   </form>
-  <form action="/edit-email/{{auth()->user()->id}}" method="POST">
+  <form action="/edit-email/{{$user->id}}" method="POST">
     @csrf
     @method('PUT')
   <div class="flex flex-wrap mt-2">
@@ -44,7 +44,7 @@
 
     <input id="email" type="email"
         class="rounded-sm p-2 border-2 form-input w-full @error('email') border-red-500 @enderror" name="email"
-        value="{{ old('email', auth()->user()->email) }}" required autocomplete="email">
+        value="{{ old('email', $user->email) }}" required autocomplete="email">
 
     @error('email')
     <p class="text-red-500 text-xs italic mt-4">
@@ -58,7 +58,7 @@
     @endcan
 </div>
   </form>
-  <form action="/change-phone/{{auth()->user()->id}}" method="POST">
+  <form action="/change-phone/{{$user->id}}" method="POST">
     @csrf
     @method('PUT')
 <div class="flex flex-wrap mt-2">
@@ -68,7 +68,7 @@
 
   <input id="phone" type="text"
       class="rounded-sm p-2 border-2 form-input w-full @error('phone') border-red-500 @enderror" name="phone"
-      value="{{ old('phone', auth()->user()->phone) }}" required autocomplete="phone">
+      value="{{ old('phone', $user->phone) }}" required autocomplete="phone">
 
   @error('phone')
   <p class="text-red-500 text-xs italic mt-4">
@@ -82,7 +82,7 @@
   @endcan
 </div>
   </form>
-    <form action="/change-pass/{{auth()->user()->id}}" method="POST">
+    <form action="/change-pass/{{$user->id}}" method="POST">
       @csrf
       @method('PUT')
       <div class="flex flex-wrap">

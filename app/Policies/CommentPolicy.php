@@ -46,10 +46,7 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment): bool
     {
-      if(Gate::allows("makeAdminActions")){
-        return true;
-    }
-        return $user->id === $comment->user_id;
+      return $user->is_admin === 1 || $user->id === $comment->user_id;
     }
 
     /**

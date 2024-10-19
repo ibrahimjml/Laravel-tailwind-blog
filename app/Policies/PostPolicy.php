@@ -22,10 +22,7 @@ class PostPolicy
      */
     public function view(User $user, Post $post): bool
     {
-      if(Gate::allows("makeAdminActions")){
-        return true;
-    }
-      return $user->id === $post->user_id;
+      return $user->is_admin === 1 || $user->id === $post->user_id;
     }
 
     /**
@@ -41,10 +38,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
-      if(Gate::allows("makeAdminActions")){
-        return true;
-    }
-      return $user->id === $post->user_id;
+      return $user->is_admin === 1 || $user->id === $post->user_id;
     }
 
     /**
@@ -52,12 +46,7 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
-      if(Gate::allows("makeAdminActions")){
-        return true;
-    }
-
-      return $user->id === $post->user_id;
-    
+      return $user->is_admin === 1 || $user->id === $post->user_id;
     }
 
     /**
