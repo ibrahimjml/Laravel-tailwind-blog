@@ -1,6 +1,6 @@
 
 @foreach($comments as $reply)
-  <div class="reply bg-gray-50 shadow-sm rounded-lg p-4 mb-2">
+  <div class="reply bg-gray-50  shadow-sm rounded-lg p-4 mb-2">
     <div class="flex items-center gap-2 mb-2">
       @if($reply->user->avatar !== "default.jpg")
         <img src="{{Storage::url($reply->user->avatar)}}"  class="w-8 h-8 overflow-hidden flex justify-center items-center shrink-0 grow-0 rounded-full ">
@@ -16,13 +16,16 @@
           <p class="text-sm text-gray-600">  > {{ $reply->parent->user->name }} </p>
           @endif
         </div>
-        <span class="text-xs">{{ $reply->created_at }}</span>
+        <span class="text-xs">{{ $reply->created_at->diffForHumans() }}</span>
       </div>
     </div>
     <div>
-      <p class="text-l font-semibold">{{ $reply->content }}</p>
+      <p class="text-gray-700 p-2">{{ $reply->content }}</p>
   
       <div class="flex flex-row-reverse justify-end items-center gap-5">
+        @if($reply->replies->count() > 0)
+        <p class="view-all text-sm text-gray-600 cursor-pointer  w-fit" reply-replies-count="{{$reply->getTotalRepliesCount()}}">view {{$reply->getTotalRepliesCount()}} {{$reply->getTotalRepliesCount() > 1 ? "replies" :"reply"}} </p>
+        @endif
         @can('delete',$reply)
         <form class="w-fit rounded-lg" action="{{route('delete.comment',$reply->id)}}" method="POST">
           @csrf
@@ -44,7 +47,7 @@
 
     {{-- Display Nested Replies --}}
     @if($reply->replies->count() > 0)
-      <div class="ml-4 mt-4 border-l-2 border-gray-200 pl-4">
+      <div class="nested-replies ml-4 mt-4 border-l-2  border-l-gray-200 pl-4 hidden">
         @include('comments.replies', ['comments' => $reply->replies])
       </div>
     @endif

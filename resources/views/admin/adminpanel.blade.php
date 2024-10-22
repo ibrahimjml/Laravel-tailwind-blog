@@ -38,7 +38,7 @@
           <img class="object-contain inline-block" src="/images/{{$post->image_path}}" width="40px" height="40px"  alt="{{$post->title}}">
         </td>
         <td class="border border-black bg-white text-black p-2">{{$post->slug}}</td>
-        <td class="border border-black bg-white text-black p-2">{{$post->description}}</td>
+        <td class="border border-black bg-white text-black p-2">{{Str::limit($post->description,20)}}</td>
         <td class="border border-black bg-white text-black p-2">{{$post->likes->count()}}</td>
         <td class="border border-black bg-white text-black p-2">{{$post->comments->count()}}</td>
         <td class="border border-black bg-white text-black p-2">{{$post->user->id}}</td>
@@ -66,7 +66,7 @@
         <th class="text-white border border-black p-2">CreatedAt</th>
         <th class="text-white border border-black p-2">Phone</th>
         <th class="text-white border border-black p-2">Age</th>
-        <th class="text-white border border-black p-2">Isblocked</th>
+        <th class="text-white border border-black p-2">isblocked</th>
         <th class="text-white border border-black p-2">Delete</th>
         <th class="text-white border border-black p-2">Block</th>
       </tr>

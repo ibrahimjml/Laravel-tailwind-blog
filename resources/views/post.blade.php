@@ -31,7 +31,7 @@
         {{-- @if(auth()->user() && auth()->user()->id == $post->user_id) --}}
         @can('delete',$post)
         <div>
-          <form action="{{route('delete.post',$post->slug)}}" method="POST" onsubmit="return confirmDelete();">
+          <form action="{{route('delete.post',$post->slug)}}" method="POST" onsubmit="return confirm('Are you sure you want delete this post ?')">
             @csrf
             @method('DELETE')
             <button type="submit" class="hidden sm:flex justify-center bg-red-700 ml-9  w-32 text-slate-200 p-2 py-1 sm:py-3 px-2 sm:px-5  rounded-lg font-medium sm:font-bold capitalize place-self-start  ">Delete</button>
@@ -61,7 +61,7 @@
 @else
 <button onclick="fetchLike({{$post->id}})" class="likeBTN  mx-auto  sm:mx-auto  block bg-transparent border-2 text-red-700 py-2 px-5 rounded-lg font-bold capitalize  hover:border-red-700 hover:text-red-500 transition duration-300 mt-4">Like</button>
 @endif
-    <p class="  w-[80vw] sm:w-[60vw] mx-auto text-gray-700 text-xl font-semibold sm:text-2xl  leading-6 py-[30px]">
+    <p class="py-12 text-gray-500 text-sm leading-5 mx-auto w-[80vw]  font-semibold sm:text-2xl   ">
       {{$post->description}}
     </p>
   </div>
@@ -100,43 +100,6 @@
 
 
 <x-footer/>
-
-<script>
-function confirmDelete(){
-  return confirm('Are you sure you want to delete this post ?');
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  document.body.addEventListener('click', (eo)=> {
-    if (eo.target.classList.contains('reply-btn')) {
-      let form = eo.target.closest('.comment, .reply').querySelector('.reply-form');
-      if (form.classList.contains('hidden')) {
-        form.classList.remove('hidden');
-      } else {
-        form.classList.add('hidden');
-      }
-    }
-  });
-});
-document.addEventListener('DOMContentLoaded', function() {
-  document.body.addEventListener('click', (eo)=> {
-    if (eo.target.classList.contains('show-all')) {
-      let content = eo.target.closest('.comment, .reply').querySelector('.reply-content');
-      let show = eo.target.closest('.comment, .reply').querySelector('.show-all');
-      let replyCount = eo.target.getAttribute('data-reply-count');
-      if (content.classList.contains('hidden')) {
-        show.innerText =` hide ${replyCount} repl${replyCount > 1 ? 'ies' : 'y'}`;
-        content.classList.remove('hidden');
-      } else {
-        content.classList.add('hidden');
-        show.innerText =` view ${replyCount} repl${replyCount > 1 ? 'ies' : 'y'}`;
-        
-      }
-    }
-  });
-});
-
-  </script>
 
   
   

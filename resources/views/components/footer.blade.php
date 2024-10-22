@@ -17,6 +17,7 @@
 <script src="{{asset('js/randomhearts.js')}}" defer></script>
 <script src="{{asset('js/fetchlike.js')}}" defer></script>
 <script src="{{asset('js/fetchsavedpost.js')}}" defer></script>
+<script src="{{asset('js/comments.js')}}" defer></script>
 
 
 </body>

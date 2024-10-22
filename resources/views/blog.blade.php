@@ -113,7 +113,7 @@
   </div>
 
   <div class=" break-words text-pretty " >
-    <h2 class="text-xl md:text-2xl font-bold text-gray-700 mt-6 md:mt-10 text-center">{{$post->title}}</h2>
+    <h2 class="text-xl md:text-2xl font-bold text-gray-700 mt-6 md:mt-14 ">{{$post->title}}</h2>
     <div>
       
       <p class="text-gray-500 break-words truncate text-pretty text-l  sm:text-xl py-8 leading-6 font-medium">
