@@ -9,7 +9,12 @@
 
 ## About Laravel
 # Laravel Blog Application
-
+![schooldash-dahboard-page](https://i.postimg.cc/6qPg0xFh/Screenshot-2024-10-22-202534.png)
+![schooldash-dahboard-page](https://i.postimg.cc/MHYXMt4x/Screenshot-2024-10-22-203846.png)
+![schooldash-dahboard-page](https://i.postimg.cc/nhNVL6zB/Screenshot-2024-10-22-204908.png)
+![schooldash-dahboard-page](https://i.postimg.cc/Kjm82BYW/Screenshot-2024-10-22-204200.png)
+![schooldash-dahboard-page](https://i.postimg.cc/9X9dFhQt/Screenshot-2024-10-22-201806.png)
+![schooldash-dahboard-page](https://i.postimg.cc/jdLLd6cV/Screenshot-2024-10-22-212650.png)
 ### Features
 
 #### User Authentication/Authorization and Admin/profile Management
