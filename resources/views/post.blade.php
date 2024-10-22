@@ -65,7 +65,7 @@
       {{$post->description}}
     </p>
   </div>
-
+{{-- comment form --}}
   <div class="w-fit mb-4 border-2 p-1 rounded-lg px-5 mx-auto">
     <form action="/comment/{{$post->id}}" method="POST">
       @csrf
@@ -85,7 +85,7 @@
 </div>
  
 
-{{-- comment Form --}}
+{{--display comment Form --}}
 @include('comments.comments',['posts'=>$post->comments])
 
 
@@ -123,12 +123,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (eo.target.classList.contains('show-all')) {
       let content = eo.target.closest('.comment, .reply').querySelector('.reply-content');
       let show = eo.target.closest('.comment, .reply').querySelector('.show-all');
+      let replyCount = eo.target.getAttribute('data-reply-count');
       if (content.classList.contains('hidden')) {
-        show.textContent = "hide all";
+        show.innerText =` hide ${replyCount} repl${replyCount > 1 ? 'ies' : 'y'}`;
         content.classList.remove('hidden');
       } else {
         content.classList.add('hidden');
-        show.textContent = "show all";
+        show.innerText =` view ${replyCount} repl${replyCount > 1 ? 'ies' : 'y'}`;
         
       }
     }

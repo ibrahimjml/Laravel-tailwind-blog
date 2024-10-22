@@ -28,4 +28,15 @@ class Comment extends Model
     public function replies(){
       return $this->hasMany(Comment::class, 'parent_id')->orderBy('created_at','desc');
     }
+    // function loop count nested replies inside replies
+    public function getTotalRepliesCount(){
+
+    $count = $this->replies->count();
+
+    foreach ($this->replies as $reply) {
+        $count += $reply->getTotalRepliesCount();
+    }
+
+    return $count;
+}
 }

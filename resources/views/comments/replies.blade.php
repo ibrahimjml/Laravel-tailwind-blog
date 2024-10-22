@@ -1,6 +1,6 @@
 
 @foreach($comments as $reply)
-  <div class="reply w-[300px] ml-[40px] sm:ml-[60px] mt-5 sm:mt-0">
+  <div class="reply bg-gray-50 shadow-sm rounded-lg p-4 mb-2">
     <div class="flex items-center gap-2 mb-2">
       @if($reply->user->avatar !== "default.jpg")
         <img src="{{Storage::url($reply->user->avatar)}}"  class="w-8 h-8 overflow-hidden flex justify-center items-center shrink-0 grow-0 rounded-full ">
@@ -44,7 +44,7 @@
 
     {{-- Display Nested Replies --}}
     @if($reply->replies->count() > 0)
-      <div class="ml-10 mb-2 mt-2">
+      <div class="ml-4 mt-4 border-l-2 border-gray-200 pl-4">
         @include('comments.replies', ['comments' => $reply->replies])
       </div>
     @endif
