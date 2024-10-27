@@ -9,7 +9,7 @@
       @endif
       <div class="flex flex-col">
         <div class="flex gap-3 items-center">
-          <a href="/user/{{$reply->user->id}}" class="hover:underline">
+          <a href="/profile/{{$reply->user->username}}" class="hover:underline">
             <strong>{{ $reply->user->name }}</strong>
           </a>
           @if($reply->parent)

@@ -19,6 +19,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('is_admin')->default(0);
@@ -30,6 +31,7 @@ return new class extends Migration
 
         DB::table('users')->insert([
           'name' => 'admin',
+          'username'=>'admin123',
           'email' => 'admin@mail.ru',
           'password' => Hash::make('adminadmin123'),
           'is_admin' => 1,

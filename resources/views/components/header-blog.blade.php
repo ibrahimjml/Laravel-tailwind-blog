@@ -8,10 +8,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="{{url('style.css')}}">
   @vite('resources/css/app.css')
+  @vite(['resources/js/app.js'])
   <title>home</title>
 </head>
-<body id="body" class="min-h-screen flex  flex-col">
-  <nav class=" px-6 py-2 bg-zinc-100  border-b-2">
+<body id="body" class="min-h-screen flex  flex-col m-0 ">
+  <nav class="w-screen px-6 py-2 bg-zinc-100  border-b-2">
     <div class="flex justify-between items-center ">
       <div class=" text-2xl font-bold">
       <span class="bg-white text-black pr-1 pl-1 rounded-l-md border border-t-3 border-b-3">Blog</span><span class="text-white bg-black pl-1 pr-1 rounded-r-md ">Post</span> 
@@ -36,7 +37,7 @@
               @endif
               </a>
               <span>
-                <a href="/user/{{auth()->user()->id}}"  >profile</a>
+                <a href="/profile/{{auth()->user()->username}}"  >profile</a>
               </span></li>
             <li class="border-b-2 text-gray-500 hover:text-black hover:font-semibold transition duration-300 hover:border-b-red-500 flex justify-between items-center mb-2 ">
               <i class="fa fa-edit "></i>

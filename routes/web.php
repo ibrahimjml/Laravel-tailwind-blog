@@ -51,7 +51,7 @@ Route::get('/create',[PostController::class,'createpage'])->name('create')->midd
 Route::post('/create',[PostController::class,'create'])->name('create')->middleware('auth');
 
 // User Profile
-Route::get('/user/{user}',[PublicController::class,'viewpostByuser'])->name('profile');;
+Route::get('/profile/{user:username}',[PublicController::class,'viewpostByuser'])->name('profile');;
 
 // Edit Profile Image
 Route::get('/edit-avatar/{user}',[PublicController::class,'editpage']);

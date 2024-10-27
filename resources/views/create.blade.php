@@ -1,5 +1,6 @@
 <x-header-blog/>
-@vite('resources/css/app.css')
+
+
 <div class="container mx-auto pt-[40px]">
   <h1 class=" text-3xl font-bold text-center py-5 capitalize">create post</h1>
 </div>
@@ -8,15 +9,15 @@
   <form action="{{route('create')}}" method="POST" enctype="multipart/form-data" class="p-6">
     @csrf
     @method('POST')
-
+  
     <div class="flex flex-wrap">
       <label for="title" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
         title:
       </label>
-
+  
       <input id="title" type="text" class="rounded-sm p-2 border-2 form-input w-full @error('title')  border-red-500 @enderror"
           name="title" value="{{ old('title') }}" required autocomplete="title" autofocus>
-
+  
       @error('title')
       <p class="text-red-500 text-xs italic mt-4">
           {{ $message }}
@@ -24,8 +25,8 @@
       @enderror
   </div>
     <div>
-      <label for="title" class="mt-2 block text-gray-700 text-sm font-bold mb-2 sm:mb-4">description</label>
-      <textarea name="description" class="rounded-sm p-2 border-2 form-input w-full @error('description')  border-red-500 @enderror"></textarea>
+      <label for="title" class="mt-2 block text-gray-700 text-sm font-bold mb-2 sm:mb-4">description :</label>
+      <textarea id="textarea" name="description" class="rounded-sm p-2 border-2 form-input w-full @error('description')  border-red-500 @enderror"></textarea>
       @error('description')
       <p class="text-red-500 text-xs italic mt-4">
           {{ $message }}
@@ -33,7 +34,7 @@
       @enderror
     </div>
     <div>
-      <label for="image" class="mt-2 block text-gray-700 text-sm font-bold mb-2 sm:mb-4">image</label>
+      <label for="image" class="mt-2 block text-gray-700 text-sm font-bold mb-2 sm:mb-4">image :</label>
       <input type="file" name="image" class="rounded-sm p-2 border-2 form-input w-full @error('image')  border-red-500 @enderror">
       @error('image')
       <p class="text-red-500 text-xs italic mt-4">

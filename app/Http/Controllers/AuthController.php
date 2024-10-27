@@ -23,6 +23,7 @@ class AuthController extends Controller
     $fields = $request->validate([
       "email" => ["required", "email", "min:5", "max:50", Rule::unique("users", "email")],
       "name" => ["required", "min:5", "max:50", "alpha"],
+      "username" => ["required", "min:5", "max:15", "alpha_num",Rule::unique('users','username')],
       "phone" => ["min:8", Rule::unique("users", "phone")],
       "password" => ["required", "alpha_num", "min:8", "max:32", "confirmed"],
       "age" => ["required", "integer", "between:18,64"]
@@ -31,6 +32,7 @@ class AuthController extends Controller
     $fields['password'] = bcrypt($fields['password']);
     $fields['email'] = htmlspecialchars(strip_tags($fields['email']));
     $fields['name'] = htmlspecialchars(strip_tags($fields['name']));
+    $fields['username'] = htmlspecialchars(strip_tags($fields['username']));
 
     $user = User::create($fields);
     auth()->login($user);

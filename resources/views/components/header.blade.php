@@ -33,7 +33,7 @@
                 @endif
                 </a>
                 <span>
-                  <a href="/user/{{auth()->user()->id}}" >profile</a>
+                  <a href="/profile/{{auth()->user()->username}}" >profile</a>
                 </span></li>
               <li class="border-b-2 text-gray-500 hover:text-black hover:font-semibold transition duration-300 hover:border-b-red-500 flex justify-between items-center mb-2">
                 <i class="fa fa-edit"></i>

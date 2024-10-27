@@ -26,7 +26,10 @@
   @can('update',$user)
   <span class="flex justify-center mb-5"><a class="bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300" href="/edit-profile/{{$user->id}}">edit profile</a></span>
   @endcan
-  <h1 class=" text-3xl font-bold text-center pb-5 tracking-wide text-gray-700">{{$user->name}} <span class="font-semibold text-black">profile</span></h1>
+  <div class="flex flex-col pb-3">
+    <h1 class=" text-3xl font-bold text-center  tracking-wide text-gray-700">{{$user->name}} <span class="font-semibold text-black">profile</span></h1>
+    <span class="text-sm text-gray-400 text-center mb-2">@ {{$user->username}}</span>
+  </div>
 </div>
 <div class=" mx-auto flex  justify-center gap-6">
   

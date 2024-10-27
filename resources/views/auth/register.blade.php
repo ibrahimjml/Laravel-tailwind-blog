@@ -26,7 +26,20 @@
                         </p>
                         @enderror
                     </div>
+                    <div class="flex flex-wrap">
+                      <label for="name" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
+                        Username:
+                      </label>
 
+                      <input id="username" type="text" class="rounded-sm p-2 border-2 form-input w-full @error('username')  border-red-500 @enderror"
+                          name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+
+                      @error('username')
+                      <p class="text-red-500 text-xs italic mt-4">
+                          {{ $message }}
+                      </p>
+                      @enderror
+                  </div>
                     <div class="flex flex-wrap">
                         <label for="email" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
                           E-Mail Address:

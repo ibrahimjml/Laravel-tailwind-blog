@@ -61,10 +61,10 @@
 @else
 <button onclick="fetchLike({{$post->id}})" class="likeBTN  mx-auto  sm:mx-auto  block bg-transparent border-2 text-red-700 py-2 px-5 rounded-lg font-bold capitalize  hover:border-red-700 hover:text-red-500 transition duration-300 mt-4">Like</button>
 @endif
-    <p class="py-12 text-gray-500 text-sm leading-5 mx-auto w-[80vw]  font-semibold sm:text-2xl   ">
-      {{$post->description}}
-    </p>
-  </div>
+</div>
+<div class="w-[80vw] mx-auto py-12">
+  {!! $post->description !!}
+</div>
 {{-- comment form --}}
   <div class="w-fit mb-4 border-2 p-1 rounded-lg px-5 mx-auto">
     <form action="/comment/{{$post->id}}" method="POST">

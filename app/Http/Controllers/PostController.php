@@ -46,7 +46,7 @@ class PostController extends Controller
       ]);
 
         $fields['title'] = htmlspecialchars(strip_tags($fields['title']));
-        $fields['description'] = htmlspecialchars(strip_tags($fields['description']));
+        $fields['description'] = $fields['description'];
 
         $slug = Str::slug($fields['title']);
         $uniqueslug=$this->generateuniqueslug($slug);
@@ -102,7 +102,7 @@ public function update($slug,Request $request){
 ]);
 
 $fields['title'] =htmlspecialchars(strip_tags($fields['title'])) ;
-$fields['description'] =htmlspecialchars(strip_tags($fields['description'])) ;
+$fields['description'] =$fields['description'] ;
 
 $post = Post::where('slug',$slug)->firstOrFail();
 

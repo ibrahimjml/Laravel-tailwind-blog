@@ -1,5 +1,4 @@
 <x-header-blog/>
-@vite('resources/css/app.css')
 <div class="container mx-auto pt-[40px]">
   <h1 class=" text-3xl font-bold text-center py-5 capitalize">Edit Post</h1>
 </div>
@@ -25,7 +24,7 @@
   </div>
     <div>
       <label for="title" class="mt-2 block text-gray-700 text-sm font-bold mb-2 sm:mb-4">description</label>
-      <textarea name="description"  class="rounded-sm p-2 border-2 form-input w-full @error('description')  border-red-500 @enderror">{{$post->description}}</textarea>
+      <textarea name="description" id="textarea" class="rounded-sm p-2 border-2 form-input w-full @error('description')  border-red-500 @enderror">{{$post->description}}</textarea>
       @error('description')
       <p class="text-red-500 text-xs italic mt-4">
           {{ $message }}
