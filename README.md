@@ -11,6 +11,7 @@
 # Laravel Blog Application
 ![schooldash-dahboard-page](https://i.postimg.cc/63Zxm3Lm/Screenshot-2024-10-22-214617.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/jdLLd6cV/Screenshot-2024-10-22-212650.png)
+![schooldash-dahboard-page](https://i.postimg.cc/W3Z40Y0r/Screenshot-2024-10-27-161038.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/MHYXMt4x/Screenshot-2024-10-22-203846.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/nhNVL6zB/Screenshot-2024-10-22-204908.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/Kjm82BYW/Screenshot-2024-10-22-204200.png)
