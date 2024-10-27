@@ -16,6 +16,7 @@
 ![schooldash-dahboard-page](https://i.postimg.cc/nhNVL6zB/Screenshot-2024-10-22-204908.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/Kjm82BYW/Screenshot-2024-10-22-204200.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/15rvDCwY/Screenshot-2024-10-23-084341.png)
+![schooldash-dahboard-page](https://i.postimg.cc/RFSV31vQ/Screenshot-2024-10-27-190754.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/PJ22nNXn/Screenshot-2024-10-23-085523.png)
 ### Features
 
