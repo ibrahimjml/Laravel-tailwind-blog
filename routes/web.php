@@ -51,7 +51,7 @@ Route::get('/create',[PostController::class,'createpage'])->name('create')->midd
 Route::post('/create',[PostController::class,'create'])->name('create')->middleware('auth');
 
 // User Profile
-Route::get('/profile/{user:username}',[PublicController::class,'viewpostByuser'])->name('profile');;
+Route::get('/@{user:username}',[PublicController::class,'viewpostByuser'])->name('profile');
 
 // Edit Profile Image
 Route::get('/edit-avatar/{user}',[PublicController::class,'editpage']);
@@ -59,14 +59,17 @@ Route::put('/edit-avatar/{user}/edit',[PublicController::class,'edit']);
 Route::delete('/delete-avatar/{user}',[PublicController::class,'destroyavatar'])->name('delete.avatar');
 
 // Edit Profile Page
-Route::get('/edit-profile/{user}',[PublicController::class,'editprofilepage']);
+Route::get('/edit-profile/{user:username}',[PublicController::class,'editprofilepage'])->name('editprofile');
+// Add bio 
+Route::put('/addbio/{user}',[PublicController::class,'useraddbio']);
 
 // Edit User email,name,phone,pass
 Route::put('/edit-email/{user}',[PublicController::class,'editemail']);
 Route::put('/change-name/{user}',[PublicController::class,'editname']);
 Route::put('/change-phone/{user}',[PublicController::class,'editphone']);
 Route::put('/change-pass/{user}',[PublicController::class,'editpassword']);
-
+//user account delete
+Route::delete('/account-delete/{user}',[PublicController::class,'deleteaccount'])->name('account.delete');
 // Delete Post
 Route::delete('/post/{slug}',[PostController::class,'delete'])->name('delete.post');
 

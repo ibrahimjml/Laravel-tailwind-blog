@@ -13,22 +13,22 @@
 
   <div class=" container mx-auto flex  flex-row justify-center items-center pb-2 sm:pb-6 translate-x-7  mt-4">
      <div class=" sm:mx-0 flex justify-center items-center" >
-      @if(auth()->user() && auth()->user()->id !== $post->user_id)
+      
       <span class="text-sm italic sm:text-lg ">
         <strong class="">BY: </strong>
-        <a href="{{route('profile',$post->user_id)}}">{{$post->user->name}}</a>
+        <a href="{{route('profile',$post->user->username)}}">{{$post->user->username}}</a>
       </span>
-      @endif
+    
       &nbsp;&nbsp;
       <span class="text-sm italic sm:text-lg flex items-center mr-0 sm:mr-36 ">
-        <b>ON :</b> &nbsp;{{$post->created_at->format('F d, Y \a\t h:i A')}}
+        <b>Updated-at :</b> &nbsp;{{$post->updated_at->diffForHumans()}}
       </span>
      </div>
       
       
       
       <div class="flex  items-center justify-center translate-x-0 sm:translate-x-[-3rem] mx-auto sm:mx-0">
-        {{-- @if(auth()->user() && auth()->user()->id == $post->user_id) --}}
+        
         @can('delete',$post)
         <div>
           <form action="{{route('delete.post',$post->slug)}}" method="POST" onsubmit="return confirm('Are you sure you want delete this post ?')">
@@ -39,7 +39,7 @@
           </form>
         </div>
         @endcan
-        {{-- @endif --}}
+      
         @can('view',$post)
         <a href="{{route('edit.post',$post->slug)}}" class="hidden sm:flex justify-center bg-blue-700 ml-9  w-32 text-slate-200 p-2 py-1 sm:py-3 px-2 sm:px-5  rounded-lg font-medium sm:font-bold capitalize place-self-start">edit</a>
         @endcan
@@ -50,17 +50,18 @@
     
   </div>
   <div>
-    <img class="object-contain rounded-none md:rounded-lg w-[90%] md:w-[60%] h-120  mx-auto  " src="/images/{{$post->image_path}}"  alt="">
-    <div class="flex gap-1 ml-0 sm:ml-[290px] mt-1">
-      <span class="text-xl ml-10">&#128420;</span>
+    <img class="object-contain rounded-none md:rounded-lg w-[90%] md:w-[60%] h-120  mx-auto s shadow-lg hover:shadow-md" src="/images/{{$post->image_path}}"  alt="">
+    <div class="flex gap-1 justify-between items-center ml-0 sm:ml-[290px] mt-1">
+      <span class="text-xl ml-10 items-center">&#128420;</span>
       <span id="likes-count" class="text-xl">{{$post->likes()->count()}}</span>
-    </div>
-    {{-- like/unlike button fetch --}}
+      {{-- like/unlike button fetch --}}
     @if($post->is_liked())
-  <button onclick="fetchLike({{$post->id}})" class="likeBTN  mx-auto  sm:mx-auto  block bg-transparent border-2 text-red-700 py-2 px-5 rounded-lg font-bold capitalize  hover:border-red-700 hover:text-red-500 transition duration-300 mt-4">Unlike</button>
-@else
-<button onclick="fetchLike({{$post->id}})" class="likeBTN  mx-auto  sm:mx-auto  block bg-transparent border-2 text-red-700 py-2 px-5 rounded-lg font-bold capitalize  hover:border-red-700 hover:text-red-500 transition duration-300 mt-4">Like</button>
-@endif
+    <button onclick="fetchLike({{$post->id}})" class="likeBTN mb-4 mx-auto  sm:mx-auto   bg-transparent border-2 text-red-700 py-2 px-5 rounded-lg font-bold capitalize border-red-300  hover:border-red-700 hover:text-red-500 transition duration-300 mt-4">Unlike</button>
+  @else
+  <button onclick="fetchLike({{$post->id}})" class="likeBTN mb-4 mx-auto  sm:mx-auto  bg-transparent border-2 text-red-700 py-2 px-5 rounded-lg font-bold capitalize border-red-300  hover:border-red-700 hover:text-red-500 transition duration-300 mt-4">Like</button>
+  @endif
+    </div>
+    
 </div>
 <div class="w-[80vw] mx-auto py-12">
   {!! $post->description !!}

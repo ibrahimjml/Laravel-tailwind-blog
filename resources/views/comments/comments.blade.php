@@ -10,7 +10,7 @@
           <img src="/storage/avatars/{{$comment->user->avatar}}" class="w-8 h-8 overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full ">
         @endif
         <div class="flex flex-col">
-          <a href="/profile/{{$comment->user->username}}" class="hover:underline">
+          <a href="{{route('profile',$comment->user->username)}}" class="hover:underline">
             <strong>{{ $comment->user->name }}</strong>
           </a>
           <span class="text-sm text-gray-500">{{ $comment->created_at->diffForHumans()}}</span>

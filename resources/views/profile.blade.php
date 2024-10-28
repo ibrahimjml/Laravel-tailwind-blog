@@ -24,11 +24,16 @@
 
   </div>
   @can('update',$user)
-  <span class="flex justify-center mb-5"><a class="bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300" href="/edit-profile/{{$user->id}}">edit profile</a></span>
+  <span class="flex justify-center mb-5"><a class="bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300" href="{{route('editprofile',$user->username)}}">edit profile</a></span>
   @endcan
   <div class="flex flex-col pb-3">
-    <h1 class=" text-3xl font-bold text-center  tracking-wide text-gray-700">{{$user->name}} <span class="font-semibold text-black">profile</span></h1>
+    <h1 class=" text-3xl font-bold text-center  tracking-wide text-gray-700">{{$user->name}} </h1>
     <span class="text-sm text-gray-400 text-center mb-2">@ {{$user->username}}</span>
+    @if($user->bio == null)
+    <p class="text-lg text-gray-400 text-center mb-2">Tell people about yourself</p>
+    @else
+    <p class="text-lg text-gray-600 text-center font-semibold mb-2">{{$user->bio}}</p>
+    @endif
   </div>
 </div>
 <div class=" mx-auto flex  justify-center gap-6">

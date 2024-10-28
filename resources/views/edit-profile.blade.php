@@ -28,7 +28,7 @@
       </p>
       @enderror
       @can('update',$user)
-      <div class=" w-42 mx-auto bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
+      <div class=" w-42  bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
         <button type="submit" class=" cursor-pointer">update name</button>
       </div>
       @endcan
@@ -52,7 +52,7 @@
     </p>
     @enderror
     @can('update',$user)
-    <div class=" w-42 mx-auto bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
+    <div class=" w-42  bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
       <button type="submit" class=" cursor-pointer">update email</button>
     </div>
     @endcan
@@ -76,11 +76,35 @@
   </p>
   @enderror
   @can('update',$user)
-  <div class=" w-42 mx-auto bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
+  <div class=" w-42  bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
     <button type="submit" class=" cursor-pointer">update phone</button>
   </div>
   @endcan
 </div>
+  </form>
+  <form action="/addbio/{{$user->id}}" method="POST">
+    @csrf
+    @method('PUT')
+    <div class="flex flex-wrap mt-2">
+      <label for="bio" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
+        bio:
+      </label>
+    
+      <input id="bio" type="text"
+          class="rounded-sm p-2 border-2 form-input w-full @error('bio') border-red-500 @enderror" name="bio"
+          value="{{ old('bio', $user->bio) }}" required autocomplete="bio">
+    
+      @error('bio')
+      <p class="text-red-500 text-xs italic mt-4">
+          {{ $message }}
+      </p>
+      @enderror
+      @can('update',$user)
+      <div class=" w-42  bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
+        <button type="submit" class=" cursor-pointer">update</button>
+      </div>
+      @endcan
+    </div>
   </form>
     <form action="/change-pass/{{$user->id}}" method="POST">
       @csrf
@@ -107,12 +131,59 @@
         <input id="password-confirmation" type="password" class="rounded-sm p-2 border-2 form-input w-full"
             name="password_confirmation" required >
             @can('update',$user)
-            <div class=" w-42 mx-auto bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
+            <div class=" w-42  bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">
               <button type="submit" class=" cursor-pointer">update password</button>
             </div>
             @endcan
           </div>
 </form>
-</div>
+<div class="flex flex-wrap">
+  <div >
+    <h2 class="font-bold">Delete Account</h2>
+    <p class="text-sm text-gray-600">Once your account is deleted, all of its resources and data will be permanetly deleted.</p>
+    <button id="show-menu" class=" w-42  bg-red-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center">Delete account</button>
+  </div>
 
+</div>
+</div>
+{{-- delete account menu --}}
+<div id="menu" class="hidden fixed z-[20]  py-8 left-[50%]  top-[50%] transform translate-x-[-50%] translate-y-[-50%] items-center space-y-2 font-bold bg-gray-700 rounded-lg drop-shadow-lg border border-gray-300 transition-all duration-300">
+  <div  class="w-3/4 mx-auto">
+    <h4 class="text-slate-200">Are you sure you want to delete your account</h4><br>
+    <p class="text-sm text-gray-400">Once your account is deleted, all of its resources and data will be permanetly deleted.</p>
+ <form action="{{route('account.delete',$user->id)}}" method="POST">
+ @csrf
+ @method("DELETE")
+ <label for="password-confirm" class="mt-2 block text-slate-200 text-sm mb-1 font-bold  ">
+ Password:
+</label>
+ <input  type="password" class="block  w-72 rounded-lg p-2 border-2 bg-transparent @error('check_pass') border-red-500 @enderror"
+  name="check_pass" placeholder="password">
+  @error('check_pass')
+      <p class="text-red-500 text-xs italic mt-4">
+          {{ $message }}
+      </p>
+      @enderror
+      @can('delete',$user)
+        <button type="submit" class="w-42 bg-red-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center cursor-pointer">Delete Account</button>
+      @endcan
+    </form> 
+<button id="close-menu" class=" bg-transparent border-2 text-slate-200 py-2 px-5 rounded-lg font-bold capitalize hover:border-gray-500 transition duration-300 mt-2">Cancel</button>
+  </div>
+</div>
 <x-footer/>
+<script>
+  const showmenu = document.getElementById('show-menu');
+  const closemenu = document.getElementById('close-menu');
+  const menu = document.getElementById("menu");
+  showmenu.addEventListener('click',()=>{
+    if(menu.classList.contains('hidden')){
+      menu.classList.remove('hidden');
+    }
+  })
+  closemenu.addEventListener('click',()=>{
+    if(menu.classList.contains('fixed')){
+      menu.classList.add('hidden');
+    }
+  })
+</script>

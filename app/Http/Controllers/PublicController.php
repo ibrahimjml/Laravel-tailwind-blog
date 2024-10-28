@@ -80,7 +80,7 @@ class PublicController extends Controller
     $user->avatar = $path;
     $user->save();
 
-    return redirect()->route('profile', ['user' => $user->id])->with('success', 'Image updated successfully.');
+    return redirect()->route('profile',  $user->username)->with('success', 'Image updated successfully.');
     
   }
   public function destroyavatar(User $user){
@@ -90,7 +90,7 @@ class PublicController extends Controller
     $this->authorize('delete',$user);
     $user->avatar="default.jpg";
     $user->save();
-    return redirect()->route('profile', ['user' => $user->id])->with('success', 'Avatar deleted.');
+    return redirect()->route('profile', $user->username)->with('success', 'Avatar deleted.');
   }
 
   public function editprofilepage(User $user)
@@ -111,7 +111,7 @@ class PublicController extends Controller
     $this->authorize('update', $user);
     $user->save();
 
-    return redirect()->route('profile', ['user' => $user->id])->with('success', 'Email updated');
+    return redirect()->route('profile', $user->username)->with('success', 'Email updated');
   }
 
   public function editname(Request $request, User $user)
@@ -123,7 +123,7 @@ class PublicController extends Controller
     $this->authorize('update', $user);
     $user->save();
 
-    return redirect()->route('profile', ['user' => $user->id])->with('success', 'name updated');
+    return redirect()->route('profile', $user->username)->with('success', 'name updated');
   }
 
   public function editpassword(Request $request, User $user)
@@ -139,7 +139,7 @@ class PublicController extends Controller
     $user->password = bcrypt($request->password);
     $this->authorize('update', $user);
     $user->save();
-    return redirect()->route('profile', ['user' => $user->id])->with('success', 'password updated');
+    return redirect()->route('profile', $user->username)->with('success', 'password updated');
   }
 
   public function editphone(Request $request, User $user)
@@ -151,6 +151,30 @@ class PublicController extends Controller
     $this->authorize('update', $user);
     $user->save();
 
-    return redirect()->route('profile', ['user' => $user->id])->with('success', 'phone updated');
+    return redirect()->route('profile', ['user' => $user->username])->with('success', 'phone updated');
+  }
+
+  public function useraddbio(User $user,Request $request){
+   $request->validate([
+    'bio'=>'min:5|string|'
+   ]);
+   $user->bio = strip_tags($request->bio);
+   $this->authorize('update',$user);
+   $user->save();
+   return redirect()->route('profile', ['user' => $user->username])->with('success', 'Bio updated');
+  }
+
+  public function deleteaccount(Request $request,User $user){
+    $request->validate([
+      'check_pass'=>"required|alpha_num|min:8|max:32"
+    ]);
+  
+    if (!Hash::check($request->check_pass, $user->password)) {
+      return back()->with(['error' => 'password is incorrect']);
+  }
+  $this->authorize('delete',$user);
+  $user->delete();
+  auth()->logout();
+  return redirect()->route('login')->with('success','Account deleted successfuly');
   }
 }

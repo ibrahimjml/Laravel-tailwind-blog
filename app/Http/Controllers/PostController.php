@@ -40,7 +40,7 @@ class PostController extends Controller
           $fields=$request->validate([
             'title'=>'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
             'description'=>'required|string',
-            'image'=>'required|mimes:jpg,png,jpeg|max:5048'
+            'image'=>'required|mimes:jpg,png,jpeg|max:5000000'
         ],
         ['title.regex'=>'The title accept only letters,numbers and spaces',
       ]);

@@ -26,7 +26,7 @@
           <ul id="hiddenul2" style="display: none;" class="w-[200px]">
         
             <li class="border-b-2 hover:border-b-red-500 text-gray-500 hover:text-black hover:font-semibold transition duration-300 flex justify-between gap-2 mb-2">
-              <a href="/user/{{auth()->user()->id}}" >
+              <a href="{{route('profile',auth()->user()->username)}}" >
                 {{-- checking if image has default.jpg --}}
                 @if($authUser->avatar !== "default.jpg")
               
@@ -37,7 +37,7 @@
               @endif
               </a>
               <span>
-                <a href="/profile/{{auth()->user()->username}}"  >profile</a>
+                <a href="{{route('profile',auth()->user()->username)}}"  >profile</a>
               </span></li>
             <li class="border-b-2 text-gray-500 hover:text-black hover:font-semibold transition duration-300 hover:border-b-red-500 flex justify-between items-center mb-2 ">
               <i class="fa fa-edit "></i>
@@ -116,7 +116,7 @@
         <a href="{{route('register')}}" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">Register</a>
         @else
         
-        <a href="/user/{{auth()->user()->id}}" >
+        <a href="{{route('profile',auth()->user()->username)}}" >
           {{-- checking if image has default.jpg --}}
           @if(auth()->user()->avatar =="default.jpg")
           <img src="/storage/avatars/{{auth()->user()->avatar}}"  class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
@@ -125,7 +125,7 @@
           @endif
         </a>
         
-        <span class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300"><a href="/user/{{auth()->user()->id}}" >profile</span>
+        <span class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300"><a href="{{route('profile',auth()->user()->username)}}" >profile</span>
           <a href="{{route('create')}}" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">create post</a>
         <a href="{{route('logout')}}" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">Logout</a>
         <a href="/blog" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">Blog</a>
