@@ -9,14 +9,15 @@
 
 ## About Laravel
 # Laravel Blog Application
-![schooldash-dahboard-page](https://i.postimg.cc/Cx90wmWh/Screenshot-2024-10-29-021503.png)
-![schooldash-dahboard-page](https://i.postimg.cc/kGjrzcQd/Screenshot-2024-10-29-021839.png)
+ <img src="https://i.postimg.cc/HkJbrnrn/Screenshot-2024-10-29-141042.png" alt="image" width="1012px">
+ 
+![schooldash-dahboard-page](https://i.postimg.cc/6pd5bxSz/Screenshot-2024-10-29-141415.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/RFSV31vQ/Screenshot-2024-10-27-190754.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/MHYXMt4x/Screenshot-2024-10-22-203846.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/pTBL4grH/Screenshot-2024-10-28-152832.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/jdLLd6cV/Screenshot-2024-10-22-212650.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/k55ThmjD/Screenshot-2024-10-29-024209.png)
-![schooldash-dahboard-page](https://i.postimg.cc/T2Syrvzy/Screenshot-2024-10-28-151134.png)
+![schooldash-dahboard-page](https://i.postimg.cc/W15nZy2V/Screenshot-2024-10-29-024842.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/Kjm82BYW/Screenshot-2024-10-22-204200.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/15rvDCwY/Screenshot-2024-10-23-084341.png)
 
@@ -45,7 +46,7 @@ user experience.
 - **Delete Comments/Replies:** Users can delete their own comments and replies.
 
 #### Post Sorting and Searching and pagination
-- **Sort Posts:** User can sort posts by latest, oldest, and most liked.
+- **Sort Posts:** User can sort posts by latest, oldest, most liked, and trending hashtags.
 - **Search Functionality:** implemented scout driver,users can search for posts using keywords.
 - **Pagination:** User can paginate between post pages. 
 
