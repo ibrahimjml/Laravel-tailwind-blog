@@ -9,12 +9,13 @@
 
 ## About Laravel
 # Laravel Blog Application
-![schooldash-dahboard-page](https://i.postimg.cc/PJ22nNXn/Screenshot-2024-10-23-085523.png)
+![schooldash-dahboard-page](https://i.postimg.cc/Cx90wmWh/Screenshot-2024-10-29-021503.png)
+![schooldash-dahboard-page](https://i.postimg.cc/kGjrzcQd/Screenshot-2024-10-29-021839.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/RFSV31vQ/Screenshot-2024-10-27-190754.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/MHYXMt4x/Screenshot-2024-10-22-203846.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/pTBL4grH/Screenshot-2024-10-28-152832.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/jdLLd6cV/Screenshot-2024-10-22-212650.png)
-![schooldash-dahboard-page](https://i.postimg.cc/W3Z40Y0r/Screenshot-2024-10-27-161038.png)
+![schooldash-dahboard-page](https://i.postimg.cc/k55ThmjD/Screenshot-2024-10-29-024209.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/T2Syrvzy/Screenshot-2024-10-28-151134.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/Kjm82BYW/Screenshot-2024-10-22-204200.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/15rvDCwY/Screenshot-2024-10-23-084341.png)
@@ -32,6 +33,7 @@
 
 #### Blog Posts
 - **Create, Read, Update, and Delete (CRUD) Operations:** Users can create new blog post, edit existing one, and delete post they have authored.
+- **Hashtags:** Users can create there own hashtags and filter posts by hashtags with pagination.
 - **Save Posts:** Implement Save/Unsave button using fetchApi, user can access to saved page, with the ability to view and remove saved posts.
 - **Slugs:** Implemented a unique slug for each post to create descriptive, enhancing search engine visibility and improving
 user experience.
