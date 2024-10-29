@@ -28,16 +28,15 @@
 #### User Authentication/Authorization and Admin/profile Management
 - **User Registration and Login:** Manually implemented Secure user authentication register/login for full customization and best experience.
 - **Admin Panel:** Admin page management system where admin can manage users block/delete users,manage posts delete/view/edit posts, and make user admin .
-- **Profile Management:** Users can view their profiles including posts,number of posts,total likes/comments,and edit profile settings name ,email, change password only authorized can access it, including changing their profile image,update and delete current one.
+- **Profile Management:** Users can view their profiles including posts,number of posts,total likes/comments,and edit profile settings edit bio ,name ,email, change current password,delete his account by confirming current password,including changing their profile image,update and delete current one.
 - **Password Management:** Users can change their passwords and reset them if forgotten.
-- **Middleware/Policies/Gate:** Implement custom middleware for posts and users , and implement policies/gate to users/posts for authorization and more secure.
+- **Middleware/Policies/Gate:** Implement custom middleware and policies on user/post for more secure.
 
 #### Blog Posts
 - **Create, Read, Update, and Delete (CRUD) Operations:** Users can create new blog post, edit existing one, and delete post they have authored.
-- **Hashtags:** Users can create there own hashtags and filter posts by hashtags with pagination.
+- **Hashtags:** Users can create there own hashtags and filter posts by exact hashtag and sort hompage with trending hashtags with pagination.
 - **Save Posts:** Implement Save/Unsave button using fetchApi, user can access to saved page, with the ability to view and remove saved posts.
-- **Slugs:** Implemented a unique slug for each post to create descriptive, enhancing search engine visibility and improving
-user experience.
+- **Slugs:** Implemented a unique slug for each post to create descriptive, enhancing search engine visibility and improving user experience.
 - **Like:** Implement Like/Unkike button using fetchApi with Like animation falling hearts for better user experience. 
 
 #### Comments and Replies
@@ -103,7 +102,9 @@ php artisan serve
 All Requests start with http://127.0.0.1:8000/api
 
 `Login`
+
 - `POST /api/login` - login to get token access.
+
  `posts`
 - `GET /api/blog` - Get all posts.No authentication required.
 - `GET /api/posts/{post}` - Get single post.No authentication required.
