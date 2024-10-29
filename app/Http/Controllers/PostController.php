@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hashtag;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
@@ -17,6 +18,7 @@ class PostController extends Controller
       $sortoption = $request->get('sort','latest');
       if($sortoption == 'latest'){
         $posts = Post::orderBy('created_at','desc')->paginate(5);
+        
       }
       elseif($sortoption == 'oldest'){
         $posts = Post::orderBy('created_at','asc')->paginate(5);
@@ -40,7 +42,7 @@ class PostController extends Controller
           $fields=$request->validate([
             'title'=>'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
             'description'=>'required|string',
-            'image'=>'required|mimes:jpg,png,jpeg|max:5000000'
+            'image'=>'required|mimes:jpg,png,jpeg|max:5000000',
         ],
         ['title.regex'=>'The title accept only letters,numbers and spaces',
       ]);
@@ -54,15 +56,35 @@ class PostController extends Controller
         $newimage= uniqid().'-'.$slug.'.'.$fields['image']->extension();
         $fields['image']->move(public_path('images'),$newimage);
       
-        Post::create([
+        $post = Post::create([
           'title'=>$request->input('title'),
           'description'=>$request->input('description'),
           'slug'=>$uniqueslug,
           'image_path'=>$newimage,
           'user_id'=>auth()->user()->id
         ]);
-        
-        return redirect('/blog')->with('success','posted successfuly');
+    
+      
+    $hashtagNames = [];
+
+    if ($request->filled('hashtag')) {
+        $hashtags = explode(',', $request->input('hashtag'));
+
+        foreach ($hashtags as $hashtag) {
+            $hashtag = strip_tags(trim($hashtag)); 
+
+            if ($hashtag) {
+                $hashtagModel = Hashtag::firstOrCreate(['name' => $hashtag]);
+                $post->hashtags()->attach($hashtagModel->id);
+                $hashtagNames[] = $hashtagModel->name;
+            }
+        }
+    }
+
+    
+    $hashtagString = implode(',', $hashtagNames);
+    
+        return redirect('/blog')->with('success','posted successfuly')->with(['hashtags'=>$hashtagString]);
         }
           //generate unique slug
         private function generateuniqueslug($slug){
@@ -89,20 +111,23 @@ class PostController extends Controller
     }
 public function editpost($slug){
   $post = Post::where('slug',$slug)->firstOrFail();
+  $hashtags = $post->hashtags->pluck('name')->implode(', ');
   $this->authorize('view',$post);
-  return view('updatepost',compact('post'));
+  return view('updatepost',compact('post','hashtags'));
 }
 
 public function update($slug,Request $request){
   $fields=$request->validate([
     'title'=>'nullable|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
-    'description'=>'required|string'
+    'description'=>'required|string',
+    'hashtag' => 'nullable|string',
 ],
 ['title.regex'=>'The title accept only letters,numbers and spaces',
 ]);
 
-$fields['title'] =htmlspecialchars(strip_tags($fields['title'])) ;
-$fields['description'] =$fields['description'] ;
+$fields['title'] = htmlspecialchars(strip_tags($fields['title'])) ;
+$fields['description'] = $fields['description'] ;
+$fields['hashtag'] = $fields['hashtag'] ;
 
 $post = Post::where('slug',$slug)->firstOrFail();
 
@@ -111,8 +136,19 @@ $slug = Str::slug($fields['title']);
 
 $post->title = $fields['title'];
 $post->description = $fields['description'];
-$post->slug=$slug;
 
+if (!empty($fields['hashtag'])) {
+  $hashtagNames = explode(',', $fields['hashtag']);
+  $hashtagIds = [];
+  
+  foreach ($hashtagNames as $name) {
+      $hashtag = Hashtag::firstOrCreate(['name' => strip_tags($name)]);
+      $hashtagIds[] = $hashtag->id;
+  }
+
+
+  $post->hashtags()->sync($hashtagIds);
+}
 $this->authorize('update',$post);
 $post->save();
 return redirect('/blog')->with('success','Post updated successfully');

@@ -31,7 +31,20 @@
       </p>
       @enderror
     </div>
-  
+    <div class="flex flex-wrap">
+      <label for="hashtag" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
+        hashtag:
+      </label>
+
+      <input id="hashtag" type="text" class="rounded-sm p-2 border-2 form-input w-full @error('hashtag')  border-red-500 @enderror"
+          name="hashtag" value="{{$hashtags}}" required autocomplete="hashtag" autofocus>
+
+      @error('hashtag')
+      <p class="text-red-500 text-xs italic mt-4">
+          {{ $message }}
+      </p>
+      @enderror
+  </div>
     <div class="mt-4 flex justify-center">
       @can('update',$post)
       <button type="submit"

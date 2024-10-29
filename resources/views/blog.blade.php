@@ -100,7 +100,7 @@
 </div>
   </div>
     
-      <img class="object-cover shadow-lg rounded-md  max-w-3xl" src="/images/{{$post->image_path}}"  alt="">
+      <img class="object-cover shadow-lg rounded-md h-4/6 max-w-3xl" src="/images/{{$post->image_path}}"  alt="">
       <div class="flex gap-10 justify-between items-center">
         <div class="flex gap-4">
           <span class="text-xl  font-normal">&#128420;{{$post->likes()->count()}}</span>
@@ -129,7 +129,14 @@
 
       
     </div>
-    
+    @if($post->hashtags->isNotEmpty())
+    <span>
+      @foreach($post->hashtags as $hashtag)
+      <span class="hashtag" >
+        <a href="/hashtag/{{$hashtag->name}}" class="b bg-yellow-200 rounded-lg p-1">#{{ $hashtag->name }}</a></span>
+  @endforeach
+    </span>
+    @endif
   </div>
   </div>
 </div>

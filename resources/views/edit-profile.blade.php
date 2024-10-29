@@ -10,6 +10,12 @@
 
 
 <div class="flex flex-col mx-auto pt-5 w-[50%] sm:w-[40%]">
+  <div class="flex flex-wrap">
+    <div >
+      <h2 class="font-bold">Profile Information</h2>
+      <p class="text-sm text-gray-600 mb-3">Update your account's profile information and email address.</p>
+    </div>
+  </div>
   <form action="/change-name/{{$user->id}}" method="POST">
     @csrf
     @method('PUT')
@@ -106,6 +112,12 @@
       @endcan
     </div>
   </form>
+  <div class="flex flex-wrap">
+    <div >
+      <h2 class="font-bold">Update Password</h2>
+      <p class="text-sm text-gray-600 mb-3">Ensure your account is using a long, random password to stay secure.</p>
+    </div>
+  </div>
     <form action="/change-pass/{{$user->id}}" method="POST">
       @csrf
       @method('PUT')

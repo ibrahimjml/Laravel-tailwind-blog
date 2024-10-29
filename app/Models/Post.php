@@ -26,7 +26,9 @@ class Post extends Model
   public function likes(){
     return $this->hasMany(Like::class);
   }
-
+  public function hashtags(){
+    return $this->belongsToMany(Hashtag::class,'post_hashtag');
+  }
 
 
   public function toSearchableArray()

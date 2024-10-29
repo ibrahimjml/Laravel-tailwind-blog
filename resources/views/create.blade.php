@@ -25,7 +25,7 @@
       @enderror
   </div>
     <div>
-      <label for="title" class="mt-2 block text-gray-700 text-sm font-bold mb-2 sm:mb-4">description :</label>
+      <label for="textarea" class="mt-2 block text-gray-700 text-sm font-bold mb-2 sm:mb-4">description :</label>
       <textarea id="textarea" name="description" class="rounded-sm p-2 border-2 form-input w-full @error('description')  border-red-500 @enderror"></textarea>
       @error('description')
       <p class="text-red-500 text-xs italic mt-4">
@@ -42,6 +42,20 @@
       </p>
       @enderror
     </div>
+    <div class="flex flex-wrap">
+      <label for="hashtag" class="block text-gray-700 text-sm font-bold mb-2 mt-2 sm:mb-4">
+        hashtag:
+      </label>
+  
+      <input id="hashtag" type="text" class="rounded-sm p-2 border-2 form-input w-full @error('hashtag')  border-red-500 @enderror"
+          name="hashtag" value="{{ old('hashtag') }}"  autocomplete="hashtag" autofocus>
+  
+      @error('hashtag')
+      <p class="text-red-500 text-xs italic mt-4">
+          {{ $message }}
+      </p>
+      @enderror
+  </div>
     <div class="mt-4 flex justify-center">
       <button type="submit"
       class="w-[200px]  select-none font-bold  p-3 rounded-lg text-xl  no-underline text-gray-100 bg-gray-700 hover:bg-gray-500 sm:py-4">
