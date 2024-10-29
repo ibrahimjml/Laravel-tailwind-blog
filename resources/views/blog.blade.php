@@ -56,6 +56,7 @@
       <option value="latest" {{$sorts == 'latest' ? 'selected' : ''}}>Latest</option> 
       <option value="oldest" {{$sorts == 'oldest' ? 'selected' : ''}}>Oldest</option>
       <option value="mostliked" {{ $sorts == 'mostliked' ? 'selected' : '' }}>Most Liked</option>
+      <option value="hashtagtrend" {{ $sorts == 'hashtagtrend' ? 'selected' : '' }}>Hashtag Trend</option>
     </select>
   </form>
 </div>
@@ -73,7 +74,7 @@
 @foreach ($posts as $post)
     
 
-<div class="container mx-auto sm:grid grid-cols-2  gap-x-8 py-5 px-5 border-b border-gray-300">
+<div class="container mx-auto max-h-[580px] sm:max-h-[540px] sm:grid grid-cols-2  gap-x-8 py-5 px-5 border-b border-gray-300">
 
   <div class="flex flex-col gap-4">
     <div class=" flex gap-4">
@@ -100,7 +101,7 @@
 </div>
   </div>
     
-      <img class="object-cover shadow-lg rounded-md h-4/6 max-w-3xl" src="/images/{{$post->image_path}}"  alt="">
+      <img class="object-cover shadow-lg rounded-md max-h-[375px] max-w-3xl" src="/images/{{$post->image_path}}"  alt="">
       <div class="flex gap-10 justify-between items-center">
         <div class="flex gap-4">
           <span class="text-xl  font-normal">&#128420;{{$post->likes()->count()}}</span>
@@ -119,25 +120,22 @@
     
   </div>
 
-  <div class="max-h-[460px] break-words" >
-    <h1 class="text-xl md:text-2xl font-bold text-gray-700 mt-8 md:mt-14 ">{{$post->title}}</h1>
-    <div class="py-12 max-h-[300px] overflow-y-auto">
+  <div class=" sm:max-h-[460px] break-words">
+    <h1 class="text-xl md:text-2xl font-bold text-gray-700 mt-8 md:mt-14 ">{{ $post->title }}</h1>
+    <div class="py-5 sm:py-12 max-h-[100px] sm:max-h-[300px] overflow-y-auto">
 
-
-  {!! Str::words($post->description,40) !!}
-
-
-      
+        {!! Str::words(strip_tags($post->description), 90) !!}
     </div>
+
     @if($post->hashtags->isNotEmpty())
-    <span>
+    <span class="mt-6 sm:mt-0">
       @foreach($post->hashtags as $hashtag)
-      <span class="hashtag" >
-        <a href="/hashtag/{{$hashtag->name}}" class="b bg-yellow-200 rounded-lg p-1">#{{ $hashtag->name }}</a></span>
-  @endforeach
+      <span >
+        <a href="{{route('viewhashtag',$hashtag->name)}}" class=" font-medium bg-gray-700 rounded-lg text-white p-1">#{{ $hashtag->name }}</a></span>
+    @endforeach
     </span>
     @endif
-  </div>
+</div>
   </div>
 </div>
 @endforeach

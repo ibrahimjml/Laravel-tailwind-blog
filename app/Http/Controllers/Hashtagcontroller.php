@@ -12,7 +12,7 @@ class Hashtagcontroller extends Controller
     {
       $hashtag = Hashtag::where('name', $name)->firstOrFail();
 
-    $posts = $hashtag->posts()->paginate(5);
+    $posts = $hashtag->posts()->orderBy('created_at','desc')->simplepaginate(5);
       return view('hashtags.show', [
           'posts' => $posts,
           'hashtag' => $hashtag,

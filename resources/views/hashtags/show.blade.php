@@ -17,7 +17,7 @@
   <h1 class=" text-4xl p-36 font-semibold text-center w-54">No Posts Yet</h1>
 
 @else
-<h1 class=" text-4xl  p-5 font-semibold text-center text-gray-500 w-54">Showing recent posts with hashtag <span class="text-black">{{$hashtag->name}}</span></h1>
+<h1 class=" text-4xl  p-5 font-semibold text-center text-gray-500 w-54">Showing recent posts with # <span class="text-black">{{$hashtag->name}}</span></h1>
 @foreach ($posts as $post)
     
 <div class="container mx-auto sm:grid grid-cols-2  gap-x-8 py-5 px-5 border-b border-gray-300">
@@ -66,23 +66,22 @@
     
   </div>
 
-  <div class="max-h-[460px] break-words" >
-    <h1 class="text-xl md:text-2xl font-bold text-gray-700 mt-8 md:mt-14 ">{{$post->title}}</h1>
+  <div class="max-h-[460px] break-words">
+    <h1 class="text-xl md:text-2xl font-bold text-gray-700 mt-8 md:mt-14 ">{{ $post->title }}</h1>
     <div class="py-12 max-h-[300px] overflow-y-auto">
 
-
-  {!! Str::words($post->description,40) !!}
-
-
-      
+        {!! Str::words(strip_tags($post->description), 90) !!}
     </div>
+
+    @if($post->hashtags->isNotEmpty())
     <span>
       @foreach($post->hashtags as $hashtag)
-      <span class="b bg-yellow-200 rounded-lg p-1 text-sm text-slate-500" >
-        #{{ $hashtag->name }}</span>
-  @endforeach
+      <span class="hashtag" >
+        <a href="{{route('viewhashtag',$hashtag->name)}}" class=" font-medium bg-gray-700 rounded-lg text-white p-1">#{{ $hashtag->name }}</a></span>
+    @endforeach
     </span>
-  </div>
+    @endif
+</div>
   </div>
 </div>
 @endforeach

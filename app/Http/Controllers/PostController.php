@@ -25,6 +25,17 @@ class PostController extends Controller
       }elseif ($sortoption == 'mostliked') {
         
         $posts = Post::withCount('likes')->orderBy('likes_count', 'desc')->paginate(5);
+
+    }elseif ($sortoption == 'hashtagtrend') {
+        
+      $hashtags = Hashtag::withCount('posts')->orderby('posts_count','desc');
+      $trendingHashtag = $hashtags->first();
+      if ($trendingHashtag) {
+        $posts = $trendingHashtag->posts()->paginate(5); 
+    } else {
+        $posts = collect(); 
+    }
+      
     }
       $posts->appends(['sort' => $sortoption]);
     
@@ -81,10 +92,7 @@ class PostController extends Controller
         }
     }
 
-    
-    $hashtagString = implode(',', $hashtagNames);
-    
-        return redirect('/blog')->with('success','posted successfuly')->with(['hashtags'=>$hashtagString]);
+        return redirect('/blog')->with('success','posted successfuly');
         }
           //generate unique slug
         private function generateuniqueslug($slug){
@@ -148,7 +156,10 @@ if (!empty($fields['hashtag'])) {
 
 
   $post->hashtags()->sync($hashtagIds);
+}else{
+  $post->hashtags()->detach();
 }
+
 $this->authorize('update',$post);
 $post->save();
 return redirect('/blog')->with('success','Post updated successfully');

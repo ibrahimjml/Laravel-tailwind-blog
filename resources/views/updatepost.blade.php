@@ -37,7 +37,7 @@
       </label>
 
       <input id="hashtag" type="text" class="rounded-sm p-2 border-2 form-input w-full @error('hashtag')  border-red-500 @enderror"
-          name="hashtag" value="{{$hashtags}}" required autocomplete="hashtag" autofocus>
+          name="hashtag" value="{{$hashtags}}"  autocomplete="hashtag" autofocus>
 
       @error('hashtag')
       <p class="text-red-500 text-xs italic mt-4">
