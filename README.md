@@ -9,8 +9,8 @@
 
 ## About Laravel
 # Laravel Blog Application
-![schooldash-dahboard-page](https://i.postimg.cc/Cx90wmWh/Screenshot-2024-10-29-021503.png)
-![schooldash-dahboard-page](https://i.postimg.cc/kGjrzcQd/Screenshot-2024-10-29-021839.png)
+![schooldash-dahboard-page](https://i.postimg.cc/HkJbrnrn/Screenshot-2024-10-29-141042.png)
+![schooldash-dahboard-page](https://i.postimg.cc/6pd5bxSz/Screenshot-2024-10-29-141415.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/RFSV31vQ/Screenshot-2024-10-27-190754.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/MHYXMt4x/Screenshot-2024-10-22-203846.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/pTBL4grH/Screenshot-2024-10-28-152832.png)
@@ -45,7 +45,7 @@ user experience.
 - **Delete Comments/Replies:** Users can delete their own comments and replies.
 
 #### Post Sorting and Searching and pagination
-- **Sort Posts:** User can sort posts by latest, oldest, and most liked.
+- **Sort Posts:** User can sort posts by latest, oldest, most liked, and trending hashtags.
 - **Search Functionality:** implemented scout driver,users can search for posts using keywords.
 - **Pagination:** User can paginate between post pages. 
 
