@@ -9,7 +9,7 @@
 
 ## About Laravel
 # Laravel Blog Application
-![schooldash-dahboard-page]<img src="https://i.postimg.cc/HkJbrnrn/Screenshot-2024-10-29-141042.png" alt="image" width="1012px">
+ <img src="https://i.postimg.cc/HkJbrnrn/Screenshot-2024-10-29-141042.png" alt="image" width="1012px">
 ![schooldash-dahboard-page](https://i.postimg.cc/6pd5bxSz/Screenshot-2024-10-29-141415.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/RFSV31vQ/Screenshot-2024-10-27-190754.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/MHYXMt4x/Screenshot-2024-10-22-203846.png)
