@@ -74,8 +74,7 @@ class PostController extends Controller
           'image_path'=>$newimage,
           'user_id'=>auth()->user()->id
         ]);
-    
-      
+
     $hashtagNames = [];
 
     if ($request->filled('hashtag')) {
@@ -119,7 +118,7 @@ class PostController extends Controller
     }
 public function editpost($slug){
   $post = Post::where('slug',$slug)->firstOrFail();
-  $hashtags = $post->hashtags->pluck('name')->implode(', ');
+  $hashtags = $post->hashtags()->pluck('name')->implode(', ');
   $this->authorize('view',$post);
   return view('updatepost',compact('post','hashtags'));
 }

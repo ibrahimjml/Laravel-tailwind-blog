@@ -51,7 +51,7 @@ class PublicController extends Controller
     $postCount = $user->post()->count();
     $likeCount = $user->post()->withCount('likes')->get()->sum('likes_count');
     $commentCount = $user->post()->withCount('comments')->get()->sum('comments_count');
-    $posts = Post::where('user_id', $user->id)->get();
+    $posts = Post::orderBy('created_at','DESC')->where('user_id', $user->id)->get();
 
     return view('profile', [
        'user' => $user, 

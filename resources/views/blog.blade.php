@@ -26,7 +26,7 @@
   {{-- search bar --}}
   
   <form action="{{route('blog.search')}}" class="w-[200px] sm:w-[350px] relative flex justify-center    translate-x-[12vw]  sm:translate-x-[30vw]  mb-5" method="GET">
-    @csrf
+  
     <input type="search" class="peer block min-h-[auto] w-full rounded border-2 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none text-black placeholder:text-black dautofill:shadow-autofill peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0" placeholder="Search" name="search" id="search" />
     <label for="search" class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[3rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary">
       Search
@@ -51,7 +51,7 @@
   {{-- sort type posts --}}
 <div class="ml-3 ">
   <form  action="/blog" method="GET">
-    @csrf
+  
     <select id="sort" name="sort" class="cursor-pointer bg-gray-700 text-white border border-gray-300 block  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="this.form.submit()">
       <option value="latest" {{$sorts == 'latest' ? 'selected' : ''}}>Latest</option> 
       <option value="oldest" {{$sorts == 'oldest' ? 'selected' : ''}}>Oldest</option>
@@ -74,7 +74,7 @@
 @foreach ($posts as $post)
     
 
-<div class="container mx-auto max-h-[580px] sm:max-h-[540px] sm:grid grid-cols-2  gap-x-8 py-5 px-5 border-b border-gray-300">
+<div class="container mx-auto  max-h-[580px] sm:max-h-[540px] sm:grid grid-cols-2  gap-x-8 py-5 px-5 border-b border-gray-300">
 
   <div class="flex flex-col gap-4">
     <div class=" flex gap-4">
@@ -121,7 +121,7 @@
   </div>
 
   <div class=" sm:max-h-[460px] break-words">
-    <h1 class="text-xl md:text-2xl font-bold text-gray-700 mt-8 md:mt-14 ">{{ $post->title }}</h1>
+    <h1 class=" capitalize text-xl md:text-2xl font-bold text-gray-700 mt-8 md:mt-16 ">{{ $post->title }}</h1>
     <div class="py-5 sm:py-12 max-h-[100px] sm:max-h-[300px] overflow-y-auto">
 
         {!! Str::words(strip_tags($post->description), 90) !!}
