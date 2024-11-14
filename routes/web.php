@@ -22,24 +22,8 @@ use Illuminate\Support\Facades\Route;
 // HOME
 Route::get('/',[PublicController::class,'index']);
 
-// Register
-Route::get('/register',[AuthController::class,'registerpage'])->name('register')->middleware('guest');
-Route::post('/register',[AuthController::class,'register'])->name('register.post')->middleware('guest');
-
-//Login
-Route::get('/login',[AuthController::class,'loginpage'])->name('login')->middleware('guest');
-Route::post('/login',[AuthController::class,'login'])->name('login.post')->middleware('guest');
-
-//Forget password
-Route::get('/forgotpassword',[AuthController::class,'forgot'])->name('forgot.password');
-Route::post('/forgotpassword',[AuthController::class,'forgotpass'])->name('forgot.password.post');
-
-//Reset password
-Route::get('/reset/{token}',[AuthController::class,'reset'])->name('reset.password');
-Route::post('/reset/{token}',[AuthController::class,'reset_pass'])->name('reset.password.post');
-
-// Logout
-Route::get('/logout',[AuthController::class,'logout'])->name('logout')->middleware('auth');
+// auth routes
+require __DIR__."/auth.php";
 
 // Blog Page
 Route::get('/blog',[PostController::class,'blog'])->name('blog')->middleware('auth');
@@ -63,7 +47,9 @@ Route::put('/edit-avatar/{user}/edit',[PublicController::class,'edit']);
 Route::delete('/delete-avatar/{user}',[PublicController::class,'destroyavatar'])->name('delete.avatar');
 
 // Edit Profile Page
-Route::get('/edit-profile/{user:username}',[PublicController::class,'editprofilepage'])->name('editprofile');
+Route::get('/edit-profile/{user:username}',[PublicController::class,'editprofilepage'])
+->middleware('password.confirm')
+->name('editprofile');
 // Add bio 
 Route::put('/addbio/{user}',[PublicController::class,'useraddbio']);
 
@@ -82,13 +68,13 @@ Route::get('/post/edit/{slug}',[PostController::class,'editpost'])->name('edit.p
 Route::put('/post/update/{slug}',[PostController::class,'update'])->name('update.post');
 
 // Like
-Route::post('/post/{post}/like',[PostController::class,'like'])->middleware('auth');
+Route::post('/post/{post}/like',[PostController::class,'like']);
 
 // Search
 Route::get('/search/',[PublicController::class,'search'])->name('blog.search');
 
 // Comment
-Route::post('/comment/{post}',[CommentController::class,'comment'])->middleware('auth');
+Route::post('/comment/{post}',[CommentController::class,'comment']);
 
 // Delete Comment
 Route::delete('/comment/{comment}',[CommentController::class,'deletecomment'])->name('delete.comment');
@@ -97,7 +83,7 @@ Route::delete('/comment/{comment}',[CommentController::class,'deletecomment'])->
 Route::post('/saved-post',[PostController::class,'save']);
 
 // Saved Posts Page
-Route::get('/getsavedposts',[PostController::class,'getsavedposts'])->middleware('auth');
+Route::get('/getsavedposts',[PostController::class,'getsavedposts']);
 
 // admin panel
 Route::controller(AdminController::class)->group(function(){

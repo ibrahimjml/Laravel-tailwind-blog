@@ -21,7 +21,7 @@
   </li>
   <li class="border-b-2 hover:border-b-red-500 text-gray-500 hover:text-black hover:font-semibold transition duration-300 flex justify-between gap-2 mb-2">
     <img src="{{url('setting.png')}}" width="30px" alt="" class="mr-8">
-    <a href="/edit-profile/{{auth()->user()->id}}">edit profile</a>
+    <a href="/edit-profile/{{auth()->user()->username}}">edit profile</a>
 
   </li>
   <li class="border-b-2 hover:border-b-red-500 text-gray-500 hover:text-black hover:font-semibold transition duration-300 flex justify-between gap-8">

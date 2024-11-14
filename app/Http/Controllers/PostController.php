@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Hashtag;
-use App\Models\Like;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
-class PostController extends Controller
+class PostController extends Controller 
 {
+  public function __construct()
+  {
+    $this->middleware(['auth','verified',CheckIfBlocked::class]);
+  }
+
     public function blog(Request $request){
     
       $sortoption = $request->get('sort','latest');

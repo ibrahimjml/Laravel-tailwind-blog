@@ -51,7 +51,11 @@
     <input id="email" type="email"
         class="rounded-sm p-2 border-2 form-input w-full @error('email') border-red-500 @enderror" name="email"
         value="{{ old('email', $user->email) }}" required autocomplete="email">
-
+    @if(auth()->user()->email_verified_at == null)
+    <p class="text-red-500 text-xs italic mt-4">
+      Your email is not verified,please verify your email
+    </p>
+    @endif
     @error('email')
     <p class="text-red-500 text-xs italic mt-4">
         {{ $message }}

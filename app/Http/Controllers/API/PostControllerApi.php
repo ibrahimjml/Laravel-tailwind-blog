@@ -15,7 +15,7 @@ class PostControllerApi extends Controller
 {
     public function __construct()
     {
-      $this->middleware('auth:sanctum')->except('viewpost','blog');
+      $this->middleware('auth:sanctum')->except(['viewpost','blog']);
     }
 
     public function blog(){

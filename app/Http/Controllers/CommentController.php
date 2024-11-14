@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware(['auth','verified',CheckIfBlocked::class]);
+  }
+
     public function comment(Post $post,Request $request){
       $fields = $request->validate([
         'content'=>'required|string|max:255',

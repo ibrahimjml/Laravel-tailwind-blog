@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
@@ -15,6 +16,11 @@ use function Laravel\Prompts\search;
 
 class PublicController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware(['auth','verified',CheckIfBlocked::class]);
+  }
+
   public function index()
   {
     return view('index');
@@ -105,10 +111,15 @@ class PublicController extends Controller
   public function editemail(Request $request, User $user)
   {
     $request->validate([
-      "email" => ["required", "email", "min:5", "max:50", Rule::unique("users", "email")]
+      "email" => ["required", "email", "min:5", "max:50", Rule::unique(User::class)->ignore($request->user()->id)]
     ]);
-    $user->email = strip_tags($request->email);
+
     $this->authorize('update', $user);
+    $user->email = strip_tags($request->email);
+    
+    if ($user->isDirty('email')) {
+      $user->email_verified_at = null;
+  }
     $user->save();
 
     return redirect()->route('profile', $user->username)->with('success', 'Email updated');

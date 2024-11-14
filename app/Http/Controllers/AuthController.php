@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\ForgotPassword;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use App\Mail\ForgotPassword;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -35,6 +38,7 @@ class AuthController extends Controller
     $fields['username'] = htmlspecialchars(strip_tags($fields['username']));
 
     $user = User::create($fields);
+    event(new Registered($user));
     auth()->login($user);
     return redirect('/')->with('success', 'Account created successfully');
   }
@@ -113,7 +117,7 @@ class AuthController extends Controller
       $user = User::where('email', $resetToken->email)->first();
       if (!empty($user)) {
         $fields = $request->validate([
-          "password" => ["required", "alpha_num", "min:8", "max:32", "confirmed"],
+          "password" => ["required","min:8", "max:32", "confirmed"],
         ]);
 
         $user->password = bcrypt($fields['password']);
@@ -133,4 +137,40 @@ class AuthController extends Controller
     auth()->logout();
     return redirect('/')->with('success', 'Logged out ');
   }
+
+  public function index()
+    {
+      return view('auth.confirmpassword');
+    }
+
+    public function confirm(Request $request)
+    {
+      
+        if (! Hash::check($request->password, $request->user()->password)) {
+            return back()->withErrors([
+                'password' => ['The provided password does not match our records.']
+            ]);
+        }
+     
+        $request->session()->passwordConfirmed();
+     
+        return redirect()->intended();
+      }
+
+      public function verify_notice()
+      {
+        return view('auth.verifyemail',['message'=>session('message')]);
+      }
+  
+      public function verify_email(EmailVerificationRequest $request)
+      {
+        $request->fulfill();
+        return redirect('/');
+      }
+      public function verify_notification(Request $request) 
+      {
+        $request->user()->sendEmailVerificationNotification();
+      
+        return back()->with('message', 'Verification link sent!');
+      }
 }
