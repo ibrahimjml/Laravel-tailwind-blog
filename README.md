@@ -31,7 +31,7 @@
 - **Admin Panel:** Admin page management system where admin can manage users block/delete users,manage posts delete/view/edit posts, and make user admin .
 - **Profile Management:** Users can see their posts,number of posts,total likes/comments,and edit profile settings users must confirm their passwords before accessing this page,they can edit bio/name/email/change current password, and delete their account by confirming current password,including changing their profile image,update and delete current one.
 - **Password Management:** Users can change their passwords and reset them if forgotten.
-- **Email Verification:** User must verfied his email berfore making and action.
+- **Email Verification:** User must verfied his email berfore making any action.
 - **Middleware/Policies/Gate:** Implement custom middleware and policies on user/post for more secure.
 
 #### Blog Posts
