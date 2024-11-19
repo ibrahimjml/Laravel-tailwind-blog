@@ -9,8 +9,9 @@
 
 ## About Laravel
 # Laravel Blog Application
+ ![Dashboard Screenshot](public/header-photo.png)
  <img src="https://i.postimg.cc/HkJbrnrn/Screenshot-2024-10-29-141042.png" alt="image" width="1012px">
- 
+  ![Dashboard Screenshot](public/footer-photo.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/6pd5bxSz/Screenshot-2024-10-29-141415.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/RFSV31vQ/Screenshot-2024-10-27-190754.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/MHYXMt4x/Screenshot-2024-10-22-203846.png)
@@ -28,25 +29,26 @@
 #### User Authentication/Authorization and Admin/profile Management
 - **User Registration and Login:** Manually implemented Secure user authentication register/login for full customization and best experience.
 - **Admin Panel:** Admin page management system where admin can manage users block/delete users,manage posts delete/view/edit posts, and make user admin .
-- **Profile Management:** Users can view their profiles including posts,number of posts,total likes/comments,and edit profile settings edit bio ,name ,email, change current password,delete his account by confirming current password,including changing their profile image,update and delete current one.
+- **Profile Management:** Users can see their posts,number of posts,total likes/comments,and edit profile settings users must confirm their passwords before accessing this page,they can edit bio/name/email/change current password, and delete their account by confirming current password,including changing their profile image,update and delete current one.
 - **Password Management:** Users can change their passwords and reset them if forgotten.
+- **Email Verification:** User must verfied his email berfore making any action.
 - **Middleware/Policies/Gate:** Implement custom middleware and policies on user/post for more secure.
 
 #### Blog Posts
 - **Create, Read, Update, and Delete (CRUD) Operations:** Users can create new blog post, edit existing one, and delete post they have authored.
-- **Hashtags:** Users can create there own hashtags and filter posts by exact hashtag and sort hompage with trending hashtags with pagination.
+- **Hashtags:** Users can create there own hashtags and filter posts by hashtag and sort hompage with trending hashtags including pagination.
 - **Save Posts:** Implement Save/Unsave button using fetchApi, user can access to saved page, with the ability to view and remove saved posts.
 - **Slugs:** Implemented a unique slug for each post to create descriptive, enhancing search engine visibility and improving user experience.
 - **Like:** Implement Like/Unkike button using fetchApi with Like animation falling hearts for better user experience. 
 
 #### Comments and Replies
 - **Comment on Posts:** Users can add comments to blog posts.
-- **Reply to Comments:** Users can reply to comments, creating nested comment threads.
+- **Reply to Comments:** Users can replies to comments, creating nested comment system with reply on reply, they can see total replies on a comment with ability to hide and show those replies.
 - **Delete Comments/Replies:** Users can delete their own comments and replies.
 
 #### Post Sorting and Searching and pagination
 - **Sort Posts:** User can sort posts by latest, oldest, most liked, and trending hashtags.
-- **Search Functionality:** implemented scout driver,users can search for posts using keywords.
+- **Search Functionality:** implemented scout driver,users can search for a certain post including pagination.
 - **Pagination:** User can paginate between post pages. 
 
 #### 🚀 All Pages Styled With TailwindCss ,more experience ,more responsive.
