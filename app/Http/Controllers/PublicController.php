@@ -44,11 +44,12 @@ class PublicController extends Controller
 
   public function viewpost($slug)
   {
-    $post = Post::where('slug', $slug)->first();
-    $comments = Comment::orderBy('created_at', 'desc')->get();
+    $post = Post::where('slug', $slug)
+    ->with(['user','comments.user','comments.replies.user'])->first();
+
     return view('post', [
        'post' => $post,
-       'comments' => $comments
+       'comments' => $post->comments
       ]);
   }
 

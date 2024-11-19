@@ -18,31 +18,43 @@ class PostController extends Controller
     public function blog(Request $request){
     
       $sortoption = $request->get('sort','latest');
-      if($sortoption == 'latest'){
-        $posts = Post::orderBy('created_at','desc')->paginate(5);
-        
-      }
-      elseif($sortoption == 'oldest'){
-        $posts = Post::orderBy('created_at','asc')->paginate(5);
-      }elseif ($sortoption == 'mostliked') {
-        
-        $posts = Post::withCount('likes')->orderBy('likes_count', 'desc')->paginate(5);
+      $posts = Post::query()
+      ->with(['user', 'hashtags'])
+      ->withCount(['likes', 'comments']);
+      
+      switch($sortoption){
+        case 'latest';
+        $posts->orderBy('created_at','DESC');
+        break;
 
-    }elseif ($sortoption == 'hashtagtrend') {
-        
-      $hashtags = Hashtag::withCount('posts')->orderby('posts_count','desc');
-      $trendingHashtag = $hashtags->first();
-      if ($trendingHashtag) {
-        $posts = $trendingHashtag->posts()->paginate(5); 
-    } else {
-        $posts = collect(); 
-    }
-      
-    }
-      $posts->appends(['sort' => $sortoption]);
-    
-      return view('blog',['posts'=>$posts,'sorts'=>$sortoption]);
-      
+        case 'oldest';
+        $posts->orderBy('created_at','ASC');
+        break;
+
+        case 'mostliked':
+          $posts->withCount('likes')->orderBy('likes_count', 'desc');
+          break;
+ 
+          case 'hashtagtrend':
+            $trendingHashtag = Hashtag::withCount('posts')->orderBy('posts_count', 'desc')->first();
+            if ($trendingHashtag) {
+                $posts = $trendingHashtag->posts()->with(['user', 'comments']);
+            } else {
+                $posts = Post::whereRaw('0 = 1');
+            }
+            break;
+
+            default:
+            $posts->orderBy('created_at', 'desc');
+            break;
+          }
+            $posts = $posts->paginate(5)->appends(['sort' => $sortoption]);
+
+          
+            return view('blog', [
+                'posts' => $posts,
+                'sorts' => $sortoption,
+            ]);
       
     }
 
