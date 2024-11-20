@@ -29,27 +29,39 @@ class PublicController extends Controller
   public function search(Request $request)
   {
     $fields = $request->validate([
-      'search' => 'required|min:2|max:120'
+      'search' => 'required|string|max:255'
     ]);
-    $posts = Post::search($fields['search'])->paginate(5);
+    $postsid = Post::search($fields['search'])->get()->pluck('id');
+     
+    $posts = Post::whereIn('id',$postsid)
+    ->withCount(['likes', 'comments'])
+    ->with(['user','hashtags'])
+    ->latest()
+    ->paginate(5)
+    ->withQuerystring();
 
-    $noResults = $posts->isEmpty();
+
 
     return view('blog', [
       'posts' => $posts,
-      'noResults' => $noResults,
-      'sorts' => 'latest'
+      'sorts' => 'latest',
+      'searchquery'=>$fields['search']
     ]);
   }
 
   public function viewpost($slug)
   {
-    $post = Post::where('slug', $slug)
-    ->with(['user','comments.user','comments.replies.user'])->first();
+    $post = Post::with([
+      'comments' => function ($query) {
+          $query->orderBy('created_at', 'desc')
+              ->with(['user','replies'=>function($query){
+                   $query->with(['replies']);
+              } ,'replies.user', 'replies.parent.user']); 
+      }
+  ])->where('slug', $slug)->first();
 
     return view('post', [
-       'post' => $post,
-       'comments' => $post->comments
+       'post' => $post
       ]);
   }
 

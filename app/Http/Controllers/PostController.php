@@ -36,13 +36,21 @@ class PostController extends Controller
           break;
  
           case 'hashtagtrend':
-            $trendingHashtag = Hashtag::withCount('posts')->orderBy('posts_count', 'desc')->first();
-            if ($trendingHashtag) {
-                $posts = $trendingHashtag->posts()->with(['user', 'comments']);
-            } else {
-                $posts = Post::whereRaw('0 = 1');
-            }
-            break;
+
+    $trendingHashtag = Hashtag::withCount('posts')
+    ->orderBy('posts_count', 'desc')
+    ->first();
+
+if ($trendingHashtag) {
+    
+    $posts->whereHas('hashtags', function ($query) use ($trendingHashtag) {
+        $query->where('hashtags.id', $trendingHashtag->id);
+    });
+} else {
+  
+    $posts->whereRaw('0 = 1');
+}
+break;
 
             default:
             $posts->orderBy('created_at', 'desc');
@@ -211,7 +219,10 @@ return redirect('/blog')->with('success','Post updated successfully');
     public function getsavedposts(){
     
       $getposts =session('saved-to',[]);
-      $posts = Post::whereIn('id',$getposts)->paginate(5);
+      $posts = Post::whereIn('id',$getposts)
+      ->withCount(['likes','comments'])
+      ->with(['user','hashtags'])
+      ->paginate(5);
       return view('getsavedposts',['posts'=>$posts]);
     }
 

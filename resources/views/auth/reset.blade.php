@@ -9,10 +9,9 @@
               </header>
 
               <form class="w-full px-6 space-y-6 sm:px-10 sm:space-y-4  border-2  h-80" method="POST"
-                  action="{{ route('reset.password.post', ['token' => $token]) }}">
+                  action="{{ route('reset.password.post', $token) }}">
                   @csrf
-                   
-                  <input type="hidden" name="token" value="{{ $token }}">
+                  @method('POST') 
                   <div class="flex flex-wrap">
                       <label for="password" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
                         Password:

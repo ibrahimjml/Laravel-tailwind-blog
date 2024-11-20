@@ -75,8 +75,8 @@ class AuthController extends Controller
     if ($resetToken) {
       $user = User::where('email', $resetToken->email)->first();
       if (!empty($user)) {
-        $data['user'] = $user;
-        return view('auth.reset', $data, ['token' => $token]);
+      
+        return view('auth.reset',['token' => $token]);
       }
     } else {
       abort(404);
