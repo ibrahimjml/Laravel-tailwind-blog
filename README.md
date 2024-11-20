@@ -40,6 +40,7 @@
 - **Save Posts:** Implement Save/Unsave button using fetchApi, user can access to saved page, with the ability to view and remove saved posts.
 - **Slugs:** Implemented a unique slug for each post to create descriptive, enhancing search engine visibility and improving user experience.
 - **Like:** Implement Like/Unkike button using fetchApi with Like animation falling hearts for better user experience. 
+- **OPtimization:** Used Eager loading for optimized queries and prevent N+1 queries.
 
 #### Comments and Replies
 - **Comment on Posts:** Users can add comments to blog posts.
