@@ -46,4 +46,13 @@ class Post extends Model
   public function comments(){
     return $this->hasMany(Comment::class)->orderBy('created_at','DESC');
   }
+
+  public function scopeSearch($query,$search){
+    if(isset($search['search'])){
+      $query->where(function ($q) use ($search) {
+        $q->where('title', 'like', '%' . $search['search'] . '%')
+              ->orWhere('description', 'like', '%' . $search['search'] . '%');
+    });
+    }
+  }
 }

@@ -86,9 +86,13 @@ Route::post('/saved-post',[PostController::class,'save']);
 Route::get('/getsavedposts',[PostController::class,'getsavedposts']);
 
 // admin panel
-Route::controller(AdminController::class)->group(function(){
+Route::controller(AdminController::class)
+->middleware('can:makeAdminActions,user')
+->group(function(){
 
-  Route::get('/admin-panel','admin')->name("admin-page")->middleware('can:makeAdminActions,user');
+  Route::get('/admin-panel','admin')->name("admin-page");
+  Route::get('admin/users','users')->name('admin.users');
+  Route::get('admin/posts','posts')->name('admin.posts');
   Route::delete('admin/delete/{user}','destroy');
   Route::post('admin/block/{user}','block');
   Route::post('admin/unblock/{user}', 'unblock');

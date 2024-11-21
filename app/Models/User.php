@@ -39,21 +39,21 @@ class User extends Authenticatable implements MustVerifyEmail
   public function comments(){
     return $this->hasMany(Comment::class);
   }
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+  
+public function scopeSearch($query,$search)
+{
+  if(isset($search['search'])){
+    $query->where('name','like','%'.$search['search'].'%')
+          ->orWhere('email','like','%'.$search['search'].'%');
+  }
+}
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];

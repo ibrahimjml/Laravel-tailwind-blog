@@ -45,7 +45,7 @@
             Saved</a></li>
             @if(auth()->user()->is_admin)
             <li class="text-black hover:scale-125 transition duration-300 text-lg  pt-2 lemon">
-              <a href="/admin-panel" >
+              <a href="{{route('admin-page')}}" >
                 Admin Panel</a></li>
                 @endif
         @endif
