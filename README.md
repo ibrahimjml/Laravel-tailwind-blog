@@ -19,8 +19,8 @@
 ![schooldash-dahboard-page](https://i.postimg.cc/jdLLd6cV/Screenshot-2024-10-22-212650.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/k55ThmjD/Screenshot-2024-10-29-024209.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/W15nZy2V/Screenshot-2024-10-29-024842.png)
-![schooldash-dahboard-page](https://i.postimg.cc/DzLhgLxX/Screenshot-2024-11-21-194248.png)
-![schooldash-dahboard-page](https://i.postimg.cc/C569Yxv0/Screenshot-2024-11-21-195503.png)
+![schooldash-dahboard-page](https://i.postimg.cc/hjkRPT2z/Screenshot-2024-11-22-120610.png)
+![schooldash-dahboard-page](https://i.postimg.cc/gj3Fwj7M/Screenshot-2024-11-22-120504.png)
 
 
 
@@ -28,7 +28,7 @@
 
 #### User Authentication/Authorization and Admin/profile Management
 - **User Registration and Login:** Manually implemented Secure user authentication register/login for full customization and best experience.
-- **Admin Panel:** Admin page management system where admin can manage users block/delete users,manage posts delete/view/edit posts, and make user admin .
+- **Admin Panel:** Admin page management system with filtering and pagination where admin can manage users block/delete users,manage posts delete/view/edit posts, and change user role .
 - **Profile Management:** Users can see their posts,number of posts,total likes/comments,and edit profile settings users must confirm their passwords before accessing this page,they can edit bio/name/email/change current password, and delete their account by confirming current password,including changing their profile image,update and delete current one.
 - **Password Management:** Users can change their passwords and reset them if forgotten.
 - **Email Verification:** User must verfied his email berfore making any action.
