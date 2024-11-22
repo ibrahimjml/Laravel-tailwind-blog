@@ -15,12 +15,12 @@ class Hashtagcontroller extends Controller
     $this->middleware(['auth','verified',CheckIfBlocked::class]);
   }
 
-    public function viewhashtag($name):View
+    public function viewhashtag(Hashtag $hashtag):View
     {
-      $hashtag = Hashtag::where('name', $name)->firstOrFail();
+      $hashtag = Hashtag::where('name', $hashtag->name)->firstOrFail();
 
     $posts = $hashtag->posts()
-    ->with(['user','hashtags'])
+    ->with(['user:id,username,avatar','hashtags:id,name'])
     ->withCount(['comments','likes'])
     ->orderBy('created_at','desc')
     ->simplepaginate(5);

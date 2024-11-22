@@ -21,5 +21,3 @@
 <script src="{{asset('js/sidebar.js')}}" defer></script>
 
 
-</body>
-</html>

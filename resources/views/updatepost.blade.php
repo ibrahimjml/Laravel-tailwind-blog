@@ -1,4 +1,4 @@
-<x-header-blog/>
+<x-header-blog>
 <div class="container mx-auto pt-[40px]">
   <h1 class=" text-3xl font-bold text-center py-5 capitalize">Edit Post</h1>
 </div>
@@ -55,3 +55,5 @@
     </div>
   </form>
 </div>
+<x-footer/>
+</x-header-blog>

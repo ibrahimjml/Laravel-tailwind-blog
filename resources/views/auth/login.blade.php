@@ -1,4 +1,4 @@
-<x-header-blog/>
+<x-header-blog>
   @if(session()->has('error'))
   <div id="parag2"  class="fixed bg-red-500 p-[10px] text-center   transform translate-x-[30vw] sm:translate-x-[38vw] translate-y-[60vh] sm:translate-y-[72vh] z-20 rounded-lg">
   <p  class="text-center  font-bold text-2xl text-white">{{session('error')}}</p>
@@ -82,3 +82,4 @@
 </main>
 
 <x-footer/>
+</x-header-blog>

@@ -31,7 +31,7 @@ Route::get('/blog',[PostController::class,'blog'])->name('blog')->middleware('au
 Route::get('/post/{slug}',[PublicController::class,'viewpost'])->name('blog')->middleware('auth');
 
 //hashtag page
-Route::get('/hashtag/{name}',[Hashtagcontroller::class,'viewhashtag'])->name('viewhashtag');
+Route::get('/hashtag/{hashtag:name}',[Hashtagcontroller::class,'viewhashtag'])->name('viewhashtag');
 
 // Create Post
 Route::get('/create',[PostController::class,'createpage'])->name('create')->middleware('auth');

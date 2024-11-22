@@ -7,11 +7,10 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="{{url('style.css')}}">
-  @vite('resources/css/app.css')
-  @vite(['resources/js/app.js'])
+  @vite(['resources/css/app.css','resources/js/app.js'])
   <title>home</title>
 </head>
-<body id="body" class="min-h-screen flex  flex-col m-0 ">
+<body  class="min-h-screen flex  flex-col m-0 ">
   <nav class="w-screen px-6 py-2 bg-zinc-100  border-b-2">
     <div class="flex justify-between items-center ">
       <div class=" text-2xl font-bold">
@@ -20,6 +19,7 @@
   
       <div class="md:flex md:items-center  space-x-6 hidden">
         <ul class="md:flex md:items-center space-x-6">
+        
           {{-- Hover Menu --}}
           @auth
         <li class="text-black text-lg pt-2  relative" id="dropdown">
@@ -73,5 +73,8 @@
      @include('partials.burger-menu')
     </div>
   </nav>
+{{$slot}}
 
+</body>
+</html>
 

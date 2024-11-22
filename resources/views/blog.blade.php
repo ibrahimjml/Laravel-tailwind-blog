@@ -1,4 +1,4 @@
-<x-header-blog/>
+<x-header-blog>
 @if(session()->has('success'))
   <div id="parag3" class="fixed  bg-green-500 p-[10px] text-center top-[100px] left-[150px] sm:left-[40%] transform translate-y-[30px] sm:transform sm:translate-y-0 z-20">
   <p  class="text-center font-bold text-2xl text-white">{{session('success')}}</p>
@@ -10,7 +10,7 @@
   </div>
   @endif
 <div class="container mx-auto pt-[40px]">
-  <h1 class=" text-3xl font-bold text-center pb-5">POSTS</h1>
+  <h1 class=" text-3xl font-bold  text-center pb-5">POSTS</h1>
 </div>
 
 <div class="flex flex-row-reverse justify-center">
@@ -27,7 +27,7 @@
   
   <form action="{{route('blog.search')}}" class="w-[200px] sm:w-[350px] relative flex justify-center    translate-x-[12vw]  sm:translate-x-[30vw]  mb-5" method="GET">
   
-    <input type="search" value="{{old('search',$searchquery ?? '')}}" class="peer block min-h-[auto] w-full rounded border-2 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none text-black placeholder:text-black dautofill:shadow-autofill peer-focus:text-primary " placeholder="Search" name="search" id="search" />
+    <input type="search" value="{{old('search',$searchquery ?? '')}}" class="peer block min-h-[auto] w-full rounded border-2 bg-transparent  px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none text-black placeholder:text-gray-300 dautofill:shadow-autofill peer-focus:text-primary " placeholder="Search" name="search" id="search" />
 
   <button class="relative z-[2] -ms-0.5 flex items-center rounded-e bg-gray-500 px-5  text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"  type="submit"  id="button-addon1"  >
     <span class="[&>svg]:h-5 [&>svg]:w-5">
@@ -60,7 +60,7 @@
 </div>
   
 </div>
-<hr>
+<hr class="dark: mix-blend-color-dodge">
 
 {{-- posts --}}
 
@@ -81,3 +81,4 @@
 </div>
 
 <x-footer/>
+</x-header-blog>

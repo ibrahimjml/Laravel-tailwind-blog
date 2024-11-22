@@ -1,4 +1,4 @@
-<x-header-blog/>
+<x-header-blog>
 @if(session()->has('error'))
 <div id="parag2"  class="fixed bg-red-500 p-[10px] text-center   transform translate-x-[30vw] sm:translate-x-[38vw] translate-y-[60vh] sm:translate-y-[72vh] z-20 rounded-lg">
 <p  class="text-center  font-bold text-2xl text-white">{{session('error')}}</p>
@@ -164,7 +164,7 @@
 </div>
 {{-- delete account menu --}}
 @include('partials.confirmation-delete-menu')
-<x-footer/>
+
 
 <script>
   const showmenu = document.getElementById('show-menu');
@@ -181,3 +181,5 @@
     }
   })
 </script>
+<x-footer/>
+</x-header-blog>

@@ -10,7 +10,7 @@
   </a>
     @else
     <a href='/user/{{$post->user->id}}'>
-  <img src="storage/avatars/{{$post->user->avatar}}"  class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
+  <img src="/storage/avatars/{{$post->user->avatar}}"  class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
     </a>
  @endif
   
@@ -52,10 +52,10 @@
     </div>
 
     @if($post->hashtags->isNotEmpty())
-    <span class="mt-6 sm:mt-0">
+    <span class="mt-6 sm:mt-0 flex gap-2">
       @foreach($post->hashtags as $hashtag)
       <span >
-        <a href="{{route('viewhashtag',$hashtag->name)}}" class=" font-medium bg-gray-700 rounded-lg text-white p-1">#{{ $hashtag->name }}</a></span>
+        <a href="{{route('viewhashtag',$hashtag->name)}}" class=" font-medium bg-gray-700 rounded-lg text-white p-1"># {{ $hashtag->name }}</a></span>
     @endforeach
     </span>
     @endif

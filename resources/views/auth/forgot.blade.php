@@ -1,4 +1,4 @@
-<x-header-blog/>
+<x-header-blog>
 <main class="sm:container mx-auto  max-w-fit mt-5 mb-20 sm:max-w-lg sm:mt-10">
   @if(session()->has('error'))
   <div id="parag2"  class="w-30 bg-red-500 p-[10px] text-center rounded-lg">
@@ -56,3 +56,4 @@
   </div>
 </main>
 <x-footer/>
+</x-header-blog>

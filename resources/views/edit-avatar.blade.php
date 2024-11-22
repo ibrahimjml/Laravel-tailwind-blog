@@ -1,4 +1,4 @@
-<x-header-blog/>
+<x-header-blog>
 <div class="container mx-auto pt-[40px]">
   <h1 class=" text-3xl font-bold text-center py-5 capitalize">edit avatar</h1>
 </div>
@@ -53,3 +53,4 @@
 </div>
 
 <x-footer/>
+</x-header-blog>

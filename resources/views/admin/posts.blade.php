@@ -1,4 +1,4 @@
-<x-header-blog/>
+<x-header-blog>
 @if (session()->has("success"))
 <p class="text-green-600 text-2xl font-semibold ">{{session('success')}}</p>
 @endif
@@ -100,3 +100,4 @@
 </section>
 </main>
 <x-footer/>
+</x-header-blog>

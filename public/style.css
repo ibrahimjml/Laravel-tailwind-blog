@@ -30,7 +30,7 @@ html,body{
 
 .lemon:not(:first-child)::before{
 content: " | ";
-margin-inline: 0.5rem;
+margin-right: 0.5rem;
 }
 #hiddenul2 {
  display: block;

@@ -1,4 +1,4 @@
-<x-header-blog/>
+<x-header-blog>
 
 
 <div class="container mx-auto pt-[40px]">
@@ -15,8 +15,8 @@
         title:
       </label>
   
-      <input id="title" type="text" class="rounded-sm p-2 border-2 form-input w-full @error('title')  border-red-500 @enderror"
-          name="title" value="{{ old('title') }}" required autocomplete="title" autofocus>
+      <input id="title" type="text" class="rounded-sm p-2 border-2 form-input w-full placeholder:text-gray-300 @error('title')  border-red-500 @enderror"
+          name="title" value="{{ old('title') }}" required autocomplete="title" autofocus placeholder="type title..">
   
       @error('title')
       <p class="text-red-500 text-xs italic mt-4">
@@ -26,7 +26,7 @@
   </div>
     <div>
       <label for="textarea" class="mt-2 block text-gray-700 text-sm font-bold mb-2 sm:mb-4">description :</label>
-      <textarea id="textarea" name="description" class="rounded-sm p-2 border-2 form-input w-full @error('description')  border-red-500 @enderror"></textarea>
+      <textarea id="textarea" name="description" placeholder="type your description..." class="rounded-sm p-2 border-2 placeholder:text-gray-300 form-input w-full @error('description')  border-red-500 @enderror"></textarea>
       @error('description')
       <p class="text-red-500 text-xs italic mt-4">
           {{ $message }}
@@ -47,8 +47,8 @@
         hashtag:
       </label>
   
-      <input id="hashtag" type="text" class="rounded-sm p-2 border-2 form-input w-full @error('hashtag')  border-red-500 @enderror"
-          name="hashtag" value="{{ old('hashtag') }}"  autocomplete="hashtag" autofocus>
+      <input id="hashtag" type="text" class="rounded-sm p-2 border-2 form-input w-full placeholder:text-gray-300 @error('hashtag')  border-red-500 @enderror"
+          name="hashtag" value="{{ old('hashtag') }}"  autocomplete="hashtag" autofocus placeholder="[laravel,php] with comma separated">
   
       @error('hashtag')
       <p class="text-red-500 text-xs italic mt-4">
@@ -64,3 +64,5 @@
     </div>
   </form>
 </div>
+<x-footer/>
+</x-header-blog>

@@ -1,8 +1,8 @@
-<x-header-blog/>
+<x-header-blog>
   <main class="sm:container mx-auto  max-w-fit mt-5 mb-20 sm:max-w-lg sm:mt-10">
     <div class="flex">
         <div class="w-full">
-            <section class="flex  flex-col break-words bg-white sm:border-1 sm:rounded-md sm:shadow-sm sm:shadow-lg">
+            <section class="flex  flex-col break-words bg-white sm:border-1 sm:rounded-md sm:shadow-sm ">
 
                 <header class="font-bold text-center bg-gray-200 text-gray-700 py-5 px-6 sm:py-6 sm:px-8 sm:rounded-t-md">
                   Register
@@ -133,3 +133,4 @@
     </div>
 </main>
 <x-footer/>
+</x-header-blog>

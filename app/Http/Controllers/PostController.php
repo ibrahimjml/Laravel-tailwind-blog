@@ -19,16 +19,16 @@ class PostController extends Controller
     
       $sortoption = $request->get('sort','latest');
       $posts = Post::query()
-      ->with(['user', 'hashtags'])
+      ->with(['user:id,username,avatar', 'hashtags:id,name'])
       ->withCount(['likes', 'comments']);
       
       switch($sortoption){
         case 'latest';
-        $posts->orderBy('created_at','DESC');
+        $posts->latest();
         break;
 
         case 'oldest';
-        $posts->orderBy('created_at','ASC');
+        $posts->oldest();
         break;
 
         case 'mostliked':
@@ -53,7 +53,7 @@ if ($trendingHashtag) {
 break;
 
             default:
-            $posts->orderBy('created_at', 'desc');
+            $posts->latest();
             break;
           }
             $posts = $posts->paginate(5)->appends(['sort' => $sortoption]);
@@ -171,7 +171,7 @@ if (!empty($fields['hashtag'])) {
   $hashtagIds = [];
   
   foreach ($hashtagNames as $name) {
-      $hashtag = Hashtag::firstOrCreate(['name' => strip_tags($name)]);
+      $hashtag = Hashtag::firstOrCreate(['name' => strip_tags(trim($name))]);
       $hashtagIds[] = $hashtag->id;
   }
 

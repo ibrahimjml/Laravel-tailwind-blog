@@ -1,4 +1,4 @@
-<x-header-blog/>
+<x-header-blog>
 
 @if($posts->count() == 0)
 
@@ -13,3 +13,4 @@
   {!! $posts->links() !!}
 </div>
 <x-footer/>
+</x-header-blog>
