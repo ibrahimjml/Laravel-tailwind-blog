@@ -49,32 +49,32 @@
     <table  class="w-full border-collapse ">
     
       <tr class="bg-gray-600">
-        <th class="text-white border border-black p-2">ID</th>
-        <th class="text-white border border-black p-2">Username</th>
-        <th class="text-white border border-black p-2">Image</th>
-        <th class="text-white border border-black p-2">Title</th>
-        <th class="text-white border border-black p-2">Body</th>
-        <th class="text-white border border-black p-2">Hashtags</th>
-        <th class="text-white border border-black p-2">Likes</th>
-        <th class="text-white border border-black p-2">Comments</th>
-        <th class="text-white border border-black p-2">CreatedAt</th>
-        <th colspan="2" class="text-white border border-black p-2">Actions</th>
+        <th class="text-white p-2">ID</th>
+        <th class="text-white p-2">Username</th>
+        <th class="text-white p-2">Image</th>
+        <th class="text-white p-2">Title</th>
+        <th class="text-white p-2">Body</th>
+        <th class="text-white p-2">Hashtags</th>
+        <th class="text-white p-2">Likes</th>
+        <th class="text-white p-2">Comments</th>
+        <th class="text-white p-2">CreatedAt</th>
+        <th colspan="2" class="text-white  p-2">Actions</th>
 
       </tr>
       @forelse ($posts as $post)
-      <tr class="text-center">
-        <td class=" border border-black bg-white text-black p-2">{{$post->id}}</td>
-        <td class="border border-black bg-white text-black p-2">{{$post->user->name}}</td>
-        <td class="border border-black bg-white text-black  p-2">
+      <tr class="text-center border border-b-gray-300 last:border-none">
+        <td class="p-2">{{$post->id}}</td>
+        <td class="p-2">{{$post->user->name}}</td>
+        <td class="p-2">
           <img class="object-contain inline-block" src="/images/{{$post->image_path}}" width="40px" height="40px"  alt="{{$post->title}}">
         </td>
-        <td class="border border-black bg-white text-black p-2">{{Str::limit($post->slug,20)}}</td>
-        <td class="border border-black bg-white text-black p-2">  {!! Str::limit(strip_tags($post->description), 40) !!}</td>
-        <td class="border border-black bg-white text-black p-2">{{$post->hashtags->pluck('name')->implode(', ')}}</td>
-        <td class="border border-black bg-white text-black p-2">{{$post->likes_count}}</td>
-        <td class="border border-black bg-white text-black p-2">{{$post->comments_count}}</td>
-        <td class="border border-black bg-white text-black p-2">{{$post->created_at->diffForHumans()}}</td>
-        <td  class="border border-black bg-white text-white p-2">
+        <td class="p-2">{{Str::limit($post->slug,20)}}</td>
+        <td class="p-2">  {!! Str::limit(strip_tags($post->description), 40) !!}</td>
+        <td class="p-2">{{$post->hashtags->pluck('name')->implode(', ')}}</td>
+        <td class="p-2">{{$post->likes_count}}</td>
+        <td class="p-2">{{$post->comments_count}}</td>
+        <td class="p-2">{{$post->created_at->diffForHumans()}}</td>
+        <td  class=" text-white p-2">
           <div class="flex gap-2">
             @can('delete', $post)
             <form action='/post/{{$post->slug}}' method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">

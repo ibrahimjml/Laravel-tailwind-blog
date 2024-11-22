@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Hashtagcontroller;
 use App\Http\Controllers\PostController;
@@ -93,7 +92,8 @@ Route::controller(AdminController::class)
   Route::get('/admin-panel','admin')->name("admin-page");
   Route::get('admin/users','users')->name('admin.users');
   Route::get('admin/posts','posts')->name('admin.posts');
-  Route::delete('admin/delete/{user}','destroy');
-  Route::post('admin/block/{user}','block');
-  Route::post('admin/unblock/{user}', 'unblock');
+  Route::put('admin/role-update/{user}','role')->name('role.update');
+  Route::delete('admin/delete/{user}','destroy')->name('delete.user');
+  Route::post('admin/block/{user}','block')->name('block.user');
+  Route::post('admin/unblock/{user}', 'unblock')->name('unblock.user');
 });

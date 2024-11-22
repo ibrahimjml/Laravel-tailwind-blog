@@ -48,22 +48,23 @@
   <table  class="w-full border-collapse ">
     <!-- User Table Headers -->
     <tr class="bg-gray-600">
-      <th class="text-white border border-black p-2">ID</th>
-      <th class="text-white border border-black p-2">Avatar</th>
-      <th class="text-white border border-black p-2 w-1/4">User</th>
-      <th class="text-white border border-black p-2">CreatedAt</th>
-      <th class="text-white border border-black p-2">Verified</th>
-      <th class="text-white border border-black p-2">Phone</th>
-      <th class="text-white border border-black p-2">Age</th>
-      <th class="text-white border border-black p-2">Blocked</th>
-      <th colspan="2" class="text-white border border-black p-2">Actions</th>
+      <th class="text-white p-2">ID</th>
+      <th class="text-white p-2">Avatar</th>
+      <th class="text-white p-2 w-1/4 text-left">User</th>
+      <th class="text-white p-2 ">Role</th>
+      <th class="text-white p-2">CreatedAt</th>
+      <th class="text-white p-2">Verified</th>
+      <th class="text-white p-2">Phone</th>
+      <th class="text-white p-2">Age</th>
+      <th class="text-white p-2">Blocked</th>
+      <th colspan="2" class="text-white p-2">Actions</th>
 
     </tr>
-    @foreach ($users as $user)
-    @if($user->is_admin == false)
-    <tr class="text-center">
-      <td class="border border-black bg-white text-black p-2">{{$user->id}}</td>
-      <td class="border border-black bg-white text-black p-2">
+    @forelse ($users as $user)
+
+    <tr class="text-center border border-b-gray-300 last:border-none">
+      <td class=" p-2">{{$user->id}}</td>
+      <td class=" p-2">
         <div class="inline-block">
           @if($user->avatar !== "default.jpg")
           <img src="{{Storage::url($user->avatar)}}" class="w-[40px] h-[40px] overflow-hidden flex  justify-center items-center  shrink-0 grow-0 rounded-full">
@@ -72,14 +73,25 @@
           @endif
         </div>
       </td>
-      <td class="border border-black bg-white text-black p-2 text-left">
+      <td class="p-2 text-left">
         <div class="flex flex-col gap-2">
          <p>{{$user->name}} <span class="text-blue-400">@ {{$user->username}}</span> </p>
          <p>{{$user->email}}</p>
         </div>
       </td>
-      <td class="border border-black bg-white text-black p-2">{{$user->created_at->diffForHumans()}}</td>
-      <td class="border border-black bg-white text-black p-2">
+      <td class="p-2">
+        <form  action="{{route('role.update',$user)}}" method="POST">
+         @csrf
+         @method('PUT')
+          <select  name="role" class="cursor-pointer bg-gray-400 text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="this.form.submit()">
+            <option value="user"{{!$user->is_admin ? 'selected':''}} >User</option> 
+            <option value="admin" {{$user->is_admin ? 'selected' :''}}>Admin</option>
+        
+          </select>
+        </form>
+      </td>
+      <td class=" p-2">{{$user->created_at->diffForHumans()}}</td>
+      <td class=" p-2">
         <div class="flex justify-center">
           @if($user->email_verified_at)
           <img src="/true.png" alt="">
@@ -88,9 +100,9 @@
           @endif
       </div>
       </td>
-      <td class="border border-black bg-white text-black p-2">{{$user->phone}}</td>
-      <td class="border border-black bg-white text-black p-2">{{$user->age}}</td>
-      <td class="border border-black bg-white  p-2 text-center">
+      <td class=" p-2">{{$user->phone}}</td>
+      <td class=" p-2">{{$user->age}}</td>
+      <td class=" bg-white  p-2 text-center">
       <div class="flex justify-center">
           @if($user->is_blocked)
           <img src="/true.png" alt="">
@@ -99,11 +111,11 @@
           @endif
       </div>
       </td>
-      <td colspan="2" class="border border-black bg-white text-white p-2">
+      <td colspan="2" class=" bg-white text-white p-2">
       <div class="flex justify-center gap-2">
         <div>
-            @can('deleteuser', $user)
-            <form action="{{ url('/admin/delete/' . $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
+            @can('modify', $user)
+            <form action="{{ route('delete.user', $user) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
               @csrf
               @method('DELETE')
               <button type="submit" class="bg-red-500 rounded-lg p-2 hover:bg-red-400 ">Delete</button>
@@ -114,15 +126,15 @@
         
         <div>
             @if($user->is_blocked)
-            @can('block', $user)
-            <form action="{{ url('/admin/unblock/' . $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to block this user?');">
+            @can('modify', $user)
+            <form action="{{ route('unblock.user', $user) }}" method="POST" onsubmit="return confirm('Are you sure you want to block this user?');">
               @csrf
               <button type="submit" class="bg-yellow-500 rounded-lg p-2 hover:bg-yellow-400 ">UnBlock</button>
             </form>
             @endcan
             @else
-            @can('block', $user)
-            <form action="{{ url('/admin/block/' . $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to block this user?');">
+            @can('modify', $user)
+            <form action="{{ route('block.user', $user) }}" method="POST" onsubmit="return confirm('Are you sure you want to block this user?');">
               @csrf
               <button type="submit" class="bg-yellow-500 rounded-lg p-2 hover:bg-yellow-400 ">Block</button>
             </form>
@@ -132,8 +144,9 @@
       </div>
       </td>
     </tr>
-    @endif
-    @endforeach
+    @empty
+    <h4 class="text-center font-bold">Sorry, column not found</h4>
+    @endforelse
   </table>
 </div>
 {!! $users->links() !!}

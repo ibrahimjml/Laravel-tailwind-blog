@@ -53,20 +53,31 @@ class AdminController extends Controller
   public function destroy(User $user){
   
     
-    $this->authorize('deleteuser',$user);
+    $this->authorize('modify',$user);
     $user->delete();
     return back()->with('success',"user deleted");
   }
   public function block(User $user){
-    $this->authorize('block',$user);
+    $this->authorize('modify',$user);
     $user->is_blocked = true;
     $user->save();
     return back()->with('success',"user blocked");
   }
   public function unblock(User $user){
-    $this->authorize('block',$user);
+    $this->authorize('modify',$user);
     $user->is_blocked = false;
     $user->save();
     return back()->with('success',"user unblocked successfuly");
+  }
+
+  public function role(Request $request,User $user)
+  {
+    $this->authorize('modify',$user);
+    $fields= $request->validate([
+      'role'=>'required|in:user,admin'
+    ]);
+    $user->is_admin = $fields['role'] === 'admin' ? 1 : 0;
+    $user->save();
+   return back()->with('success',"user role {$request->role} updated");
   }
 }
