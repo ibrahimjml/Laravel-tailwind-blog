@@ -4,5 +4,6 @@
 @component('mail::button',['url'=>url('reset/'.$token)])
 Reset your Password
 @endcomponent
-<p>Thanks</p>
+Thanks<br>
+{{config('app.name')}}
 @endcomponent

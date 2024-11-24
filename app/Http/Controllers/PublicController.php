@@ -50,7 +50,7 @@ class PublicController extends Controller
   {
     $post = Post::with([
       'comments' => function ($query) {
-          $query->orderBy('created_at', 'desc')
+          $query->latest()
               ->with(['user','replies'=>function($query){
                    $query->with(['replies']);
               } ,'replies.user', 'replies.parent.user']); 

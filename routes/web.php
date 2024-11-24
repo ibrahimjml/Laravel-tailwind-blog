@@ -28,7 +28,7 @@ require __DIR__."/auth.php";
 Route::get('/blog',[PostController::class,'blog'])->name('blog')->middleware('auth');
 
 // Post Page
-Route::get('/post/{slug}',[PublicController::class,'viewpost'])->name('blog')->middleware('auth');
+Route::get('/post/{slug}',[PublicController::class,'viewpost'])->name('single.post')->middleware('auth');
 
 //hashtag page
 Route::get('/hashtag/{hashtag:name}',[Hashtagcontroller::class,'viewhashtag'])->name('viewhashtag');

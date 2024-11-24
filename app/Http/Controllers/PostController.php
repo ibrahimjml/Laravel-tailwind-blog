@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\CheckIfBlocked;
+use App\Mail\postlike;
 use App\Models\Hashtag;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class PostController extends Controller 
@@ -193,7 +195,8 @@ return redirect('/blog')->with('success','Post updated successfully');
        return response()->json(['liked'=>false]);
        }
        $post->likes()->create(['user_id'=> auth()->user()->id]);
-  
+      
+      Mail::to($post->user)->queue(new postlike($post->user,auth()->user(),$post));
       return response()->json(['liked'=>true]);
     
 
