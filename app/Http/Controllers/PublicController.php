@@ -86,11 +86,11 @@ class PublicController extends Controller
 
   public function edit(Request $request, User $user)
   {
-    $fields = $request->validate([
+     $request->validate([
       'avatar' => 'required|image|mimes:png,jpeg,jpg|max:5048'
     ]);
-
-    $path = $request->file('avatar')->store('images', 'public');
+    $avatarname= uniqid().'-'.$user->name.'.'.$request->file('avatar')->extension();
+    $path = $request->file('avatar')->storeAs('images',$avatarname ,'public');
 
     $this->authorize('update', $user);
     $user->avatar = $path;
@@ -101,7 +101,7 @@ class PublicController extends Controller
   }
   public function destroyavatar(User $user){
     if($user->avatar && $user->avatar !== 'default.jpg'){
-      Storage::delete('public/images'.$user->avatar);
+      Storage::delete('public/'.$user->avatar);
     }
     $this->authorize('delete',$user);
     $user->avatar="default.jpg";

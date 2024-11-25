@@ -4,15 +4,13 @@
     <div class=" flex gap-4">
       
   {{-- checkin if image has default.jpg --}}  
-  @if($post->user->avatar !== "default.jpg")
-  <a href='/user/{{$post->user->id}}'>
+  <a href='{{route('profile',$post->user->username)}}'>
+    @if($post->user->avatar !== "default.jpg")
     <img src="{{Storage::url($post->user->avatar)}}"  class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
-  </a>
     @else
-    <a href='/user/{{$post->user->id}}'>
   <img src="/storage/avatars/{{$post->user->avatar}}"  class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
+  @endif
     </a>
- @endif
   
 
 <div class="flex flex-col">

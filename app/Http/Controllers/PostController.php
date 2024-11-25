@@ -86,7 +86,7 @@ break;
         $fields['description'] = $fields['description'];
 
         $slug = Str::slug($fields['title']);
-        $uniqueslug=$this->generateuniqueslug($slug);
+        
         
         $newimage= uniqid().'-'.$slug.'.'.$fields['image']->extension();
         $fields['image']->move(public_path('images'),$newimage);
@@ -94,7 +94,7 @@ break;
         $post = Post::create([
           'title'=>$request->input('title'),
           'description'=>$request->input('description'),
-          'slug'=>$uniqueslug,
+          'slug'=>$slug,
           'image_path'=>$newimage,
           'user_id'=>auth()->user()->id
         ]);
@@ -117,17 +117,7 @@ break;
 
         return redirect('/blog')->with('success','posted successfuly');
         }
-          //generate unique slug
-        private function generateuniqueslug($slug){
-          $originslug =$slug;
-          $count =1;
-          while(Post::where('slug',$slug)->exists()){
-            $slug = $originslug.'-'.$count;
-            $count++;
-          }
-          return $slug;
-        }
-
+        
          public function delete($slug){
         
            $post = Post::where('slug',$slug)->firstOrFail();
@@ -148,6 +138,8 @@ public function editpost($slug){
 }
 
 public function update($slug,Request $request){
+  $post = Post::where('slug',$slug)->firstOrFail();
+
   $fields=$request->validate([
     'title'=>'nullable|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
     'description'=>'required|string',
@@ -156,14 +148,9 @@ public function update($slug,Request $request){
 ['title.regex'=>'The title accept only letters,numbers and spaces',
 ]);
 
-$fields['title'] = htmlspecialchars(strip_tags($fields['title'])) ;
-$fields['description'] = $fields['description'] ;
-$fields['hashtag'] = $fields['hashtag'] ;
-
-$post = Post::where('slug',$slug)->firstOrFail();
-
-$slug = Str::slug($fields['title']);
-
+$fields['title'] = $fields['title'];
+$fields['description'] = $fields['description'];
+$fields['hashtag'] = $fields['hashtag'];
 
 $post->title = $fields['title'];
 $post->description = $fields['description'];
