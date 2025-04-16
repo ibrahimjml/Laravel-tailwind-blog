@@ -40,7 +40,8 @@ class AuthController extends Controller
     $user = User::create($fields);
     event(new Registered($user));
     auth()->login($user);
-    return redirect('/')->with('success', 'Account created successfully');
+    toastr()->success('Account created successfully',['timeOut'=>1000]);
+    return redirect('/');
   }
 
   public function loginpage()
@@ -57,9 +58,11 @@ class AuthController extends Controller
     ]);
 
     if (auth()->attempt(["email" => $fields['email'], "password" => $fields['password']])) {
-      return redirect('/')->with('success', 'logged in successfuly');
+    toastr()->success('logged in successfuly',['timeOut'=>1000]);
+      return redirect('/');
     } else {
-      return redirect('/login')->with('error', 'wrong credentials');
+      toastr()->error('wrong credentials',['timeOut'=>1000]);
+      return redirect('/login');
     }
   }
 
@@ -102,9 +105,13 @@ class AuthController extends Controller
       );
       $user->save();
       Mail::to($user->email)->send(new ForgotPassword($user, $token));
-      return back()->with('success', 'please check your email');
+      
+      toastr()->error('please check your email',['timeOut'=>2000]);
+      return back();
     } else {
-      return back()->with('error', 'sorry,email not found ');
+
+      toastr()->error('sorry,email not found ',['timeOut'=>1000]);
+      return back();
     }
   }
 
@@ -124,7 +131,8 @@ class AuthController extends Controller
 
         $user->save();
         DB::table('password_reset_tokens')->where('token', $token)->delete();
-        return redirect()->route('login')->with('success', 'password reset success');
+        toastr()->success('password reset success',['timeOut'=>1000]);
+        return redirect()->route('login');
       }
     } else {
 
@@ -135,7 +143,8 @@ class AuthController extends Controller
   public function logout()
   {
     auth()->logout();
-    return redirect('/')->with('success', 'Logged out ');
+    toastr()->success('Logged out ',['timeOut'=>2000]);
+    return redirect('/');
   }
 
   public function index()

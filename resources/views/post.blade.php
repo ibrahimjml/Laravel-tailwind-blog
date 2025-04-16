@@ -1,9 +1,9 @@
 <x-header-blog>
-@if(session()->has('success'))
-  <div id="parag3" class="fixed  bg-green-500 p-[10px] text-center top-[100px] left-[150px] sm:left-[40%] transform translate-y-[30px] sm:transform sm:translate-y-0 z-20">
-  <p  class="text-center font-bold text-2xl text-white">{{session('success')}}</p>
-  </div>
-  @endif
+  @section('meta_title',$meta_title)
+  @section('meta_keywords',$meta_keywords)
+  @section('author',$author)
+  @section('meta_description',$meta_description)
+
 <div class="container mx-auto ">
   @can('view',$post)
   <div class="flex justify-center items-center mt-3">
@@ -49,9 +49,18 @@
       
     
   </div>
-  <div>
-    <img class="object-contain rounded-none md:rounded-lg w-[90%] md:w-[60%] h-120  mx-auto s shadow-lg hover:shadow-md" src="/images/{{$post->image_path}}"  alt="">
-    <div class="flex gap-1 justify-between items-center ml-0 sm:ml-[290px] mt-1">
+  <div class="relative w-[90%] md:w-[60%] mx-auto">
+    <img class="object-contain relative rounded-none md:rounded-lg w-full  h-120 mx-auto shadow-lg hover:shadow-md" src="/images/{{$post->image_path}}"  alt="">
+  {{-- hashtags on post --}}
+    <div class="absolute bottom-[100px] left-4 flex flex-wrap gap-2">
+      @foreach($post->hashtags->pluck('name') as $tag)
+        <span class="px-2 py-1 text-white text-xs rounded-md bg-gray-700 bg-opacity-70 font-semibold hover:bg-gray-500 transition-all">
+          <a href="{{route('viewhashtag',$tag)}}"># {{ $tag }}</a>
+        </span>
+      @endforeach
+    </div>
+
+    <div class="flex gap-1 justify-between items-center  mt-1">
       <span class="text-xl ml-10 items-center">&#128420;</span>
       <span id="likes-count" class="text-xl">{{$post->likes()->count()}}</span>
       {{-- like/unlike button fetch --}}

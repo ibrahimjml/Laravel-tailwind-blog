@@ -25,4 +25,8 @@ class PostPolicy
       return $user->is_admin === 1 || $user->id === $post->user_id;
     }
 
+    public function modify(User $user, Post $post): bool
+    {
+      return $user->is_admin === 1 ;
+    }
 }

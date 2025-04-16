@@ -1,25 +1,33 @@
 <x-header-blog>
-@if (session()->has("success"))
-<p class="text-green-600 text-2xl font-semibold ">{{session('success')}}</p>
-@endif
+
 <main class="admin w-screen grid grid-cols-[25%,75%] transition-all ease-in-out duration-300 p-5">
+    {{-- admin side bar --}}
 <x-admin-sidebar/>
 <section id="main-section" class="p-5 transition-all ease-in-out duration-300 ">
   <div class="top-section flex gap-5">
     <span id="spn" class="text-4xl text-gray-600  cursor-pointer">&leftarrow;</span>
     <h2 id="title-body" class="text-gray-600 text-2xl font-bold p-3">Posts Table</h2>
   </div>
-
+  
   <div class="flex justify-between w-[50%]">
-
-        <form  action="{{route('admin.posts')}}" method="GET">
+    <div class="flex gap-2">
+  {{-- sort option --}}
+  <form  action="{{route('admin.posts')}}" method="GET">
         
-          <select id="sort" name="sort" class="cursor-pointer bg-gray-700 text-white border border-gray-300 block  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="this.form.submit()">
-            <option value="latest" {{ request('sort') === 'latest' ? 'selected' : '' }}>Latest</option> 
-            <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest</option>
-          </select>
-        </form>
-    
+    <select id="sort" name="sort" class="cursor-pointer bg-gray-700 text-white border border-gray-300 block  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="this.form.submit()">
+      <option value="latest" {{ request('sort') === 'latest' ? 'selected' : '' }}>Latest</option> 
+      <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest</option>
+    </select>
+  </form>
+  {{-- sort featured --}}
+  <div class="bg-gray-700  rounded-md p-2 h-11">
+    <form action="{{route('admin.posts')}}" method="GET">
+      <input type="checkbox" name="featured" value="1" {{ request('featured') ? 'checked' : '' }} onchange="this.form.submit()">
+      <label class="text-white font-semibold" for="featured">Featured</label>
+    </form>
+  </div>
+    </div>
+      
   
 
       <form action="{{route('admin.posts')}}" class="w-[150px] sm:w-[250px] relative flex justify-end    translate-x-[12vw]  sm:translate-x-[30vw]  mb-5" method="GET">
@@ -45,16 +53,17 @@
   
 
   </div>
-  <div class="overflow-hidden rounded-lg  shadow-lg">
-    <table  class="w-full border-collapse ">
+  <div class="overflow-x-auto rounded-lg shadow-lg">
+    <table  class="min-w-full table-auto border-collapse">
     
       <tr class="bg-gray-600">
-        <th class="text-white p-2">ID</th>
+        <th class="text-white p-2">#</th>
         <th class="text-white p-2">Username</th>
         <th class="text-white p-2">Image</th>
         <th class="text-white p-2">Title</th>
         <th class="text-white p-2">Body</th>
         <th class="text-white p-2">Hashtags</th>
+        <th class="text-white p-2">IsFeatured</th>
         <th class="text-white p-2">Likes</th>
         <th class="text-white p-2">Comments</th>
         <th class="text-white p-2">CreatedAt</th>
@@ -63,14 +72,30 @@
       </tr>
       @forelse ($posts as $post)
       <tr class="text-center border border-b-gray-300 last:border-none">
-        <td class="p-2">{{$post->id}}</td>
+        <td class="p-2">  {{ ($posts->currentPage() - 1) * $posts->perPage() + $loop->iteration }}</td>
         <td class="p-2">{{$post->user->name}}</td>
         <td class="p-2">
           <img class="object-contain inline-block" src="/images/{{$post->image_path}}" width="40px" height="40px"  alt="{{$post->title}}">
         </td>
         <td class="p-2">{{Str::limit($post->slug,20)}}</td>
         <td class="p-2">  {!! Str::limit(strip_tags($post->description), 40) !!}</td>
-        <td class="p-2">{{$post->hashtags->pluck('name')->implode(', ')}}</td>
+        {{-- <td class="p-2">{{$post->hashtags->pluck('name')->implode(', ')}}</td> --}}
+        <td class="p-2 md:flex  md:flex-nowrap gap-3 place-items-center sm:flex-wrap ">
+          @foreach($post->hashtags->pluck('name') as $hashtag)
+          <div class="p-1 h-fit w-fit bg-slate-500 text-sm text-white rounded-lg gap-4 justify-center items-center flex">
+            {{$hashtag}}
+          </div>
+          @endforeach
+        </td>
+        <td class="p-2">
+          <div class="flex justify-center">
+            @if($post->is_featured)
+            <img src="/true.png" alt="">
+            @else
+            <img src="/close.png" alt="">
+            @endif
+        </div>
+        </td>
         <td class="p-2">{{$post->likes_count}}</td>
         <td class="p-2">{{$post->comments_count}}</td>
         <td class="p-2">{{$post->created_at->diffForHumans()}}</td>

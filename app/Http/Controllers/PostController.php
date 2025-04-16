@@ -9,216 +9,283 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Intervention\Image\Laravel\Facades\Image;
 
-class PostController extends Controller 
+
+class PostController extends Controller
 {
   public function __construct()
   {
-    $this->middleware(['auth','verified',CheckIfBlocked::class]);
+    $this->middleware(['auth', 'verified', CheckIfBlocked::class]);
   }
 
-    public function blog(Request $request){
-    
-      $sortoption = $request->get('sort','latest');
-      $posts = Post::query()
+  public function blog(Request $request)
+  {
+
+    $sortoption = $request->get('sort', 'latest');
+    $posts = Post::query()
       ->with(['user:id,username,avatar', 'hashtags:id,name'])
       ->withCount(['likes', 'comments']);
-      
-      switch($sortoption){
-        case 'latest';
+
+    switch ($sortoption) {
+      case 'latest';
         $posts->latest();
         break;
 
-        case 'oldest';
+      case 'oldest';
         $posts->oldest();
         break;
 
-        case 'mostliked':
-          $posts->withCount('likes')->orderBy('likes_count', 'desc');
-          break;
+      case 'mostliked':
+        $posts->withCount('likes')->orderByDesc('likes_count');
+        break;
  
-          case 'hashtagtrend':
+        case 'featured':
+          $posts->featured();
+          break;
 
-    $trendingHashtag = Hashtag::withCount('posts')
-    ->orderBy('posts_count', 'desc')
-    ->first();
+      case 'hashtagtrend':
 
-if ($trendingHashtag) {
-    
-    $posts->whereHas('hashtags', function ($query) use ($trendingHashtag) {
-        $query->where('hashtags.id', $trendingHashtag->id);
-    });
-} else {
-  
-    $posts->whereRaw('0 = 1');
-}
-break;
+        $trendingHashtag = Hashtag::withCount('posts')
+          ->having('posts_count','>',0)
+          ->orderByDesc('posts_count')
+          ->first();
 
-            default:
-            $posts->latest();
-            break;
+        if ($trendingHashtag) {
+
+          $posts->whereHas('hashtags', function ($query) use ($trendingHashtag) {
+            $query->where('hashtags.id', $trendingHashtag->id);
+          });
+        } else {
+
+          $posts->whereRaw('0 = 1');
+        }
+        break;
+
+      default:
+        $posts->latest();
+        break;
+    }
+    $posts = $posts->paginate(5)->appends(['sort' => $sortoption]);
+    $meta_keywords = Post::with('hashtags')->latest()->first();
+    $hashtags = Hashtag::withCount('posts')->get();
+    return view('blog', [
+      'meta_title'=>'Blog-Post | Jamal',
+      'meta_keywords' => $meta_keywords->hashtags->pluck('name')->take(6)->implode(', '),
+      'tags' => $hashtags,
+      'posts' => $posts,
+      'sorts' => $sortoption,
+    ]);
+  }
+
+  public function createpage()
+  {
+    return view('create',[
+      'initialTags' => old('hashtag') ? explode(',', old('hashtag')) : [],
+      'allhashtags' => Hashtag::pluck('name'),
+      'meta_title' => 'Create Page | Blog-Post',
+      'author' => auth()->user()->username,
+      'meta_keywords' => Hashtag::pluck('name')->take(10)->implode(', ')
+    ]);
+  }
+
+
+  public function create(Request $request)
+  {
+    $fields = $request->validate(
+      [
+        'title' => 'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
+        'description' => 'required|string',
+        'hashtag' => ['nullable', 'string', function ($attribute, $value, $fail) {
+          $tags = array_filter(array_map('trim', explode(',', $value)));
+          if (count($tags) > 5) {
+              $fail('You can only select up to 5 hashtags.');
           }
-            $posts = $posts->paginate(5)->appends(['sort' => $sortoption]);
+          $regexTags = '/^[A-Za-z0-9_-]+$/';
+          foreach( $tags as $tag){
+            if(!preg_match($regexTags,$tag)){
+              $fail("Hashtags only contain letters, numbers, dashes, or underscores");
+            }
+          }
+    }],
+        'image' => 'required|mimes:jpg,png,jpeg|max:5000000',
+      ],
+      [
+        'title.regex' => 'The title accept only letters,numbers and spaces'
+      ]
+    );
 
-          
-            return view('blog', [
-                'posts' => $posts,
-                'sorts' => $sortoption,
-            ]);
-      
-    }
+    $fields['title'] = htmlspecialchars(strip_tags($fields['title']));
 
-    public function createpage(){
-      return view('create');
-    }
+    $slug = Str::slug($fields['title']);
 
-  
-        public function create(Request $request){
-          $fields=$request->validate([
-            'title'=>'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
-            'description'=>'required|string',
-            'image'=>'required|mimes:jpg,png,jpeg|max:5000000',
-        ],
-        ['title.regex'=>'The title accept only letters,numbers and spaces',
-      ]);
 
-        $fields['title'] = htmlspecialchars(strip_tags($fields['title']));
-        $fields['description'] = $fields['description'];
+    $newimage = uniqid() . '-' . $slug . '.' . $fields['image']->extension();
+    $resized = Image::read($request->file('image'))
+    ->resize(700, 300)
+    ->save(public_path('images/' . $newimage));
 
-        $slug = Str::slug($fields['title']);
-        
-        
-        $newimage= uniqid().'-'.$slug.'.'.$fields['image']->extension();
-        $fields['image']->move(public_path('images'),$newimage);
-      
-        $post = Post::create([
-          'title'=>$request->input('title'),
-          'description'=>$request->input('description'),
-          'slug'=>$slug,
-          'image_path'=>$newimage,
-          'user_id'=>auth()->user()->id
-        ]);
+    $post = Post::create([
+      'title' => $request->input('title'),
+      'description' => $request->input('description'),
+      'slug' => $slug,
+      'image_path' => $newimage,
+      'user_id' => auth()->user()->id
+    ]);
 
     $hashtagNames = [];
 
     if ($request->filled('hashtag')) {
-        $hashtags = explode(',', $request->input('hashtag'));
+      $hashtags = explode(',', $request->input('hashtag'));
 
-        foreach ($hashtags as $hashtag) {
-            $hashtag = strip_tags(trim($hashtag)); 
+      foreach ($hashtags as $hashtag) {
+        $hashtag = strip_tags(trim($hashtag));
 
-            if ($hashtag) {
-                $hashtagModel = Hashtag::firstOrCreate(['name' => $hashtag]);
-                $post->hashtags()->attach($hashtagModel->id);
-                $hashtagNames[] = $hashtagModel->name;
-            }
+        if ($hashtag) {
+          $hashtagModel = Hashtag::firstOrCreate(['name' => $hashtag]);
+          $post->hashtags()->attach($hashtagModel->id);
+          $hashtagNames[] = $hashtagModel->name;
         }
-    }
-
-        return redirect('/blog')->with('success','posted successfuly');
-        }
-        
-         public function delete($slug){
-        
-           $post = Post::where('slug',$slug)->firstOrFail();
-           $this->authorize('delete',$post);
-           $post->delete();
-         if(auth()->user()->is_admin){
-          return redirect('/admin-panel')->with('success','Post deleted successfully');
-         }else{
-
-           return redirect('/blog')->with('success','Post deleted successfully');
-         }
-    }
-public function editpost($slug){
-  $post = Post::where('slug',$slug)->firstOrFail();
-  $hashtags = $post->hashtags()->pluck('name')->implode(', ');
-  $this->authorize('view',$post);
-  return view('updatepost',compact('post','hashtags'));
-}
-
-public function update($slug,Request $request){
-  $post = Post::where('slug',$slug)->firstOrFail();
-
-  $fields=$request->validate([
-    'title'=>'nullable|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
-    'description'=>'required|string',
-    'hashtag' => 'nullable|string',
-],
-['title.regex'=>'The title accept only letters,numbers and spaces',
-]);
-
-$fields['title'] = $fields['title'];
-$fields['description'] = $fields['description'];
-$fields['hashtag'] = $fields['hashtag'];
-
-$post->title = $fields['title'];
-$post->description = $fields['description'];
-
-if (!empty($fields['hashtag'])) {
-  $hashtagNames = explode(',', $fields['hashtag']);
-  $hashtagIds = [];
-  
-  foreach ($hashtagNames as $name) {
-      $hashtag = Hashtag::firstOrCreate(['name' => strip_tags(trim($name))]);
-      $hashtagIds[] = $hashtag->id;
-  }
-
-
-  $post->hashtags()->sync($hashtagIds);
-}else{
-  $post->hashtags()->detach();
-}
-
-$this->authorize('update',$post);
-$post->save();
-return redirect('/blog')->with('success','Post updated successfully');
-}
-
-    public function like(Post $post){
-
-      if($post->is_liked()){
-       $post->likes()->where('user_id',auth()->user()->id)->delete();
-       return response()->json(['liked'=>false]);
-       }
-       $post->likes()->create(['user_id'=> auth()->user()->id]);
-      
-      Mail::to($post->user)->queue(new postlike($post->user,auth()->user(),$post));
-      return response()->json(['liked'=>true]);
-    
-
-    }
-
-    public function save(Request $request){
-      $fields =$request->validate([
-           'post_id'=>'required|int'
-      ]);
-      $postId = $fields['post_id'];
-      $savedposts = session('saved-to',[]);
-      if(in_array($postId,$savedposts)){
-        $savedposts = array_diff($savedposts,[$postId]);
-        session(['saved-to'=>$savedposts]);
-        return response()->json(['status'=>'removed']);
-      }else{
-        $savedposts[]=$postId;
-        session(['saved-to'=>$savedposts]);
-        return response()->json(['status'=>'added']);
       }
     }
+    toastr()->success('posted successfuly',['timeOut'=>1000]);
+    return redirect('/blog');
+  }
 
-    public function getsavedposts(){
+  public function delete($slug)
+  {
+
+    $post = Post::where('slug', $slug)->firstOrFail();
+    $this->authorize('delete', $post);
+    $post->delete();
+    if (auth()->user()->is_admin) {
+      toastr()->success('password reset success',['timeOut'=>1000]);
+      return redirect('/admin-panel');
+    } else {
+      toastr()->error('Post deleted successfully',['timeOut'=>1000]);
+      return redirect('/blog');
+    }
+  }
+  public function editpost($slug)
+  {
+    $post = Post::where('slug', $slug)->firstOrFail();
+    $this->authorize('view', $post);
+
+    $hashtags = $post->hashtags()->pluck('name')->implode(', ');
+    $allhashtags = Hashtag::pluck('name');
     
-      $getposts =session('saved-to',[]);
-      $posts = Post::whereIn('id',$getposts)
-      ->withCount(['likes','comments'])
-      ->with(['user','hashtags'])
+    return view('updatepost', [
+      'post' => $post,
+      'hashtags' => $hashtags,
+      'allhashtags' => $allhashtags,
+      'meta_title' => 'Update | '.$post->slug,
+      'meta_description' => Str::limit(strip_tags($post->description), 150),
+      'meta_keywords' => Hashtag::pluck('name')->take(10)->implode(', '),
+      'author' => auth()->user()->username
+    ]);
+  }
+
+  public function update($slug, Request $request)
+  {
+    $post = Post::where('slug', $slug)->firstOrFail();
+    $this->authorize('update', $post);
+
+    $isFeatured = $request->has('featured') ?? false;
+
+    $fields = $request->validate(
+      [
+        'title' => 'nullable|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
+        'description' => 'required|string',
+        'hashtag' => ['nullable', 'string', function ($attribute, $value, $fail) {
+        $tags = array_filter(array_map('trim', explode(',', $value)));
+        if (count($tags) > 5) {
+            $fail('You can only select up to 5 hashtags.');
+        }
+  }],
+        'featured' => 'nullable|boolean'
+      ],
+      [
+        'title.regex' => 'The title accept only letters,numbers and spaces',
+      ]
+    );
+
+    $post->title = $fields['title'];
+    $post->description = $fields['description'];
+    $post->is_featured = $isFeatured;
+
+    if (!empty($fields['hashtag'])) {
+      $hashtagNames = array_filter(array_map('trim', explode(',', $fields['hashtag'])));
+      $hashtagIds = [];
+
+      foreach ($hashtagNames as $name) {
+        if ($name != 0){
+          $hashtag = Hashtag::firstOrCreate(['name' => strip_tags(trim($name))]);
+          $hashtagIds[] = $hashtag->id;
+        }
+      }
+
+
+      $post->hashtags()->sync($hashtagIds);
+    } else {
+      $post->hashtags()->detach();
+    }
+
+    $post->save();
+    toastr()->success('Post updated successfully',['timeOut'=>1000]);
+    return redirect('/blog');
+  }
+
+  public function like(Post $post)
+  {
+
+    if ($post->is_liked()) {
+      $post->likes()->where('user_id', auth()->user()->id)->delete();
+      return response()->json(['liked' => false]);
+    }
+    $post->likes()->create(['user_id' => auth()->user()->id]);
+
+    Mail::to($post->user)->queue(new postlike($post->user, auth()->user(), $post));
+    return response()->json(['liked' => true]);
+  }
+
+  public function save(Request $request)
+  {
+    $fields = $request->validate([
+      'post_id' => 'required|int'
+    ]);
+    $postId = $fields['post_id'];
+    $savedposts = session('saved-to', []);
+    if (in_array($postId, $savedposts)) {
+      $savedposts = array_diff($savedposts, [$postId]);
+      session(['saved-to' => $savedposts]);
+      return response()->json(['status' => 'removed']);
+    } else {
+      $savedposts[] = $postId;
+      session(['saved-to' => $savedposts]);
+      return response()->json(['status' => 'added']);
+    }
+  }
+
+  public function getsavedposts()
+  {
+
+    $getposts = session('saved-to', []);
+    $posts = Post::whereIn('id', $getposts)
+      ->withCount(['likes', 'comments'])
+      ->with(['user', 'hashtags'])
       ->paginate(5);
-      return view('getsavedposts',['posts'=>$posts]);
-    }
 
 
-  
-    }
-
-
-
+      $meta_keywords = collect($posts->items())
+      ->flatMap(fn ($post) => $post->hashtags->pluck('name'))
+      ->unique()
+      ->implode(', ') ?? '';
+       
+    return view('getsavedposts',[
+      'meta_title' => 'Saved-Posts',
+      'author' => auth()->user()->username,
+      'meta_keywords' =>  $meta_keywords,
+      'posts' => $posts
+    ]);
+  }
+}

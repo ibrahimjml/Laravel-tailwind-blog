@@ -28,15 +28,17 @@ class CommentController extends Controller
       $fields['post_id']=$post->id;
 
     $comment = $post->comments()->create($fields);
- Mail::to($post->user)->queue(new EmailComment($post->user,$comment->user,$post));
-      
-     session()->flash('success','comment posted');
+
+    Mail::to($post->user)->queue(new EmailComment($post->user,$comment->user,$post));
+    toastr()->success('comment posted',['timeOut'=>1000]);
+
       return back();
     }
 
     public function deletecomment(Comment $comment){
       $this->authorize('delete',$comment);
       $comment->delete();
-      return redirect()->back()->with('success','comment deleted');
+      toastr()->success('comment deleted',['timeOut'=>1000]);
+      return redirect()->back();
     }
 }

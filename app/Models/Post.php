@@ -15,7 +15,8 @@ class Post extends Model
     'slug',
     'description',
     'user_id',
-    'image_path'
+    'image_path',
+    'is_featured'
   ];
 
   public function user()
@@ -41,6 +42,11 @@ class Post extends Model
 
   public function is_liked(){
     return $this->likes()->where('user_id',auth()->user()->id)->exists();
+  }
+
+  public function scopeFeatured($query)
+  {
+    return  $query->where('is_featured', true);
   }
 
   public function comments(){

@@ -1,8 +1,7 @@
 <x-header-blog>
-@if (session()->has("success"))
-<p class="text-green-600 text-center text-2xl font-semibold ">{{session('success')}}</p>
-@endif
+
 <main class="admin w-screen  grid grid-cols-[25%,75%] transition-all ease-in-out duration-300 p-5">
+    {{-- admin side bar --}}
 <x-admin-sidebar/>
 <section id="main-section" class="p-5 transition-all ease-in-out duration-300 ">
   <div class="top-section flex gap-5">
@@ -80,6 +79,7 @@
         </div>
       </td>
       <td class="p-2">
+        @can('modify',$user)
         <form  action="{{route('role.update',$user)}}" method="POST">
          @csrf
          @method('PUT')
@@ -89,6 +89,9 @@
         
           </select>
         </form>
+        @else
+        <p class="cursor-not-allowed bg-gray-400 text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Admin</p>
+        @endcan
       </td>
       <td class=" p-2">{{$user->created_at->diffForHumans()}}</td>
       <td class=" p-2">

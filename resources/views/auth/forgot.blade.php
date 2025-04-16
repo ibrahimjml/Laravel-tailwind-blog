@@ -1,15 +1,6 @@
 <x-header-blog>
 <main class="sm:container mx-auto  max-w-fit mt-5 mb-20 sm:max-w-lg sm:mt-10">
-  @if(session()->has('error'))
-  <div id="parag2"  class="w-30 bg-red-500 p-[10px] text-center rounded-lg">
-  <p  class="text-center  font-bold text-2xl text-white">{{session('error')}}</p>
-  </div>
-  @endif
-  @if(session()->has('success'))
-  <div id="parag2"  class="w-30 bg-green-600 p-[10px] text-center rounded-lg">
-  <p  class="text-center  font-bold text-2xl text-white">{{session('success')}}</p>
-  </div>
-  @endif
+
   <div class="flex">
       <div class="w-full">
       

@@ -24,5 +24,6 @@ class AppServiceProvider extends ServiceProvider
     {
       Post::observe(PostObserver::class);
       Blade::component('partials.postcard', 'postcard');
+      Blade::component('partials.session-success-error', 'session-success-error');
     }
 }

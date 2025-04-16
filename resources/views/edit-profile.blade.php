@@ -1,9 +1,5 @@
 <x-header-blog>
-@if(session()->has('error'))
-<div id="parag2"  class="fixed bg-red-500 p-[10px] text-center   transform translate-x-[30vw] sm:translate-x-[38vw] translate-y-[60vh] sm:translate-y-[72vh] z-20 rounded-lg">
-<p  class="text-center  font-bold text-2xl text-white">{{session('error')}}</p>
-</div>
-@endif
+
 
 <div class="container mx-auto pt-[40px]">
   <h1 class=" text-3xl font-bold text-center py-5 capitalize">edit profile</h1>

@@ -7,14 +7,13 @@
       <span id="spn" class="text-4xl text-gray-400  cursor-pointer">&leftarrow;</span>
       <h2 id="title-body" class="text-black text-2xl font-bold p-3">Admin Panel</h2>
     </div>
-    <div class="flex  items-center gap-2 flex-wrap">
+    <div class="flex flex-wrap gap-2 md:flex-nowrap items-center ">
+
       <x-widgets-posts 
       :posts="$post" 
       :hashtags="$hashtags"
       :likes="$likes"
       :comments="$comments"/>
-    </div>
-    <div class="flex  items-center gap-2 flex-wrap mt-3">
       <x-widgets-users :users="$user" :blocked="$blocked"/>
     </div>
   </section>

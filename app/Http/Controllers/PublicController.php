@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Middleware\CheckIfBlocked;
+use Illuminate\Support\Facades\Storage;
 
 
 class PublicController extends Controller
@@ -18,10 +19,6 @@ class PublicController extends Controller
     $this->middleware(['auth','verified',CheckIfBlocked::class]);
   }
 
-  public function index()
-  {
-    return view('index');
-  }
 
   public function search(Request $request)
   {
@@ -37,12 +34,14 @@ class PublicController extends Controller
     ->paginate(5)
     ->withQuerystring();
 
-
+    $meta_keywords = Post::with('hashtags')->latest()->first();
 
     return view('blog', [
       'posts' => $posts,
       'sorts' => 'latest',
-      'searchquery'=>$fields['search']
+      'searchquery'=>$fields['search'],
+      'meta_title'=>'Blog-Post | Jamal',
+      'meta_keywords' => $meta_keywords->hashtags->pluck('name')->take(6)->implode(', ')
     ]);
   }
 
@@ -58,11 +57,15 @@ class PublicController extends Controller
   ])->where('slug', $slug)->first();
 
     return view('post', [
-       'post' => $post
+       'post' => $post,
+       'meta_title' => $post->slug . ' | Blog-Post',
+       'author' => $post->user->username,
+       'meta_description' => Str::limit(strip_tags($post->description), 150),
+       'meta_keywords' => $post->hashtags->pluck('name')->implode(', ')
       ]);
   }
 
-  public function viewpostByuser(User $user)
+  public function viewprofile(User $user)
   {
     $postCount = $user->post()->count();
     $likeCount = $user->post()->withCount('likes')->get()->sum('likes_count');
@@ -74,7 +77,9 @@ class PublicController extends Controller
        'posts' => $posts,
        'postcount' => $postCount,
        'likescount' => $likeCount, 
-       'commentscount' => $commentCount
+       'commentscount' => $commentCount,
+       'meta_title' => $user->username . ' | Profile',
+       'author' => $user->username
       ]);
   }
 
@@ -95,8 +100,8 @@ class PublicController extends Controller
     $this->authorize('update', $user);
     $user->avatar = $path;
     $user->save();
-
-    return redirect()->route('profile',  $user->username)->with('success', 'Image updated successfully.');
+    toastr()->success('Image updated successfully',['timeOut'=>1000]);
+    return redirect()->route('profile',  $user->username);
     
   }
   public function destroyavatar(User $user){
@@ -106,7 +111,8 @@ class PublicController extends Controller
     $this->authorize('delete',$user);
     $user->avatar="default.jpg";
     $user->save();
-    return redirect()->route('profile', $user->username)->with('success', 'Avatar deleted.');
+    toastr()->success('Avatar deleted',['timeOut'=>1000]);
+    return redirect()->route('profile', $user->username);
   }
 
   public function editprofilepage(User $user)
@@ -131,8 +137,8 @@ class PublicController extends Controller
       $user->email_verified_at = null;
   }
     $user->save();
-
-    return redirect()->route('profile', $user->username)->with('success', 'Email updated');
+    toastr()->success('Email updated',['timeOut'=>1000]);
+    return redirect()->route('profile', $user->username);
   }
 
   public function editname(Request $request, User $user)
@@ -143,8 +149,8 @@ class PublicController extends Controller
     $user->name = strip_tags($request->name);
     $this->authorize('update', $user);
     $user->save();
-
-    return redirect()->route('profile', $user->username)->with('success', 'name updated');
+    toastr()->success('name updated',['timeOut'=>1000]);
+    return redirect()->route('profile', $user->username);
   }
 
   public function editpassword(Request $request, User $user)
@@ -155,12 +161,14 @@ class PublicController extends Controller
     ]);
 
     if (!Hash::check($request->current_password, $user->password)) {
-      return back()->with(['error' => 'Current password is incorrect.']);
+      toastr()->error('Current password is incorrect',['timeOut'=>1000]);
+      return back();
   }
     $user->password = bcrypt($request->password);
     $this->authorize('update', $user);
     $user->save();
-    return redirect()->route('profile', $user->username)->with('success', 'password updated');
+    toastr()->success('password updated',['timeOut'=>1000]);
+    return redirect()->route('profile', $user->username);
   }
 
   public function editphone(Request $request, User $user)
@@ -171,8 +179,8 @@ class PublicController extends Controller
     $user->phone = strip_tags($request->phone);
     $this->authorize('update', $user);
     $user->save();
-
-    return redirect()->route('profile', ['user' => $user->username])->with('success', 'phone updated');
+    toastr()->success('phone updated',['timeOut'=>1000]);
+    return redirect()->route('profile', ['user' => $user->username]);
   }
 
   public function useraddbio(User $user,Request $request){
@@ -182,7 +190,8 @@ class PublicController extends Controller
    $user->bio = strip_tags($request->bio);
    $this->authorize('update',$user);
    $user->save();
-   return redirect()->route('profile', ['user' => $user->username])->with('success', 'Bio updated');
+   toastr()->success('Bio updated',['timeOut'=>1000]);
+   return redirect()->route('profile', ['user' => $user->username]);
   }
 
   public function deleteaccount(Request $request,User $user){
@@ -191,11 +200,13 @@ class PublicController extends Controller
     ]);
   
     if (!Hash::check($request->check_pass, $user->password)) {
-      return back()->with(['error' => 'password is incorrect']);
+      toastr()->error('password is incorrect',['timeOut'=>1000]);
+      return back();
   }
   $this->authorize('delete',$user);
   $user->delete();
   auth()->logout();
-  return redirect()->route('login')->with('success','Account deleted successfuly');
+  toastr()->success('Account deleted successfuly',['timeOut'=>1000]);
+  return redirect()->route('login');
   }
 }

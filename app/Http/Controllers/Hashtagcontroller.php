@@ -28,7 +28,9 @@ class Hashtagcontroller extends Controller
       return view('hashtags.show', [
           'posts' => $posts,
           'hashtag' => $hashtag,
-          
+          'meta_title' => 'Hashtag | ' . $hashtag->name . '-Page',
+          'meta_keywords' => $hashtag->name,
+          'author' => auth()->user()->username
       ]);
     }
 }

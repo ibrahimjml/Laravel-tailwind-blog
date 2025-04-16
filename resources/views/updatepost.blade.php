@@ -1,4 +1,8 @@
 <x-header-blog>
+  @section('meta_title',$meta_title)
+  @section('meta_keywords',$meta_keywords)
+  @section('author',$author)
+  @section('meta_description',$meta_description)
 <div class="container mx-auto pt-[40px]">
   <h1 class=" text-3xl font-bold text-center py-5 capitalize">Edit Post</h1>
 </div>
@@ -31,20 +35,54 @@
       </p>
       @enderror
     </div>
-    <div class="flex flex-wrap">
-      <label for="hashtag" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
-        hashtag:
-      </label>
-
-      <input id="hashtag" type="text" class="rounded-sm p-2 border-2 form-input w-full @error('hashtag')  border-red-500 @enderror"
-          name="hashtag" value="{{$hashtags}}"  autocomplete="hashtag" autofocus>
-
+    <div class="flex flex-col space-y-2 w-full">
+      <label for="hashtagInput" class="block text-gray-700 text-sm font-bold mb-1">Hashtags:</label>
+    
+      <!-- Hidden input to store comma-separated tags -->
+      <input type="hidden" name="hashtag" id="hashtagsHidden">
+    
+      <!-- Tag container -->
+      <div id="tagContainer" class="flex flex-wrap gap-2 mb-2"></div>
+    
+      <!-- Input for adding new tags -->
+      <input
+        type="text"
+        id="hashtagInput"
+        placeholder="Type a hashtag and press Enter"
+        class="rounded-sm p-2 border-2 w-full"
+      />
       @error('hashtag')
       <p class="text-red-500 text-xs italic mt-4">
           {{ $message }}
       </p>
       @enderror
+      @if($allhashtags->isNotEmpty())
+      <div class="flex items-center my-6">
+        <hr class="flex-grow border-t border-gray-300">
+        <span class="mx-4 text-gray-500 text-sm capitalize">or press Ctrl to select more</span>
+        <hr class="flex-grow border-t border-gray-300">
+      </div>
+      <select id="selectedHashtag" multiple class="border p-2 rounded w-full mt-2">
+        @foreach($allhashtags as $all)
+          <option value="{{ $all }}">{{ $all }}</option>
+        @endforeach
+      </select>
+      <button type="button" onclick="addSelectedHashtags()" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
+        Add Selected Hashtags
+      </button>
+    @endif
+    </div>
+@can('modify',$post)
+  <div class="flex flex-col  items-start ">
+    <label for="featured" class="block text-gray-700 text-sm font-bold mb-2 mt-2 sm:mb-4">
+      Featured:
+    </label>
+<div class="flex  items-center justify-center gap-3">
+  <input id="featured" type="checkbox" class="rounded-sm p-2 border-2 form-input w-full placeholder:text-gray-300 @error('featured')  border-red-500 @enderror"
+  name="featured" value="{{$post->is_featured}}" {{ $post->is_featured ? 'checked' : '' }} autocomplete="featured" autofocus placeholder="[laravel,php] with comma separated">Featured
+</div>
   </div>
+@endcan
     <div class="mt-4 flex justify-center">
       @can('update',$post)
       <button type="submit"
@@ -56,4 +94,7 @@
   </form>
 </div>
 <x-footer/>
+<script>
+  window.initialTags = @json(explode(',', $hashtags ?? ''));
+</script>
 </x-header-blog>

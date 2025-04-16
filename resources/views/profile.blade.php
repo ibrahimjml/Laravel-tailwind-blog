@@ -1,9 +1,9 @@
 <x-header-blog>
-@if(session()->has('success'))
-  <div id="parag" class="fixed bg-green-500 p-[10px] text-center top-[100px] left-[150px] sm:left-[40%] transform translate-y-[30px] sm:transform sm:translate-y-0 z-20">
-  <p  class="text-center font-bold text-2xl text-white">{{session('success')}}</p>
-  </div>
-  @endif
+  @section('meta_title',$meta_title)
+  @section('meta_keywords')
+  @section('author',$author)
+  @section('meta_description')
+
   
 <div class=" container mx-auto mt-[30px]">
 

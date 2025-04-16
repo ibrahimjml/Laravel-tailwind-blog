@@ -17,11 +17,20 @@ fetch(`/saved-post`, options)
         if (data.status == 'removed') {
             save.innerHTML = "save";
 
+            // check if we in saved posts page when unsaved delete container 
+            if (window.location.pathname === '/getsavedposts') {
+              const bigContainer = document.getElementById(`post-${postId}`);
+              if(bigContainer){
+                bigContainer.remove();
+                checkNoSavedPosts();
+              }
+            
+            }
+
         } else if (data.status == 'added') {
             // create element "popup"
             const popup = document.createElement("div");
-            const body = document.getElementById("body");
-            body.append(popup);
+            document.body.append(popup);
             popup.classList.add("popup");
             popup.innerText="Added to Saved";
           
@@ -43,4 +52,12 @@ fetch(`/saved-post`, options)
     });
 
   
+}
+function checkNoSavedPosts() {
+  const savedPosts = document.querySelectorAll('.saved-post');
+  const noSavedMsg = document.getElementById('noSavedMessage');
+
+  if (savedPosts.length === 0 && noSavedMsg) {
+    noSavedMsg.classList.remove('hidden');
+  }
 }

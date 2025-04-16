@@ -1,14 +1,18 @@
 <x-header-blog>
+  @section('meta_title',$meta_title)
+  @section('meta_keywords',$meta_keywords)
+  @section('author',$author)
+  @section('meta_description')
 
-@if($posts->count() == 0)
+  <div id="savedPostsContainer">
+    @foreach ($posts as $post)
+      <div id="post-{{ $post->id }}" class="saved-post">
+        <x-postcard :post="$post" />
+      </div>
+    @endforeach
+    <h1 id="noSavedMessage" class="text-4xl p-36 font-semibold text-center w-54">No Saved Posts</h1>
+  </div>
 
-  <h1 class=" text-4xl p p-36 font-semibold text-center w-54">No Saved Posts </h1>
-@else
-
-@foreach ($posts as $post)
-    <x-postcard :post="$post" />
-@endforeach
-@endif
 <div class="container mx-auto flex justify-center gap-6 mt-2 mb-2">
   {!! $posts->links() !!}
 </div>

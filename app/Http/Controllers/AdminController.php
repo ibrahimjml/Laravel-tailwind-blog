@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hashtag;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -41,33 +43,101 @@ class AdminController extends Controller
     $sort = $request->get('sort', 'latest'); 
     $choose = $sort === 'oldest' ? 'ASC' : 'DESC';
 
-    $posts = Post::with(['user','hashtags'])
+    $query = Post::with(['user','hashtags'])
           ->search($request->only('search'))
-          ->withCount(['likes', 'comments'])
+          ->withCount(['likes', 'comments']);
+          if($request->has('featured')){
+           $query->featured();
+          };
+
+    $posts = $query
           ->orderBy('created_at', $choose)
           ->paginate(6)
           ->withQuerystring();
 
-    return view('admin.posts',['posts'=>$posts,'filter'=>$request->only('search','sort')]);
+    return view('admin.posts',['posts'=>$posts,'filter'=>$request->only('search','sort','featured')]);
+  }
+
+public function featuredpage(){
+  return view('admin.featuredposts',[
+    'allhashtags' => Hashtag::pluck('name')
+  ]);
+}
+
+  public function features(Request $request){
+    $isFeatured = $request->has('featured') ? true : false;
+    $fields=$request->validate([
+      'title'=>'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
+      'description'=>'required|string',
+      'hashtag' => ['nullable', 'string', function ($attribute, $value, $fail) {
+        $tags = array_filter(array_map('trim', explode(',', $value)));
+        if (count($tags) > 5) {
+            $fail('You can only select up to 5 hashtags.');
+        }
+  }],
+      'image'=>'required|mimes:jpg,png,jpeg|max:5000000',
+      'featured'=>'nullable|boolean'
+  ],
+  ['title.regex'=>'The title accept only letters,numbers and spaces',
+]);
+
+  $fields['title'] = htmlspecialchars(strip_tags($fields['title']));
+  $fields['description'] = $fields['description'];
+
+  $slug = Str::slug($fields['title']);
+  
+  
+  $newimage= uniqid().'-'.$slug.'.'.$fields['image']->extension();
+  $fields['image']->move(public_path('images'),$newimage);
+
+  $post = Post::create([
+    'title'=>$request->input('title'),
+    'description'=>$request->input('description'),
+    'slug'=>$slug,
+    'image_path'=>$newimage,
+    'user_id'=>auth()->user()->id,
+    'is_featured'=>$isFeatured
+  ]);
+
+$hashtagNames = [];
+
+if ($request->filled('hashtag')) {
+  $hashtags = explode(',', $request->input('hashtag'));
+
+  foreach ($hashtags as $hashtag) {
+      $hashtag = strip_tags(trim($hashtag)); 
+
+      if ($hashtag) {
+          $hashtagModel = Hashtag::firstOrCreate(['name' => $hashtag]);
+          $post->hashtags()->attach($hashtagModel->id);
+          $hashtagNames[] = $hashtagModel->name;
+      }
+  }
+}
+toastr()->success('post feature created',['timeOut'=>1000]);
+return back();
   }
   public function destroy(User $user){
   
     
     $this->authorize('modify',$user);
     $user->delete();
-    return back()->with('success',"user deleted");
+    toastr()->success('user deleted',['timeOut'=>1000]);
+    return back();
   }
   public function block(User $user){
     $this->authorize('modify',$user);
     $user->is_blocked = true;
     $user->save();
-    return back()->with('success',"user blocked");
+    toastr()->success('user blocked',['timeOut'=>1000]);
+    return back();
   }
   public function unblock(User $user){
     $this->authorize('modify',$user);
     $user->is_blocked = false;
     $user->save();
-    return back()->with('success',"user unblocked successfuly");
+    toastr()->success('user unblocked successfuly',['timeOut'=>1000]);
+    return back();
   }
 
   public function role(Request $request,User $user)
@@ -78,6 +148,7 @@ class AdminController extends Controller
     ]);
     $user->is_admin = $fields['role'] === 'admin' ? 1 : 0;
     $user->save();
-   return back()->with('success',"user role {$request->role} updated");
+    toastr()->success('user role {$request->role} updated',['timeOut'=>1000]);
+   return back();
   }
 }

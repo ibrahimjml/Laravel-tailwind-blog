@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Hashtagcontroller;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // HOME
-Route::get('/',[PublicController::class,'index']);
+Route::get('/',HomeController::class);
 
 // auth routes
 require __DIR__."/auth.php";
@@ -38,7 +39,7 @@ Route::get('/create',[PostController::class,'createpage'])->name('create')->midd
 Route::post('/create',[PostController::class,'create'])->name('create')->middleware('auth');
 
 // User Profile
-Route::get('/@{user:username}',[PublicController::class,'viewpostByuser'])->name('profile');
+Route::get('/@{user:username}',[PublicController::class,'viewprofile'])->name('profile');
 
 // Edit Profile Image
 Route::get('/edit-avatar/{user}',[PublicController::class,'editpage']);
@@ -70,7 +71,7 @@ Route::put('/post/update/{slug}',[PostController::class,'update'])->name('update
 Route::post('/post/{post}/like',[PostController::class,'like']);
 
 // Search
-Route::get('/search/',[PublicController::class,'search'])->name('blog.search');
+Route::get('/search',[PublicController::class,'search'])->name('blog.search');
 
 // Comment
 Route::post('/comment/{post}',[CommentController::class,'comment']);
@@ -92,6 +93,8 @@ Route::controller(AdminController::class)
   Route::get('/admin-panel','admin')->name("admin-page");
   Route::get('admin/users','users')->name('admin.users');
   Route::get('admin/posts','posts')->name('admin.posts');
+  Route::get('admin/featured','featuredpage')->name('featuredpage');
+  Route::post('admin/featured','features')->name('admin.featured');
   Route::put('admin/role-update/{user}','role')->name('role.update');
   Route::delete('admin/delete/{user}','destroy')->name('delete.user');
   Route::post('admin/block/{user}','block')->name('block.user');

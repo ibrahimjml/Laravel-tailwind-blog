@@ -1,4 +1,4 @@
-<div class="container mx-auto  max-h-[580px] sm:max-h-[540px] sm:grid grid-cols-2  gap-x-8 py-5 px-5 border-b border-gray-300">
+<div id="post-{{ $post->id }}" class="container mx-auto  max-h-[580px] sm:max-h-[540px] sm:grid grid-cols-2  gap-x-8 py-5 px-5 border-b border-gray-300">
 
   <div class="flex flex-col gap-4">
     <div class=" flex gap-4">
@@ -23,8 +23,14 @@
 </div>
   </div>
     
-      <img loading="lazy" class="object-cover shadow-lg rounded-md max-h-[375px] max-w-3xl" src="/images/{{$post->image_path}}"  alt="">
-      <div class="flex gap-10 justify-between items-center">
+        <div class="relative md:max-h-[300px] h-200px max-w-3xl">
+        <img loading="lazy" class="object-cover  shadow-lg rounded-md w-full md:h-full h-100px " src="/images/{{$post->image_path}}"  alt="{{$post->title}}">
+        @if($post->is_featured)
+        <span class="absolute top-4 left-4 p-2 text-white text-sm rounded-md bg-amber-300 font-semibold bg-opacity-70">Featured</span>
+        @endif
+      </div>
+
+      <div class="flex md:gap-10 sm:gap-0 justify-between items-center">
         <div class="flex gap-4">
           <span class="text-xl  font-normal">&#128420;{{$post->likes_count}}</span>
           @if($post->comments_count !== 0)
@@ -44,13 +50,13 @@
 
   <div class=" sm:max-h-[460px] break-words">
     <h1 class=" capitalize text-xl md:text-2xl font-bold text-gray-700 mt-8 md:mt-16 ">{{ $post->title }}</h1>
-    <div class="py-5 sm:py-12 max-h-[100px] sm:max-h-[300px] overflow-y-auto">
+    <div class="  max-h-[100px] sm:max-h-[300px] overflow-y-auto">
 
         {!! Str::words(strip_tags($post->description), 90) !!}
     </div>
 
     @if($post->hashtags->isNotEmpty())
-    <span class="mt-6 sm:mt-0 flex gap-2">
+    <span class="md:mt-6 sm:mt-0 flex flex-wrap md:gap-2 gap-4 md:flex-nowrap h-fit">
       @foreach($post->hashtags as $hashtag)
       <span >
         <a href="{{route('viewhashtag',$hashtag->name)}}" class=" font-medium bg-gray-700 rounded-lg text-white p-1"># {{ $hashtag->name }}</a></span>
