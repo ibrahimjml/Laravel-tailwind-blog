@@ -13,9 +13,9 @@
  <img src="https://i.postimg.cc/HkJbrnrn/Screenshot-2024-10-29-141042.png" alt="image" width="1012px">
   ![Dashboard Screenshot](public/footer-photo.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/6pd5bxSz/Screenshot-2024-10-29-141415.png)
-![schooldash-dahboard-page](https://i.postimg.cc/tTZPjj8k/127-0-0-1-8000-post-using-tailwindcss-1.png)
+![schooldash-dahboard-page](https://i.postimg.cc/25LpTgrR/127-0-0-1-8000-post-using-tailwindcss-5.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/tRFZt2bs/Screenshot-2025-04-20-214833.png)
-![schooldash-dahboard-page](https://i.postimg.cc/nc8WNVNd/127-0-0-1-8000-create.png)
+![schooldash-dahboard-page](https://i.postimg.cc/VLK3wzNP/127-0-0-1-8000-create-2.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/pTBL4grH/Screenshot-2024-10-28-152832.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/jdLLd6cV/Screenshot-2024-10-22-212650.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/W15nZy2V/Screenshot-2024-10-29-024842.png)
