@@ -52,7 +52,11 @@ class Post extends Model
   public function comments(){
     return $this->hasMany(Comment::class)->orderBy('created_at','DESC');
   }
-
+  public function commentsCount()
+  {
+      return $this->hasMany(Comment::class)->count();
+  }
+  
   public function scopeSearch($query,$search){
     if(isset($search['search'])){
       $query->where(function ($q) use ($search) {
@@ -61,4 +65,5 @@ class Post extends Model
     });
     }
   }
+
 }

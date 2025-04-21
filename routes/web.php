@@ -38,6 +38,9 @@ Route::get('/hashtag/{hashtag:name}',[Hashtagcontroller::class,'viewhashtag'])->
 Route::get('/create',[PostController::class,'createpage'])->name('create')->middleware('auth');
 Route::post('/create',[PostController::class,'create'])->name('create')->middleware('auth');
 
+// Add images inside TinyMCE editor
+Route::post('/upload-image', [PostController::class, 'uploadImage'])->name('tinymce.upload');
+
 // User Profile
 Route::get('/@{user:username}',[PublicController::class,'viewprofile'])->name('profile');
 
@@ -73,10 +76,10 @@ Route::post('/post/{post}/like',[PostController::class,'like']);
 // Search
 Route::get('/search',[PublicController::class,'search'])->name('blog.search');
 
-// Comment
+// Comments
 Route::post('/comment/{post}',[CommentController::class,'comment']);
-
-// Delete Comment
+Route::post('/reply/{comment}',[CommentController::class,'reply']);
+Route::put('/comment/edit/{comment}',[CommentController::class,'editcomment'])->name('edit.comment');
 Route::delete('/comment/{comment}',[CommentController::class,'deletecomment'])->name('delete.comment');
 
 // Save Post

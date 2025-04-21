@@ -56,8 +56,18 @@ class PublicController extends Controller
       }
   ])->where('slug', $slug)->first();
 
+ $morearticles = Post::query()
+  ->with(['user'=> function ($query){
+    $query->select('id','name','username','avatar');
+  }])
+ ->where('user_id',$post->user_id)
+ ->where('id','!=',$post->id)
+ ->take(3)
+ ->get();
+
     return view('post', [
        'post' => $post,
+       'morearticles' => $morearticles,
        'meta_title' => $post->slug . ' | Blog-Post',
        'author' => $post->user->username,
        'meta_description' => Str::limit(strip_tags($post->description), 150),
@@ -117,7 +127,7 @@ class PublicController extends Controller
 
   public function editprofilepage(User $user)
   {
-     
+
     $this->authorize('view',$user);
   
     return view('edit-profile',['user' => $user]);

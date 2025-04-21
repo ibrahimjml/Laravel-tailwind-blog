@@ -8,6 +8,7 @@ use App\Models\Hashtag;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
 
@@ -17,6 +18,7 @@ class PostController extends Controller
   public function __construct()
   {
     $this->middleware(['auth', 'verified', CheckIfBlocked::class]);
+    $this->middleware('password.confirm')->only('editpost');
   }
 
   public function blog(Request $request)
@@ -81,7 +83,6 @@ class PostController extends Controller
   public function createpage()
   {
     return view('create',[
-      'initialTags' => old('hashtag') ? explode(',', old('hashtag')) : [],
       'allhashtags' => Hashtag::pluck('name'),
       'meta_title' => 'Create Page | Blog-Post',
       'author' => auth()->user()->username,
@@ -159,10 +160,10 @@ class PostController extends Controller
     $this->authorize('delete', $post);
     $post->delete();
     if (auth()->user()->is_admin) {
-      toastr()->success('password reset success',['timeOut'=>1000]);
+      toastr()->success('Post deleted successfully',['timeOut'=>1000]);
       return redirect('/admin-panel');
     } else {
-      toastr()->error('Post deleted successfully',['timeOut'=>1000]);
+      toastr()->success('Post deleted successfully',['timeOut'=>1000]);
       return redirect('/blog');
     }
   }
@@ -234,6 +235,27 @@ class PostController extends Controller
     toastr()->success('Post updated successfully',['timeOut'=>1000]);
     return redirect('/blog');
   }
+
+  public function uploadImage(Request $request)
+  {
+      $request->validate([
+          'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:4000',
+      ]);
+
+      if ($request->hasFile('file')) {
+          $file = $request->file('file');
+          $filename = Str::random(20) . '.' . $file->getClientOriginalExtension();
+          
+          $path = $file->storeAs('images', $filename, 'public');
+          
+          return response()->json([
+            'location' => '/storage/' . $path  // add leading slash here
+        ]);
+      }
+
+      return response()->json(['error' => 'Upload failed'], 500);
+  }
+  
 
   public function like(Post $post)
   {

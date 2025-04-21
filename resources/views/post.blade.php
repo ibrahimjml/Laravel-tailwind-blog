@@ -5,104 +5,126 @@
   @section('meta_description',$meta_description)
 
 <div class="container mx-auto ">
-  @can('view',$post)
-  <div class="flex justify-center items-center mt-3">
-    <a href="{{route('edit.post',$post->slug)}}" class="flex sm:hidden justify-center items-center bg-blue-700   w-32 text-slate-200 p-2 py-1 sm:py-3 px-2 sm:px-5  rounded-lg font-medium sm:font-bold capitalize ">edit</a>
-  </div>
-  @endcan
 
-  <div class=" container mx-auto flex  flex-row justify-center items-center pb-2 sm:pb-6 translate-x-7  mt-4">
-     <div class=" sm:mx-0 flex justify-center items-center" >
-      
-      <span class="text-sm italic sm:text-lg ">
-        <strong class="">BY: </strong>
-        <a href="{{route('profile',$post->user->username)}}">{{$post->user->username}}</a>
-      </span>
-    
-      &nbsp;&nbsp;
-      <span class="text-sm italic sm:text-lg flex items-center mr-0 sm:mr-36 ">
-        <b>Updated-at :</b> &nbsp;{{$post->updated_at->diffForHumans()}}
-      </span>
-     </div>
-      
-      
-      
-      <div class="flex  items-center justify-center translate-x-0 sm:translate-x-[-3rem] mx-auto sm:mx-0">
-        
-        @can('delete',$post)
-        <div>
-          <form action="{{route('delete.post',$post->slug)}}" method="POST" onsubmit="return confirm('Are you sure you want delete this post ?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="hidden sm:flex justify-center bg-red-700 ml-9  w-32 text-slate-200 p-2 py-1 sm:py-3 px-2 sm:px-5  rounded-lg font-medium sm:font-bold capitalize place-self-start  ">Delete</button>
-            <button type="submit" class="sm:hidden p-2 rounded-full bg-red-100 flex items-center mb-2"><svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ee4811" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></button>
-          </form>
-        </div>
-        @endcan
-      
-        @can('view',$post)
-        <a href="{{route('edit.post',$post->slug)}}" class="hidden sm:flex justify-center bg-blue-700 ml-9  w-32 text-slate-200 p-2 py-1 sm:py-3 px-2 sm:px-5  rounded-lg font-medium sm:font-bold capitalize place-self-start">edit</a>
-        @endcan
+
+  <div class="relative w-3/4  mx-auto mt-2">
+      {{-- delete|edit model  --}}
+    @can('view',$post)
+      @include('partials.delete-edit-post-model',['post'=>$post])
+      @endcan
+
+  <div class="relative mx-auto w-full max-w-6xl mt-2 h-[300px] md:h-[450px]">
+      <img class="absolute top-0 left-0 w-full h-full object-cover rounded-none md:rounded-lg shadow-lg hover:shadow-md" src="/images/{{$post->image_path}}"  alt="">
+    {{-- hashtags on post --}}
+      <div class="absolute z-10 bottom-1 left-4 flex flex-wrap gap-2">
+        @foreach($post->hashtags->pluck('name') as $tag)
+          <span class="px-2 py-1 text-white text-xs rounded-md bg-gray-700 bg-opacity-70 font-semibold hover:bg-gray-500 transition-all">
+            <a href="{{route('viewhashtag',$tag)}}"># {{ $tag }}</a>
+          </span>
+        @endforeach
       </div>
-      
-    
-      
-    
   </div>
-  <div class="relative w-[90%] md:w-[60%] mx-auto">
-    <img class="object-contain relative rounded-none md:rounded-lg w-full  h-120 mx-auto shadow-lg hover:shadow-md" src="/images/{{$post->image_path}}"  alt="">
-  {{-- hashtags on post --}}
-    <div class="absolute bottom-[100px] left-4 flex flex-wrap gap-2">
-      @foreach($post->hashtags->pluck('name') as $tag)
-        <span class="px-2 py-1 text-white text-xs rounded-md bg-gray-700 bg-opacity-70 font-semibold hover:bg-gray-500 transition-all">
-          <a href="{{route('viewhashtag',$tag)}}"># {{ $tag }}</a>
-        </span>
-      @endforeach
-    </div>
+{{-- Post Title & user information --}}
+<div class="flex flex-col items-center justify-center container mx-auto  pb-2 sm:pb-6 mt-7">
+  <span class="block w-full font-bold md:text-6xl text-2xl text-center capitalize">{{$post->title}}</span>
 
-    <div class="flex gap-1 justify-between items-center  mt-1">
-      <span class="text-xl ml-10 items-center">&#128420;</span>
-      <span id="likes-count" class="text-xl">{{$post->likes()->count()}}</span>
-      {{-- like/unlike button fetch --}}
-    @if($post->is_liked())
-    <button onclick="fetchLike({{$post->id}})" class="likeBTN mb-4 mx-auto  sm:mx-auto   bg-transparent border-2 text-red-700 py-2 px-5 rounded-lg font-bold capitalize border-red-300  hover:border-red-700 hover:text-red-500 transition duration-300 mt-4">Unlike</button>
-  @else
-  <button onclick="fetchLike({{$post->id}})" class="likeBTN mb-4 mx-auto  sm:mx-auto  bg-transparent border-2 text-red-700 py-2 px-5 rounded-lg font-bold capitalize border-red-300  hover:border-red-700 hover:text-red-500 transition duration-300 mt-4">Like</button>
-  @endif
+   
+    <div class="ml-5 mt-4 flex justify-center items-center md:text-sm text-xs">
+      <span class="flex justify-center items-center  font-semibold gap-2">
+        
+  <a href='{{route('profile',$post->user->username)}}'>
+    <img src="{{$post->user->avatar_url}}"  class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
+    </a>
+        <a href="{{route('profile',$post->user->username)}}" class="hover:underline">{{$post->user->username}}</a>
+      </span>
+      
+      &nbsp;&nbsp;
+      <span class="text-lg">
+        · {{$post->updated_at->diffForHumans()}}
+      </span>
     </div>
-    
-</div>
-<div class="w-[80vw] mx-auto py-12">
-  {!! $post->description !!}
-</div>
-{{-- comment form --}}
-  <div class="w-fit mb-4 border-2 p-1 rounded-lg px-5 mx-auto">
-    <form action="/comment/{{$post->id}}" method="POST">
-      @csrf
-      <h5 class="text-gray-500 mb-2">Add a new comment</h5>
-      <textarea class="border-2 bg-gray-100  rounded-lg placeholder-gray-400 pl-2 placeholder-opacity-100 @error('content') border-red-500 @enderror" placeholder="Type Your Comment" name="content" id="content" cols="40" ></textarea>
-      @error('content')
-      <p class="text-red-500 text-xs italic mt-4">
-          {{ $message }}
-      </p>
-      @enderror
-      <button type="submit" class="block text-white rounded-lg p-1 text-sm ml-auto bg-blue-500">post a comment</button>
-    </form>
-  </div>
-  <h2 class="w-fit mx-auto mb-4">Comments ({{ $post->comments->count() }})</h2>
-
   
 </div>
- 
 
-{{--display comment Form --}}
-@include('comments.comments',['posts'=>$post->comments])
+<div class="w-full py-12">
+  {!! $post->description !!}
+</div>
+</div>
+
+{{-- like | comment | save | share Model --}}
+<div id="action-bar-trigger" class="h-[1px] w-full"></div>
+
+<div id="action-bar" class=" container  mx-auto mb-5 w-fit space-x-2 flex justify-center items-center gap-2 border-2 rounded-full px-6 py-3 text-2xl bg-white transition-all duration-300 z-50">
+  <span onclick="fetchLike(this)" class="cursor-pointer flex items-center gap-2">
+    <i class="fa-heart like-icon {{ $post->is_liked() ? 'fa-solid text-red-500' : 'fa-regular' }}" data-id="{{ $post->id }}"></i>
+    <span id="likes-count" class="text-sm">{{ $post->likes()->count()}}</span>
+  </span>
+<div class="h-4 w-px bg-gray-400"></div>
+<span id="openModel" class="cursor-pointer flex items-center gap-2">
+  <i class="fa-regular fa-comment"></i>
+  <span  class="text-sm">{{ $post->commentsCount() }}</span>
+</span>
+<div class="h-4 w-px bg-gray-400"></div>
+<span  onclick="savedTo(this,{{$post->id}})" class="cursor-pointer flex items-center gap-2">
+  <i class="fa-bookmark bookmark-icon {{in_array($post->id,session('saved-to',[])) ? 'fa-solid' : 'fa-regular'}}"></i>
+</span>
+<div class="h-4 w-px bg-gray-400"></div>
+<span class="cursor-pointer flex items-center gap-2"><i class="fa-solid fa-share-nodes"></i></span>
+</div>
 
 
+{{-- open comments model --}}
 
+<div id="bgmodel" class="fixed hidden inset-0 z-50 opacity-0 transition-opacity duration-300 ease-in-out">
+  
+  <div class="absolute inset-0 bg-gray-900 opacity-60"></div>
 
+  <div id="commentModel" class="relative h-full w-screen md:w-[50%] bg-white overflow-y-auto shadow-xl translate-x-[-110vw] transition-all duration-300 ease-in-out">
+  <span id="closeModel" title="close" class="cursor-pointer absolute top-4 right-4 text-xl"><i class="fa-solid fa-xmark"></i></span>
+    {{-- Comment Form --}}
+    <p class="w-fit md:text-xl text-md mb-3 p-2 font-semibold">
+      Comments (<span id="comment-count-number">{{ $post->commentsCount() }}</span>)
+    </p>
+    <div class="w-fit mb-4 border-2 p-1 rounded-lg px-5 mx-auto">
+      @include('comments.partials.comment_form', ['post' => $post])
+    </div>
 
-  {{-- contianer random hearts--}}
+       {{-- display comments | replies UI --}}
+    @include('comments.comments',['comments'=>$post->comments])
+  </div>
+</div>
+{{-- hashtag on post  --}}
+<div class="flex justify-center items-center gap-1 mt-3">
+  @foreach($post->hashtags->pluck('name') as $tag)
+<span class=" p-1 text-white  text-xs rounded-md bg-gray-700 bg-opacity-70 font-semibold hover:bg-gray-500 transition-all">
+  <a href="{{route('viewhashtag',$tag)}}">{{ $tag }}</a>
+</span>
+@endforeach
+</div>
+{{-- More Articles --}}
+<p class="text-gray-500 text-lg text-center font-semibold mt-5 uppercase">More Articles</p>
+<div class="flex flex-col md:flex-row  md:justify-center md:items-center md:gap-2 gap-4 mt-4 mb-3">
+  @foreach($morearticles as $article)
+<div class="rounded-lg p-3 border-2 mx-auto md:mx-0 w-[400px] md:w-[500px] h-fit flex flex-col ">
+<div class="flex gap-2 items-center">
+  <a href='{{route('profile',$article->user->username)}}'>
+    <img loading="lazy" src="{{$article->user->avatar_url}}"  class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
+    </a>
+    <a href='{{route('profile',$article->user->username)}}' class="hover:underline">
+      {{$article->user->username}}
+    </a>
+</div>
+<a href="{{route('single.post',$article->slug)}}">
+<img src="/images/{{$article->image_path}}"  alt="" class="w-full h-[270px] object-cover mt-2">
+<div class="flex flex-col">
+  <p class="text-xl font-bold mt-1">{{$article->title}}</p>
+  <p class="text-sm text-gray-500 font-semibold line-clamp-3 mt-2">{!! Str::words(strip_tags($article->description), 20) !!}</p>
+</div>
+</a>
+</div>
+@endforeach
+</div>
+{{-- contianer random hearts--}}
 <div id="containerheart"></div>
 
 
@@ -110,6 +132,88 @@
 
 
 <x-footer/>
+@can('view',$post)
+<script>
+  const OpenModel = document.getElementById('openmodel');
+  const Model = document.getElementById('model');
+  OpenModel.addEventListener('click',()=>{
+    if(Model.classList.contains('hidden')){
+      Model.classList.remove('hidden');
+    }else{
+      Model.classList.add('hidden');
+    }
+  })
+</script>
+@endcan
+
+  
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const actionBar = document.getElementById('action-bar');
+    const trigger = document.getElementById('action-bar-trigger');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Trigger is visible (user is at bottom), show naturally
+          actionBar.classList.remove('fixed', 'bottom-0', 'left-1/2', '-translate-x-1/2', 'shadow-xl');
+          actionBar.classList.add('relative', 'mx-auto');
+        } else {
+          // Trigger is out of view — fix it to bottom
+          actionBar.classList.remove('relative', 'mx-auto');
+          actionBar.classList.add('fixed', 'bottom-0', 'left-1/2', '-translate-x-1/2', 'shadow-xl');
+        }
+      });
+    }, {
+      threshold: 0.5 // trigger is half-visible
+    });
+
+    observer.observe(trigger);
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const opencommentModel = document.getElementById('openModel');
+    const closeModel = document.getElementById('closeModel');
+    const commentModel = document.getElementById('commentModel');
+    const bgmodel = document.getElementById('bgmodel');
+  
+    opencommentModel.addEventListener('click', () => {
+      document.body.classList.add('no-scroll');
+  
+      bgmodel.classList.remove('hidden');
+      setTimeout(() => {
+        bgmodel.classList.add('opacity-100');
+        bgmodel.classList.remove('opacity-0');
+
+        commentModel.classList.remove('translate-x-[-110vw]');
+      commentModel.classList.add('translate-x-[0]');
+      }, 10); 
+  
+
+      
+    });
+  
+    closeModel.addEventListener('click', () => {
+      document.body.classList.remove('no-scroll');
+  
+      bgmodel.classList.remove('opacity-100');
+      bgmodel.classList.add('opacity-0');
+  
+      commentModel.classList.remove('translate-x-[0]');
+      commentModel.classList.add('translate-x-[-110vw]');
+  
+
+      setTimeout(() => {
+        bgmodel.classList.add('hidden');
+      }, 300); 
+    });
+  });
+  </script>
+  
+
+
 </x-header-blog>
   
   

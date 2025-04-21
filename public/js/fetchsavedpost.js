@@ -1,58 +1,40 @@
-function savedTo(postId){
-  let save = document.querySelector(`[saved-post-id="${postId}"]`);
+function savedTo(el,postId) {
+
+  const icon = el.querySelector('.bookmark-icon'); 
 
   let options = {
     method: 'POST',
     headers: {
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        'Content-Type': 'application/json'
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({ post_id: postId })
-};
+  };
 
-fetch(`/saved-post`, options)
+  fetch(`/saved-post`, options)
     .then(response => response.json())
-  
     .then(data => {
-        if (data.status == 'removed') {
-            save.innerHTML = "save";
+      if (data.status === 'removed') {
+        toastr.success("Bookmark Removed ");
+        icon.classList.remove('fa-solid');
+        icon.classList.add('fa-regular');
 
-            // check if we in saved posts page when unsaved delete container 
-            if (window.location.pathname === '/getsavedposts') {
-              const bigContainer = document.getElementById(`post-${postId}`);
-              if(bigContainer){
-                bigContainer.remove();
-                checkNoSavedPosts();
-              }
-            
-            }
-
-        } else if (data.status == 'added') {
-            // create element "popup"
-            const popup = document.createElement("div");
-            document.body.append(popup);
-            popup.classList.add("popup");
-            popup.innerText="Added to Saved";
-          
-            setTimeout(() => {
-              popup.style.transform = "translateX(-50vw)";
-              
-            }, 1500)
-            
-             setTimeout(() => {
-               popup.remove();
-             }, 2000)
-
-            save.innerHTML = "saved";
-          
-        }
+      } else if (data.status === 'added') {
+        toastr.options = {
+          "progressBar": true,
+          "positionClass": "toast-top-right",
+          "timeOut": 1000
+        };
+        toastr.success("Bookmark Added ");
+        icon.classList.remove('fa-regular');
+        icon.classList.add('fa-solid');
+      }
     })
     .catch(error => {
-        console.error('Error:', error);
+      console.error('Error:', error);
     });
-
-  
 }
+// function check saved posts if == 0 remove hidden from message
 function checkNoSavedPosts() {
   const savedPosts = document.querySelectorAll('.saved-post');
   const noSavedMsg = document.getElementById('noSavedMessage');

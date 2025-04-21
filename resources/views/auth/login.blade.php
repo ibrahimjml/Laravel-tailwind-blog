@@ -1,5 +1,7 @@
 <x-header-blog>
-  @include('partials.session-success-error')
+@section('meta_title',$meta_title)
+@section('meta_description',$meta_description)
+@section('meta_keywords',$meta_keywords)
   <main class="sm:container mx-auto  max-w-fit mt-5 mb-20 sm:max-w-lg sm:mt-10">
     <div class="flex">
         <div class="w-full">

@@ -30,15 +30,51 @@ class CommentController extends Controller
     $comment = $post->comments()->create($fields);
 
     Mail::to($post->user)->queue(new EmailComment($post->user,$comment->user,$post));
-    toastr()->success('comment posted',['timeOut'=>1000]);
+    $comment->update($fields);
+      return response()->json([
+        'commented'=>true,
+        'html' => view('comments.comments', ['comments' => [$comment]])->render()
+      ]);
+    }
 
+public function reply(Comment $comment, Request $request){
+    $fields = $request->validate([
+        'content'=>'required|string|max:255',
+        'parent_id'=>'required|exists:comments,id'
+      ]);
+
+      $fields['content']=strip_tags($fields['content']);
+      $fields['user_id']=auth()->id();
+      $fields['post_id']=$comment->post_id;
+      Comment::create($fields);
+      toastr()->success('Reply added successfully',['timeOut'=>1000]);
       return back();
+}
+    public function editcomment(Request $request,Comment $comment){
+      
+      $this->authorize('edit',$comment);
+      
+      
+      $fields = $request->validate([
+        'content'=>'required|string|max:255',
+        'parent_id'=>'nullable|exists:comments,id'
+      ]);
+
+    
+      $fields['content']=strip_tags($fields['content']);
+
+      $comment->update($fields);
+      return response()->json([
+        'Edited'=>true
+      ]);
+
     }
 
     public function deletecomment(Comment $comment){
       $this->authorize('delete',$comment);
       $comment->delete();
-      toastr()->success('comment deleted',['timeOut'=>1000]);
-      return redirect()->back();
+      return response()->json([
+        'deleted'=>true
+      ]);
     }
 }

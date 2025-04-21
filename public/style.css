@@ -108,3 +108,11 @@ main.admin.collapsed section {
 .active{
   background-color: #2888fe !important;
 }
+
+/* =========================================================
+===   Add overflow-hidden on body when opening comment model
+=========================================================== */
+body.no-scroll {
+  overflow: hidden !important;
+  height: 100vh;
+}

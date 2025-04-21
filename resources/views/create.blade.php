@@ -83,7 +83,7 @@
           <option value="{{ $all }}">{{ $all }}</option>
         @endforeach
       </select>
-      <button type="button" onclick="addSelectedHashtags()" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
+      <button type="button" onclick="addSelectedHashtags()" class="mt-2 bg-gray-500 hover:bg-gray-600 w-fit text-white px-3 py-1 rounded">
         Add Selected Hashtags
       </button>
     @endif
@@ -97,9 +97,15 @@
   </form>
 </div>
 <x-footer/>
+
+@php
+  $initialTags =  old('hashtag') ? explode(',', old('hashtag')) : [];
+@endphp
+
 <script>
 window.initialTags = @json($initialTags ?? []);
 </script>
+
 <script>
   const imageSelected = document.getElementById('imageSelected');
   const imagePreview = document.getElementById('imagePreview');

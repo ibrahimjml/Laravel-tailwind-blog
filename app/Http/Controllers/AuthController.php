@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Str;
 use App\Mail\ForgotPassword;
+use App\Models\Hashtag;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -17,7 +18,11 @@ class AuthController extends Controller
 {
   public function registerpage()
   {
-    return view('auth.register');
+    return view('auth.register',[
+      'meta_title' => 'Register-Page | '.config('app.name'),
+      'meta_description' => 'Login to create a new posts and interacts with ur friends ',
+      'meta_keywords' => Hashtag::pluck('name')->take(10)->implode(', ')
+    ]);
   }
 
   public function register(Request $request)
@@ -46,7 +51,12 @@ class AuthController extends Controller
 
   public function loginpage()
   {
-    return view('auth.login');
+    
+    return view('auth.login',[
+      'meta_title' => 'Login-Page | '.config('app.name'),
+      'meta_description' => 'Login to create a new posts and interacts with ur friends ',
+      'meta_keywords' => Hashtag::pluck('name')->take(10)->implode(', ')
+    ]);
   }
 
 
@@ -106,7 +116,7 @@ class AuthController extends Controller
       $user->save();
       Mail::to($user->email)->send(new ForgotPassword($user, $token));
       
-      toastr()->error('please check your email',['timeOut'=>2000]);
+      toastr()->success('please check your email',['timeOut'=>2000]);
       return back();
     } else {
 

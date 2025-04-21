@@ -12,7 +12,7 @@ class Comment extends Model
     protected $fillable =[
      'user_id','post_id','parent_id','content'
     ];
-
+    
     public function post(){
       return $this->belongsTo(Post::class);
     }
@@ -28,15 +28,5 @@ class Comment extends Model
     public function replies(){
       return $this->hasMany(Comment::class, 'parent_id')->orderBy('created_at','desc');
     }
-    // function loop count nested replies inside replies
-    public function getTotalRepliesCount(){
 
-    $count = $this->replies->count();
-
-    foreach ($this->replies as $reply) {
-        $count += $reply->getTotalRepliesCount();
-    }
-
-    return $count;
-}
 }

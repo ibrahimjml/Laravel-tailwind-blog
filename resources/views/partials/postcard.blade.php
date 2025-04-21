@@ -5,11 +5,7 @@
       
   {{-- checkin if image has default.jpg --}}  
   <a href='{{route('profile',$post->user->username)}}'>
-    @if($post->user->avatar !== "default.jpg")
-    <img src="{{Storage::url($post->user->avatar)}}"  class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
-    @else
-  <img src="/storage/avatars/{{$post->user->avatar}}"  class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
-  @endif
+    <img src="{{$post->user->avatar_url}}"  class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
     </a>
   
 
@@ -38,10 +34,11 @@
           @endif
         </div>
         <div class="flex gap-2 justify-end">
-          <button saved-post-id="{{$post->id}}" onclick="savedTo({{$post->id}})" class=" bg-transparent border-2 text-gray-700 py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300 mt-2">{{in_array($post->id,session('saved-to',[])) ? 'saved' : 'save'}}</button>
+          @if (!empty($showSaveButton))
+          <button saved-post-id="{{$post->id}}" onclick="unsavedposts({{$post->id}})" class=" bg-transparent border-2 text-red-700 py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-red-700 transition duration-300 mt-2">remove</button>
+          @endif
           <a class="bg-transparent border-2 text-gray-700 py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300 mt-2" href="/post/{{$post->slug}}">read more</a>
         </div>
-        
       </div>
       
     
@@ -53,6 +50,7 @@
     <div class="  max-h-[100px] sm:max-h-[300px] overflow-y-auto">
 
         {!! Str::words(strip_tags($post->description), 90) !!}
+        
     </div>
 
     @if($post->hashtags->isNotEmpty())
