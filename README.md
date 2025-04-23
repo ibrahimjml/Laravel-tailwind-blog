@@ -13,14 +13,15 @@
  <img src="https://i.postimg.cc/HkJbrnrn/Screenshot-2024-10-29-141042.png" alt="image" width="1012px">
   ![Dashboard Screenshot](public/footer-photo.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/6pd5bxSz/Screenshot-2024-10-29-141415.png)
-![schooldash-dahboard-page](https://i.postimg.cc/25LpTgrR/127-0-0-1-8000-post-using-tailwindcss-5.png)
-![schooldash-dahboard-page](https://i.postimg.cc/tRFZt2bs/Screenshot-2025-04-20-214833.png)
+![schooldash-dahboard-page](https://i.postimg.cc/YCh46r6M/127-0-0-1-8000-post-using-tailwindcss-7.png)
+![schooldash-dahboard-page](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/VLK3wzNP/127-0-0-1-8000-create-2.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/pTBL4grH/Screenshot-2024-10-28-152832.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/jdLLd6cV/Screenshot-2024-10-22-212650.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/W15nZy2V/Screenshot-2024-10-29-024842.png)
-![schooldash-dahboard-page](https://i.postimg.cc/hjkRPT2z/Screenshot-2024-11-22-120610.png)
-![schooldash-dahboard-page](https://i.postimg.cc/gj3Fwj7M/Screenshot-2024-11-22-120504.png)
+![schooldash-dahboard-page](https://i.postimg.cc/R02w63yk/Screenshot-2025-04-22-201152.png)
+![schooldash-dahboard-page](https://i.postimg.cc/k5RbmJGf/Screenshot-2025-04-22-202407.png)
+![schooldash-dahboard-page](https://i.postimg.cc/FzNd30ZB/Screenshot-2025-04-22-201238.png)
 
 
 
