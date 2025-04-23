@@ -9,10 +9,8 @@
 
 ## About Laravel
 # Laravel Blog Application
- ![Dashboard Screenshot](public/header-photo.png)
- <img src="https://i.postimg.cc/HkJbrnrn/Screenshot-2024-10-29-141042.png" alt="image" width="1012px">
-  ![Dashboard Screenshot](public/footer-photo.png)
-![schooldash-dahboard-page](https://i.postimg.cc/6pd5bxSz/Screenshot-2024-10-29-141415.png)
+ ![Dashboard Screenshot](https://i.postimg.cc/wTzCLcrg/127-0-0-1-8000-7.png)
+![schooldash-dahboard-page](https://i.postimg.cc/XYz1HwsZ/Screenshot-2025-04-23-160925.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/YCh46r6M/127-0-0-1-8000-post-using-tailwindcss-7.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/VLK3wzNP/127-0-0-1-8000-create-2.png)
