@@ -1,4 +1,4 @@
-<x-header-blog>
+<x-layout>
   @section('meta_title',$meta_title)
   @section('meta_keywords',$meta_keywords)
   @section('author',$author)
@@ -17,5 +17,4 @@
 <div class="container mx-auto flex justify-center gap-6 mt-2 mb-2">
   {!! $posts->links() !!}
 </div>
-<x-footer/>
-</x-header-blog>
+</x-layout>

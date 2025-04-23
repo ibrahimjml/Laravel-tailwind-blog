@@ -23,11 +23,11 @@
 <script src="{{asset('js/comments.js')}}" defer></script>
 @endif
 
-@if(Route::is('admin-page','featuredpage','admin.posts','admin.users'))
+@if(Route::is('admin-page','featuredpage','admin.posts','admin.users','hashtagpage'))
 <script src="{{asset('js/sidebar.js')}}" defer></script>
 @endif
 
-@if(Route::is(['edit.post','create']))
+@if(Route::is(['edit.post','create','featuredpage']))
 <script src="{{asset('js/hashtagsUI.js')}}" defer></script>
 @endif
 

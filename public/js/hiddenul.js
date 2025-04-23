@@ -1,4 +1,4 @@
-const hiddenul2 = document.getElementById("hiddenul2");
+const hiddenul = document.getElementById("hiddenul2");
 const change = document.getElementById("dropdown");
 const mobilebtn = document.querySelector("#mobile-btn");
 const mobilemenu = document.querySelector("#mobile-menu");
@@ -28,10 +28,10 @@ mobilebtn.addEventListener('click', (e) => {
 
 if(change){
 change.addEventListener("mousemove",(eo) => {
-hiddenul2.style.display="block";
+hiddenul.style.display="block";
 });
 
 change.addEventListener("mouseout",(eo) => {
-hiddenul2.style.display="none";
+hiddenul.style.display="none";
 });
 }

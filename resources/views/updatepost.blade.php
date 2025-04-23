@@ -1,11 +1,13 @@
-<x-header-blog>
+<x-layout>
   @section('meta_title',$meta_title)
   @section('meta_keywords',$meta_keywords)
   @section('author',$author)
   @section('meta_description',$meta_description)
-<div class="container mx-auto pt-[40px]">
-  <h1 class=" text-3xl font-bold text-center py-5 capitalize">Edit Post</h1>
-</div>
+
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+    <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-10">Update Post</h1>
+
 
 <div class="flex justify-center pt-9">
   <form action="{{route('update.post',$post->slug)}}" method="POST" enctype="multipart/form-data" class="p-6">
@@ -93,8 +95,9 @@
     </div>
   </form>
 </div>
-<x-footer/>
+  </div>
+
 <script>
   window.initialTags = @json(explode(',', $hashtags ?? ''));
 </script>
-</x-header-blog>
+</x-layout>

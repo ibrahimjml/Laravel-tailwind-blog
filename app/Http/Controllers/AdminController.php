@@ -58,6 +58,45 @@ class AdminController extends Controller
     return view('admin.posts',['posts'=>$posts,'filter'=>$request->only('search','sort','featured')]);
   }
 
+public function create_tag(Request $request){
+  $fields = $request->validate([
+  'name' =>'required|string'
+  ]);
+ $hashtag = Hashtag::create($fields);
+  return response()->json([
+    'added'=>true,
+    'hashtag' => $hashtag->name
+  ]);
+}
+
+  public function hashtagpage(){
+    return view('admin.hashtags',[
+      'hashtags' => Hashtag::paginate(6)
+    ]);
+  }
+
+public function edit_tag(Hashtag $hashtag, Request $request){
+  $fields = $request->validate([
+    'name' =>'required|string'
+    ]);
+    $hashtag->update($fields);
+    $hashtag->save();
+    return response()->json([
+      'edited'=>true,
+      'message' => "Hashtag {$hashtag->name} updated",
+      'hashtag' => $hashtag->name
+    ]);
+}
+
+  public function delete_tag(Hashtag $hashtag){
+    $name = $hashtag->name;
+    $hashtag->delete();
+    return response()->json([
+      'deleted' => true,
+      'message' => "Hashtag {$name} deleted"
+  ]);
+  }
+
 public function featuredpage(){
   return view('admin.featuredposts',[
     'allhashtags' => Hashtag::pluck('name')

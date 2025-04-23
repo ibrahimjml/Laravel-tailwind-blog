@@ -1,4 +1,4 @@
-<x-header-blog>
+<x-layout>
 
 <main class="admin w-screen grid grid-cols-[25%,75%] transition-all ease-in-out duration-300 p-5">
     {{-- admin side bar --}}
@@ -79,14 +79,7 @@
         </td>
         <td class="p-2">{{Str::limit($post->slug,20)}}</td>
         <td class="p-2">  {!! Str::limit(strip_tags($post->description), 40) !!}</td>
-        {{-- <td class="p-2">{{$post->hashtags->pluck('name')->implode(', ')}}</td> --}}
-        <td class="p-2 md:flex  md:flex-nowrap gap-3 place-items-center sm:flex-wrap ">
-          @foreach($post->hashtags->pluck('name') as $hashtag)
-          <div class="p-1 h-fit w-fit bg-slate-500 text-sm text-white rounded-lg gap-4 justify-center items-center flex">
-            {{$hashtag}}
-          </div>
-          @endforeach
-        </td>
+        <td class="p-2">{{$post->hashtags->pluck('name')->implode(', ')}}</td>
         <td class="p-2">
           <div class="flex justify-center">
             @if($post->is_featured)
@@ -124,5 +117,4 @@
   {!! $posts->links() !!}
 </section>
 </main>
-<x-footer/>
 </x-header-blog>

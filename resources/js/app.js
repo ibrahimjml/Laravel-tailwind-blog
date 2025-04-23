@@ -16,6 +16,7 @@ window.addEventListener('DOMContentLoaded', () => {
     selector: '#textarea',
     plugins: 'code image link lists media',
     toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code',
+    license_key: 'gpl', // using the GPL version
     
     // Image upload configuration
     images_upload_url: '/upload-image',

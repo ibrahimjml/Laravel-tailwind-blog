@@ -1,0 +1,198 @@
+<x-layout>
+
+  <main class="admin w-screen grid grid-cols-[25%,75%] transition-all ease-in-out duration-300 p-5">
+      {{-- admin side bar --}}
+  <x-admin-sidebar/>
+  <section id="main-section" class="p-5 transition-all ease-in-out duration-300 ">
+    <div class="top-section flex gap-5">
+      <span id="spn" class="text-4xl text-gray-600  cursor-pointer">&leftarrow;</span>
+      <h2 id="title-body" class="text-gray-600 text-2xl font-bold p-3">Hashtags Table</h2>
+    </div>
+    
+<div class="flex justify-end">
+  <button id="openTagModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6" href="{{route('create')}}">create tag</button>
+</div>
+    <div class="overflow-x-auto rounded-lg shadow-lg ">
+      <table id="tabletags" class="min-w-full  border-collapse">
+      
+        <tr class="bg-gray-600">         
+          <th class="text-white p-2">#</th>
+          <th class="text-white p-2 text-left w-fit">Hashtags</th>
+          <th class="text-white p-2">Related posts</th>
+          <th class="text-white p-2">CreatedAt</th>
+          <th colspan="2" class="text-white  p-2">Actions</th>
+  
+        </tr>
+        @forelse ($hashtags as $hashtag)
+        <tr class="text-center border border-b-gray-300 last:border-none">
+          <td class="p-2">{{ ($hashtags->currentPage() - 1) * $hashtags->perPage() + $loop->iteration }}</td>
+          <td class=" p-2 flex justify-start items-center">
+            <span class=" py-1 px-3 text-white  text-sm rounded-md bg-gray-700 bg-opacity-70 font-semibold w-fit">
+
+              {{$hashtag->name}}</td>
+            </span>
+          <td class="p-2">  {{$hashtag->posts->count()}}</td>
+          
+          <td class="p-2">{{$hashtag->created_at->diffForHumans()}}</td>
+          <td  class=" text-white p-2">
+            <div class="flex gap-2 justify-center">
+            
+              <form class="tagsdelete" action='{{route('delete.hashtag',$hashtag->id)}}' method="POST">
+                @csrf
+                @method('delete')
+                <input class="bg-red-500 rounded-lg p-2 cursor-pointer hover:bg-red-400 " type='submit' value="Delete">
+              </form>
+              <button class="tagsedit bg-blue-500 rounded-lg p-2 cursor-pointer " data-name="{{ $hashtag->name }}"  data-id="{{ $hashtag->id }}">Edit</button>
+            </div>
+          
+          </td>
+        </tr>
+        @empty
+      
+          <h4 class="text-center font-bold">Sorry, column not found</h4>
+      
+        @endforelse
+      </table>
+    </div>
+
+    {!! $hashtags->links() !!}
+  {{-- edit tag model --}}
+  @include('admin.partials.edit-tag-model',['hashtag'=>$hashtag])
+{{-- tag model --}}
+@include('admin.partials.create-tag-model')
+  </section>
+  </main>
+  <script>
+    const showmenu = document.getElementById('openTagModel');
+    const closemenu = document.getElementById('closeModel');
+    const menu = document.getElementById("Model");
+    showmenu.addEventListener('click',()=>{
+      if(menu.classList.contains('hidden')){
+        menu.classList.remove('hidden');
+      }
+    })
+    closemenu.addEventListener('click',()=>{
+      if(menu.classList.contains('fixed')){
+        menu.classList.add('hidden');
+      }
+    })
+  </script>
+  <script>
+    const addtag = document.getElementById('addtag');
+    
+    addtag.addEventListener('submit', (eo) => {
+        eo.preventDefault();
+    
+        const input = addtag.querySelector('input[name="name"]');
+        const content = input.value.trim();
+        const menu = document.getElementById("Model");
+        const table = document.getElementById('tabletags');
+        if (!content) return;
+    
+        let options = {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name: content })
+        };
+    
+        fetch(addtag.action, options)
+            .then(response => response.json())
+            .then(data => {
+                if (data.added === true) {
+                    menu.classList.add('hidden'); 
+                    toastr.success(`Tag ${data.hashtag} Added `);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+    </script>
+<script>
+const tags = document.querySelectorAll('.tagsdelete');
+tags.forEach(tag=>{
+  tag.addEventListener('submit',(eo)=>{
+    eo.preventDefault();
+    let options = {
+            method: 'Delete',
+            headers: {
+                'X-CSRF-TOKEN': tag.querySelector('input[name="_token"]').value,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+          
+        };
+    fetch(tag.action,options)
+    .then(response => response.json())
+    .then(data => {
+                if (data.deleted === true) { 
+                    toastr.success(data.message);
+                    tag.closest('tr').remove();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+  })
+})
+
+</script>
+<script>
+  const editButtons = document.querySelectorAll('.tagsedit');
+  const editModal = document.getElementById('editModel');
+  const closeEditBtn = document.getElementById('closeEditModel');
+  const editForm = document.getElementById('edittag');
+  const nameInput = editForm.querySelector('input[name="name"]');
+  const token = editForm.querySelector('input[name="_token"]').value;
+
+  // Open modal and set form action/value
+  editButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const tagId = button.dataset.id;
+      const tagName = button.dataset.name;
+
+      editForm.action = `/admin/edit/${tagId}`;
+      nameInput.value = tagName;
+
+      editModal.classList.remove('hidden');
+    });
+  });
+
+
+  editForm.addEventListener('submit', (e) => {
+    e.preventDefault(); 
+
+    let options = {
+      method: 'PUT',
+      headers: {
+        'X-CSRF-TOKEN': token,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        
+      },
+      body: JSON.stringify({ name: nameInput.value })
+    };
+
+    fetch(editForm.action, options)
+      .then(response => response.json())
+      .then(data => {
+        if (data.edited === true) {
+          toastr.success(data.message);
+          editModal.classList.add('hidden');
+        
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  });
+
+  // Close modal
+  closeEditBtn.addEventListener('click', () => {
+    editModal.classList.add('hidden');
+  });
+</script>
+</x-layout>

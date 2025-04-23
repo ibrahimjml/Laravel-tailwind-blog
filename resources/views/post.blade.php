@@ -1,4 +1,4 @@
-<x-header-blog>
+<x-layout>
   @section('meta_title',$meta_title)
   @section('meta_keywords',$meta_keywords)
   @section('author',$author)
@@ -127,11 +127,6 @@
 {{-- contianer random hearts--}}
 <div id="containerheart"></div>
 
-
-
-
-
-<x-footer/>
 @can('view',$post)
 <script>
   const OpenModel = document.getElementById('openmodel');
@@ -214,7 +209,7 @@
   
 
 
-</x-header-blog>
+</x-layout>
   
   
   

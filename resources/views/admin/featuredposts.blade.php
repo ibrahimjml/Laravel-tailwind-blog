@@ -1,4 +1,4 @@
-<x-header-blog>
+<x-layout>
 
 <main class="admin w-screen grid grid-cols-[25%,75%] transition-all ease-in-out duration-300 p-5">
   {{-- admin side bar --}}
@@ -110,8 +110,10 @@
   </div>
 </section>
 </main>
-<x-footer/>
+@php
+  $initialTags =  old('hashtag') ? explode(',', old('hashtag')) : [];
+@endphp
 <script>
-  window.initialTags = @json(explode(',', $hashtags ?? null));
-</script>
-</x-header-blog>
+  window.initialTags = @json($initialTags ?? []);
+  </script>
+</x-layout>

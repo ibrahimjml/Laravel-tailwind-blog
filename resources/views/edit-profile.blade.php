@@ -1,4 +1,4 @@
-<x-header-blog>
+<x-layout>
 
 
 <div class="container mx-auto pt-[40px]">
@@ -177,5 +177,4 @@
     }
   })
 </script>
-<x-footer/>
-</x-header-blog>
+</x-layout>

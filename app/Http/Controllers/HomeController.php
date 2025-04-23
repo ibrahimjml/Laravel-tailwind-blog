@@ -22,27 +22,24 @@ class HomeController extends Controller
     return Hashtag::withCount('posts')->orderByDesc('posts_count')->first();
 });
 
-$latestPosts = collect();
+$oldestPosts = collect();
 
 if ($trendingHashtag) {
-    $latestPosts = Post::with(['user', 'hashtags'])
+    $oldestPosts = Post::with(['user', 'hashtags'])
         ->withCount(['likes', 'comments'])
         ->whereHas('hashtags', function ($query) use ($trendingHashtag) {
             $query->where('hashtags.id', $trendingHashtag->id);
         })
-        ->latest()
+        ->oldest()
         ->take(3)
         ->get();
 }
 
-
-
   return view('index', [
       'featuredPosts' => $featuredPosts,
-      'latestPosts' => $latestPosts,
+      'oldestPosts' => $oldestPosts,
       'trendingHashtag' => $trendingHashtag
-
   ]);
-    return view('index');
+
   }
 }

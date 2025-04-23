@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Middleware\CheckIfBlocked;
+use App\Models\Hashtag;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -25,6 +26,7 @@ class PublicController extends Controller
     $fields = $request->validate([
       'search' => 'required|string|max:255'
     ]);
+
     $postsid = Post::search($fields['search'])->get()->pluck('id');
      
     $posts = Post::whereIn('id',$postsid)
@@ -35,11 +37,13 @@ class PublicController extends Controller
     ->withQuerystring();
 
     $meta_keywords = Post::with('hashtags')->latest()->first();
-
+    $hashtags = Hashtag::withCount('posts')->get();
+    
     return view('blog', [
       'posts' => $posts,
       'sorts' => 'latest',
       'searchquery'=>$fields['search'],
+      'tags' => $hashtags,
       'meta_title'=>'Blog-Post | Jamal',
       'meta_keywords' => $meta_keywords->hashtags->pluck('name')->take(6)->implode(', ')
     ]);

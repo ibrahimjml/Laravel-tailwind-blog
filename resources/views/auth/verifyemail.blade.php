@@ -1,4 +1,4 @@
-<x-header-blog>
+<x-layout>
 <main class="sm:container mx-auto  max-w-fit mt-5 mb-20 sm:max-w-lg sm:mt-10">
 
   <section class="flex flex-col break-words bg-white sm:border-1 sm:rounded-md  sm:shadow-lg">
@@ -24,5 +24,4 @@
       @endif
   </section>
 </main>
-<x-footer/>
-</x-header-blog>
+</x-layout>

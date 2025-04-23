@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'driver' => env('SCOUT_DRIVER', 'algolia'),
+    'driver' => env('SCOUT_DRIVER', 'tntsearch'),
 
     /*
     |--------------------------------------------------------------------------
@@ -130,15 +130,19 @@ return [
     |
     */
 
-    'meilisearch' => [
-        'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
-        'key' => env('MEILISEARCH_KEY'),
-        'index-settings' => [
-            // 'users' => [
-            //     'filterableAttributes'=> ['id', 'name', 'email'],
-            // ],
-        ],
+'tntsearch' => [
+    'storage' => storage_path(), 
+    'fuzziness' => env('TNTSEARCH_FUZZINESS', true),
+    'fuzzy' => [
+        'prefix_length' => 2,
+        'max_expansions' => 50,
+        'distance' => 2,
     ],
+    'asYouType' => env('TNTSEARCH_AS_YOU_TYPE',false),
+    'searchBoolean' => env('TNTSEARCH_BOOLEAN', false),
+    'maxDocs' => env('TNTSEARCH_MAX_DOCS', 500),
+],
+
 
     /*
     |--------------------------------------------------------------------------

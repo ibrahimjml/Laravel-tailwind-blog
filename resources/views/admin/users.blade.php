@@ -1,4 +1,4 @@
-<x-header-blog>
+<x-layout>
 
 <main class="admin w-screen  grid grid-cols-[25%,75%] transition-all ease-in-out duration-300 p-5">
     {{-- admin side bar --}}
@@ -47,7 +47,7 @@
   <table  class="w-full border-collapse ">
     <!-- User Table Headers -->
     <tr class="bg-gray-600">
-      <th class="text-white p-2">ID</th>
+      <th class="text-white p-2">#</th>
       <th class="text-white p-2">Avatar</th>
       <th class="text-white p-2 w-1/4 text-left">User</th>
       <th class="text-white p-2 ">Role</th>
@@ -62,7 +62,7 @@
     @forelse ($users as $user)
 
     <tr class="text-center border border-b-gray-300 last:border-none">
-      <td class=" p-2">{{$user->id}}</td>
+      <td class="p-2">  {{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}</td>
       <td class=" p-2">
         <div class="inline-block">
           @if($user->avatar !== "default.jpg")
@@ -155,5 +155,4 @@
 {!! $users->links() !!}
 </section>
 </main>
-<x-footer/>
-</x-header-blog>
+</x-layout>

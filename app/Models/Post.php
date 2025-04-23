@@ -35,8 +35,10 @@ class Post extends Model
   public function toSearchableArray()
   {
     return [
+      'id' =>$this->id,
       'title'=>$this->title,
       'description'=>$this->description,
+      'hashtags' => $this->hashtags->pluck('name')->implode(' '),
     ];
   }
 
@@ -57,13 +59,18 @@ class Post extends Model
       return $this->hasMany(Comment::class)->count();
   }
   
-  public function scopeSearch($query,$search){
-    if(isset($search['search'])){
-      $query->where(function ($q) use ($search) {
-        $q->where('title', 'like', '%' . $search['search'] . '%')
-              ->orWhere('description', 'like', '%' . $search['search'] . '%');
-    });
-    }
+  public function scopeSearch($query, $search)
+  {
+      if (isset($search['search'])) {
+          $query->where(function ($q) use ($search) {
+              $q->where('title', 'like', '%' . $search['search'] . '%')
+                ->orWhere('description', 'like', '%' . $search['search'] . '%')
+                ->orWhereHas('hashtags', function ($q2) use ($search) {
+                    $q2->where('name', 'like', '%' . $search['search'] . '%');
+                });
+          });
+      }
   }
+  
 
 }

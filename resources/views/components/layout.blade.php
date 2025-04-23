@@ -1,3 +1,3 @@
-<x-header/>
+<x-header-blog/>
 {{$slot}}
 <x-footer/>

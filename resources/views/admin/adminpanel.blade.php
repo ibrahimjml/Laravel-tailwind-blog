@@ -1,4 +1,4 @@
-<x-header-blog>
+<x-layout>
 <main class="admin w-screen   grid grid-cols-[25%,75%] transition-all ease-in-out duration-300 p-5">
 <x-admin-sidebar/>
   <section id="main-section" class="p-5 transition-all ease-in-out duration-300 ">
@@ -18,5 +18,4 @@
     </div>
   </section>
 </main>
-<x-footer/>
-</x-header-blog>
+</x-layout>

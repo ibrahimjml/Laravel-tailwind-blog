@@ -1,4 +1,4 @@
-<x-header-blog>
+<x-layout>
   
   @section('meta_title',$meta_title)
   @section('meta_description',$meta_description)
@@ -137,5 +137,4 @@
         </div>
     </div>
 </main>
-<x-footer/>
-</x-header-blog>
+</x-layout>

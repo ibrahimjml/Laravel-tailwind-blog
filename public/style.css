@@ -28,10 +28,6 @@ html,body{
 }
 }
 
-.lemon:not(:first-child)::before{
-content: " | ";
-margin-right: 0.5rem;
-}
 #hiddenul2 {
  display: block;
  position: absolute;

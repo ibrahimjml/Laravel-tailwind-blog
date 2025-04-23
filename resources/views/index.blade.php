@@ -13,49 +13,50 @@
 </div>
 
 {{-- Featured Posts --}}
-<p class="text-center text-3xl font-bold text-white p-3 bg-yellow-500 w-fit rounded-lg container m-auto mt-5">Featured Posts</p>
-<div class="container sm:grid md:flex  py-[30px] h-fit justify-center gap-4">
-@foreach($featuredPosts as $posts)
-<div class="flex flex-col justify-center items-center">
-  <div class="mx-4 md:mx-6 relative group  md:w-[400px] md:h-[250px] w-xl h-[250px]">
-    <span class="absolute top-4 left-4 p-2 text-white text-sm rounded-md bg-amber-300 font-semibold bg-opacity-70">Featured</span>
+<p class="text-gray-700 text-lg md:text-2xl text-center font-semibold mt-5 capitalize">Featured Posts</p>
+<div class="flex flex-col md:flex-row  md:justify-center md:items-center md:gap-2 gap-4 mt-4 mb-3">
+  @foreach($featuredPosts as $posts)
+<div class="rounded-lg p-3 border-2 mx-auto md:mx-0 w-[400px] md:w-[500px] h-fit flex flex-col ">
 
-    <img loading="lazy" class="object-cover shadow-lg rounded-md w-full h-full" src="/images/{{$posts->image_path}}" alt="">
-
-    <div class="absolute inset-0 bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 transition duration-300 rounded-md flex items-center justify-center">
-      <a href="/post/{{$posts->slug}}" class="bg-white text-black font-semibold px-4 py-2 rounded-lg hover:bg-gray-200 transition">
-        View Post
-      </a>
-    </div>
+<a href="{{route('single.post',$posts->slug)}}">
+  <div class="relative rounded-md">
+    <span class="absolute top-4 left-4 px-2 py-1 text-white text-sm rounded-md bg-amber-300 font-semibold bg-opacity-70">Featured</span>
+<img src="/images/{{$posts->image_path}}"  alt="" class="w-full rounded-md h-[270px] object-cover mt-2">
   </div>
-  <div class="flex flex-col items-center justify-center m-10 sm:m-0">
-    <h2 class="font-bold text-gray-700 text-4xl capitalize">{{$posts->title}}</h2>
-  </div>
+<div class="flex flex-col">
+  <p class="text-xl font-bold mt-1">{{$posts->title}}</p>
+  <p class="text-sm text-gray-500 font-semibold line-clamp-3 mt-2">{!! Str::words(strip_tags($posts->description), 20) !!}</p>
 </div>
-  @endforeach
+</a>
 </div>
-<hr>
+@endforeach
+</div>
 
-{{-- latest posts --}}
-<p class="text-center text-3xl font-bold text-white p-3 bg-slate-500 w-fit rounded-lg container m-auto mt-5">Most Trending </p>
-<div class="container sm:grid md:flex  py-[30px] h-fit justify-center gap-4">
-@foreach($latestPosts as $latest)
-<div class="flex flex-col justify-center">
-    <div class="mx-2 md:mx-6 relative group">
-      <span class="absolute top-4 left-4 p-2 text-white text-sm rounded-md bg-amber-300 font-semibold bg-opacity-70"># {{$trendingHashtag->name}}</span>
-  
-      <img loading="lazy" class="object-cover shadow-lg rounded-md max-w-l md:max-w-[400px] md:max-h-[200px]" src="/images/{{$latest->image_path}}" alt="">
-  
-      <div class="absolute inset-0 bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 transition duration-300 rounded-md flex items-center justify-center">
-        <a href="/post/{{$latest->slug}}" class="bg-white text-black font-semibold px-4 py-2 rounded-lg hover:bg-gray-200 transition">
-          View Post
-        </a>
-      </div>
-    </div>
-    <div class="flex flex-col items-center justify-center m-10 sm:m-0">
-      <h2 class="font-bold text-gray-700 text-4xl capitalize">{{$latest->title}}</h2>
-    </div>
+
+{{-- oldest Posts --}}
+<p class="text-gray-700 text-lg md:text-2xl text-center font-semibold mt-5 capitalize">Oldest Posts</p>
+<div class="flex flex-col md:flex-row  md:justify-center md:items-center md:gap-2 gap-4 mt-4 mb-3">
+  @foreach($oldestPosts as $oldest)
+<div class="rounded-lg p-3 border-2 mx-auto md:mx-0 w-[400px] md:w-[500px] h-fit flex flex-col ">
+<div class="flex gap-2 items-center">
+  <a href='{{route('profile',$oldest->user->username)}}'>
+    <img loading="lazy" src="{{$oldest->user->avatar_url}}"  class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
+    </a>
+    <a href='{{route('profile',$oldest->user->username)}}' class="hover:underline">
+      {{$oldest->user->username}}
+    </a>
 </div>
-  @endforeach
+<a href="{{route('single.post',$oldest->slug)}}">
+  <div class="relative rounded-md">
+    <span class="absolute top-4 left-4 px-2 py-1 text-white text-sm rounded-md bg-amber-300 font-semibold bg-opacity-70"># {{$trendingHashtag->name}}</span>
+<img src="/images/{{$oldest->image_path}}"  alt="" class="w-full rounded-md h-[270px] object-cover mt-2">
+  </div>
+<div class="flex flex-col">
+  <p class="text-xl font-bold mt-1">{{$oldest->title}}</p>
+  <p class="text-sm text-gray-500 font-semibold line-clamp-3 mt-2">{!! Str::words(strip_tags($oldest->description), 20) !!}</p>
+</div>
+</a>
+</div>
+@endforeach
 </div>
 </x-layout>

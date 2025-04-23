@@ -1,14 +1,14 @@
-<x-header-blog>
+<x-layout>
   @section('meta_title',$meta_title)
   @section('meta_keywords',$meta_keywords)
   @section('author',$author)
   @section('meta_description')
 
-<div class="container mx-auto pt-[40px]">
-  <h1 class=" text-3xl font-bold text-center py-5 capitalize">create post</h1>
-</div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+  <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-10">Create Post</h1>
 
-<div class="flex justify-center pt-9">
+
+<div class="flex justify-center ">
   <form action="{{route('create')}}" method="POST" enctype="multipart/form-data" class="p-6">
     @csrf
     @method('POST')
@@ -96,8 +96,7 @@
     </div>
   </form>
 </div>
-<x-footer/>
-
+  </div>
 @php
   $initialTags =  old('hashtag') ? explode(',', old('hashtag')) : [];
 @endphp
@@ -141,4 +140,4 @@ window.initialTags = @json($initialTags ?? []);
     imageContainer.classList.add('hidden');
   });
 </script>
-</x-header-blog>
+</x-layout>

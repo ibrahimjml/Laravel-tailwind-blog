@@ -17,18 +17,18 @@
   <title>@yield('meta_title','HOME')</title>
 </head>
 <body  class="min-h-screen flex  flex-col m-0 ">
-  <nav class="w-screen px-6 py-2 bg-zinc-100  border-b-2">
+  <nav class="w-screen px-6 py-2 {{Route::is('home') ? 'bg-opacity-0 absolute z-50' : 'bg-zinc-100 border-b-2'}}  ">
     <div class="flex justify-between items-center ">
       <div class=" text-2xl font-bold">
       <span class="bg-white text-black pr-1 pl-1 rounded-l-md border border-t-3 border-b-3">Blog</span><span class="text-white bg-black pl-1 pr-1 rounded-r-md ">Post</span> 
       </div>
   
       <div class="md:flex md:items-center  space-x-6 hidden">
-        <ul class="md:flex md:items-center space-x-6">
+        <ul class="flex items-center space-x-6">
         
           {{-- Hover Menu --}}
           @auth
-        <li class="text-black text-lg pt-2  relative" id="dropdown">
+        <li class="{{Route::is('home') ? 'text-white' : 'text-gray-700'}} text-lg pt-2  relative" id="dropdown">
           @include('partials.hover-menu')
         <span class="cursor-pointer" >
           {{auth()->user()->name}}
@@ -36,31 +36,33 @@
       </li>
         @endauth
         @if(!auth()->user())
-        <li class="text-black hover:scale-125 transition duration-300  text-lg  pt-2 lemon">
+        <li class="{{Route::is('home') ? 'text-white text-lg pt-2' : 'text-gray-700 text-lg  pt-2'}} @if(Route::is('login')) font-bold text-xl  @endif">
         <a href="{{route('login')}}" 
           >Login</a></li>
-          <li class="text-black hover:scale-125 transition duration-300  lemon  text-lg pt-2">
+          <li class="{{Route::is('home') ? 'text-white text-lg pt-2' : 'text-gray-700 text-lg pt-2'}} @if(Route::is('register')) font-bold text-xl  @endif">
         <a href="{{route('register')}}" 
-          >register</a></li>
+          >Register</a></li>
         @else  
-        <li class="text-black hover:scale-125 transition duration-300  text-lg pt-2 lemon">
-        <a href="/blog" 
+        <li class="{{Route::is('home') ? 'text-white text-lg pt-2' : 'text-gray-700 text-lg pt-2'}} @if(Route::is('blog')) font-bold text-xl @endif">
+        <a href="{{route('blog')}}" 
         >Blog</a></li>
-        <li class="text-black hover:scale-125 transition duration-300 text-lg  pt-2 lemon">
-          <a href="/getsavedposts" >
+        <li class="{{Route::is('home') ? 'text-white text-lg pt-2' : 'text-gray-700 text-lg pt-2'}} @if(Route::is('bookmarks')) font-bold text-xl  @endif">
+          <a href="{{route('bookmarks')}}" >
             Saved</a></li>
             @if(auth()->user()->is_admin)
-            <li class="text-black hover:scale-125 transition duration-300 text-lg  pt-2 lemon">
+            <li class="{{Route::is('home') ? 'text-white text-lg pt-2' : 'text-gray-700 text-lg pt-2'}} @if(Route::is('admin-page')) font-bold text-xl  @endif ">
               <a href="{{route('admin-page')}}" >
                 Admin Panel</a></li>
                 @endif
         @endif
-        <li class="text-black hover:scale-125 transition duration-300  text-lg pt-2 lemon">
+        @if(!Route::is('home'))
+        <li class="text-gray-700   text-lg pt-2">
         <a href="/" >Home</a></li>
-      
+        @endif
+        
       </ul>
       </div>
-      <button id="mobile-btn" class="md:hidden">
+      <button id="mobile-btn" class="md:hidden @if(Route::is('home')) fill-white @endif">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="30"
