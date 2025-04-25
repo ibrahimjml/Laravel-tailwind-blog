@@ -10,11 +10,11 @@
 ## About Laravel
 # Laravel Blog Application
  ![Dashboard Screenshot](https://i.postimg.cc/wTzCLcrg/127-0-0-1-8000-7.png)
-![schooldash-dahboard-page](https://i.postimg.cc/XYz1HwsZ/Screenshot-2025-04-23-160925.png)
-![schooldash-dahboard-page](https://i.postimg.cc/YCh46r6M/127-0-0-1-8000-post-using-tailwindcss-7.png)
+![schooldash-dahboard-page](https://i.postimg.cc/nhQ7G8RP/127-0-0-1-8000-post-using-tailwindcss-8.png)
+![schooldash-dahboard-page](https://i.postimg.cc/hGDDPTd1/Screenshot-2025-04-25-153635.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/VLK3wzNP/127-0-0-1-8000-create-2.png)
-![schooldash-dahboard-page](https://i.postimg.cc/pTBL4grH/Screenshot-2024-10-28-152832.png)
+![schooldash-dahboard-page](https://i.postimg.cc/VvqskRD4/Screenshot-2025-04-25-203645.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/jdLLd6cV/Screenshot-2024-10-22-212650.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/W15nZy2V/Screenshot-2024-10-29-024842.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/R02w63yk/Screenshot-2025-04-22-201152.png)
