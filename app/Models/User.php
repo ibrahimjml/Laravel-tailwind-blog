@@ -40,6 +40,16 @@ class User extends Authenticatable implements MustVerifyEmail
   public function comments(){
     return $this->hasMany(Comment::class);
   }
+  public function followings(){
+    return $this->belongsToMany(User::class,'followers','follower_id','user_id');
+  }
+  public function followers(){
+    return $this->belongsToMany(User::class,'followers','user_id','follower_id');
+  }
+  public function isFollowing(User $user)
+  {
+      return $this->followings()->where('user_id', $user->id)->exists();
+  }
   
 public function scopeSearch($query,$search)
 {

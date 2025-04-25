@@ -29,8 +29,8 @@ class CommentController extends Controller
 
     $comment = $post->comments()->create($fields);
 
-    Mail::to($post->user)->queue(new EmailComment($post->user,$comment->user,$post));
-    $comment->update($fields);
+      Mail::to($post->user)->queue(new EmailComment($post->user, $comment->user, $post));
+  
       return response()->json([
         'commented'=>true,
         'html' => view('comments.comments', ['comments' => [$comment]])->render()
@@ -42,11 +42,18 @@ public function reply(Comment $comment, Request $request){
         'content'=>'required|string|max:255',
         'parent_id'=>'required|exists:comments,id'
       ]);
-
+    // maximum 3 replies 
+    $replyCount = Comment::where('parent_id',$fields['parent_id'])->count();
+    if($replyCount >= 3){
+      toastr()->error('maximum 3 replies',['timeOut'=>1500]);
+      return back();
+    }
       $fields['content']=strip_tags($fields['content']);
       $fields['user_id']=auth()->id();
       $fields['post_id']=$comment->post_id;
+      
       Comment::create($fields);
+  
       toastr()->success('Reply added successfully',['timeOut'=>1000]);
       return back();
 }

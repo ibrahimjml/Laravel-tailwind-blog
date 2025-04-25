@@ -9,9 +9,23 @@
         <img src="{{ $post->user->avatar_url }}" class="w-10 h-10 rounded-full object-cover border" alt="avatar">
       </a>
       <div>
-        <a href="{{ route('profile', $post->user->username) }}" class="text-lg font-semibold hover:underline">
-          {{ $post->user->username }}
-        </a>
+          <div class="flex items-center justify-center gap-3">
+          <a href="{{ route('profile', $post->user->username) }}" class="text-lg font-semibold hover:underline">
+            {{ $post->user->username }}
+          </a>
+          @php
+           $isFollowing = in_array($post->user_id, $authFollowings);
+           @endphp
+          @if(auth()->user()->id !== $post->user_id)
+          <strong>·</strong>
+  
+        <button class="follow px-3 py-1 {{$isFollowing ? 'bg-gray-200' : 'bg-gray-600'}} text-white rounded-lg text-center text-sm font-bold"
+         onclick="fetchfollow(this)"
+          data-id="{{$post->user_id}}">
+          {{$isFollowing ? 'Following' : 'Follow'}}
+        </button>
+        @endif
+         </div>
         <p class="text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
       </div>
     </div>
@@ -32,8 +46,8 @@
         @if($post->likes_count)
         <span><i class="fa-solid fa-heart text-red-500"></i> {{ $post->likes_count }}</span>
         @endif
-        @if($post->comments_count)
-        <span><i class="fa-solid fa-comment text-blue-500"></i> {{ $post->comments_count }}</span>
+        @if($post->totalcomments_count)
+        <span><i class="fa-solid fa-comment text-blue-500"></i> {{ $post->totalcomments_count }}</span>
         @endif
       </div>
       <div class="flex gap-3">

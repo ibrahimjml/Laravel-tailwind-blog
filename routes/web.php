@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Hashtagcontroller;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
@@ -73,6 +74,9 @@ Route::put('/post/update/{slug}',[PostController::class,'update'])->name('update
 // Like
 Route::post('/post/{post}/like',[PostController::class,'like']);
 
+// Follow
+Route::post('/user/{user}/togglefollow',[PublicController::class,'togglefollow'])->name('toggle.follow');
+
 // Search
 Route::get('/search',[PublicController::class,'search'])->name('blog.search');
 
@@ -87,6 +91,12 @@ Route::post('/saved-post',[PostController::class,'save']);
 
 // Saved Posts Page
 Route::get('/getsavedposts',[PostController::class,'getsavedposts'])->name('bookmarks');
+
+// notifications
+Route::get('/notifications/{id}/read', [NotificationController::class, 'markasread'])->name('notifications.read');
+Route::delete('/notifications/{id}/delete', [NotificationController::class, 'delete'])->name('notifications.delete');
+Route::delete('/notifications/deleteAll', [NotificationController::class, 'deleteAll'])->name('notifications.deleteAll');
+
 
 // admin panel
 Route::prefix('admin')

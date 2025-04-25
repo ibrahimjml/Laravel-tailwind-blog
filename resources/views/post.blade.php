@@ -62,7 +62,7 @@
 <div class="h-4 w-px bg-gray-400"></div>
 <span id="openModel" class="cursor-pointer flex items-center gap-2">
   <i class="fa-regular fa-comment"></i>
-  <span  class="text-sm">{{ $post->commentsCount() }}</span>
+  <span  class="text-sm">{{ $totalcomments }}</span>
 </span>
 <div class="h-4 w-px bg-gray-400"></div>
 <span  onclick="savedTo(this,{{$post->id}})" class="cursor-pointer flex items-center gap-2">
@@ -83,7 +83,7 @@
   <span id="closeModel" title="close" class="cursor-pointer absolute top-4 right-4 text-xl"><i class="fa-solid fa-xmark"></i></span>
     {{-- Comment Form --}}
     <p class="w-fit md:text-xl text-md mb-3 p-2 font-semibold">
-      Comments (<span id="comment-count-number">{{ $post->commentsCount() }}</span>)
+      Comments (<span id="comment-count-number">{{ $totalcomments }}</span>)
     </p>
     <div class="w-fit mb-4 border-2 p-1 rounded-lg px-5 mx-auto">
       @include('comments.partials.comment_form', ['post' => $post])

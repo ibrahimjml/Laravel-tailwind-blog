@@ -6,9 +6,9 @@ use App\Http\Middleware\CheckIfBlocked;
 use App\Mail\postlike;
 use App\Models\Hashtag;
 use App\Models\Post;
+use App\Notifications\LikesNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
 
@@ -27,7 +27,7 @@ class PostController extends Controller
     $sortoption = $request->get('sort', 'latest');
     $posts = Post::query()
       ->with(['user:id,username,avatar', 'hashtags:id,name'])
-      ->withCount(['likes', 'comments']);
+      ->withCount('likes','totalcomments');
 
     switch ($sortoption) {
       case 'latest';
@@ -41,7 +41,12 @@ class PostController extends Controller
       case 'mostliked':
         $posts->withCount('likes')->orderByDesc('likes_count');
         break;
- 
+
+        case 'followings':
+        $followings = auth()->user()->followings->pluck('id');
+        $posts->whereIn('user_id',$followings);
+          break;
+
         case 'featured':
           $posts->featured();
           break;
@@ -71,12 +76,14 @@ class PostController extends Controller
     $posts = $posts->paginate(5)->appends(['sort' => $sortoption]);
     $meta_keywords = Post::with('hashtags')->latest()->first();
     $hashtags = Hashtag::withCount('posts')->get();
+
     return view('blog', [
       'meta_title'=>'Blog-Post | Jamal',
       'meta_keywords' => $meta_keywords->hashtags->pluck('name')->take(6)->implode(', '),
       'tags' => $hashtags,
       'posts' => $posts,
       'sorts' => $sortoption,
+      'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
     ]);
   }
 
@@ -267,6 +274,8 @@ class PostController extends Controller
     $post->likes()->create(['user_id' => auth()->user()->id]);
 
     Mail::to($post->user)->queue(new postlike($post->user, auth()->user(), $post));
+    $post->user->notify(new LikesNotification(auth()->user(),$post));
+
     return response()->json(['liked' => true]);
   }
 
@@ -299,7 +308,7 @@ class PostController extends Controller
 
 
       $meta_keywords = collect($posts->items())
-      ->flatMap(fn ($post) => $post->hashtags->pluck('name'))
+      ->map(fn ($post) => $post->hashtags->pluck('name'))
       ->unique()
       ->implode(', ') ?? '';
        
@@ -307,7 +316,8 @@ class PostController extends Controller
       'meta_title' => 'Saved-Posts',
       'author' => auth()->user()->username,
       'meta_keywords' =>  $meta_keywords,
-      'posts' => $posts
+      'posts' => $posts,
+      'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
     ]);
   }
 }

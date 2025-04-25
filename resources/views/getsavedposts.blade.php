@@ -8,7 +8,7 @@
 
     @foreach ($posts as $post)
       <div id="post-{{ $post->id }}" class="saved-post">
-        <x-postcard :post="$post" :showSaveButton="true" />
+        <x-postcard :post="$post" :showSaveButton="true" :authFollowings="$authFollowings"/>
       </div>
     @endforeach
     <h1 id="noSavedMessage" class="text-4xl p-36 font-semibold text-center w-54 hidden">No Saved Posts</h1>

@@ -46,6 +46,15 @@
         <li class="{{Route::is('home') ? 'text-white text-lg pt-2' : 'text-gray-700 text-lg pt-2'}} @if(Route::is('blog')) font-bold text-xl @endif">
         <a href="{{route('blog')}}" 
         >Blog</a></li>
+        <li id="hover-notification" class="text-lg relative pt-2 cursor-pointer text-gray-700 ">
+        <span class="absolute top-2 left-3 h-4 w-4 bg-red-500 text-white flex justify-center items-center rounded-full p-1 text-xs">
+          {{ auth()->user()->unreadNotifications->count() }}
+        </span>
+        <i class="fa-regular fa-bell"></i>
+        </li>
+    
+          @include('partials.notifications-menu')
+        
         <li class="{{Route::is('home') ? 'text-white text-lg pt-2' : 'text-gray-700 text-lg pt-2'}} @if(Route::is('bookmarks')) font-bold text-xl  @endif">
           <a href="{{route('bookmarks')}}" >
             Saved</a></li>

@@ -16,6 +16,7 @@
 <script src="{{asset('js/hiddenul.js')}}" defer></script>
 <script src="{{asset('js/fetchsavedpost.js')}}" defer></script>
 <script src="{{asset('js/unsaveposts.js')}}" defer></script>
+<script src="{{asset('js/fetchfollow.js')}}" defer></script>
 
 @if(Route::is('single.post'))
 <script src="{{asset('js/fetchlike.js')}}" defer></script>

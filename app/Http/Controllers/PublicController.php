@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Middleware\CheckIfBlocked;
+use App\Models\Comment;
 use App\Models\Hashtag;
+use App\Notifications\FollowersNotification;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -45,21 +47,38 @@ class PublicController extends Controller
       'searchquery'=>$fields['search'],
       'tags' => $hashtags,
       'meta_title'=>'Blog-Post | Jamal',
-      'meta_keywords' => $meta_keywords->hashtags->pluck('name')->take(6)->implode(', ')
+      'meta_keywords' => $meta_keywords->hashtags->pluck('name')->take(6)->implode(', '),
+      'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
     ]);
   }
+// toggle follow
+public function togglefollow(User $user){
+  $follower = auth()->user();
+  if ($follower->id === $user->id) {
+    return response()->json(['error' => 'You cannot follow yourself.'], 400);
+}
 
+if ($follower->isFollowing($user)) {
+    $follower->followings()->detach($user->id);
+    return response()->json([
+      'attached' => false
+    ],200);
+} else {
+    $follower->followings()->attach($user->id);
+
+   $user->notify(new FollowersNotification($follower));
+
+    return response()->json([
+      'attached' => true
+    ],200);
+}
+
+}
   public function viewpost($slug)
   {
-    $post = Post::with([
-      'comments' => function ($query) {
-          $query->latest()
-              ->with(['user','replies'=>function($query){
-                   $query->with(['replies']);
-              } ,'replies.user', 'replies.parent.user']); 
-      }
-  ])->where('slug', $slug)->first();
-
+    $post = Post::where('slug', $slug)->first();
+    $post->load(['user','hashtags','comments']);
+    
  $morearticles = Post::query()
   ->with(['user'=> function ($query){
     $query->select('id','name','username','avatar');
@@ -71,6 +90,7 @@ class PublicController extends Controller
 
     return view('post', [
        'post' => $post,
+       'totalcomments'=> Comment::where('post_id', $post->id)->count(),
        'morearticles' => $morearticles,
        'meta_title' => $post->slug . ' | Blog-Post',
        'author' => $post->user->username,

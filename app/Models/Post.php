@@ -52,13 +52,25 @@ class Post extends Model
   }
 
   public function comments(){
-    return $this->hasMany(Comment::class)->orderBy('created_at','DESC');
-  }
-  public function commentsCount()
-  {
-      return $this->hasMany(Comment::class)->count();
+    return $this->hasMany(Comment::class)
+    ->whereNull('parent_id')
+    ->with([
+        'user',
+        'replies.user',
+        'replies.parent.user', 
+        'replies.replies.user',
+        'replies.replies.parent.user',
+        'replies.replies.replies.user',
+        'replies.replies.replies.parent.user',
+    ])
+    ->orderBy('created_at','DESC');
   }
   
+  public function totalcomments(){
+    return $this->hasMany(Comment::class, 'post_id');
+  }
+
+
   public function scopeSearch($query, $search)
   {
       if (isset($search['search'])) {

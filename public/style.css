@@ -46,6 +46,21 @@ html,body{
 
 
 }
+#hidden-notification {
+  display: block;
+  position: absolute;
+  top: 50px;
+  box-shadow: 0 5px 25px 0 rgb(0 0 0 / 60%);
+  border-radius: 0.5rem;
+  color: #3d4a59;
+  background-color: #fff;
+  transform: translateX(-98px);
+  cursor: pointer;
+  line-height: 30px;
+  text-align: center;
+  min-width: 140px;
+  z-index: 70;
+}
 
 
 

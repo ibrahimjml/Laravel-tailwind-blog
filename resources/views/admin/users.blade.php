@@ -43,14 +43,16 @@
 
 </div>
 
-  <div class="overflow-hidden rounded-lg  shadow-lg">
+  <div class="overflow-x-auto rounded-lg  shadow-lg">
   <table  class="w-full border-collapse ">
     <!-- User Table Headers -->
     <tr class="bg-gray-600">
       <th class="text-white p-2">#</th>
       <th class="text-white p-2">Avatar</th>
       <th class="text-white p-2 w-1/4 text-left">User</th>
-      <th class="text-white p-2 ">Role</th>
+      <th class="text-white p-2 w-1/6">Role</th>
+      <th class="text-white p-2 ">Followings</th>
+      <th class="text-white p-2 ">Followers</th>
       <th class="text-white p-2">CreatedAt</th>
       <th class="text-white p-2">Verified</th>
       <th class="text-white p-2">Phone</th>
@@ -65,11 +67,7 @@
       <td class="p-2">  {{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}</td>
       <td class=" p-2">
         <div class="inline-block">
-          @if($user->avatar !== "default.jpg")
-          <img src="{{Storage::url($user->avatar)}}" class="w-[40px] h-[40px] overflow-hidden flex  justify-center items-center  shrink-0 grow-0 rounded-full">
-          @else
-          <img src="/storage/avatars/{{$user->avatar}}"  class="w-[40px] h-[40px] overflow-hidden flex  justify-center items-center  shrink-0 grow-0 rounded-full">
-          @endif
+          <img src="{{$user->avatar_url}}"  class="w-[40px] h-[40px] overflow-hidden flex  justify-center items-center  shrink-0 grow-0 rounded-full">
         </div>
       </td>
       <td class="p-2 text-left">
@@ -78,12 +76,12 @@
          <p>{{$user->email}}</p>
         </div>
       </td>
-      <td class="p-2">
+      <td class="p-2 flex justify-center w-32">
         @can('modify',$user)
         <form  action="{{route('role.update',$user)}}" method="POST">
          @csrf
          @method('PUT')
-          <select  name="role" class="cursor-pointer bg-gray-400 text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="this.form.submit()">
+          <select  name="role" class="cursor-pointer  bg-gray-400 text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="this.form.submit()">
             <option value="user"{{!$user->is_admin ? 'selected':''}} >User</option> 
             <option value="admin" {{$user->is_admin ? 'selected' :''}}>Admin</option>
         
@@ -93,6 +91,8 @@
         <p class="cursor-not-allowed bg-gray-400 text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Admin</p>
         @endcan
       </td>
+      <td class="p-2">{{$user->followings->count()}}</td>
+      <td class="p-2">{{$user->followers->count()}}</td>
       <td class=" p-2">{{$user->created_at->diffForHumans()}}</td>
       <td class=" p-2">
         <div class="flex justify-center">

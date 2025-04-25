@@ -26,13 +26,18 @@
   @can('update',$user)
   <span class="flex justify-center mb-5"><a class="bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300" href="{{route('editprofile',$user->username)}}">edit profile</a></span>
   @endcan
-  <div class="flex flex-col pb-3">
+  <div class="flex flex-col pb-3 justify-center items-center">
     <h1 class=" text-3xl font-bold text-center  tracking-wide text-gray-700">{{$user->name}} </h1>
     <span class="text-sm text-gray-400 text-center mb-2">@ {{$user->username}}</span>
     @if($user->bio == null)
     <p class="text-lg text-gray-400 text-center mb-2">Tell people about yourself</p>
     @else
     <p class="text-lg text-gray-600 text-center font-semibold mb-2">{{$user->bio}}</p>
+    @endif
+    @if(auth()->user()->id !== $user->id)
+    <button data-id="{{$user->id}}" onclick="follow(this)" class="px-3 py-1 w-fit rounded-lg text-center text-sm font-bold {{auth()->user()->isFollowing($user) ? 'text-gray-600 border border-gray-600 ' : 'bg-gray-600 text-white' }}">
+      {{auth()->user()->isFollowing($user) ? 'Following' : 'Follow' }}
+    </button>
     @endif
   </div>
 </div>
@@ -51,10 +56,15 @@
   <p class="text-lg font-bold text-center">{{$likescount}}</p>
   </div>
   <div class="flex flex-col">
-{{-- comment counts --}}
-    <p class="text-lg font-bold text-center">comments</p>
-    <p class="text-lg font-bold text-center">{{$commentscount}}</p>
+{{-- followers counts --}}
+    <p class="text-lg font-bold text-center">Followers</p>
+    <p id="followers-count" class="text-lg font-bold text-center">{{$user->followers()->count()}}</p>
   </div>
+  <div class="flex flex-col">
+    {{-- followings counts --}}
+        <p class="text-lg font-bold text-center">Followings</p>
+        <p  class="text-lg font-bold text-center">{{$user->followings()->count()}}</p>
+      </div>
 </div>
 
 </div>
@@ -76,6 +86,43 @@
   @endforeach
   @endif
 </div>
+<script>
+async function follow(eo) {
+  const userId = eo.dataset.id;
 
-<x-footer/>
+  let options = {
+    method: "POST",
+    headers: {
+      "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+      "Accept": "application/json"
+    },
+  };
+
+  try {
+    const res = await fetch(`/user/${userId}/togglefollow`, options);
+    const data = await res.json();
+
+
+    eo.textContent = data.attached ? "Following" : "Follow";
+    const followerscount = document.querySelector('#followers-count');
+    let countfollowers = parseInt(followerscount.textContent);
+
+    eo.classList.remove('text-gray-600', 'border', 'border-gray-600', 'bg-gray-600', 'text-white');
+
+    if (data.attached) {
+      eo.classList.add('text-gray-600', 'border', 'border-gray-600');
+      followerscount.textContent = countfollowers +1;
+    } else {
+      eo.classList.add('bg-gray-600', 'text-white');
+      followerscount.textContent = countfollowers -1;
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+</script>
+
 </x-layout>
