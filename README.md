@@ -10,11 +10,11 @@
 ## About Laravel
 # Laravel Blog Application
  ![Dashboard Screenshot](https://i.postimg.cc/wTzCLcrg/127-0-0-1-8000-7.png)
-![schooldash-dahboard-page](https://i.postimg.cc/XYz1HwsZ/Screenshot-2025-04-23-160925.png)
-![schooldash-dahboard-page](https://i.postimg.cc/YCh46r6M/127-0-0-1-8000-post-using-tailwindcss-7.png)
+![schooldash-dahboard-page](https://i.postimg.cc/fRXCT0Ny/Screenshot-2025-04-25-204621.png)
+![schooldash-dahboard-page](https://i.postimg.cc/3Nc1WXN4/127-0-0-1-8000-post-using-tailwindcss-11.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/VLK3wzNP/127-0-0-1-8000-create-2.png)
-![schooldash-dahboard-page](https://i.postimg.cc/pTBL4grH/Screenshot-2024-10-28-152832.png)
+![schooldash-dahboard-page](https://i.postimg.cc/VvqskRD4/Screenshot-2025-04-25-203645.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/jdLLd6cV/Screenshot-2024-10-22-212650.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/W15nZy2V/Screenshot-2024-10-29-024842.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/R02w63yk/Screenshot-2025-04-22-201152.png)
@@ -35,24 +35,30 @@
 
 #### Blog Posts
 - **Create, Read, Update, and Delete (CRUD) Operations:** Users can create new blog post, edit existing one, and delete post they have authored.
-- **Hashtags:** Users can create there own hashtags and filter posts by hashtag and sort hompage with trending hashtags including pagination.
-- **Save Posts:** Implement Save/Unsave button using fetchApi, user can access to saved page, with the ability to view and remove saved posts.
+- **TinyMCE editor:** Users can upload images within Tinymce and design fonts for best description.
+- **Hashtags:** Users can create there own hashtags or select used hashtags.
+- **Save Posts:** Implement Save/Unsave button using Ajax, user can access to saved page, with the ability to view and remove saved posts.
 - **Slugs:** Implemented a unique slug for each post to create descriptive, enhancing search engine visibility and improving user experience.
-- **Like:** Implement Like/Unkike button using fetchApi with Like animation falling hearts for better user experience. 
+- **Like:** Implement Like/Unkike button using Ajax with Like animation falling hearts for better user experience. 
+- **Follow:** User can follow/unfollow using Ajax for faster respond.
 - **OPtimization:** Used Eager loading for optimized queries and prevent N+1 queries.
 
 #### Comments and Replies
-- **Comment on Posts:** Users can add comments to blog posts.
+- **Comment on Posts:** Users can add comments to blog posts using Ajax.
 - **Reply to Comments:** Users can replies to comments, creating nested comment system with reply on reply, they can see total replies on a comment with ability to hide and show those replies.
-- **Delete Comments/Replies:** Users can delete their own comments and replies.
+- **Delete | Edit Comments/Replies:** Users can delete or edit their own comments and replies.
 
 #### Post Sorting and Searching and pagination
-- **Sort Posts:** User can sort posts by latest, oldest, most liked, featured, and trending hashtags.
+- **Sort Posts:** User can sort posts by latest, oldest, most liked, featured, following, and trending hashtags.
 - **Search Functionality:** implemented scout driver tntsearch indexed posts with fast search ability.
 - **Pagination:** User can paginate between post pages. 
 
+### Notifications database and Emails notification
+- **Email notification:** Users will get emailed if posts are liked or comments on their posts or followed.
+- **Notification:** users can manage notifications unread or delete notifications.
+
 #### 🚀 All Pages Styled With TailwindCss ,more experience ,more responsive.
-🔥🔥 Upcoming very soon Realtime notification ,follow/unfollow , sort by following , likes on comments.
+🔥🔥 Upcomig: likes on comments,enable|disable comments,private|public accounts.
 
 ## INSTALLATION
 1.📦 Install dependencies
