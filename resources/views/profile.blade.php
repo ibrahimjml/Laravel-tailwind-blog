@@ -1,8 +1,8 @@
 <x-layout>
   @section('meta_title',$meta_title)
-  @section('meta_keywords')
+  @section('meta_keywords',$meta_keywords)
   @section('author',$author)
-  @section('meta_description')
+  @section('meta_description',$meta_description)
 
   
 <div class=" container mx-auto mt-[30px]">
@@ -62,7 +62,7 @@
   </div>
   <div class="flex flex-col">
     {{-- followings counts --}}
-        <p class="text-lg font-bold text-center">Followings</p>
+        <p class="text-lg font-bold text-center">Following</p>
         <p  class="text-lg font-bold text-center">{{$user->followings()->count()}}</p>
       </div>
 </div>
@@ -86,43 +86,46 @@
   @endforeach
   @endif
 </div>
+@push('scripts')
 <script>
-async function follow(eo) {
-  const userId = eo.dataset.id;
-
-  let options = {
-    method: "POST",
-    headers: {
-      "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-      "Accept": "application/json"
-    },
-  };
-
-  try {
-    const res = await fetch(`/user/${userId}/togglefollow`, options);
-    const data = await res.json();
-
-
-    eo.textContent = data.attached ? "Following" : "Follow";
-    const followerscount = document.querySelector('#followers-count');
-    let countfollowers = parseInt(followerscount.textContent);
-
-    eo.classList.remove('text-gray-600', 'border', 'border-gray-600', 'bg-gray-600', 'text-white');
-
-    if (data.attached) {
-      eo.classList.add('text-gray-600', 'border', 'border-gray-600');
-      followerscount.textContent = countfollowers +1;
-    } else {
-      eo.classList.add('bg-gray-600', 'text-white');
-      followerscount.textContent = countfollowers -1;
+  async function follow(eo) {
+    const userId = eo.dataset.id;
+  
+    let options = {
+      method: "POST",
+      headers: {
+        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+        "Accept": "application/json"
+      },
+    };
+  
+    try {
+      const res = await fetch(`/user/${userId}/togglefollow`, options);
+      const data = await res.json();
+  
+  
+      eo.textContent = data.attached ? "Following" : "Follow";
+      const followerscount = document.querySelector('#followers-count');
+      let countfollowers = parseInt(followerscount.textContent);
+  
+      eo.classList.remove('text-gray-600', 'border', 'border-gray-600', 'bg-gray-600', 'text-white');
+  
+      if (data.attached) {
+        eo.classList.add('text-gray-600', 'border', 'border-gray-600');
+        followerscount.textContent = countfollowers +1;
+      } else {
+        eo.classList.add('bg-gray-600', 'text-white');
+        followerscount.textContent = countfollowers -1;
+      }
+  
+    } catch (error) {
+      console.error(error);
     }
-
-  } catch (error) {
-    console.error(error);
   }
-}
+  
+  
+  </script>
+@endpush
 
-
-</script>
 
 </x-layout>

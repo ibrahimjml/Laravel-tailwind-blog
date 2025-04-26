@@ -161,7 +161,7 @@
 {{-- delete account menu --}}
 @include('partials.confirmation-delete-menu')
 
-
+@push('scripts')
 <script>
   const showmenu = document.getElementById('show-menu');
   const closemenu = document.getElementById('close-menu');
@@ -176,5 +176,7 @@
       menu.classList.add('hidden');
     }
   })
-</script>
+</script>  
+@endpush
+
 </x-layout>

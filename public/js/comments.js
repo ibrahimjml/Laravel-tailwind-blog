@@ -1,5 +1,5 @@
 // ========== delete|edit comment model ==========
-document.addEventListener('DOMContentLoaded', () => {
+
   document.body.addEventListener('click', (eo) => {
     const modelBtn = eo.target.closest('.opencommentmodel-btn');
     const commentBlock = eo.target.closest('.comment, .reply');
@@ -17,30 +17,30 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.commentmodel').forEach(modal => modal.classList.add('hidden'));
     }
   });
-});
+
 
 
 
 // ========== Show/Hide Reply Form ==========
-document.addEventListener('DOMContentLoaded', () => {
+
   document.body.addEventListener('click', (eo) => {
     if (eo.target.classList.contains('reply-btn')) {
       const form = eo.target.closest('.comment, .reply').querySelector('.reply-form');
       form.classList.toggle('hidden');
     }
   });
-});
+
 
 
 // ========== Show/Hide Edit Form ==========
-document.addEventListener('DOMContentLoaded', () => {
+
   document.body.addEventListener('click', (eo) => {
     if (eo.target.classList.contains('edit-btn')) {
       const form = eo.target.closest('.comment, .reply').querySelector('.edit-form');
       form.classList.toggle('hidden');
     }
   });
-});
+
 
 
 
@@ -64,7 +64,7 @@ document.body.addEventListener('click', (eo)=> {
 });
 
 // view replies / hide replies inside nested replies
-document.addEventListener('DOMContentLoaded', function() {
+
   document.body.addEventListener('click', (eo)=> {
     if (eo.target.classList.contains('view-all')) {
       let nested_content = eo.target.closest('.reply').querySelector('.nested-replies');
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   });
-});
+
 // function update Toatal number comments
 function updateCount() {
   const commentCountSpan = document.getElementById('comment-count-number');

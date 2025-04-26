@@ -1,5 +1,8 @@
 <x-layout>
-
+  @section('meta_title',$meta_title)
+  @section('meta_keywords',$meta_keywords)
+  @section('meta_description',$meta_description)
+  @section('author',$author)
   
 {{-- hero --}}
 <div class="relative top-0 hero-bg-image flex flex-col items-center justify-center">

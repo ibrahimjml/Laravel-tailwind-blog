@@ -54,18 +54,22 @@
 {{-- like | comment | save | share Model --}}
 <div id="action-bar-trigger" class="h-[1px] w-full"></div>
 
-<div id="action-bar" class=" container  mx-auto mb-5 w-fit space-x-2 flex justify-center items-center gap-2 border-2 rounded-full px-6 py-3 text-2xl bg-white transition-all duration-300 z-50">
-  <span onclick="fetchLike(this)" class="cursor-pointer flex items-center gap-2">
-    <i class="fa-heart like-icon {{ $post->is_liked() ? 'fa-solid text-red-500' : 'fa-regular' }}" data-id="{{ $post->id }}"></i>
-    <span id="likes-count" class="text-sm">{{ $post->likes()->count()}}</span>
+<div id="action-bar" class=" container  mx-auto mb-5 w-fit h-14 space-x-2 flex justify-center items-center gap-2 border-2 rounded-full px-6 py-3 text-2xl bg-white transition-all duration-300 z-50">
+<div class="flex items-center justify-center">
+    <span onclick="fetchLike(this)" class="cursor-pointer w-8 h-8 rounded-full flex justify-center items-center  hover:bg-gray-200 transition-bg duration-150 ">
+      <i class="fa-heart like-icon {{ $post->is_liked() ? 'fa-solid text-red-500' : 'fa-regular' }}" data-id="{{ $post->id }}"></i>
+    </span>
+    <span title="view who liked" id="likes-count" class="open-view-model text-sm cursor-pointer">{{ $post->likes()->count()}}</span>
+</div>
+<div class="h-4 w-px bg-gray-400"></div>
+<div class="flex items-center justify-center">
+  <span title="write a comment" id="openModel" class="cursor-pointer flex items-center justify-center  w-8 h-8 rounded-full   hover:bg-gray-200 transition-bg duration-150">
+    <i class="fa-regular fa-comment"></i>
   </span>
-<div class="h-4 w-px bg-gray-400"></div>
-<span id="openModel" class="cursor-pointer flex items-center gap-2">
-  <i class="fa-regular fa-comment"></i>
   <span  class="text-sm">{{ $totalcomments }}</span>
-</span>
+</div>
 <div class="h-4 w-px bg-gray-400"></div>
-<span  onclick="savedTo(this,{{$post->id}})" class="cursor-pointer flex items-center gap-2">
+<span title="save" onclick="savedTo(this,{{$post->id}})" class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full   hover:bg-gray-200 transition-bg duration-150">
   <i class="fa-bookmark bookmark-icon {{in_array($post->id,session('saved-to',[])) ? 'fa-solid' : 'fa-regular'}}"></i>
 </span>
 <div class="h-4 w-px bg-gray-400"></div>
@@ -126,7 +130,10 @@
 </div>
 {{-- contianer random hearts--}}
 <div id="containerheart"></div>
+{{-- open view who liked model  --}}
+@include('partials.view-who-liked-model',['viewwholiked'=>$viewwholiked])
 
+@push('scripts')
 @can('view',$post)
 <script>
   const OpenModel = document.getElementById('openmodel');
@@ -140,8 +147,6 @@
   })
 </script>
 @endcan
-
-  
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const actionBar = document.getElementById('action-bar');
@@ -166,6 +171,7 @@
     observer.observe(trigger);
   });
 </script>
+
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -206,9 +212,20 @@
     });
   });
   </script>
-  
-
-
+  <script>
+    const openmodel = document.getElementsByClassName('open-view-model')[0];
+    const viewmodel = document.getElementById('view-liked');
+    const closemodel = document.getElementById('close-modal');
+    openmodel.addEventListener('click',()=>{
+      if(viewmodel.classList.contains('hidden')) viewmodel.classList.remove('hidden');
+      document.body.classList.add('no-scroll');
+    })
+    closemodel.addEventListener('click',()=>{
+      viewmodel.classList.add('hidden');
+      document.body.classList.remove('no-scroll');
+    })
+  </script>
+@endpush
 </x-layout>
   
   

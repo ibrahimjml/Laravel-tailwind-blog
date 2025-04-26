@@ -1,7 +1,7 @@
 <x-layout>
 
-  @section('meta_title',$meta_title)
-  @section('meta_keywords',$meta_keywords)
+  @section('meta_title',$meta_title ?? 'Blog page')
+  @section('meta_keywords',$meta_keywords ?? 'blog, post , search')
 
 
 <div class="container mx-auto pt-[40px]">
@@ -82,24 +82,28 @@
   {!! $posts->links() !!}
 </div>
 
+  @push('scripts')
+  <script>
+    const tagContainer = document.getElementById('tagcontainer');
+    const showTags = document.getElementById('showtags');
+    let expanded = false;
+  
+    showTags.addEventListener('click', () => {
+      if (!expanded) {
+        tagContainer.style.height = `${tagContainer.scrollHeight}px`;
+        expanded = true;
+        showTags.textContent = 'Hide Tags';
+      } else {
+        tagContainer.style.height = '0';
+        expanded = false;
+        showTags.textContent = 'Show Tags';
+      }
+    });
+  
+  </script>  
+  @endpush
 
-<script>
-  const tagContainer = document.getElementById('tagcontainer');
-  const showTags = document.getElementById('showtags');
-  let expanded = false;
 
-  showTags.addEventListener('click', () => {
-    if (!expanded) {
-      tagContainer.style.height = `${tagContainer.scrollHeight}px`;
-      expanded = true;
-      showTags.textContent = 'Hide Tags';
-    } else {
-      tagContainer.style.height = '0';
-      expanded = false;
-      showTags.textContent = 'Show Tags';
-    }
-  });
 
-</script>
 
 </x-layout>

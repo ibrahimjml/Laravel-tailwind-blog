@@ -2,7 +2,7 @@
   @section('meta_title',$meta_title)
   @section('meta_keywords',$meta_keywords)
   @section('author',$author)
-  @section('meta_description')
+  @section('meta_description',$meta_description)
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
   <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-10">Create Post</h1>
@@ -101,43 +101,45 @@
   $initialTags =  old('hashtag') ? explode(',', old('hashtag')) : [];
 @endphp
 
+@push('scripts')
 <script>
-window.initialTags = @json($initialTags ?? []);
-</script>
-
-<script>
-  const imageSelected = document.getElementById('imageSelected');
-  const imagePreview = document.getElementById('imagePreview');
-  const imageContainer = document.getElementById('imageContainer');
-  const cancelPreview = document.getElementById('cancelPreview');
-  const fileSize = document.getElementById('fileSize');
-
-  imageSelected.addEventListener('change',event=>{
-      const file = event.target.files[0];
-      if(file){
-        const reader = new FileReader();
-
-        reader.onload = eo =>{
-          imagePreview.src = eo.target.result;
-          imagePreview.classList.remove('hidden');
-          cancelPreview.classList.remove('hidden');
-          imageContainer.classList.remove('hidden');
-          fileSize.classList.remove('hidden');
-          fileSize.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB / 5MB`; 
+  window.initialTags = @json($initialTags ?? []);
+  </script>
+  
+  <script>
+    const imageSelected = document.getElementById('imageSelected');
+    const imagePreview = document.getElementById('imagePreview');
+    const imageContainer = document.getElementById('imageContainer');
+    const cancelPreview = document.getElementById('cancelPreview');
+    const fileSize = document.getElementById('fileSize');
+  
+    imageSelected.addEventListener('change',event=>{
+        const file = event.target.files[0];
+        if(file){
+          const reader = new FileReader();
+  
+          reader.onload = eo =>{
+            imagePreview.src = eo.target.result;
+            imagePreview.classList.remove('hidden');
+            cancelPreview.classList.remove('hidden');
+            imageContainer.classList.remove('hidden');
+            fileSize.classList.remove('hidden');
+            fileSize.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB / 5MB`; 
+          }
+          reader.readAsDataURL(file);
+        }else{
+          imagePreview.src = '#';
+          imagePreview.classList.add('hidden');
         }
-        reader.readAsDataURL(file);
-      }else{
-        imagePreview.src = '#';
-        imagePreview.classList.add('hidden');
-      }
-
-  })
-  cancelPreview.addEventListener('click', function () {
-    imageSelected.value = ''; 
-    imagePreview.src = '#';
-    cancelPreview.classList.add('hidden');
-    fileSize.classList.add('hidden');
-    imageContainer.classList.add('hidden');
-  });
-</script>
+  
+    })
+    cancelPreview.addEventListener('click', function () {
+      imageSelected.value = ''; 
+      imagePreview.src = '#';
+      cancelPreview.classList.add('hidden');
+      fileSize.classList.add('hidden');
+      imageContainer.classList.add('hidden');
+    });
+  </script>
+@endpush
 </x-layout>

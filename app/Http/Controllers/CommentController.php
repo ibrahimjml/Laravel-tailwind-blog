@@ -42,12 +42,28 @@ public function reply(Comment $comment, Request $request){
         'content'=>'required|string|max:255',
         'parent_id'=>'required|exists:comments,id'
       ]);
-    // maximum 3 replies 
+
+      // cannot reply to own reply
+      if ($comment->user_id == auth()->id() && $comment->parent_id !== null) {
+        toastr()->error('Cannot reply to your own reply', ['timeOut' => 2000]);
+        return back();
+    }
+    // maximum 3 replies allowed
     $replyCount = Comment::where('parent_id',$fields['parent_id'])->count();
     if($replyCount >= 3){
       toastr()->error('maximum 3 replies',['timeOut'=>1500]);
       return back();
     }
+
+    $selfReplyCount = Comment::where('parent_id', $fields['parent_id'])
+    ->where('user_id', auth()->id()) 
+    ->where('parent_id', $comment->id) 
+    ->count();
+    // reply once to your parent comment
+    if ($comment->user_id == auth()->id() && $selfReplyCount >= 1) {
+    toastr()->error('Max self reply exceeded', ['timeOut' => 2000]);
+    return back();
+}
       $fields['content']=strip_tags($fields['content']);
       $fields['user_id']=auth()->id();
       $fields['post_id']=$comment->post_id;

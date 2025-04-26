@@ -11,7 +11,7 @@ function fetchLike(eo) {
   })
     .then(response => response.json())
     .then(data => {
-      const countSpan = eo.querySelector('#likes-count');
+      const countSpan = document.querySelector('#likes-count');
       let count = parseInt(countSpan.textContent);
 
       if (data.liked) {

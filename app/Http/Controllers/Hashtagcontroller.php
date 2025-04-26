@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\MetaHelpers;
 use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Hashtag;
 use Illuminate\View\View;
@@ -25,12 +26,11 @@ class Hashtagcontroller extends Controller
     ->orderBy('created_at','desc')
     ->simplepaginate(5);
 
-      return view('hashtags.show', [
-          'posts' => $posts,
-          'hashtag' => $hashtag,
-          'meta_title' => 'Hashtag | ' . $hashtag->name . '-Page',
-          'meta_keywords' => $hashtag->name,
-          'author' => auth()->user()->username
-      ]);
+    $meta = MetaHelpers::generateDefault("Hashtag - {$hashtag->name} page","Welcome to {$hashtag->name} page ",[$hashtag->name]);
+      return view('hashtags.show', array_merge([
+        'posts' => $posts,
+        'hashtag' => $hashtag,
+        'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
+      ],$meta));
     }
 }

@@ -17,7 +17,15 @@
                        class="text-sm text-gray-700 hover:text-black font-medium block">
                         {{ $notification->data['message'] }}
                     </a>
-                    <small class="text-xs text-gray-400">{{ $notification->created_at->diffForHumans() }}</small>
+                    <div class="flex justify-center items-center gap-4">
+                      <small class="text-xs text-gray-400">{{ $notification->created_at->diffForHumans() }}</small>
+                      
+                        <form action="{{ route('notifications.delete',$notification->id) }}" method="POST" class="text-right mb-2">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="text-sm text-white hover:underline px-2 rounded-full bg-red-500">x</button>
+                      </form>
+                    </div>
                 </div>
             </li>
 

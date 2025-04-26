@@ -2,7 +2,7 @@
   @section('meta_title',$meta_title)
   @section('meta_keywords',$meta_keywords)
   @section('author',$author)
-  @section('meta_description')
+  @section('meta_description',$meta_description)
 
 
 {{-- posts --}}
@@ -15,7 +15,7 @@
 <h1 class=" text-4xl  p-5 font-semibold text-center text-gray-500 w-54">Showing recent posts with # <span class="text-black">{{$hashtag->name}}</span></h1>
 @foreach ($posts as $post)
     
-<x-postcard :post="$post" />
+<x-postcard :post="$post" :authFollowings="$authFollowings"/>
 
 @endforeach
 @endif

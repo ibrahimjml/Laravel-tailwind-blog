@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Hashtagcontroller;
 use App\Http\Controllers\HomeController;

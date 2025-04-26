@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\MetaHelpers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -38,7 +39,7 @@ class PublicController extends Controller
     ->paginate(5)
     ->withQuerystring();
 
-    $meta_keywords = Post::with('hashtags')->latest()->first();
+
     $hashtags = Hashtag::withCount('posts')->get();
     
     return view('blog', [
@@ -46,8 +47,6 @@ class PublicController extends Controller
       'sorts' => 'latest',
       'searchquery'=>$fields['search'],
       'tags' => $hashtags,
-      'meta_title'=>'Blog-Post | Jamal',
-      'meta_keywords' => $meta_keywords->hashtags->pluck('name')->take(6)->implode(', '),
       'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
     ]);
   }
@@ -76,7 +75,7 @@ if ($follower->isFollowing($user)) {
 }
   public function viewpost($slug)
   {
-    $post = Post::where('slug', $slug)->first();
+    $post = Post::whereSlug( $slug)->firstOrFail();
     $post->load(['user','hashtags','comments']);
     
  $morearticles = Post::query()
@@ -87,16 +86,19 @@ if ($follower->isFollowing($user)) {
  ->where('id','!=',$post->id)
  ->take(3)
  ->get();
+$viewwholiked = $post->likes()
+->whereHas('user',function($q){
+  $q->select('id','name', 'username', 'avatar');
+})
+->get();
 
-    return view('post', [
+    $meta = MetaHelpers::generateMetaForPosts($post);
+    return view('post', array_merge([
        'post' => $post,
        'totalcomments'=> Comment::where('post_id', $post->id)->count(),
        'morearticles' => $morearticles,
-       'meta_title' => $post->slug . ' | Blog-Post',
-       'author' => $post->user->username,
-       'meta_description' => Str::limit(strip_tags($post->description), 150),
-       'meta_keywords' => $post->hashtags->pluck('name')->implode(', ')
-      ]);
+       'viewwholiked' => $viewwholiked
+    ],$meta));
   }
 
   public function viewprofile(User $user)
@@ -106,15 +108,15 @@ if ($follower->isFollowing($user)) {
     $commentCount = $user->post()->withCount('comments')->get()->sum('comments_count');
     $posts = Post::orderBy('created_at','DESC')->where('user_id', $user->id)->get();
 
-    return view('profile', [
+    $meta = MetaHelpers::generateDefault("{$user->name}'s Profile | Blog-Page","{$user->name} profile page connect with him");
+
+    return view('profile', array_merge([
        'user' => $user, 
        'posts' => $posts,
        'postcount' => $postCount,
        'likescount' => $likeCount, 
        'commentscount' => $commentCount,
-       'meta_title' => $user->username . ' | Profile',
-       'author' => $user->username
-      ]);
+    ],$meta));
   }
 
   public function editpage(User $user)

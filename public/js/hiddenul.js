@@ -1,9 +1,12 @@
-const hiddenul = document.getElementById("hiddenul2");
-const change = document.getElementById("dropdown");
 const mobilebtn = document.querySelector("#mobile-btn");
 const mobilemenu = document.querySelector("#mobile-menu");
+
+const hiddenul = document.getElementById("hiddenul2");
+const change = document.getElementById("dropdown");
+
 const notifications = document.getElementById('hidden-notification');
-const shownotification = document.getElementById('hover-notification');
+const shownotification = document.getElementById('hover-notification'); 
+
 // show burger menu
 mobilebtn.addEventListener('click', (e) => {
   
@@ -24,20 +27,45 @@ mobilebtn.addEventListener('click', (e) => {
 });
 
 // show hover menu user info
-document.addEventListener('DOMContentLoaded', function() {
-change.addEventListener("mousemove",(eo) => {
-hiddenul.style.display="block";
-});
 
-change.addEventListener("mouseout",(eo) => {
-hiddenul.style.display="none";
-});
-});
+    change.addEventListener("mousemove",(eo) => {
+    hiddenul.style.display="block";
+    });
+    
+    change.addEventListener("mouseout",(eo) => {
+      setTimeout(function() {
+        if (!hiddenul.matches(':hover')) {
+          hiddenul.style.display = "none";
+        }
+      }, 300); 
+    });
+
+    change.addEventListener("mousemove",(eo) => {
+      hiddenul.style.display="block";
+      });
+      
+      change.addEventListener("mouseout",(eo) => {
+      hiddenul.style.display = "none";
+       });
+  
 
 
 // show notification menu info
-document.addEventListener('DOMContentLoaded', function() {
-  
+
+  shownotification.addEventListener('mousemove', function() {
+    notifications.style.display = "block";
+  });
+
+
+  shownotification.addEventListener('mouseout', function() {
+    setTimeout(function() {
+      if (!notifications.matches(':hover')) {
+        notifications.style.display = "none";
+      }
+    }, 300); 
+  });
+
+
   notifications.addEventListener('mousemove', function() {
     notifications.style.display = "block";
   });
@@ -46,4 +74,6 @@ document.addEventListener('DOMContentLoaded', function() {
   notifications.addEventListener('mouseout', function() {
     notifications.style.display = "none";
   });
-});
+
+
+

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\MetaHelpers;
 use App\Http\Middleware\CheckIfBlocked;
 use App\Mail\postlike;
 use App\Models\Hashtag;
@@ -74,27 +75,36 @@ class PostController extends Controller
         break;
     }
     $posts = $posts->paginate(5)->appends(['sort' => $sortoption]);
-    $meta_keywords = Post::with('hashtags')->latest()->first();
+
     $hashtags = Hashtag::withCount('posts')->get();
 
-    return view('blog', [
-      'meta_title'=>'Blog-Post | Jamal',
-      'meta_keywords' => $meta_keywords->hashtags->pluck('name')->take(6)->implode(', '),
+    $meta_keywords = Hashtag::with('posts')->latest()->first();
+    $meta = MetaHelpers::generateDefault('Blog-Post | Jamal',
+    'welcome to blog post',
+    $meta_keywords->pluck('name')->take(4)->toArray());
+
+    return view('blog', array_merge([
       'tags' => $hashtags,
       'posts' => $posts,
       'sorts' => $sortoption,
       'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
-    ]);
+    ],$meta)
+      
+    );
   }
 
   public function createpage()
   {
-    return view('create',[
-      'allhashtags' => Hashtag::pluck('name'),
-      'meta_title' => 'Create Page | Blog-Post',
-      'author' => auth()->user()->username,
-      'meta_keywords' => Hashtag::pluck('name')->take(10)->implode(', ')
-    ]);
+    $allhashtags = Hashtag::pluck('name');
+
+    $meta = MetaHelpers::generateDefault('Create-post | Blog-Post',
+    'create your own post ',
+    $allhashtags->take(4)->toArray());
+
+    return view('create', array_merge([
+      'allhashtags' => $allhashtags,
+    ],$meta)
+  );
   }
 
 
@@ -182,15 +192,12 @@ class PostController extends Controller
     $hashtags = $post->hashtags()->pluck('name')->implode(', ');
     $allhashtags = Hashtag::pluck('name');
     
-    return view('updatepost', [
+    $meta = MetaHelpers::generateMetaForPosts($post);
+    return view('updatepost', array_merge([
       'post' => $post,
       'hashtags' => $hashtags,
       'allhashtags' => $allhashtags,
-      'meta_title' => 'Update | '.$post->slug,
-      'meta_description' => Str::limit(strip_tags($post->description), 150),
-      'meta_keywords' => Hashtag::pluck('name')->take(10)->implode(', '),
-      'author' => auth()->user()->username
-    ]);
+    ],$meta));
   }
 
   public function update($slug, Request $request)
@@ -308,16 +315,15 @@ class PostController extends Controller
 
 
       $meta_keywords = collect($posts->items())
-      ->map(fn ($post) => $post->hashtags->pluck('name'))
+      ->flatMap(fn ($post) => $post->hashtags->pluck('name'))
       ->unique()
-      ->implode(', ') ?? '';
-       
-    return view('getsavedposts',[
-      'meta_title' => 'Saved-Posts',
-      'author' => auth()->user()->username,
-      'meta_keywords' =>  $meta_keywords,
+      ->implode(', ');
+
+       $meta = MetaHelpers::generateDefault('Saved-Posts | Blog-Post','Saved post page where users save posts here',[$meta_keywords]);
+
+    return view('getsavedposts',array_merge([
       'posts' => $posts,
       'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
-    ]);
+    ],$meta));
   }
 }

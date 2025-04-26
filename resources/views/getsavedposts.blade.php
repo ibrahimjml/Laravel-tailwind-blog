@@ -2,7 +2,7 @@
   @section('meta_title',$meta_title)
   @section('meta_keywords',$meta_keywords)
   @section('author',$author)
-  @section('meta_description')
+  @section('meta_description',$meta_description)
 
   <div id="savedPostsContainer">
 

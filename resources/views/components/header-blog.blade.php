@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <meta name="description" content="@yield('meta_description', 'Default site description')">
-  <meta name="keywords" content="@yield('meta_keywords', 'blog, posts, laravel')">
-  <meta name="author" content="@yield('author',config('app.name'))">
+  <meta name="description" content="@yield('meta_description')">
+  <meta name="keywords" content="@yield('meta_keywords')">
+  <meta name="author" content="@yield('author')">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="{{url('style.css')}}">
   @vite(['resources/css/app.css','resources/js/app.js'])
-  <title>@yield('meta_title','HOME')</title>
+  <title>@yield('meta_title')</title>
 </head>
 <body  class="min-h-screen flex  flex-col m-0 ">
   <nav class="w-screen px-6 py-2 {{Route::is('home') ? 'bg-opacity-0 absolute z-50' : 'bg-zinc-100 border-b-2'}}  ">
@@ -90,9 +90,6 @@
      @include('partials.burger-menu')
     </div>
   </nav>
-{{$slot}}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-</body>
-</html>
+
+
 

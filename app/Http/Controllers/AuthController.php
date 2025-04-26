@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\MetaHelpers;
 use App\Models\User;
 use Illuminate\Support\Str;
 use App\Mail\ForgotPassword;
@@ -18,11 +19,9 @@ class AuthController extends Controller
 {
   public function registerpage()
   {
-    return view('auth.register',[
-      'meta_title' => 'Register-Page | '.config('app.name'),
-      'meta_description' => 'Login to create a new posts and interacts with ur friends ',
-      'meta_keywords' => Hashtag::pluck('name')->take(10)->implode(', ')
-    ]);
+    $meta = MetaHelpers::generateDefault('Register-Page | Blog-Post', 'Register an account to create posts with ur friends ');
+    return view('auth.register', $meta);
+    
   }
 
   public function register(Request $request)
@@ -51,12 +50,8 @@ class AuthController extends Controller
 
   public function loginpage()
   {
-    
-    return view('auth.login',[
-      'meta_title' => 'Login-Page | '.config('app.name'),
-      'meta_description' => 'Login to create a new posts and interacts with ur friends ',
-      'meta_keywords' => Hashtag::pluck('name')->take(10)->implode(', ')
-    ]);
+    $meta = MetaHelpers::generateDefault('Login-Page | Blog-Post', 'Welcome to login page ');
+    return view('auth.login',$meta);
   }
 
 

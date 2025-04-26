@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\MetaHelpers;
 use App\Models\Hashtag;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -34,12 +35,12 @@ if ($trendingHashtag) {
         ->take(3)
         ->get();
 }
-
-  return view('index', [
+ $meta = MetaHelpers::generateDefault();
+  return view('index', array_merge([
       'featuredPosts' => $featuredPosts,
       'oldestPosts' => $oldestPosts,
       'trendingHashtag' => $trendingHashtag
-  ]);
+  ],$meta));
 
   }
 }

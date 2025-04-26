@@ -12,23 +12,7 @@
     </div>
   </div>
 </footer>
+<x-scripts/>
 
-<script src="{{asset('js/hiddenul.js')}}" defer></script>
-<script src="{{asset('js/fetchsavedpost.js')}}" defer></script>
-<script src="{{asset('js/unsaveposts.js')}}" defer></script>
-<script src="{{asset('js/fetchfollow.js')}}" defer></script>
-
-@if(Route::is('single.post'))
-<script src="{{asset('js/fetchlike.js')}}" defer></script>
-<script src="{{asset('js/randomhearts.js')}}" defer></script>
-<script src="{{asset('js/comments.js')}}" defer></script>
-@endif
-
-@if(Route::is('admin-page','featuredpage','admin.posts','admin.users','hashtagpage'))
-<script src="{{asset('js/sidebar.js')}}" defer></script>
-@endif
-
-@if(Route::is(['edit.post','create','featuredpage']))
-<script src="{{asset('js/hashtagsUI.js')}}" defer></script>
-@endif
-
+</body>
+</html>
