@@ -16,7 +16,8 @@ class Post extends Model
     'description',
     'user_id',
     'image_path',
-    'is_featured'
+    'is_featured',
+    'allow_comments'
   ];
 
   public function user()

@@ -61,6 +61,7 @@
     </span>
     <span title="view who liked" id="likes-count" class="open-view-model text-sm cursor-pointer">{{ $post->likes()->count()}}</span>
 </div>
+@if($post->allow_comments)
 <div class="h-4 w-px bg-gray-400"></div>
 <div class="flex items-center justify-center">
   <span title="write a comment" id="openModel" class="cursor-pointer flex items-center justify-center  w-8 h-8 rounded-full   hover:bg-gray-200 transition-bg duration-150">
@@ -68,6 +69,7 @@
   </span>
   <span  class="text-sm">{{ $totalcomments }}</span>
 </div>
+@endif
 <div class="h-4 w-px bg-gray-400"></div>
 <span title="save" onclick="savedTo(this,{{$post->id}})" class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full   hover:bg-gray-200 transition-bg duration-150">
   <i class="fa-bookmark bookmark-icon {{in_array($post->id,session('saved-to',[])) ? 'fa-solid' : 'fa-regular'}}"></i>
@@ -119,7 +121,7 @@
     </a>
 </div>
 <a href="{{route('single.post',$article->slug)}}">
-<img src="/images/{{$article->image_path}}"  alt="" class="w-full h-[270px] object-cover mt-2">
+<img src="/images/{{$article->image_path}}"  alt="" class="w-full h-[270px] object-cover mt-2 rounded-lg">
 <div class="flex flex-col">
   <p class="text-xl font-bold mt-1">{{$article->title}}</p>
   <p class="text-sm text-gray-500 font-semibold line-clamp-3 mt-2">{!! Str::words(strip_tags($article->description), 20) !!}</p>
@@ -130,10 +132,15 @@
 </div>
 {{-- contianer random hearts--}}
 <div id="containerheart"></div>
+
 {{-- open view who liked model  --}}
 @include('partials.view-who-liked-model',['viewwholiked'=>$viewwholiked])
 
+{{-- All ----
+   scripts
+ ----------}}
 @push('scripts')
+{{--  post menu edit and delete option--}}
 @can('view',$post)
 <script>
   const OpenModel = document.getElementById('openmodel');
@@ -147,6 +154,8 @@
   })
 </script>
 @endcan
+
+{{-- observer for model inertactions --}}
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const actionBar = document.getElementById('action-bar');
@@ -172,7 +181,8 @@
   });
 </script>
 
-
+{{-- open comments model if its allowed --}}
+@if($post->allow_comments)
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const opencommentModel = document.getElementById('openModel');
@@ -212,6 +222,9 @@
     });
   });
   </script>
+  @endif
+
+{{-- open view who liked model  --}}
   <script>
     const openmodel = document.getElementsByClassName('open-view-model')[0];
     const viewmodel = document.getElementById('view-liked');

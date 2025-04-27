@@ -86,12 +86,11 @@ if ($follower->isFollowing($user)) {
  ->where('id','!=',$post->id)
  ->take(3)
  ->get();
-$viewwholiked = $post->likes()
-->whereHas('user',function($q){
-  $q->select('id','name', 'username', 'avatar');
-})
-->get();
 
+ $viewwholiked = $post->likes()
+ ->with('user:id,name,username,avatar')
+ ->get();
+ 
     $meta = MetaHelpers::generateMetaForPosts($post);
     return view('post', array_merge([
        'post' => $post,

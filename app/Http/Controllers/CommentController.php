@@ -27,7 +27,12 @@ class CommentController extends Controller
       $fields['user_id']=auth()->id();
       $fields['post_id']=$post->id;
 
-    $comment = $post->comments()->create($fields);
+       if(!$post->allow_comments){
+        return response()->json([
+          'error'=>'comments disabled on post'
+        ]);
+       }
+      $comment = $post->comments()->create($fields);
 
       Mail::to($post->user)->queue(new EmailComment($post->user, $comment->user, $post));
   

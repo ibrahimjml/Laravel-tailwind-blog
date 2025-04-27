@@ -74,6 +74,15 @@
       </button>
     @endif
     </div>
+    <div class="bg-gray-600  rounded-md p-2 h-11 w-fit">
+      <input type="checkbox" name="enabled" id="enabled" value="{{$post->allow_comments}}" {{ $post->allow_comments ? 'checked' : '' }}>
+        <label class="text-white font-semibold" for="enabled">Enable comments</label>
+        @error('enabled')
+        <p class="text-red-500 text-xs italic mt-4">
+            {{ $message }}
+        </p>
+        @enderror
+    </div>
 @can('modify',$post)
   <div class="flex flex-col  items-start ">
     <label for="featured" class="block text-gray-700 text-sm font-bold mb-2 mt-2 sm:mb-4">

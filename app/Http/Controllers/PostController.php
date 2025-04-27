@@ -9,6 +9,7 @@ use App\Models\Hashtag;
 use App\Models\Post;
 use App\Notifications\LikesNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
@@ -16,6 +17,7 @@ use Intervention\Image\Laravel\Facades\Image;
 
 class PostController extends Controller
 {
+
   public function __construct()
   {
     $this->middleware(['auth', 'verified', CheckIfBlocked::class]);
@@ -102,7 +104,7 @@ class PostController extends Controller
     $allhashtags->take(4)->toArray());
 
     return view('create', array_merge([
-      'allhashtags' => $allhashtags,
+      'allhashtags' => $allhashtags
     ],$meta)
   );
   }
@@ -110,6 +112,7 @@ class PostController extends Controller
 
   public function create(Request $request)
   {
+    
     $fields = $request->validate(
       [
         'title' => 'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
@@ -127,6 +130,7 @@ class PostController extends Controller
           }
     }],
         'image' => 'required|mimes:jpg,png,jpeg|max:5000000',
+        'enabled' => 'nullable|boolean',
       ],
       [
         'title.regex' => 'The title accept only letters,numbers and spaces'
@@ -134,13 +138,13 @@ class PostController extends Controller
     );
 
     $fields['title'] = htmlspecialchars(strip_tags($fields['title']));
-
+    $allow_comments = $request->has('enabled') ? 1 : 0;
     $slug = Str::slug($fields['title']);
 
 
     $newimage = uniqid() . '-' . $slug . '.' . $fields['image']->extension();
     $resized = Image::read($request->file('image'))
-    ->resize(700, 300)
+    ->resize(1300, 600)
     ->save(public_path('images/' . $newimage));
 
     $post = Post::create([
@@ -148,6 +152,7 @@ class PostController extends Controller
       'description' => $request->input('description'),
       'slug' => $slug,
       'image_path' => $newimage,
+      'allow_comments' => $allow_comments,
       'user_id' => auth()->user()->id
     ]);
 
@@ -204,7 +209,7 @@ class PostController extends Controller
   {
     $post = Post::where('slug', $slug)->firstOrFail();
     $this->authorize('update', $post);
-
+    $allow_comments = $request->has('enabled') ?? false;
     $isFeatured = $request->has('featured') ?? false;
 
     $fields = $request->validate(
@@ -217,6 +222,7 @@ class PostController extends Controller
             $fail('You can only select up to 5 hashtags.');
         }
   }],
+        'enabled' => 'nullable|boolean',
         'featured' => 'nullable|boolean'
       ],
       [
@@ -226,6 +232,7 @@ class PostController extends Controller
 
     $post->title = $fields['title'];
     $post->description = $fields['description'];
+    $post->allow_comments = $allow_comments;
     $post->is_featured = $isFeatured;
 
     if (!empty($fields['hashtag'])) {

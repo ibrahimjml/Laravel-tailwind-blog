@@ -87,6 +87,15 @@
         Add Selected Hashtags
       </button>
     @endif
+    <div class="bg-gray-600  rounded-md p-2 h-11 w-fit">
+      <input type="checkbox" name="enabled" id="enabled" value="1" {{ old('enabled') ? 'checked' : '' }}>
+        <label class="text-white font-semibold" for="enabled">Enable comments</label>
+        @error('enabled')
+        <p class="text-red-500 text-xs italic mt-4">
+            {{ $message }}
+        </p>
+        @enderror
+    </div>
     </div>
     <div class="mt-4 flex justify-center">
       <button type="submit"
