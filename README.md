@@ -45,9 +45,11 @@
 - **OPtimization:** Used Eager loading for optimized queries and prevent N+1 queries.
 
 #### Comments and Replies
+--**Disable/Enable:** Users can diasble or enable comments from creating or editing post.
 - **Comment on Posts:** Users can add comments to blog posts using Ajax.
 - **Reply to Comments:** Users can replies to comments, creating nested comment system with reply on reply, they can see total replies on a comment with ability to hide and show those replies.
 - **Delete | Edit Comments/Replies:** Users can delete or edit their own comments and replies.
+
 
 #### Post Sorting and Searching and pagination
 - **Sort Posts:** User can sort posts by latest, oldest, most liked, featured, following, and trending hashtags.
@@ -55,7 +57,7 @@
 - **Pagination:** User can paginate between post pages. 
 
 ### Notifications database and Emails notification
-- **Email notification:** Users will get emailed if posts are liked or comments on their posts or followed.
+- **Email notification:** Users will get emailed if posts are liked, commented, replied , or viewed their profiles or followed.
 - **Notification:** users can manage notifications unread or delete notifications.
 
 #### 🚀 All Pages Styled With TailwindCss ,more experience ,more responsive.
