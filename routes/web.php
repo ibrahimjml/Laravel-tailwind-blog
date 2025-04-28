@@ -6,6 +6,7 @@ use App\Http\Controllers\Hashtagcontroller;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,34 +43,34 @@ Route::post('/create',[PostController::class,'create'])->name('create')->middlew
 // Add images inside TinyMCE editor
 Route::post('/upload-image', [PostController::class, 'uploadImage'])->name('tinymce.upload');
 
-// User Profile
-Route::get('/@{user:username}',[PublicController::class,'viewprofile'])->name('profile');
+// Edit user settings
+Route::controller(ProfileController::class)->group(function(){
+  // User Profile
+Route::get('/@{user:username}','viewprofile')->name('profile');
 
 // Edit Profile Image
-Route::get('/edit-avatar/{user}',[PublicController::class,'editpage']);
-Route::put('/edit-avatar/{user}/edit',[PublicController::class,'edit']);
-Route::delete('/delete-avatar/{user}',[PublicController::class,'destroyavatar'])->name('delete.avatar');
+Route::get('/edit-avatar/{user}','editpage');
+Route::put('/edit-avatar/{user}/edit','edit');
+Route::delete('/delete-avatar/{user}','destroyavatar')->name('delete.avatar');
 
 // Edit Profile Page
-Route::get('/edit-profile/{user:username}',[PublicController::class,'editprofilepage'])
+Route::get('/edit-profile/{user:username}','editprofilepage')
 ->middleware('password.confirm')
 ->name('editprofile');
 // Add bio 
-Route::put('/addbio/{user}',[PublicController::class,'useraddbio']);
+Route::put('/addbio/{user}','useraddbio');
+  // Edit user settings
+  Route::put('/edit-email/{user}','editemail');
+  Route::put('/change-name/{user}','editname');
+  Route::put('/change-phone/{user}','editphone');
+  Route::put('/change-pass/{user}','editpassword');
+  Route::delete('/account-delete/{user}','deleteaccount')->name('account.delete');
+  Route::delete('/post/{slug}','delete')->name('delete.post');
+  Route::get('/post/edit/{slug}','editpost')->name('edit.post');
+  Route::put('/post/update/{slug}','update')->name('update.post');
+  
 
-// Edit User email,name,phone,pass
-Route::put('/edit-email/{user}',[PublicController::class,'editemail']);
-Route::put('/change-name/{user}',[PublicController::class,'editname']);
-Route::put('/change-phone/{user}',[PublicController::class,'editphone']);
-Route::put('/change-pass/{user}',[PublicController::class,'editpassword']);
-//user account delete
-Route::delete('/account-delete/{user}',[PublicController::class,'deleteaccount'])->name('account.delete');
-// Delete Post
-Route::delete('/post/{slug}',[PostController::class,'delete'])->name('delete.post');
-
-// Edit Post
-Route::get('/post/edit/{slug}',[PostController::class,'editpost'])->name('edit.post');
-Route::put('/post/update/{slug}',[PostController::class,'update'])->name('update.post');
+});
 
 // Like
 Route::post('/post/{post}/like',[PostController::class,'like']);

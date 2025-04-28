@@ -40,9 +40,11 @@
               <form class="tagsdelete" action='{{route('delete.hashtag',$hashtag->id)}}' method="POST">
                 @csrf
                 @method('delete')
-                <input class="bg-red-500 rounded-lg p-2 cursor-pointer hover:bg-red-400 " type='submit' value="Delete">
+                <button type="submit" class="text-red-500 rounded-lg p-2 cursor-pointer hover:text-red-300">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
               </form>
-              <button class="tagsedit bg-blue-500 rounded-lg p-2 cursor-pointer " data-name="{{ $hashtag->name }}"  data-id="{{ $hashtag->id }}">Edit</button>
+              <button class="tagsedit text-blue-500 rounded-lg p-2 cursor-pointer hover:text-blue-300" data-name="{{ $hashtag->name }}"  data-id="{{ $hashtag->id }}"><i class="fa-solid fa-edit"></i></button>
             </div>
           
           </td>

@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Helpers\MetaHelpers;
 use App\Http\Middleware\CheckIfBlocked;
+use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Mail\postlike;
 use App\Models\Hashtag;
 use App\Models\Post;
+use App\Notifications\FollowingPostCreatedNotification;
 use App\Notifications\LikesNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -110,32 +113,10 @@ class PostController extends Controller
   }
 
 
-  public function create(Request $request)
+  public function create(CreatePostRequest $request)
   {
     
-    $fields = $request->validate(
-      [
-        'title' => 'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
-        'description' => 'required|string',
-        'hashtag' => ['nullable', 'string', function ($attribute, $value, $fail) {
-          $tags = array_filter(array_map('trim', explode(',', $value)));
-          if (count($tags) > 5) {
-              $fail('You can only select up to 5 hashtags.');
-          }
-          $regexTags = '/^[A-Za-z0-9_-]+$/';
-          foreach( $tags as $tag){
-            if(!preg_match($regexTags,$tag)){
-              $fail("Hashtags only contain letters, numbers, dashes, or underscores");
-            }
-          }
-    }],
-        'image' => 'required|mimes:jpg,png,jpeg|max:5000000',
-        'enabled' => 'nullable|boolean',
-      ],
-      [
-        'title.regex' => 'The title accept only letters,numbers and spaces'
-      ]
-    );
+    $fields = $request->validated();
 
     $fields['title'] = htmlspecialchars(strip_tags($fields['title']));
     $allow_comments = $request->has('enabled') ? 1 : 0;
@@ -143,7 +124,7 @@ class PostController extends Controller
 
 
     $newimage = uniqid() . '-' . $slug . '.' . $fields['image']->extension();
-    $resized = Image::read($request->file('image'))
+    Image::read($request->file('image'))
     ->resize(1300, 600)
     ->save(public_path('images/' . $newimage));
 
@@ -155,23 +136,12 @@ class PostController extends Controller
       'allow_comments' => $allow_comments,
       'user_id' => auth()->user()->id
     ]);
-
-    $hashtagNames = [];
-
-    if ($request->filled('hashtag')) {
-      $hashtags = explode(',', $request->input('hashtag'));
-
-      foreach ($hashtags as $hashtag) {
-        $hashtag = strip_tags(trim($hashtag));
-
-        if ($hashtag) {
-          $hashtagModel = Hashtag::firstOrCreate(['name' => $hashtag]);
-          $post->hashtags()->attach($hashtagModel->id);
-          $hashtagNames[] = $hashtagModel->name;
-        }
-      }
-    }
     toastr()->success('posted successfuly',['timeOut'=>1000]);
+
+    $followers = auth()->user()->followers;
+    foreach($followers as $follower){
+      $follower->notify(new FollowingPostCreatedNotification($follower,auth()->user(),$post));
+    }
     return redirect('/blog');
   }
 
@@ -205,30 +175,14 @@ class PostController extends Controller
     ],$meta));
   }
 
-  public function update($slug, Request $request)
+  public function update($slug, UpdatePostRequest $request)
   {
     $post = Post::where('slug', $slug)->firstOrFail();
     $this->authorize('update', $post);
     $allow_comments = $request->has('enabled') ?? false;
     $isFeatured = $request->has('featured') ?? false;
 
-    $fields = $request->validate(
-      [
-        'title' => 'nullable|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
-        'description' => 'required|string',
-        'hashtag' => ['nullable', 'string', function ($attribute, $value, $fail) {
-        $tags = array_filter(array_map('trim', explode(',', $value)));
-        if (count($tags) > 5) {
-            $fail('You can only select up to 5 hashtags.');
-        }
-  }],
-        'enabled' => 'nullable|boolean',
-        'featured' => 'nullable|boolean'
-      ],
-      [
-        'title.regex' => 'The title accept only letters,numbers and spaces',
-      ]
-    );
+    $fields = $request->validated();
 
     $post->title = $fields['title'];
     $post->description = $fields['description'];
@@ -240,10 +194,8 @@ class PostController extends Controller
       $hashtagIds = [];
 
       foreach ($hashtagNames as $name) {
-        if ($name != 0){
           $hashtag = Hashtag::firstOrCreate(['name' => strip_tags(trim($name))]);
           $hashtagIds[] = $hashtag->id;
-        }
       }
 
 
@@ -270,7 +222,7 @@ class PostController extends Controller
           $path = $file->storeAs('images', $filename, 'public');
           
           return response()->json([
-            'location' => '/storage/' . $path  // add leading slash here
+            'location' => '/storage/' . $path  
         ]);
       }
 

@@ -6,6 +6,8 @@ use App\Http\Middleware\CheckIfBlocked;
 use App\Mail\EmailComment;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Notifications\CommentNotification;
+use App\Notifications\RepliedCommentNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -35,7 +37,8 @@ class CommentController extends Controller
       $comment = $post->comments()->create($fields);
 
       Mail::to($post->user)->queue(new EmailComment($post->user, $comment->user, $post));
-  
+      $post->user->notify(new CommentNotification($comment->user,$post));
+
       return response()->json([
         'commented'=>true,
         'html' => view('comments.comments', ['comments' => [$comment]])->render()
@@ -73,8 +76,10 @@ public function reply(Comment $comment, Request $request){
       $fields['user_id']=auth()->id();
       $fields['post_id']=$comment->post_id;
       
-      Comment::create($fields);
-  
+     $reply = Comment::create($fields);
+
+     $comment->user->notify(new RepliedCommentNotification($comment,$reply->user,$comment->post));
+
       toastr()->success('Reply added successfully',['timeOut'=>1000]);
       return back();
 }

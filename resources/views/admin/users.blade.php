@@ -81,14 +81,14 @@
         <form  action="{{route('role.update',$user)}}" method="POST">
          @csrf
          @method('PUT')
-          <select  name="role" class="cursor-pointer  bg-gray-400 text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="this.form.submit()">
+          <select  name="role" class="cursor-pointer  bg-gray-600 text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 " onchange="this.form.submit()">
             <option value="user"{{!$user->is_admin ? 'selected':''}} >User</option> 
             <option value="admin" {{$user->is_admin ? 'selected' :''}}>Admin</option>
         
           </select>
         </form>
         @else
-        <p class="cursor-not-allowed bg-gray-400 text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Admin</p>
+        <p class="cursor-not-allowed bg-gray-600 text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 ">Admin</p>
         @endcan
       </td>
       <td class="p-2">{{$user->followings->count()}}</td>
@@ -108,9 +108,9 @@
       <td class=" bg-white  p-2 text-center">
       <div class="flex justify-center">
           @if($user->is_blocked)
-          <img src="/true.png" alt="">
+          <i class="fa-solid fa-check text-green-500"></i>
           @else
-          <img src="/close.png" alt="">
+          <i class="fa-solid fa-close text-red-600"></i>
           @endif
       </div>
       </td>
@@ -121,7 +121,7 @@
             <form action="{{ route('delete.user', $user) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
               @csrf
               @method('DELETE')
-              <button type="submit" class="bg-red-500 rounded-lg p-2 hover:bg-red-400 ">Delete</button>
+              <button type="submit" class="text-red-500 rounded-lg p-2 hover:text-red-400 "><i class="fa-solid fa-trash"></i></button>
             </form>
             @endcan
         </div>
@@ -132,14 +132,14 @@
             @can('modify', $user)
             <form action="{{ route('unblock.user', $user) }}" method="POST" onsubmit="return confirm('Are you sure you want to block this user?');">
               @csrf
-              <button type="submit" class="bg-yellow-500 rounded-lg p-2 hover:bg-yellow-400 ">UnBlock</button>
+              <button type="submit" class="text-yellow-500 rounded-lg p-2 hover:text-yellow-400 "><i class="fas fa-undo"></i></button>
             </form>
             @endcan
             @else
             @can('modify', $user)
             <form action="{{ route('block.user', $user) }}" method="POST" onsubmit="return confirm('Are you sure you want to block this user?');">
               @csrf
-              <button type="submit" class="bg-yellow-500 rounded-lg p-2 hover:bg-yellow-400 ">Block</button>
+              <button type="submit" class="text-yellow-500 rounded-lg p-2 hover:text-yellow-400 "><i class="fas fa-ban"></i></button>
             </form>
             @endcan
             @endif

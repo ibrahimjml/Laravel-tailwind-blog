@@ -14,15 +14,15 @@
   {{-- sort option --}}
   <form  action="{{route('admin.posts')}}" method="GET">
         
-    <select id="sort" name="sort" class="cursor-pointer bg-gray-700 text-white border border-gray-300 block  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="this.form.submit()">
-      <option value="latest" {{ request('sort') === 'latest' ? 'selected' : '' }}>Latest</option> 
+    <select id="sort" name="sort" class="font-bold cursor-pointer bg-gray-700 text-white border border-gray-300 block  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="this.form.submit()">
+      <option  value="latest" {{ request('sort') === 'latest' ? 'selected' : '' }}>Latest</option> 
       <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest</option>
     </select>
   </form>
   {{-- sort featured --}}
-  <div class="bg-gray-700  rounded-md p-2 h-11">
+  <div class="bg-gray-700 rounded-md p-2 h-10">
     <form action="{{route('admin.posts')}}" method="GET">
-      <input type="checkbox" name="featured" value="1" {{ request('featured') ? 'checked' : '' }} onchange="this.form.submit()">
+      <input type="checkbox" name="featured" value="1" {{ request('featured') ? 'checked' : '' }} onchange="this.form.submit()" class="rounded-full w-5 h-4">
       <label class="text-white font-semibold" for="featured">Featured</label>
     </form>
   </div>
@@ -63,7 +63,7 @@
         <th class="text-white p-2">Title</th>
         <th class="text-white p-2">Body</th>
         <th class="text-white p-2">Hashtags</th>
-        <th class="text-white p-2">IsFeatured</th>
+        <th class="text-white p-2">Featured</th>
         <th class="text-white p-2">Likes</th>
         <th class="text-white p-2">Comments</th>
         <th class="text-white p-2">CreatedAt</th>
@@ -79,31 +79,37 @@
         </td>
         <td class="p-2">{{Str::limit($post->slug,20)}}</td>
         <td class="p-2">  {!! Str::limit(strip_tags($post->description), 40) !!}</td>
-        <td class="p-2">{{$post->hashtags->pluck('name')->implode(', ')}}</td>
+        <td class="p-2">
+          @if($post->hashtags->isNotEmpty())
+          {{$post->hashtags->pluck('name')->implode(', ')}}
+          @else
+          <i class="fa-solid fa-close text-red-600 "></i>
+          @endif
+        </td>
         <td class="p-2">
           <div class="flex justify-center">
             @if($post->is_featured)
-            <img src="/true.png" alt="">
+            <i class="fa-solid fa-check text-green-500"></i>
             @else
-            <img src="/close.png" alt="">
+            <i class="fa-solid fa-close text-red-600"></i>
             @endif
         </div>
         </td>
         <td class="p-2">{{$post->likes_count}}</td>
         <td class="p-2">{{$post->comments_count}}</td>
         <td class="p-2">{{$post->created_at->diffForHumans()}}</td>
-        <td  class=" text-white p-2">
-          <div class="flex gap-2">
+        <td  class=" text-white p-2 ">
+          <div class="flex items-center justify-center">
             @can('delete', $post)
             <form action='/post/{{$post->slug}}' method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
               @csrf
               @method('delete')
-              <input class="bg-red-500 rounded-lg p-2 cursor-pointer hover:bg-red-400 " type='submit' value="Delete">
+              <button type="submit" class="rounded-lg text-red-600 p-2  hover:text-red-300 transition-colors duration-100"><i class="fa-solid fa-trash"></i></button>
             </form>
             @endcan
-            <a class="bg-blue-500 rounded-lg text-white p-2 hover:bg-blue-400 " href="/post/{{$post->slug}}">View</a></td>
+            <a class=" rounded-lg text-gray-700 p-2  hover:text-gray-400 transition-colors duration-100" href="/post/{{$post->slug}}"><i class="fa-solid fa-eye"></i></a>
+            <a  href="" class="rounded-lg text-yellow-600 p-2  hover:text-yellow-400 transition-colors duration-100"><i class="fa-solid fa-star"></i></a>
           </div>
-          
         </td>
       </tr>
       @empty

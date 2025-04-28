@@ -20,6 +20,24 @@ class Post extends Model
     'allow_comments'
   ];
 
+  protected static function booted()
+  {
+    static::created(function($post){
+      if (request()->filled('hashtag')) {
+        $hashtags = explode(',', request()->input('hashtag'));
+
+        foreach ($hashtags as $hashtag) {
+            $hashtag = strip_tags(trim($hashtag));
+
+            if ($hashtag) {
+                $hashtagModel = \App\Models\Hashtag::firstOrCreate(['name' => $hashtag]);
+                $post->hashtags()->attach($hashtagModel->id);
+            }
+        }
+    }
+    });
+
+  }
   public function user()
   {  
     return $this->belongsTo(User::class, 'user_id');

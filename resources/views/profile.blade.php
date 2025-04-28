@@ -8,23 +8,20 @@
 <div class=" container mx-auto mt-[30px]">
 
   <div class="relative w-[170px]  h-[170px]   mx-auto  mb-5">
-    @if($user->avatar !== "default.jpg")
-    <img src="{{Storage::url($user->avatar)}}" alt=""  class="w-full h-full overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full border-4 border-gray-500">
+    <img src="{{$user->avatar_url}}" alt=""  class="w-full h-full overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full border-4 border-gray-500">
     @can('update',$user)
     <span class="absolute  bottom-[18px] right-[10px] flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white"><a href="/edit-avatar/{{$user->id}}"><i class="fa fa-plus" aria-hidden="true"></i></a></span>
     @endcan
     
-    @else
-    <img src="/storage/avatars/{{$user->avatar}}" alt=""  class="w-full h-full overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full border-4 border-gray-500">
-    @can('update',$user)
-    <span class="absolute  bottom-[18px] right-[10px] flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white"><a href="/edit-avatar/{{$user->id}}"><i class="fa fa-plus" aria-hidden="true"></i></a></span>
-  
-    @endcan
-    @endif
 
   </div>
   @can('update',$user)
-  <span class="flex justify-center mb-5"><a class="bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300" href="{{route('editprofile',$user->username)}}">edit profile</a></span>
+<div class="flex gap-1 justify-center mb-3">
+    <span class="flex justify-center "><a class="bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300" href="{{route('editprofile',$user->username)}}">edit profile</a></span>
+    <button id="open-viewed"  class=" active:scale-90 bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize  hover:border-gray-700 transition duration-300" title="see who viewed">
+      <i class="fa-solid fa-eye"></i>
+    </button>
+</div>
   @endcan
   <div class="flex flex-col pb-3 justify-center items-center">
     <h1 class=" text-3xl font-bold text-center  tracking-wide text-gray-700">{{$user->name}} </h1>
@@ -86,6 +83,10 @@
   @endforeach
   @endif
 </div>
+{{-- open  who viewed profile model  --}}
+@include('partials.who-viewd-profile-model',['profileviews'=>$profileviews])
+
+
 @push('scripts')
 <script>
   async function follow(eo) {
@@ -123,7 +124,20 @@
     }
   }
   
-  
+  </script>
+  {{-- open who view profile model   --}}
+  <script>
+    const openmodel = document.getElementById('open-viewed');
+    const viewmodel = document.getElementById('view-profile');
+    const closemodel = document.getElementById('close-modal');
+    openmodel.addEventListener('click',()=>{
+      if(viewmodel.classList.contains('hidden')) viewmodel.classList.remove('hidden');
+      document.body.classList.add('no-scroll');
+    })
+    closemodel.addEventListener('click',()=>{
+      viewmodel.classList.add('hidden');
+      document.body.classList.remove('no-scroll');
+    })
   </script>
 @endpush
 
