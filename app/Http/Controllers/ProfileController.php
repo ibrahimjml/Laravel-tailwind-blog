@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\ProfileView;
 use App\Models\User;
 use App\Notifications\viewedProfileNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
@@ -19,8 +20,18 @@ class ProfileController extends Controller
   {
     $this->middleware(['auth','verified',CheckIfBlocked::class]);
   }
-  
-  public function viewprofile(User $user)
+  private function ProfileData(User $user, string $section, array $meta = [])
+{
+    return array_merge([
+        'user' => $user,
+        'section' => $section,
+        'postcount' => $user->post()->count(),
+        'likescount' => $user->post()->withCount('likes')->get()->sum('likes_count'),
+        'commentscount' => $user->post()->withCount('comments')->get()->sum('comments_count'),
+        'profileviews' => ProfileView::where('profile_id', $user->id)->with('viewer')->get(),
+    ], $meta);
+}
+  public function Home(User $user)
   {
      // create profile view
      if (auth()->id() !== $user->id) {
@@ -29,28 +40,51 @@ class ProfileController extends Controller
           'profile_id' => $user->id,
       ]);
   }
-    $postCount = $user->post()->count();
-    $likeCount = $user->post()->withCount('likes')->get()->sum('likes_count');
-    $commentCount = $user->post()->withCount('comments')->get()->sum('comments_count');
-    $posts = Post::orderBy('created_at','DESC')->where('user_id', $user->id)->get();
-    // get profile views 
-    $profileviews = ProfileView::where('profile_id',$user->id)->with('viewer')->get();
+  $posts = $user->post()->latest()->get();
     // notitfy view
     if (auth()->id() !== $user->id) {
     $user->notify(new viewedProfileNotification(auth()->user()));
     }
     $meta = MetaHelpers::generateDefault("{$user->name}'s Profile | Blog-Page","{$user->name} profile page connect with him");
-
-    return view('profile', array_merge([
-       'user' => $user, 
-       'posts' => $posts,
-       'postcount' => $postCount,
-       'likescount' => $likeCount, 
-       'commentscount' => $commentCount,
-       'profileviews' => $profileviews
-    ],$meta));
+    return view('profileuser.profile', array_merge(
+      ['posts' => $posts],
+      $this->ProfileData($user, 'home', $meta)
+    ));
   }
+public function activity(User $user){
 
+  $posts = $user->post()->select('title','created_at')->get()
+  ->map(function($post){
+    return[
+      'type' => 'Posted',
+      'title' => $post->title,
+      'date' => $post->created_at,
+    ];
+  });
+  $comments = $user->comments()->select('content','created_at','parent_id')->get()
+  ->map(function($comment){
+    return[
+      'type' => $comment->parent_id ? 'Replied' : 'Commented',
+      'title' => $comment->content,
+      'date' => $comment->created_at,
+    ];
+  });
+
+  $activities = $posts->merge($comments)
+  ->sortByDesc('date')
+  ->groupBy(fn($activity)=>Carbon::parse($activity['date'])->format('M j Y'));
+  
+  $meta = MetaHelpers::generateDefault("{$user->name}'s Activity | Blog-Page", "{$user->name} recent activity.");
+  return view('profileuser.profile', array_merge(
+    ['activities' => $activities],
+    $this->ProfileData($user, 'activity', $meta)
+  ));
+}
+public function aboutme(User $user){
+
+  $meta = MetaHelpers::generateDefault("About {$user->name} | Blog-Page", "{$user->name} about section.");
+  return view('profileuser.profile', $this->ProfileData($user, 'about', $meta));
+}
   public function editpage(User $user)
   {
     $this->authorize('view', $user);

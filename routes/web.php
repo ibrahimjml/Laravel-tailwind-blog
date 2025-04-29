@@ -45,9 +45,11 @@ Route::post('/upload-image', [PostController::class, 'uploadImage'])->name('tiny
 
 // Edit user settings
 Route::controller(ProfileController::class)->group(function(){
-  // User Profile
-Route::get('/@{user:username}','viewprofile')->name('profile');
-
+  // User Profile home
+Route::get('/@{user:username}','Home')->name('profile');
+ // profile/activity
+ Route::get('/@{user:username}/activity','activity')->name('profile.activity');
+ Route::get('/@{user:username}/about','aboutme')->name('profile.aboutme');
 // Edit Profile Image
 Route::get('/edit-avatar/{user}','editpage');
 Route::put('/edit-avatar/{user}/edit','edit');

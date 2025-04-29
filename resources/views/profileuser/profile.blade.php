@@ -18,7 +18,7 @@
   @can('update',$user)
 <div class="flex gap-1 justify-center mb-3">
     <span class="flex justify-center "><a class="bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300" href="{{route('editprofile',$user->username)}}">edit profile</a></span>
-    <button id="open-viewed"  class=" active:scale-90 bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize  hover:border-gray-700 transition duration-300" title="see who viewed">
+    <button id="open-viewed" class="active:scale-90 bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize  hover:border-gray-700 transition duration-300" title="see who viewed">
       <i class="fa-solid fa-eye"></i>
     </button>
 </div>
@@ -39,52 +39,38 @@
   </div>
 </div>
 <div class=" mx-auto flex  justify-center gap-6">
-  
-  <div class="flex flex-col">
-    <p class="text-lg font-bold ">posts</p>
-    {{-- count posts --}}
-    <p class="text-lg font-bold text-center">{{$postcount}}</p>
-  </div>
+  {{-- posts-likes-follows-count --}}
+  @include('profileuser.partials.posts-likes-follows-count',['postcount'=>$postcount,'likescount'=>$likescount,'user'=>$user])
+</div>
+{{-- home | Activity | About me --}}
+<div class="flex items-center gap-2 ml-4">
+  <a href="{{route('profile',['user'=>$user->username])}}" class="nav-link p-1 font-bold text-gray-400  rounded-lg">Home</a>
+  <div class="h-4 w-px bg-gray-400"></div>
+  <a href="{{route('profile.activity',['user'=>$user->username])}}"  class="nav-link p-1 font-bold text-gray-400 rounded-lg">Activity</a>
+  <div class="h-4 w-px bg-gray-400"></div>
+  <a href="{{route('profile.aboutme',['user'=>$user->username])}}"  class="nav-link p-1 font-bold text-gray-400  rounded-lg">About me</a>
+</div>
+<hr class="bg-gray-300">
 
-<div class="flex  w-30 gap-5">
-  {{-- likes count --}}
-  <div class="flex flex-col">
-  <p class="text-lg font-bold text-center">Total likes</p>
-  <p class="text-lg font-bold text-center">{{$likescount}}</p>
-  </div>
-  <div class="flex flex-col">
-{{-- followers counts --}}
-    <p class="text-lg font-bold text-center">Followers</p>
-    <p id="followers-count" class="text-lg font-bold text-center">{{$user->followers()->count()}}</p>
-  </div>
-  <div class="flex flex-col">
-    {{-- followings counts --}}
-        <p class="text-lg font-bold text-center">Following</p>
-        <p  class="text-lg font-bold text-center">{{$user->followings()->count()}}</p>
-      </div>
+{{-- home | activity | aboutme sections --}}
+<div id="profile-content">
+  @switch($section)
+  @case('home')
+    @include('profileuser.home', ['posts' => $posts])
+    @break
+
+  @case('activity')
+    @include('profileuser.activity', ['user' => $user,'activities' => $activities])
+    @break
+
+  @case('about')
+    @include('profileuser.aboutme', ['user' => $user])
+    @break
+@endswitch
 </div>
 
-</div>
-
-<hr>
-@if($posts->count() == 0)
-
-<h1 class=" text-4xl  p-6 font-semibold text-center w-54">No Posts</h1>
-@else
-<div class="mt-5 sm:grid grid-cols-4 gap-6 space-y-6 sm:space-y-0">
-  @foreach($posts as $post)
-  <div class="flex flex-wrap items-center justify-center ">
-    <a  href="/post/{{$post->slug}}">
-      <img src="/images/{{$post->image_path}}" alt="" class="ml-auto mr-auto w-[80%] rounded-lg mb-5">
-    </a>
-    
-  </div>
-  
-  @endforeach
-  @endif
-</div>
 {{-- open  who viewed profile model  --}}
-@include('partials.who-viewd-profile-model',['profileviews'=>$profileviews])
+@include('profileuser.partials.who-viewd-profile-model',['profileviews'=>$profileviews])
 
 
 @push('scripts')
@@ -130,15 +116,90 @@
     const openmodel = document.getElementById('open-viewed');
     const viewmodel = document.getElementById('view-profile');
     const closemodel = document.getElementById('close-modal');
-    openmodel.addEventListener('click',()=>{
+  
+      openmodel.addEventListener('click',()=>{
       if(viewmodel.classList.contains('hidden')) viewmodel.classList.remove('hidden');
       document.body.classList.add('no-scroll');
     })
+
     closemodel.addEventListener('click',()=>{
       viewmodel.classList.add('hidden');
       document.body.classList.remove('no-scroll');
     })
   </script>
+
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  function attachNavLinks() {
+    document.querySelectorAll('a.nav-link').forEach(link => {
+      const url = link.href;
+      link.onclick = (e) => {
+        e.preventDefault();
+        loadPage(url);
+      };
+    });
+  }
+
+  function loadPage(url, push = true) {
+    fetch(url)
+      .then(res => res.text())
+      .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Replace only #profile-content section
+        const newContent = doc.querySelector('#profile-content');
+        const currentContent = document.querySelector('#profile-content');
+        if (newContent && currentContent) {
+          currentContent.innerHTML = newContent.innerHTML;
+        }
+
+        const newTitle = doc.querySelector('title');
+        if (newTitle) document.title = newTitle.innerText;
+
+        if (push) history.pushState(null, '', url);
+
+        // Reattach events (recursive)
+        attachNavLinks();
+  
+        updateActiveLink();
+      })
+      .catch(err => console.error('Navigation error', err));
+  }
+
+
+  function updateActiveLink() {
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('a.nav-link').forEach(link => {
+      const linkUrl = link.getAttribute('href');
+      
+  
+      if (currentPath === new URL(linkUrl).pathname) {
+        link.classList.add('activate');
+        link.classList.remove('text-gray-400');
+        link.classList.add('text-black');
+      } else {
+        link.classList.remove('activate');
+        link.classList.remove('text-black');
+        link.classList.add('text-gray-400');
+      }
+    });
+  }
+
+
+  attachNavLinks();
+  updateActiveLink();
+
+  // Handle back/forward navigation
+  window.addEventListener('popstate', () => {
+    const currentUrl = window.location.href; 
+    loadPage(currentUrl, push = false);
+    updateActiveLink();
+  });
+});
+
+  </script>
+  
 @endpush
 
 

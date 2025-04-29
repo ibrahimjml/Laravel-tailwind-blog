@@ -1,4 +1,4 @@
-<ul id="hidden-notification" style="display: none" class="w-[390px] bg-white shadow-xl rounded-xl px-4 py-3 max-h-[300px] overflow-y-auto space-y-3">
+<ul id="hidden-notification" style="display: none" class="w-[390px] bg-white shadow-xl rounded-xl px-4 py-3 max-h-[500px] overflow-y-auto space-y-3">
 
     <form action="{{ route('notifications.deleteAll') }}" method="POST" class="text-right mb-2">
         @csrf
