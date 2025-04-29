@@ -14,9 +14,9 @@
 ![schooldash-dahboard-page](https://i.postimg.cc/3Nc1WXN4/127-0-0-1-8000-post-using-tailwindcss-11.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/28PhnkMt/Screenshot-2025-04-27-010613.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
-![schooldash-dahboard-page](https://i.postimg.cc/VLK3wzNP/127-0-0-1-8000-create-2.png)
+![schooldash-dahboard-page](https://i.postimg.cc/J4t6yk1w/127-0-0-1-8000-create-5.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/VvqskRD4/Screenshot-2025-04-25-203645.png)
-![schooldash-dahboard-page](https://i.postimg.cc/jdLLd6cV/Screenshot-2024-10-22-212650.png)
+![schooldash-dahboard-page](https://i.postimg.cc/gjcHcgB8/Screenshot-2025-04-28-215613.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/W15nZy2V/Screenshot-2024-10-29-024842.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/R02w63yk/Screenshot-2025-04-22-201152.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/k5RbmJGf/Screenshot-2025-04-22-202407.png)
@@ -45,9 +45,11 @@
 - **OPtimization:** Used Eager loading for optimized queries and prevent N+1 queries.
 
 #### Comments and Replies
+--**Disable/Enable:** Users can diasble or enable comments from creating or editing post.
 - **Comment on Posts:** Users can add comments to blog posts using Ajax.
 - **Reply to Comments:** Users can replies to comments, creating nested comment system with reply on reply, they can see total replies on a comment with ability to hide and show those replies.
 - **Delete | Edit Comments/Replies:** Users can delete or edit their own comments and replies.
+
 
 #### Post Sorting and Searching and pagination
 - **Sort Posts:** User can sort posts by latest, oldest, most liked, featured, following, and trending hashtags.
@@ -55,7 +57,7 @@
 - **Pagination:** User can paginate between post pages. 
 
 ### Notifications database and Emails notification
-- **Email notification:** Users will get emailed if posts are liked or comments on their posts or followed.
+- **Email notification:** Users will get emailed if posts are liked, commented, replied , or viewed their profiles or followed.
 - **Notification:** users can manage notifications unread or delete notifications.
 
 #### 🚀 All Pages Styled With TailwindCss ,more experience ,more responsive.
