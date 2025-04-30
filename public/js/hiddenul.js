@@ -6,7 +6,7 @@ const change = document.getElementById("dropdown");
 
 const notifications = document.getElementById('hidden-notification');
 const shownotification = document.getElementById('hover-notification'); 
-
+let   hideTimeout;
 // show burger menu
 mobilebtn.addEventListener('click', (e) => {
   
@@ -51,29 +51,27 @@ mobilebtn.addEventListener('click', (e) => {
 
 
 // show notification menu info
-
-  shownotification.addEventListener('mousemove', function() {
-    notifications.style.display = "block";
-  });
-
-
-  shownotification.addEventListener('mouseout', function() {
-    setTimeout(function() {
-      if (!notifications.matches(':hover')) {
-        notifications.style.display = "none";
-      }
-    }, 300); 
-  });
+shownotification.addEventListener('mousemove', function() {
+  notifications.style.display = "block";
+});
 
 
-  notifications.addEventListener('mousemove', function() {
-    notifications.style.display = "block";
-  });
+shownotification.addEventListener('mouseout', function() {
+  setTimeout(function() {
+    if (!notifications.matches(':hover')) {
+      notifications.style.display = "none";
+    }
+  }, 300); 
+});
 
 
-  notifications.addEventListener('mouseout', function() {
-    notifications.style.display = "none";
-  });
+notifications.addEventListener('mousemove', function() {
+  notifications.style.display = "block";
+});
 
+
+notifications.addEventListener('mouseout', function() {
+  notifications.style.display = "none";
+});
 
 

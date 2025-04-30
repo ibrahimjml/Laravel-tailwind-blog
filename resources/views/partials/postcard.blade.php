@@ -32,7 +32,7 @@
 
     <!-- Post Image -->
     <div class="relative h-64 sm:h-72 w-full rounded-lg overflow-hidden">
-      <img loadind="lazy" src="/images/{{ $post->image_path }}" alt="{{ $post->title }}" class="w-full h-full object-cover shadow-md">
+      <img loadind="lazy" src="/storage/uploads/{{$post->image_path}}" alt="{{ $post->title }}" class="w-full h-full object-cover shadow-md">
       @if($post->is_featured)
       <span class="absolute top-4 left-4 bg-amber-400 bg-opacity-80 text-white text-sm font-medium px-3 py-1 rounded-md">
         Featured

@@ -24,7 +24,7 @@
 <a href="{{route('single.post',$posts->slug)}}">
   <div class="relative rounded-md">
     <span class="absolute top-4 left-4 px-2 py-1 text-white text-sm rounded-md bg-amber-300 font-semibold bg-opacity-70">Featured</span>
-<img src="/images/{{$posts->image_path}}"  alt="" class="w-full rounded-md h-[270px] object-cover mt-2">
+<img src="/storage/uploads/{{$posts->image_path}}"  alt="" class="w-full rounded-md h-[270px] object-cover mt-2">
   </div>
 <div class="flex flex-col">
   <p class="text-xl font-bold mt-1">{{$posts->title}}</p>
@@ -52,7 +52,7 @@
 <a href="{{route('single.post',$oldest->slug)}}">
   <div class="relative rounded-md">
     <span class="absolute top-4 left-4 px-2 py-1 text-white text-sm rounded-md bg-amber-300 font-semibold bg-opacity-70"># {{$trendingHashtag->name}}</span>
-<img src="/images/{{$oldest->image_path}}"  alt="" class="w-full rounded-md h-[270px] object-cover mt-2">
+<img src="/storage/uploads/{{$oldest->image_path}}"  alt="" class="w-full rounded-md h-[270px] object-cover mt-2">
   </div>
 <div class="flex flex-col">
   <p class="text-xl font-bold mt-1">{{$oldest->title}}</p>

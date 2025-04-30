@@ -8,6 +8,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\TinyMCEController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +29,7 @@ Route::get('/',HomeController::class)->name('home');
 require __DIR__."/auth.php";
 
 // Blog Page
-Route::get('/blog',[PostController::class,'blog'])->name('blog')->middleware('auth');
+Route::get('/blog',[PostController::class,'blogpost'])->name('blog')->middleware('auth');
 
 // Post Page
 Route::get('/post/{slug}',[PublicController::class,'viewpost'])->name('single.post')->middleware('auth');
@@ -37,41 +38,38 @@ Route::get('/post/{slug}',[PublicController::class,'viewpost'])->name('single.po
 Route::get('/hashtag/{hashtag:name}',[Hashtagcontroller::class,'viewhashtag'])->name('viewhashtag');
 
 // Create Post
-Route::get('/create',[PostController::class,'createpage'])->name('create')->middleware('auth');
+Route::get('/createpage',[PostController::class,'createpage'])->name('createpage')->middleware('auth');
 Route::post('/create',[PostController::class,'create'])->name('create')->middleware('auth');
+Route::get('/post/edit/{slug}',[PostController::class,'editpost'])->name('edit.post');
+Route::delete('/post/{slug}',[PostController::class,'delete'])->name('delete.post');
+Route::put('/post/update/{slug}',[PostController::class,'update'])->name('update.post');
 
-// Add images inside TinyMCE editor
-Route::post('/upload-image', [PostController::class, 'uploadImage'])->name('tinymce.upload');
+// Add and delete images inside TinyMCE editor
+Route::post('/upload-image', [TinyMCEController::class, 'uploadImage'])->name('tinymce.upload');
+Route::post('/image-delete', [TinyMCEController::class, 'deleteImage'])->name('tinymce.delete');
 
 // Edit user settings
 Route::controller(ProfileController::class)->group(function(){
-  // User Profile home
+// User Profile 
 Route::get('/@{user:username}','Home')->name('profile');
- // profile/activity
  Route::get('/@{user:username}/activity','activity')->name('profile.activity');
  Route::get('/@{user:username}/about','aboutme')->name('profile.aboutme');
 // Edit Profile Image
 Route::get('/edit-avatar/{user}','editpage');
 Route::put('/edit-avatar/{user}/edit','edit');
 Route::delete('/delete-avatar/{user}','destroyavatar')->name('delete.avatar');
-
 // Edit Profile Page
 Route::get('/edit-profile/{user:username}','editprofilepage')
 ->middleware('password.confirm')
 ->name('editprofile');
 // Add bio 
 Route::put('/addbio/{user}','useraddbio');
-  // Edit user settings
-  Route::put('/edit-email/{user}','editemail');
-  Route::put('/change-name/{user}','editname');
-  Route::put('/change-phone/{user}','editphone');
-  Route::put('/change-pass/{user}','editpassword');
-  Route::delete('/account-delete/{user}','deleteaccount')->name('account.delete');
-  Route::delete('/post/{slug}','delete')->name('delete.post');
-  Route::get('/post/edit/{slug}','editpost')->name('edit.post');
-  Route::put('/post/update/{slug}','update')->name('update.post');
-  
-
+// Edit user settings
+Route::put('/edit-email/{user}','editemail');
+Route::put('/change-name/{user}','editname');
+Route::put('/change-phone/{user}','editphone');
+Route::put('/change-pass/{user}','editpassword');
+Route::delete('/account-delete/{user}','deleteaccount')->name('account.delete');
 });
 
 // Like

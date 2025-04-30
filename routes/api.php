@@ -29,16 +29,16 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/login', [AuthController::class, 'login']);
 
 // Blog Page
-Route::get('/blog',[PostControllerApi::class,'blog'])->name('blog');
+Route::get('/blog',[PostControllerApi::class,'blog']);
 
 // view Post Page
-Route::get('/posts/{post}',[PostControllerApi::class,'viewpost'])->name('view-post');
+Route::get('/posts/{post}',[PostControllerApi::class,'viewpost'])->name('view.post');
 
 // create post
-Route::post('/create',[PostControllerApi::class,'create'])->name('create-post');
+Route::post('/create',[PostControllerApi::class,'create'])->name('create.post');
 
 // update post
-Route::put('/post/update/{post}',[PostControllerApi::class,'update'])->name('update.post');
+Route::put('/post/update/{post}',[PostControllerApi::class,'update'])->name('update');
 
 // Delete Post
 Route::delete('/post/{post}',[PostControllerApi::class,'destroy'])->name('destroy');

@@ -14,7 +14,7 @@
       @endcan
 
   <div class="relative mx-auto w-full max-w-6xl mt-2 h-[300px] md:h-[450px]">
-      <img class="absolute top-0 left-0 w-full h-full object-cover rounded-none md:rounded-lg shadow-lg hover:shadow-md" src="/images/{{$post->image_path}}"  alt="">
+      <img class="absolute top-0 left-0 w-full h-full object-cover rounded-none md:rounded-lg shadow-lg hover:shadow-md" src="/storage/uploads/{{$post->image_path}}"  alt="">
     {{-- hashtags on post --}}
       <div class="absolute z-10 bottom-1 left-4 flex flex-wrap gap-2">
         @foreach($post->hashtags->pluck('name') as $tag)
@@ -121,7 +121,7 @@
     </a>
 </div>
 <a href="{{route('single.post',$article->slug)}}">
-<img src="/images/{{$article->image_path}}"  alt="" class="w-full h-[270px] object-cover mt-2 rounded-lg">
+<img src="/storage/uploads/{{$article->image_path}}"  alt="" class="w-full h-[270px] object-cover mt-2 rounded-lg">
 <div class="flex flex-col">
   <p class="text-xl font-bold mt-1">{{$article->title}}</p>
   <p class="text-sm text-gray-500 font-semibold line-clamp-3 mt-2">{!! Str::words(strip_tags($article->description), 20) !!}</p>

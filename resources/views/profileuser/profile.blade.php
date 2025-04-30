@@ -112,6 +112,7 @@
   
   </script>
   {{-- open who view profile model   --}}
+  @can('update',$user)
   <script>
     const openmodel = document.getElementById('open-viewed');
     const viewmodel = document.getElementById('view-profile');
@@ -127,7 +128,7 @@
       document.body.classList.remove('no-scroll');
     })
   </script>
-
+@endcan
   <script>
 document.addEventListener('DOMContentLoaded', () => {
   function attachNavLinks() {

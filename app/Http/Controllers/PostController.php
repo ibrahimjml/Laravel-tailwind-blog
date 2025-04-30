@@ -14,6 +14,7 @@ use App\Notifications\LikesNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
 
@@ -27,7 +28,7 @@ class PostController extends Controller
     $this->middleware('password.confirm')->only('editpost');
   }
 
-  public function blog(Request $request)
+  public function blogpost(Request $request)
   {
 
     $sortoption = $request->get('sort', 'latest');
@@ -124,9 +125,10 @@ class PostController extends Controller
 
 
     $newimage = uniqid() . '-' . $slug . '.' . $fields['image']->extension();
-    Image::read($request->file('image'))
+    $image = Image::read($request->file('image'))
     ->resize(1300, 600)
-    ->save(public_path('images/' . $newimage));
+    ->encode();
+    Storage::disk('public')->put("uploads/{$newimage}", $image);
 
     $post = Post::create([
       'title' => $request->input('title'),
@@ -208,27 +210,6 @@ class PostController extends Controller
     toastr()->success('Post updated successfully',['timeOut'=>1000]);
     return redirect('/blog');
   }
-
-  public function uploadImage(Request $request)
-  {
-      $request->validate([
-          'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:4000',
-      ]);
-
-      if ($request->hasFile('file')) {
-          $file = $request->file('file');
-          $filename = Str::random(20) . '.' . $file->getClientOriginalExtension();
-          
-          $path = $file->storeAs('images', $filename, 'public');
-          
-          return response()->json([
-            'location' => '/storage/' . $path  
-        ]);
-      }
-
-      return response()->json(['error' => 'Upload failed'], 500);
-  }
-  
 
   public function like(Post $post)
   {
