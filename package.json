@@ -13,6 +13,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "medium-zoom": "^1.1.0",
+        "prismjs": "^1.30.0",
         "tinymce": "^7.4.1"
     }
 }

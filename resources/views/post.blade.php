@@ -46,7 +46,7 @@
   
 </div>
 
-<div class="w-full py-12">
+<div class="published-content w-full py-12">
   {!! $post->description !!}
 </div>
 </div>

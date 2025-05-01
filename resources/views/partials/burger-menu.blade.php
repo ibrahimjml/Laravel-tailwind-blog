@@ -18,7 +18,7 @@ class="absolute z-[20] hidden flex flex-col py-8 left-6 right-6 top-16 items-cen
 </a>
 
 <span class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300"><a href="{{route('profile',auth()->user()->username)}}" >profile</span>
-  <a href="{{route('create')}}" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">create post</a>
+  <a href="{{route('createpage')}}" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">create post</a>
 <a href="{{route('logout')}}" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">Logout</a>
 <a href="/blog" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">Blog</a>
 <a href="/getsavedposts" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">Saved</a>

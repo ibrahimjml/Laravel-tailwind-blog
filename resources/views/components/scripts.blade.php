@@ -18,7 +18,7 @@
 <script src="{{asset('js/fetchhashtags.js')}}" defer></script>
 @endif
 
-@if(Route::is(['edit.post','create','featuredpage']))
+@if(Route::is(['edit.post','createpage','featuredpage']))
 <script src="{{asset('js/hashtagsUI.js')}}" defer></script>
 @endif
 
