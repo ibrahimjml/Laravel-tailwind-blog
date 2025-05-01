@@ -30,11 +30,11 @@
       @include('comments.partials.reply_form',['comment' => $comment])
 
       {{-- Display Replies --}}
+      <div class="reply-content ml-5 mt-4   border-l-gray-200 pl-4 hidden " id="wrapper-{{ $comment->id }}">
       @if($comment->replies->count() > 0)
-        <div class="reply-content ml-5 mt-4   border-l-gray-200 pl-4 hidden ">
           @include('comments.replies', ['comments' => $comment->replies])
+          @endif
         </div>
-      @endif
     </div>
   @endif
 @endforeach

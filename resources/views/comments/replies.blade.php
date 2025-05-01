@@ -27,10 +27,10 @@
     @include('comments.partials.reply_form',['comment'=>$reply,'reply'=>$reply])
 
     {{-- Display Nested Replies --}}
+    <div class="nested-replies ml-4 mt-4 border-l-2  border-l-gray-200 pl-4 hidden">
     @if($reply->replies->count() > 0)
-      <div class="nested-replies ml-4 mt-4 border-l-2  border-l-gray-200 pl-4 hidden">
         @include('comments.replies', ['comments' => $reply->replies])
+        @endif
       </div>
-    @endif
   </div>
 @endforeach

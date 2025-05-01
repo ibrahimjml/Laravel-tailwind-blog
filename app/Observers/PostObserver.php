@@ -3,6 +3,8 @@
 namespace App\Observers;
 
 use App\Models\Post;
+use App\Notifications\FollowingPostCreatedNotification;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +28,7 @@ class PostObserver
 
     public function deleting(Post $post)
     {
-        // Delete old image
+        // Delete old image when post deleted
         if (!empty($post->image_path)) {
             $oldimage = 'uploads/' . $post->image_path;
             Log::info('Trying to delete old image: ' . $oldimage);
@@ -38,6 +40,14 @@ class PostObserver
                 Log::warning('old image not found: ');
             }
         }
+
+        // auto delete notification to follower users when auth user delete post 
+        DatabaseNotification::where('type',FollowingPostCreatedNotification::class)
+        ->whereJsonContains('data->postedby_id',$post->user->id)
+        ->whereJsonContains('data->post_id',$post->id)
+        ->delete();
+
+
         // delete images inside tinyMCE
         $html = $post->description;
         if (!empty($html)) {

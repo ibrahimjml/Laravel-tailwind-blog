@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -13,12 +14,12 @@ class CommentNotification extends Notification
 {
     use Queueable;
 
-
+    public $comment;
     public $commenter;
     public $post;
-    public function __construct(User $commenter,Post $post)
+    public function __construct(Comment $comment,User $commenter,Post $post)
     {
-
+        $this->comment = $comment;
         $this->commenter = $commenter;
         $this->post = $post;
     }
@@ -52,6 +53,7 @@ class CommentNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
+            'comment_id' => $this->comment->id,
             'commenter_avatar' => $this->commenter->avatar_url,
             'commenter_username' => $this->commenter->username,
             'post_link'=> $this->post->slug,

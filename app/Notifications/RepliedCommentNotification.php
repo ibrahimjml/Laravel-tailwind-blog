@@ -15,11 +15,13 @@ class RepliedCommentNotification extends Notification
     use Queueable;
 
     public $ParentComment;
+    public $reply;
     public $replier;
     public $post;
-    public function __construct(Comment $ParentComment,User $replier,Post $post)
+    public function __construct(Comment $ParentComment,Comment $reply,User $replier,Post $post)
     {
         $this->ParentComment = $ParentComment;
+        $this->reply = $reply;
         $this->replier = $replier;
         $this->post = $post;
     }
@@ -53,6 +55,7 @@ class RepliedCommentNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
+            'reply_id' => $this->reply->id,
             'replier_avatar' => $this->replier->avatar_url,
             'replier_username' => $this->replier->username,
             'post_link' => $this->post->slug,

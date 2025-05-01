@@ -135,6 +135,12 @@ AddComment.addEventListener('submit',async (eo)=>{
   const textarea = AddComment.querySelector('textarea[name="content"]');
   const content = textarea.value.trim();
   const Wrapper = document.getElementById('wrapper');
+
+  if(!content){
+    toastr.error('please type a comment');
+    return;
+  }
+  
   let options = {
     method: 'POST',
     headers: {
@@ -165,8 +171,73 @@ AddComment.addEventListener('submit',async (eo)=>{
   } catch (error) {
     console.error('Delete error:', error);
   }
-})
+});
+// Ajax reply to comment
+document.body.addEventListener('submit', async (eo) => {
+  if (!eo.target.matches('form.reply-form')) return;
+  
+  eo.preventDefault();
+  const form = eo.target;
+  const commentID = form.getAttribute('comment-id');
+  const textarea = form.querySelector('textarea[name="content"]');
+  const content = textarea.value.trim();
+  const parentInput = form.querySelector('input[name="parent_id"]');
+  const parent_id = parentInput.value;
+  const body = JSON.stringify({ content, parent_id });
 
+  let wrapper = document.getElementById(`wrapper-${commentID}`);
+  if (!wrapper) {
+    wrapper = form.closest('.reply')?.querySelector('.nested-replies');
+  }
+
+if(!content){
+  toastr.error('please type a reply');
+  form.classList.add('hidden');
+  return;
+}
+  const options = {
+    method: 'POST',
+    headers: {
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: body
+  };
+
+
+
+  try {
+    const response = await fetch(`/reply/${commentID}`, options);
+    const result = await response.json();
+
+    if (result.error) {
+      toastr.error(result.error);
+      textarea.value = '';
+      form.classList.add('hidden');
+      return;
+    }
+
+    if (result.replied) {
+      toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "timeOut": 2000
+      };
+      toastr.success("Reply added successfully");
+
+      textarea.value = '';
+      form.classList.add('hidden');
+      wrapper.classList.remove('hidden');
+      wrapper.insertAdjacentHTML('afterbegin', result.html);
+      updateCount();
+    }
+  } catch (error) {
+    console.error('Reply error:', error);
+    toastr.error('Something went wrong.');
+  }
+});
 
 // Ajax edit comment | reply 
 document.body.addEventListener('submit', async function(eo) {

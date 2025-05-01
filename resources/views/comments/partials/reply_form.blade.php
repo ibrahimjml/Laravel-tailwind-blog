@@ -1,4 +1,4 @@
-<form class=" reply-form hidden relative w-fit mb-4 p-1 rounded-lg px-5" action="/reply/{{ $comment->id }}" method="POST">
+<form comment-id={{$comment->id}} class=" reply-form hidden relative w-fit mb-4 p-1 rounded-lg px-5" action="/reply/{{ $comment->id }}" method="POST">
   @csrf
   @method('POST')
   <input type="hidden" name="parent_id" value="{{isset($reply->id) ? $reply->id : $comment->id }}">

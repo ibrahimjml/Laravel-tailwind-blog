@@ -12,6 +12,7 @@ use App\Models\Post;
 use App\Notifications\FollowingPostCreatedNotification;
 use App\Notifications\LikesNotification;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -216,6 +217,14 @@ class PostController extends Controller
 
     if ($post->is_liked()) {
       $post->likes()->where('user_id', auth()->user()->id)->delete();
+
+      // auto delete like notification when unlike 
+      DatabaseNotification::where('type',LikesNotification::class)
+      ->where('notifiable_id', $post->user->id)
+      ->whereJsonContains('data->post_id', $post->id)
+      ->whereJsonContains('data->user_id', auth()->user()->id)
+      ->delete();
+
       return response()->json(['liked' => false]);
     }
     $post->likes()->create(['user_id' => auth()->user()->id]);

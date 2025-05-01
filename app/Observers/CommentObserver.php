@@ -3,6 +3,9 @@
 namespace App\Observers;
 
 use App\Models\Comment;
+use App\Notifications\CommentNotification;
+use App\Notifications\RepliedCommentNotification;
+use Illuminate\Notifications\DatabaseNotification;
 
 class CommentObserver
 {
@@ -16,7 +19,18 @@ class CommentObserver
             ->increment('replies_count');
     }
     }
-
+   
+    public function deleting(Comment $comment){
+      // auto delete comment notification if replier deleted his comment
+      DatabaseNotification::where('type', CommentNotification::class)
+      ->whereJsonContains('data->comment_id', $comment->id)
+      ->delete();
+      
+      // auto delete reply notification if replier deleted his reply
+      DatabaseNotification::where('type', RepliedCommentNotification::class)
+      ->whereJsonContains('data->reply_id', $comment->id)
+      ->delete();
+    }
 
     public function deleted(Comment $comment): void
     {

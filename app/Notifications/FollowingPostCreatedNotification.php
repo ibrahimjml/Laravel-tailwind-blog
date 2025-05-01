@@ -52,8 +52,10 @@ class FollowingPostCreatedNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
+            'postedby_id' => $this->PostedBy->id,
             'postedby_username' => $this->PostedBy->username,
             'postedby_avatar' => $this->PostedBy->avatar_url,
+            'post_id' => $this->post->id,
             'post_link' => $this->post->slug,
             'message' => "{$this->PostedBy->name} created new post {$this->post->title}",
             'type' => 'Postcreated',

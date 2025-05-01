@@ -10,8 +10,7 @@ use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Comment;
 use App\Models\Hashtag;
 use App\Notifications\FollowersNotification;
-
-
+use Illuminate\Notifications\DatabaseNotification;
 
 class PublicController extends Controller
 {
@@ -56,6 +55,13 @@ public function togglefollow(User $user){
 
 if ($follower->isFollowing($user)) {
     $follower->followings()->detach($user->id);
+
+    // auto delete follow notification when user unfollow  
+    DatabaseNotification::where('type',FollowersNotification::class)
+    ->where('notifiable_id', $user->id)
+    ->whereJsonContains('data->follower_id', auth()->user()->id)
+    ->delete();
+
     return response()->json([
       'attached' => false
     ],200);

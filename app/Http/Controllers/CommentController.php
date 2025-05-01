@@ -36,8 +36,10 @@ class CommentController extends Controller
        }
       $comment = $post->comments()->create($fields);
 
-      Mail::to($post->user)->queue(new EmailComment($post->user, $comment->user, $post));
-      $post->user->notify(new CommentNotification($comment->user,$post));
+      if($post->user->id !== auth()->user()->id){
+        Mail::to($post->user)->queue(new EmailComment($post->user, $comment->user, $post));
+        $post->user->notify(new CommentNotification($comment,$comment->user,$post));
+      }
 
       return response()->json([
         'commented'=>true,
@@ -53,24 +55,29 @@ public function reply(Comment $comment, Request $request){
 
       // cannot reply to own reply
       if ($comment->user_id == auth()->id() && $comment->parent_id !== null) {
-        toastr()->error('Cannot reply to your own reply', ['timeOut' => 2000]);
-        return back();
+    
+        return response()->json([
+          'error' =>'Cannot reply to your own reply'
+        ]);
     }
     // maximum 3 replies allowed
     $replyCount = Comment::where('parent_id',$fields['parent_id'])->count();
     if($replyCount >= 3){
-      toastr()->error('maximum 3 replies',['timeOut'=>1500]);
-      return back();
+      return response()->json([
+        'error' =>'maximum 3 replies'
+      ]);
     }
-
+    // reply once to your parent comment
     $selfReplyCount = Comment::where('parent_id', $fields['parent_id'])
     ->where('user_id', auth()->id()) 
     ->where('parent_id', $comment->id) 
-    ->count();
-    // reply once to your parent comment
-    if ($comment->user_id == auth()->id() && $selfReplyCount >= 1) {
-    toastr()->error('Max self reply exceeded', ['timeOut' => 2000]);
-    return back();
+    ->exists();
+    
+    if ($selfReplyCount) {
+  
+    return response()->json([
+      'error' =>'You can only reply once to your own comment'
+    ]);
 }
       $fields['content']=strip_tags($fields['content']);
       $fields['user_id']=auth()->id();
@@ -78,10 +85,15 @@ public function reply(Comment $comment, Request $request){
       
      $reply = Comment::create($fields);
 
-     $comment->user->notify(new RepliedCommentNotification($comment,$reply->user,$comment->post));
+     if($comment->user->id !== auth()->user()->id){
+       $comment->user->notify(new RepliedCommentNotification($comment,$reply,$reply->user,$comment->post));
+     }
 
       toastr()->success('Reply added successfully',['timeOut'=>1000]);
-      return back();
+      return response()->json([
+        'replied' => true,
+        'html' => view('comments.replies',['comments'=>[$reply]])->render()
+      ]);
 }
     public function editcomment(Request $request,Comment $comment){
       
