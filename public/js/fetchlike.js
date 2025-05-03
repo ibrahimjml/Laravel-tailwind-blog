@@ -14,6 +14,7 @@ function fetchLike(eo) {
       const countSpan = document.querySelector('#likes-count');
       let count = parseInt(countSpan.textContent);
 
+
       if (data.liked) {
         icon.classList.remove('fa-regular');
         randomhearts();

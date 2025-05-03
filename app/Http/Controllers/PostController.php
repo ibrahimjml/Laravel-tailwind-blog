@@ -6,15 +6,9 @@ use App\Helpers\MetaHelpers;
 use App\Http\Middleware\CheckIfBlocked;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-use App\Mail\postlike;
 use App\Models\Hashtag;
 use App\Models\Post;
-use App\Notifications\FollowingPostCreatedNotification;
-use App\Notifications\LikesNotification;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
@@ -47,7 +41,7 @@ class PostController extends Controller
         break;
 
       case 'mostliked':
-        $posts->withCount('likes')->orderByDesc('likes_count');
+        $posts->orderByDesc('likes_count');
         break;
 
         case 'followings':
@@ -141,10 +135,6 @@ class PostController extends Controller
     ]);
     toastr()->success('posted successfuly',['timeOut'=>1000]);
 
-    $followers = auth()->user()->followers;
-    foreach($followers as $follower){
-      $follower->notify(new FollowingPostCreatedNotification($follower,auth()->user(),$post));
-    }
     return redirect('/blog');
   }
 
@@ -216,23 +206,21 @@ class PostController extends Controller
   {
 
     if ($post->is_liked()) {
-      $post->likes()->where('user_id', auth()->user()->id)->delete();
-
-      // auto delete like notification when unlike 
-      DatabaseNotification::where('type',LikesNotification::class)
-      ->where('notifiable_id', $post->user->id)
-      ->whereJsonContains('data->post_id', $post->id)
-      ->whereJsonContains('data->user_id', auth()->user()->id)
-      ->delete();
-
+    $like =  $post->likes()->where('user_id', auth()->user()->id)->first();
+    if($like){
+      $like->delete();
+      $post->decrement('likes_count');
+    }
+  
       return response()->json(['liked' => false]);
     }
     $post->likes()->create(['user_id' => auth()->user()->id]);
+    $post->increment('likes_count');
 
-    Mail::to($post->user)->queue(new postlike($post->user, auth()->user(), $post));
-    $post->user->notify(new LikesNotification(auth()->user(),$post));
-
-    return response()->json(['liked' => true]);
+    return response()->json([
+      'liked' => true,
+      'likes_count' => $post->likes_count
+    ]);
   }
 
   public function save(Request $request)

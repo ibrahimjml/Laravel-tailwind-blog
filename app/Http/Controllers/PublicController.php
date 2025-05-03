@@ -68,8 +68,11 @@ if ($follower->isFollowing($user)) {
 } else {
     $follower->followings()->attach($user->id);
 
-   $user->notify(new FollowersNotification($follower));
-
+   $user->notify(new FollowersNotification($user,$follower));
+// Notify  admins
+User::where('is_admin', true)->get()->each(function ($admin) use ($user, $follower) {
+  $admin->notify(new FollowersNotification($user, $follower));
+   });
     return response()->json([
       'attached' => true
     ],200);

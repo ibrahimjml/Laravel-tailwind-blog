@@ -97,9 +97,9 @@
       <td class=" p-2">
         <div class="flex justify-center">
           @if($user->email_verified_at)
-          <img src="/true.png" alt="">
+          <i class="fa-solid fa-check text-green-500"></i>
           @else
-          <img src="/close.png" alt="">
+          <i class="fa-solid fa-close text-red-600"></i>
           @endif
       </div>
       </td>

@@ -87,45 +87,6 @@ function updateCount() {
   const allVisibleComments = document.querySelectorAll('#wrapper .comment, #wrapper .reply');
   commentCountSpan.textContent = allVisibleComments.length;
 } 
-function updateReplyCount(parentElement) {
-  if (!parentElement) return;
-
-  const isComment = parentElement.classList.contains('comment');
-  const isReply = parentElement.classList.contains('reply');
-
-  if (isComment) {
-    const replyContent = parentElement.querySelector('.reply-content');
-    const replies = replyContent ? replyContent.querySelectorAll('.reply') : [];
-    const replyCount = replies.length;
-
-    const replyCountElement = parentElement.querySelector('.show-all.reply-count');
-    if (replyCountElement) {
-      replyCountElement.dataset.replyCount = replyCount;
-      if (replyCount > 0) {
-        replyCountElement.innerText = `view ${replyCount} repl${replyCount > 1 ? 'ies' : 'y'}`;
-      } else {
-        replyCountElement.remove(); // or hide if preferred
-      }
-    }
-  }
-
-  if (isReply) {
-    const nested = parentElement.querySelector('.nested-replies');
-    const replies = nested ? nested.querySelectorAll('.reply') : [];
-    const replyCount = replies.length;
-
-    const replyCountElement = parentElement.querySelector('.view-all');
-    if (replyCountElement) {
-      replyCountElement.setAttribute('reply-replies-count', replyCount);
-      if (replyCount > 0) {
-        replyCountElement.innerText = `view ${replyCount} repl${replyCount > 1 ? 'ies' : 'y'}`;
-      } else {
-        replyCountElement.remove(); // or hide
-      }
-    }
-  }
-}
-
 
 // Ajax Add comment
 const AddComment = document.querySelector('form[comment-form]');
@@ -145,7 +106,8 @@ AddComment.addEventListener('submit',async (eo)=>{
     method: 'POST',
     headers: {
       'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
     },
     body: JSON.stringify({ content })
   };
@@ -257,7 +219,8 @@ document.body.addEventListener('submit', async function(eo) {
       method: 'PUT',
       headers: {
         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+          'Accept': 'application/json'
       },
       body: body
     };
@@ -300,7 +263,8 @@ document.body.addEventListener('submit', async function(eo) {
       method: 'Delete',
       headers: {
           'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+            'Accept': 'application/json'
       },
       body: JSON.stringify({ id: commentId })
   };
@@ -321,9 +285,9 @@ document.body.addEventListener('submit', async function(eo) {
     // remove big container if its a comment or reply 
     let parentComment = form.closest('.reply') || form.closest('.comment');
     if (parentComment) {
-      const parentOfThis = parentComment.closest('.comment') || parentComment.closest('.reply');
+    
       parentComment.remove();
-      if (parentOfThis) updateReplyCount(parentOfThis);
+      
     }
     updateCount();
      }

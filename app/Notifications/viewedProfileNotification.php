@@ -11,10 +11,12 @@ use Illuminate\Notifications\Notification;
 class viewedProfileNotification extends Notification
 {
     use Queueable;
-
+    
+    public $user;
     public $viewer;
-    public function __construct(User $viewer)
+    public function __construct(User $user,User $viewer)
     {
+        $this->user = $user;
         $this->viewer = $viewer;
     }
 
@@ -46,11 +48,16 @@ class viewedProfileNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
+  
+      $message = $notifiable->is_admin
+      ? "{$this->viewer->name} viewed profile {$this->user->name}"
+      : "{$this->viewer->name} viewed your profile";
+
         return [
+            'user_name' => $this->user->name,
             'viewer_name' =>$this->viewer->name,
             'viewer_username' => $this->viewer->username,
-            'viewer_avatar' => $this->viewer->avatar_url,
-            'message' => "{$this->viewer->name} viewed your profile",
+            'message' => $message,
             'type'=>'viewedprofile'
         ];
     }

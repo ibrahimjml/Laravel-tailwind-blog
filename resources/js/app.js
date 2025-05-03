@@ -129,7 +129,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector('.medium-zoom-image--opened').style.zIndex = '50';
   });
 
-  Prism.highlightAllUnder(document.querySelector('.published-content'));
+  const content = document.querySelector('.published-content');
+  if (content) {
+    Prism.highlightAllUnder(content);
+  }
 });
 
 

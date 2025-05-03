@@ -54,12 +54,18 @@ class RepliedCommentNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
+  
+      $message = $notifiable->is_admin
+      ? ($this->replier->id === $this->ParentComment->user->id
+      ? "{$this->replier->name} replied to their own comment '{$this->ParentComment->content}' on {$this->post->user->name}'s post"
+      : "{$this->replier->name} replied '{$this->reply->content}' to {$this->ParentComment->user->name} on {$this->post->user->name}'s post")
+      : "{$this->replier->name} replied to your comment '{$this->ParentComment->content}'";
+      
         return [
             'reply_id' => $this->reply->id,
-            'replier_avatar' => $this->replier->avatar_url,
             'replier_username' => $this->replier->username,
             'post_link' => $this->post->slug,
-            'message' => "{$this->replier->name} replied to your comment '{$this->ParentComment->content}'",
+            'message' => $message,
             'type' => 'reply'
         ];
     }

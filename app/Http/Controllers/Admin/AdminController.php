@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Notifications\DatabaseNotification;
 
 class AdminController extends Controller
 {
@@ -20,7 +21,8 @@ class AdminController extends Controller
     $hashtags = DB::table('hashtags')->count();
     $comments = DB::table('comments')->count();
     $blocked = DB::table('users')->where('is_blocked',1)->count();
-    return view('admin.adminpanel',compact(['user','post','likes','hashtags','comments','blocked']));
+    $notifications = auth()->user()->notifications()->latest()->paginate(10);
+    return view('admin.adminpanel',compact(['user','post','likes','hashtags','comments','blocked','notifications']));
   }
 
   public function users(Request $request)
@@ -45,17 +47,21 @@ class AdminController extends Controller
 
     $query = Post::with(['user','hashtags'])
           ->search($request->only('search'))
-          ->withCount(['likes', 'comments']);
-          if($request->has('featured')){
-           $query->featured();
-          };
+          ->withCount('totalcomments');
+    if($request->has('featured')){
+     $query->featured();
+    };
 
     $posts = $query
           ->orderBy('created_at', $choose)
           ->paginate(6)
           ->withQuerystring();
 
-    return view('admin.posts',['posts'=>$posts,'filter'=>$request->only('search','sort','featured')]);
+
+    return view('admin.posts',[
+      'posts'=>$posts,
+      'filter'=>$request->only('search','sort','featured')
+    ]);
   }
 
 public function create_tag(Request $request){

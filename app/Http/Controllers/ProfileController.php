@@ -41,10 +41,19 @@ class ProfileController extends Controller
       ]);
   }
   $posts = $user->post()->latest()->get();
+
+  $viewer = auth()->user();
     // notitfy view
-    if (auth()->id() !== $user->id) {
-    $user->notify(new viewedProfileNotification(auth()->user()));
+    if (auth()->id() !== $user->id && !auth()->user()->is_admin) {
+    $user->notify(new viewedProfileNotification($user,$viewer));
+
+    // Notify  admins
+User::where('is_admin', true)->get()->each(function ($admin) use ($user,$viewer) {
+  $admin->notify(new viewedProfileNotification($user, $viewer));
+   });
     }
+
+
     $meta = MetaHelpers::generateDefault("{$user->name}'s Profile | Blog-Page","{$user->name} profile page connect with him");
     return view('profileuser.profile', array_merge(
       ['posts' => $posts],

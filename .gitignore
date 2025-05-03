@@ -6,6 +6,8 @@
 /storage/app/public/images
 /storage/app/public/uploads
 /storage/posts.index
+/storage/posts.index-shm
+/storage/posts.index-wal
 /vendor
 .env
 .env.backup

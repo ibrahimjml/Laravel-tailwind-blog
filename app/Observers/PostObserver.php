@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Post;
+use App\Models\User;
 use App\Notifications\FollowingPostCreatedNotification;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Str;
@@ -16,6 +17,20 @@ class PostObserver
     {
             $slug = Str::slug($post->title);
             $post->slug = $this->generateUniqueSlug($slug);
+    }
+    
+    public function created(Post $post){
+  
+      $creator = $post->user;
+      $followers = $creator->followers->filter(fn($user) => !$user->is_admin);
+        // Notify  users
+      foreach($followers as $follower){
+        $follower->notify(new FollowingPostCreatedNotification($creator,$post));
+      }
+        // Notify  admins
+    User::where('is_admin', true)->get()->each(function ($admin) use ($creator, $post) {
+      $admin->notify(new FollowingPostCreatedNotification( $creator, $post));
+       });
     }
 
     public function updating(Post $post)

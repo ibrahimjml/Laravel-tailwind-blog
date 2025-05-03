@@ -59,7 +59,11 @@
     <span onclick="fetchLike(this)" class="cursor-pointer w-8 h-8 rounded-full flex justify-center items-center  hover:bg-gray-200 transition-bg duration-150 ">
       <i class="fa-heart like-icon {{ $post->is_liked() ? 'fa-solid text-red-500' : 'fa-regular' }}" data-id="{{ $post->id }}"></i>
     </span>
-    <span title="view who liked" id="likes-count" class="open-view-model text-sm cursor-pointer">{{ $post->likes()->count()}}</span>
+
+    <span title="view who liked" id="likes-count" class="open-view-model text-sm cursor-pointer">
+      {{ $post->likes_count}}
+    </span>
+
 </div>
 @if($post->allow_comments)
 <div class="h-4 w-px bg-gray-400"></div>
@@ -222,9 +226,10 @@
     });
   });
   </script>
-  @endif
+@endif
 
 {{-- open view who liked model  --}}
+
   <script>
     const openmodel = document.getElementsByClassName('open-view-model')[0];
     const viewmodel = document.getElementById('view-liked');
@@ -238,6 +243,7 @@
       document.body.classList.remove('no-scroll');
     })
   </script>
+
 @endpush
 </x-layout>
   

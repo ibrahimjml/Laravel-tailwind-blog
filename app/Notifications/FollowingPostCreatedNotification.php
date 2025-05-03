@@ -13,12 +13,12 @@ class FollowingPostCreatedNotification extends Notification
 {
     use Queueable;
 
-    public $follower;
+
     public $PostedBy;
     public $post;
-    public function __construct(User $follower,User $PostedBy,Post $post)
+    public function __construct(User $PostedBy,Post $post)
     {
-        $this->follower = $follower;
+  
         $this->PostedBy = $PostedBy;
         $this->post = $post;
     }
@@ -51,13 +51,16 @@ class FollowingPostCreatedNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
+      $message = $notifiable->is_admin
+        ? "{$this->PostedBy->name} created a new post '{$this->post->title}'"
+        : "{$this->PostedBy->name} (whom you followed) created a new post '{$this->post->title}'";
+
         return [
             'postedby_id' => $this->PostedBy->id,
             'postedby_username' => $this->PostedBy->username,
-            'postedby_avatar' => $this->PostedBy->avatar_url,
             'post_id' => $this->post->id,
             'post_link' => $this->post->slug,
-            'message' => "{$this->PostedBy->name} created new post {$this->post->title}",
+            'message' => $message,
             'type' => 'Postcreated',
         ];
     }

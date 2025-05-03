@@ -13,11 +13,11 @@ class FollowersNotification extends Notification
 {
     use Queueable;
 
-    protected $follower;
-
-  
-    public function __construct($follower)
+    public $user;
+    public $follower;
+    public function __construct(User $user,User $follower)
     {
+        $this->user = $user;
         $this->follower = $follower;
     
     }
@@ -50,14 +50,18 @@ class FollowersNotification extends Notification
      */
     public function toDatabase( $notifiable): array
     {
-    
+  
+      $message = $notifiable->is_admin
+      ? "{$this->follower->name} has followed {$this->user->name}"
+      : "{$this->follower->name} has followed you!";
+
       return [
+        'user_name' => $this->user->name,
         'follower_id' => $this->follower->id,
         'follower_name' => $this->follower->name,
         'follower_username' => $this->follower->username,
-        'follower_avatar_url' => $this->follower->avatar_url,
         'type'=>'follow',
-        'message' => "{$this->follower->name} has followed you!",
+        'message' => $message,
         
     ];
     }

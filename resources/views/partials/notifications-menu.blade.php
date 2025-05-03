@@ -9,46 +9,23 @@
     @forelse (auth()->user()->notifications as $notification)
     <li class="flex items-start gap-3 p-2 rounded-md hover:bg-gray-100 transition">
     @php
-        $avatarUrl = '';
-        $username = '';
-        $message = $notification->data['message'];
-        $url = route('notifications.read', $notification->id);
-    @endphp
-      
-            @if ($notification->data['type'] === 'follow')
-            @php
-            $avatarUrl = $notification->data['follower_avatar_url'];
-            $username = $notification->data['follower_username'];
-            @endphp
-            @elseif($notification->data['type'] === 'like')
-            @php
-            $avatarUrl = $notification->data['user_avatar'];
-            $username = $notification->data['user_username'];
-            @endphp
-            @elseif($notification->data['type'] === 'Postcreated')
-            @php
-            $avatarUrl = $notification->data['postedby_avatar'];
-            $username = $notification->data['postedby_username'];
-            @endphp
-            @elseif($notification->data['type'] === 'comments')
-            @php
-              $avatarUrl = $notification->data['commenter_avatar'];
-              $username = $notification->data['commenter_username'];
-            @endphp
-            @elseif($notification->data['type'] === 'reply')
-            @php
-              $avatarUrl = $notification->data['replier_avatar'];
-              $username = $notification->data['replier_username'];
-            @endphp
-            @elseif($notification->data['type'] === 'viewedprofile')
-            @php
-              $avatarUrl = $notification->data['viewer_avatar'];
-              $username = $notification->data['viewer_username'];
-            @endphp
-            @endif
+      $type = $notification->data['type'];
+            $message = $notification->data['message'] ?? '';
+            $url = route('notifications.read', $notification->id);
+            $username = null;
+            foreach ($notification->data as $key => $value) {
+            if (!$username && str_contains($key, 'username')) {
+                $username = $value;
+                break;
+               }
+              }
+        $user = \App\Models\User::where('username', $username)->first();
+        $avatar = $user?->avatar_url ?? asset('storage/avatars/default.png');
+     @endphp
             <a href="{{ route('profile', $username) }}">
-                <img src="{{$avatarUrl}}"
-                     class="w-8 h-8 rounded-full object-cover" alt=""></a>
+                <img src="{{$avatar}}"
+                     class="w-8 h-8 rounded-full object-cover" alt="">
+                    </a>
                 <div class="flex-1">
                     <a href="{{$url}}"
                        class="text-sm text-gray-700 hover:text-black font-medium block">

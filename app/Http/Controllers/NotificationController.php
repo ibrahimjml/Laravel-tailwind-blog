@@ -2,23 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\CheckIfBlocked;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware(['auth','verified',CheckIfBlocked::class]);
+  }
+  
     public function markasread($id){
 
       $notifications = auth()->user()->notifications()->findOrFail($id);
       $notifications->markAsRead();
 
-      if($notifications->data['type'] == 'like' || $notifications->data['type'] == 'Postcreated' ||
-       $notifications->data['type'] == 'comments' || $notifications->data['type'] == 'reply'){
+      $data = $notifications->data;
+      $type = $data['type'] ?? null;
 
-        return to_route('single.post',$notifications->data['post_link']);
-      }elseif($notifications->data['type'] == 'follow'){
-        return to_route('profile',$notifications->data['follower_username']);
-      }elseif($notifications->data['type'] == 'viewedprofile'){
-        return to_route('profile',$notifications->data['viewer_username']);
+      if(in_array($type, ['like', 'Postcreated', 'comments', 'reply'])){
+
+        return to_route('single.post',$data['post_link']);
+      }elseif($type == 'follow'){
+        return to_route('profile',$data['follower_username']);
+      }elseif($type  == 'viewedprofile'){
+        return to_route('profile',$data['viewer_username']);
       }
   }
     public function delete($id){

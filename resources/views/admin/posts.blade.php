@@ -75,7 +75,7 @@
         <td class="p-2">  {{ ($posts->currentPage() - 1) * $posts->perPage() + $loop->iteration }}</td>
         <td class="p-2">{{$post->user->name}}</td>
         <td class="p-2">
-          <img class="object-contain inline-block" src="/images/{{$post->image_path}}" width="40px" height="40px"  alt="{{$post->title}}">
+          <img class="object-contain inline-block" src="/storage/uploads/{{$post->image_path}}" width="40px" height="40px"  alt="{{$post->title}}">
         </td>
         <td class="p-2">{{Str::limit($post->slug,20)}}</td>
         <td class="p-2">  {!! Str::limit(strip_tags($post->description), 40) !!}</td>
@@ -96,7 +96,7 @@
         </div>
         </td>
         <td class="p-2">{{$post->likes_count}}</td>
-        <td class="p-2">{{$post->comments_count}}</td>
+        <td class="p-2">{{$post->totalcomments_count}}</td>
         <td class="p-2">{{$post->created_at->diffForHumans()}}</td>
         <td  class=" text-white p-2 ">
           <div class="flex items-center justify-center">

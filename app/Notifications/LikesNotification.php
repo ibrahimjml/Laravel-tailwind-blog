@@ -56,14 +56,20 @@ class LikesNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
+  
+      $message = $notifiable->is_admin
+      ? ($this->user->id === $this->post->user->id
+      ? "{$this->user->name} liked his post"
+      : "{$this->user->name} liked {$this->post->user->name}'s post")
+      : "{$this->user->name} liked your post {$this->post->title}";
+
         return [
           'user_id' => $this->user->id,
           'user_username'=>$this->user->username,
-          'user_avatar'=>$this->user->avatar_url,
           'post_id' => $this->post->id,
           'post_link'=>$this->post->slug,
           'type'=>'like',
-          'message'=>"{$this->user->name} liked your post {$this->post->title}"
+          'message'=>$message
         ];
     }
 }

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\CheckIfBlocked;
-use App\Mail\EmailComment;
 use App\Models\Comment;
 use App\Models\Post;
-use App\Notifications\CommentNotification;
+use App\Models\User;
 use App\Notifications\RepliedCommentNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+
 
 class CommentController extends Controller
 {
@@ -35,11 +34,6 @@ class CommentController extends Controller
         ]);
        }
       $comment = $post->comments()->create($fields);
-
-      if($post->user->id !== auth()->user()->id){
-        Mail::to($post->user)->queue(new EmailComment($post->user, $comment->user, $post));
-        $post->user->notify(new CommentNotification($comment,$comment->user,$post));
-      }
 
       return response()->json([
         'commented'=>true,
@@ -84,11 +78,16 @@ public function reply(Comment $comment, Request $request){
       $fields['post_id']=$comment->post_id;
       
      $reply = Comment::create($fields);
-
+     $replier = $reply->user;
+     $post= $comment->post;
      if($comment->user->id !== auth()->user()->id){
-       $comment->user->notify(new RepliedCommentNotification($comment,$reply,$reply->user,$comment->post));
+       $comment->user->notify(new RepliedCommentNotification($comment,$reply,$replier,$post));
      }
 
+// Notify  admins
+User::where('is_admin', true)->get()->each(function ($admin) use ($comment,$reply, $replier,$post) {
+  $admin->notify(new RepliedCommentNotification($comment, $reply, $replier,$post));
+   });
       toastr()->success('Reply added successfully',['timeOut'=>1000]);
       return response()->json([
         'replied' => true,

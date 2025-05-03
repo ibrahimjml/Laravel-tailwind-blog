@@ -14,9 +14,9 @@ class CommentNotification extends Notification
 {
     use Queueable;
 
-    public $comment;
-    public $commenter;
-    public $post;
+    protected $comment;
+    protected $commenter;
+    protected $post;
     public function __construct(Comment $comment,User $commenter,Post $post)
     {
         $this->comment = $comment;
@@ -52,12 +52,15 @@ class CommentNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
+      $message = $notifiable->is_admin
+      ? "{$this->commenter->name} commented on {$this->post->user->name}'s post "
+      : "{$this->commenter->name} commented on your post {$this->post->title}";
+
         return [
             'comment_id' => $this->comment->id,
-            'commenter_avatar' => $this->commenter->avatar_url,
             'commenter_username' => $this->commenter->username,
             'post_link'=> $this->post->slug,
-            'message' => "{$this->commenter->name} commented on your post {$this->post->title}",
+            'message' => $message,
             'type' => 'comments'
         ];
     }

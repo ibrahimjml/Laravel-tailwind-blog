@@ -15,9 +15,10 @@
 
 @if(Route::is('admin-page','featuredpage','admin.posts','admin.users','hashtagpage'))
 <script src="{{asset('js/sidebar.js')}}" defer></script>
+@if(Route::is('hashtagpage'))
 <script src="{{asset('js/fetchhashtags.js')}}" defer></script>
 @endif
-
+@endif
 @if(Route::is(['edit.post','createpage','featuredpage']))
 <script src="{{asset('js/hashtagsUI.js')}}" defer></script>
 @endif
