@@ -34,17 +34,16 @@ class ProfileController extends Controller
   {
     $user = User::where('username', $user->username)->firstOrFail();
     $viewer = auth()->user();
-    $profileowner = $user;
 
      // create profile view
-     if ($viewer !== $profileowner->id) {
+     if ($viewer->id !== $user->id) {
       ProfileView::firstOrCreate([
           'viewer_id' => auth()->id(),
-          'profile_id' => $profileowner->id,
+          'profile_id' => $user->id,
       ]);
   }
-  
-  $notifier->notify($viewer,$profileowner);
+
+    $notifier->notifyview($viewer,$user);
   
   $posts = $user->post()->latest()->get();
 
@@ -54,6 +53,7 @@ class ProfileController extends Controller
       $this->ProfileData($user, 'home', $meta)
     ));
   }
+
 public function activity(User $user){
   $user = User::where('username', $user->username)->firstOrFail();
 
