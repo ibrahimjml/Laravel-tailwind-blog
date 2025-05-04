@@ -18,9 +18,10 @@
 ![schooldash-dahboard-page](https://i.postimg.cc/dtFrX3Nv/Screenshot-2025-04-29-215322.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/c4TW78yz/Screenshot-2025-04-29-214445.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/W15nZy2V/Screenshot-2024-10-29-024842.png)
-![schooldash-dahboard-page](https://i.postimg.cc/R02w63yk/Screenshot-2025-04-22-201152.png)
-![schooldash-dahboard-page](https://i.postimg.cc/k5RbmJGf/Screenshot-2025-04-22-202407.png)
-![schooldash-dahboard-page](https://i.postimg.cc/FzNd30ZB/Screenshot-2025-04-22-201238.png)
+![schooldash-dahboard-page](https://i.postimg.cc/2S46Rf3Y/127-0-0-1-8000-admin-panel-2.png)
+![schooldash-dahboard-page](https://i.postimg.cc/jSCpP60F/127-0-0-1-8000-admin-posts-page-5.png)
+![schooldash-dahboard-page](https://i.postimg.cc/G2nVWZBW/127-0-0-1-8000-admin-users.png)
+![schooldash-dahboard-page](https://i.postimg.cc/7hmRThB4/127-0-0-1-8000-admin-hashtags.png)
 
 
 
