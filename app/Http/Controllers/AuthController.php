@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewRegistered;
 use App\Helpers\MetaHelpers;
 use App\Models\User;
 use Illuminate\Support\Str;
 use App\Mail\ForgotPassword;
-use App\Models\Hashtag;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -43,6 +43,8 @@ class AuthController extends Controller
 
     $user = User::create($fields);
     event(new Registered($user));
+    // notify admin with new user
+    event(new NewRegistered($user));
     auth()->login($user);
     toastr()->success('Account created successfully',['timeOut'=>1000]);
     return redirect('/');
@@ -60,9 +62,12 @@ class AuthController extends Controller
     $fields = $request->validate([
       "email" => 'required|email',
       "password" => 'required'
-    ]);
+    ]);  
 
     if (auth()->attempt(["email" => $fields['email'], "password" => $fields['password']])) {
+      if(auth()->user()->is_blocked){
+        return back();
+      }
     toastr()->success('logged in successfuly',['timeOut'=>1000]);
       return redirect('/');
     } else {

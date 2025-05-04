@@ -51,27 +51,30 @@ mobilebtn.addEventListener('click', (e) => {
 
 
 // show notification menu info
-shownotification.addEventListener('mousemove', function() {
-  notifications.style.display = "block";
-});
+if(shownotification){
+  shownotification.addEventListener('mousemove', function() {
+    notifications.style.display = "block";
+  });
+  
+  
+  shownotification.addEventListener('mouseout', function() {
+    setTimeout(function() {
+      if (!notifications.matches(':hover')) {
+        notifications.style.display = "none";
+      }
+    }, 300); 
+  });
+  
+  
+  notifications.addEventListener('mousemove', function() {
+    notifications.style.display = "block";
+  });
+  
+  
+  notifications.addEventListener('mouseout', function() {
+    notifications.style.display = "none";
+  });
+}
 
-
-shownotification.addEventListener('mouseout', function() {
-  setTimeout(function() {
-    if (!notifications.matches(':hover')) {
-      notifications.style.display = "none";
-    }
-  }, 300); 
-});
-
-
-notifications.addEventListener('mousemove', function() {
-  notifications.style.display = "block";
-});
-
-
-notifications.addEventListener('mouseout', function() {
-  notifications.style.display = "none";
-});
 
 

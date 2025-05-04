@@ -12,8 +12,8 @@ class viewedProfileNotification extends Notification
 {
     use Queueable;
     
-    public $user;
-    public $viewer;
+    protected $user;
+    protected $viewer;
     public function __construct(User $user,User $viewer)
     {
         $this->user = $user;

@@ -2,25 +2,20 @@
 
 namespace App\Notifications;
 
-use App\Models\Post;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class FollowingPostCreatedNotification extends Notification
+class NewRegisteredNotification extends Notification
 {
     use Queueable;
 
-
-    protected $PostedBy;
-    protected $post;
-    public function __construct(User $PostedBy,Post $post)
+    protected $user;
+    public function __construct(User $user)
     {
-  
-        $this->PostedBy = $PostedBy;
-        $this->post = $post;
+        $this->user = $user;
     }
 
     /**
@@ -51,17 +46,11 @@ class FollowingPostCreatedNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
-      $message = $notifiable->is_admin
-        ? "{$this->PostedBy->name} created a new post '{$this->post->title}'"
-        : "{$this->PostedBy->name} (whom you followed) created a new post '{$this->post->title}'";
-
         return [
-            'postedby_id' => $this->PostedBy->id,
-            'postedby_username' => $this->PostedBy->username,
-            'post_id' => $this->post->id,
-            'post_link' => $this->post->slug,
-            'message' => $message,
-            'type' => 'Postcreated',
+            'user_id' => $this->user->id,
+            'username' => $this->user->username,
+            'message' => "{$this->user->username} has registered a new account",
+            'type' => 'newuser'
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,8 +21,23 @@ class ViewServiceprovider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('*',function($view){
-              $view->with('authUser',Auth::user());
-        });
-    }
+        view::composer('partials.notifications-menu',function($view){
+          if(!auth()->check()){
+            return;
+          }
+
+        $notifications = auth()->user()->notifications()->get();
+        $usernames = $notifications
+        ->pluck('data')
+        ->flatMap(fn($data) => collect($data)->filter(fn($val, $key) => str_contains($key, 'username')))
+        ->unique()
+        ->values();
+
+    $users = User::whereIn('username', $usernames)->get()->keyBy('username');
+    $view->with([
+      'users'=>$users,
+      'notifications'=>$notifications
+       ]);
+    });
+  }
 }

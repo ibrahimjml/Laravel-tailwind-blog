@@ -1,4 +1,4 @@
-<aside id="sidebar" class="border-2 border-gray-600 h-[500px] rounded-lg transition-all ease-in-out duration-300">
+<aside id="sidebar" class="border-2 border-gray-600  rounded-lg transition-all ease-in-out duration-300">
   <div class="w-full h-[15%] bg-gray-600 text-white text-2xl font-semibold text-center flex justify-center items-center capitalize transition-opacity duration-300">
     admin panel
   </div>

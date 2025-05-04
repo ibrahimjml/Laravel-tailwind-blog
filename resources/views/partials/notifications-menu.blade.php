@@ -6,7 +6,7 @@
         <button type="submit" class="text-sm text-red-600 hover:underline">Delete All</button>
     </form>
 
-    @forelse (auth()->user()->notifications as $notification)
+    @forelse ($notifications as $notification)
     <li class="flex items-start gap-3 p-2 rounded-md hover:bg-gray-100 transition">
     @php
       $type = $notification->data['type'];
@@ -19,7 +19,7 @@
                 break;
                }
               }
-        $user = \App\Models\User::where('username', $username)->first();
+        $user =  $users[$username] ?? null;;
         $avatar = $user?->avatar_url ?? asset('storage/avatars/default.png');
      @endphp
             <a href="{{ route('profile', $username) }}">

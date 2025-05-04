@@ -13,8 +13,8 @@ class FollowersNotification extends Notification
 {
     use Queueable;
 
-    public $user;
-    public $follower;
+    protected $user;
+    protected $follower;
     public function __construct(User $user,User $follower)
     {
         $this->user = $user;

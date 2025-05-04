@@ -17,8 +17,8 @@ class LikesNotification extends Notification
     use Queueable;
      
 
-    public $user;
-    public $post;
+    protected $user;
+    protected $post;
     public function __construct(User $user,Post $post)
     {
   

@@ -18,7 +18,8 @@ class CheckIfBlocked
     {
       if(Auth::check() && Auth::user()->is_blocked){
         Auth::logout();
-        return redirect('/login')->with('error','Your account has been blocked. Please contact support.');
+        toastr()->error('Your account has been blocked. Please contact support.',['timeOut'=>2000]);
+        return redirect('/login');
       }
         return $next($request);
     }

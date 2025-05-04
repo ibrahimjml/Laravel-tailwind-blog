@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Notifications\DatabaseNotification;
 
 class AdminController extends Controller
 {
@@ -21,8 +20,35 @@ class AdminController extends Controller
     $hashtags = DB::table('hashtags')->count();
     $comments = DB::table('comments')->count();
     $blocked = DB::table('users')->where('is_blocked',1)->count();
-    $notifications = auth()->user()->notifications()->latest()->paginate(10);
-    return view('admin.adminpanel',compact(['user','post','likes','hashtags','comments','blocked','notifications']));
+
+    $sortoption = request()->get('sort');
+    $filtertype = request()->get('type');
+
+    $notifications = auth()->user()->notifications();
+
+    $usernames = collect($notifications->get())
+            ->pluck('data')
+            ->flatMap(fn($data)=>collect($data)->filter(fn($val,$key)=> str_contains($key,'username')))
+            ->unique()
+            ->values();
+    $users = User::whereIn('username',$usernames)->get()->keyBy('username');
+    switch ($sortoption) {
+      case 'read':
+        $notifications->whereNotNull('read_at');
+        break;
+      case 'unread':
+        $notifications->whereNull('read_at');
+        break;
+      default:
+      $notifications->latest();
+        break;
+    };
+    if($filtertype){
+      $notifications->where('data->type',$filtertype);
+    }
+    $notifications = $notifications->paginate(7)->withQuerystring();
+  
+    return view('admin.adminpanel',compact(['user','post','likes','hashtags','comments','blocked','users','notifications']));
   }
 
   public function users(Request $request)

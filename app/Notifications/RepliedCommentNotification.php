@@ -14,10 +14,10 @@ class RepliedCommentNotification extends Notification
 {
     use Queueable;
 
-    public $ParentComment;
-    public $reply;
-    public $replier;
-    public $post;
+    protected $ParentComment;
+    protected $reply;
+    protected $replier;
+    protected $post;
     public function __construct(Comment $ParentComment,Comment $reply,User $replier,Post $post)
     {
         $this->ParentComment = $ParentComment;

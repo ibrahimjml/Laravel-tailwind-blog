@@ -101,25 +101,25 @@ Route::delete('/notifications/deleteAll', [NotificationController::class, 'delet
 
 // admin panel
 Route::prefix('admin')
-    ->controller(AdminController::class)
     ->middleware('can:makeAdminActions,user')
     ->group(function () {
-
-    Route::get('/panel', 'admin')->name("admin-page");
-    Route::get('/users', 'users')->name('admin.users');
-    Route::get('/posts', 'posts')->name('admin.posts');
-
-    Route::get('/hashtags', 'hashtagpage')->name('hashtagpage');
-    Route::post('/create/tag', 'create_tag')->name('create.hashtag');
-    Route::put('/edit/{hashtag}', 'edit_tag')->name('edit.hashtag');
-    Route::delete('/delete/{hashtag}', 'delete_tag')->name('delete.hashtag');
-
-    Route::get('/featured', 'featuredpage')->name('featuredpage');
-    Route::post('/featured', 'features')->name('admin.featured');
-
-    Route::put('/role-update/{user}', 'role')->name('role.update');
-    Route::delete('/delete/{user}', 'destroy')->name('delete.user');
-
-    Route::post('/block/{user}', 'block')->name('block.user');
-    Route::post('/unblock/{user}', 'unblock')->name('unblock.user');
+    Route::controller(AdminController::class)->group(function(){
+      Route::get('/panel', 'admin')->name("admin-page");
+      Route::get('/users', 'users')->name('admin.users');
+      Route::get('/posts', 'posts')->name('admin.posts');
+  
+      Route::get('/hashtags', 'hashtagpage')->name('hashtagpage');
+      Route::post('/create/tag', 'create_tag')->name('create.hashtag');
+      Route::put('/edit/{hashtag}', 'edit_tag')->name('edit.hashtag');
+      Route::delete('/delete/{hashtag}', 'delete_tag')->name('delete.hashtag');
+  
+      Route::get('/featured', 'featuredpage')->name('featuredpage');
+      Route::post('/featured', 'features')->name('admin.featured');
+  
+      Route::put('/role-update/{user}', 'role')->name('role.update');
+      Route::delete('/delete/{user}', 'destroy')->name('delete.user');
+  
+      Route::post('/block/{user}', 'block')->name('block.user');
+      Route::post('/unblock/{user}', 'unblock')->name('unblock.user');
+    });
 });

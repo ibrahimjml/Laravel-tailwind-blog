@@ -19,14 +19,19 @@ class NotificationController extends Controller
 
       $data = $notifications->data;
       $type = $data['type'] ?? null;
+      $username = null;
 
+      foreach ($data as $key => $value) {
+          if (!$username && str_contains($key, 'username')) {
+              $username = $value;
+              break;
+          }
+      }
       if(in_array($type, ['like', 'Postcreated', 'comments', 'reply'])){
-
         return to_route('single.post',$data['post_link']);
-      }elseif($type == 'follow'){
-        return to_route('profile',$data['follower_username']);
-      }elseif($type  == 'viewedprofile'){
-        return to_route('profile',$data['viewer_username']);
+        
+      }elseif(in_array($type, ['follow','viewedprofile','newuser'])){
+        return to_route('profile',$username);
       }
   }
     public function delete($id){

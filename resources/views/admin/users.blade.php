@@ -130,14 +130,14 @@
         <div>
             @if($user->is_blocked)
             @can('modify', $user)
-            <form action="{{ route('unblock.user', $user) }}" method="POST" onsubmit="return confirm('Are you sure you want to block this user?');">
+            <form action="{{ route('unblock.user', $user) }}" method="POST" onsubmit='return confirm("Are you sure you want to unblock {{$user->name}} ?");'>
               @csrf
               <button type="submit" class="text-yellow-500 rounded-lg p-2 hover:text-yellow-400 "><i class="fas fa-undo"></i></button>
             </form>
             @endcan
             @else
             @can('modify', $user)
-            <form action="{{ route('block.user', $user) }}" method="POST" onsubmit="return confirm('Are you sure you want to block this user?');">
+            <form action="{{ route('block.user', $user) }}" method="POST" onsubmit="return confirm('Are you sure you want to block {{$user->name}} ?');">
               @csrf
               <button type="submit" class="text-yellow-500 rounded-lg p-2 hover:text-yellow-400 "><i class="fas fa-ban"></i></button>
             </form>
