@@ -54,6 +54,8 @@ class viewedProfileNotification extends Notification
       : "{$this->viewer->name} viewed your profile";
 
         return [
+            'viewer_id' => $this->viewer->id,
+            'profile_id' => $this->user->id,
             'user_name' => $this->user->name,
             'viewer_name' =>$this->viewer->name,
             'viewer_username' => $this->viewer->username,

@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Comment;
 use App\Models\Hashtag;
-use App\Notifications\FollowersNotification;
-use Illuminate\Notifications\DatabaseNotification;
+use App\Services\FollowService;
+
 
 class PublicController extends Controller
 {
@@ -46,39 +46,18 @@ class PublicController extends Controller
       'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
     ]);
   }
-// toggle follow
-public function togglefollow(User $user){
+
+public function togglefollow(User $user,FollowService $service){
   $follower = auth()->user();
   if ($follower->id === $user->id) {
     return response()->json(['error' => 'You cannot follow yourself.'], 400);
 }
 
-if ($follower->isFollowing($user)) {
-    $follower->followings()->detach($user->id);
+$attached = $service->toggle($follower,$user);
 
-    // auto delete follow notification when user unfollow  
-    DatabaseNotification::where('type',FollowersNotification::class)
-    ->where('notifiable_id', $user->id)
-    ->whereJsonContains('data->follower_id', auth()->user()->id)
-    ->delete();
-
-    return response()->json([
-      'attached' => false
-    ],200);
-} else {
-    $follower->followings()->attach($user->id);
-
-   $user->notify(new FollowersNotification($user,$follower));
-// Notify  admins
-User::where('is_admin', true)->get()->each(function ($admin) use ($user, $follower) {
-  $admin->notify(new FollowersNotification($user, $follower));
-   });
-    return response()->json([
-      'attached' => true
-    ],200);
+return response()->json(['attached'=>$attached]);
 }
 
-}
   public function viewpost($slug)
   {
     $post = Post::whereSlug( $slug)->firstOrFail();

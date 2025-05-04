@@ -20,7 +20,7 @@
                }
               }
         $user =  $users[$username] ?? null;;
-        $avatar = $user?->avatar_url ?? asset('storage/avatars/default.png');
+        $avatar = $user?->avatar_url ?? asset('storage/avatars/default.jpg');
      @endphp
             <a href="{{ route('profile', $username) }}">
                 <img src="{{$avatar}}"

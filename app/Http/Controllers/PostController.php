@@ -8,6 +8,7 @@ use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Hashtag;
 use App\Models\Post;
+use App\Services\PostHashtagsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -109,7 +110,7 @@ class PostController extends Controller
   }
 
 
-  public function create(CreatePostRequest $request)
+  public function create(CreatePostRequest $request,PostHashtagsService $tagsservice)
   {
     
     $fields = $request->validated();
@@ -133,6 +134,11 @@ class PostController extends Controller
       'allow_comments' => $allow_comments,
       'user_id' => auth()->user()->id
     ]);
+
+    if (request()->filled('hashtag')) {
+      $tagsservice->attachhashtags($post,$request->input('hashtag'));
+  }
+
     toastr()->success('posted successfuly',['timeOut'=>1000]);
 
     return redirect('/blog');
@@ -183,15 +189,13 @@ class PostController extends Controller
     $post->is_featured = $isFeatured;
 
     if (!empty($fields['hashtag'])) {
-      $hashtagNames = array_filter(array_map('trim', explode(',', $fields['hashtag'])));
+      $hashtagNames = array_unique(array_filter(array_map('trim', explode(',', $fields['hashtag']))));
       $hashtagIds = [];
 
       foreach ($hashtagNames as $name) {
           $hashtag = Hashtag::firstOrCreate(['name' => strip_tags(trim($name))]);
           $hashtagIds[] = $hashtag->id;
       }
-
-
       $post->hashtags()->sync($hashtagIds);
     } else {
       $post->hashtags()->detach();

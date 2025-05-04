@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Helpers\MetaHelpers;
 use App\Http\Middleware\CheckIfBlocked;
-use App\Models\Post;
 use App\Models\ProfileView;
 use App\Models\User;
-use App\Notifications\viewedProfileNotification;
+use App\Services\ProfileViewNotify;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -31,33 +30,27 @@ class ProfileController extends Controller
         'profileviews' => ProfileView::where('profile_id', $user->id)->with('viewer')->get(),
     ], $meta);
 }
-  public function Home(User $user)
+  public function Home(User $user,ProfileViewNotify $notifier)
   {
+    $viewer = auth()->user();
+    $profileowner = $user;
+
      // create profile view
-     if (auth()->id() !== $user->id) {
+     if ($viewer !== $profileowner->id) {
       ProfileView::firstOrCreate([
           'viewer_id' => auth()->id(),
-          'profile_id' => $user->id,
+          'profile_id' => $profileowner->id,
       ]);
   }
-  $posts = $user->post()->latest()->get();
+  
+  $notifier->notify($viewer,$profileowner);
+  
+  $posts = $profileowner->post()->latest()->get();
 
-  $viewer = auth()->user();
-    // notitfy view
-    if (auth()->id() !== $user->id && !auth()->user()->is_admin) {
-    $user->notify(new viewedProfileNotification($user,$viewer));
-
-    // Notify  admins
-User::where('is_admin', true)->get()->each(function ($admin) use ($user,$viewer) {
-  $admin->notify(new viewedProfileNotification($user, $viewer));
-   });
-    }
-
-
-    $meta = MetaHelpers::generateDefault("{$user->name}'s Profile | Blog-Page","{$user->name} profile page connect with him");
+    $meta = MetaHelpers::generateDefault("{$profileowner->name}'s Profile | Blog-Page","{$profileowner->name} profile page connect with him");
     return view('profileuser.profile', array_merge(
       ['posts' => $posts],
-      $this->ProfileData($user, 'home', $meta)
+      $this->ProfileData($profileowner, 'home', $meta)
     ));
   }
 public function activity(User $user){
