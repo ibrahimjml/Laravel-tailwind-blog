@@ -1,5 +1,8 @@
 <div class="md:w-[67%] w-full md:mx-auto mx-3  border-2 border-gray-300 rounded-lg p-4 my-4">
   <p class="text-xl font-bold my-3 border-b-2 border-b-black w-fit">Recent Activities</p>
+  @if($activities->isEmpty())
+  <p class="text-gray-500 text-center py-10 font-bold">No recent activity to show.</p>
+@else
   @foreach ($activities as $date => $entries)
     <div class="mb-8">
       {{-- Date --}}
@@ -39,4 +42,5 @@
       @endforeach
     </div>
   @endforeach
+  @endif
 </div>

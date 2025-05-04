@@ -19,7 +19,7 @@ class ProfileViewNotify
                   ->unique();
     
     foreach($notifyIDs as $notifyID){
-      $allreadynotified = DatabaseNotification::whereIn('notifiable_id',$notifyID)
+      $allreadynotified = DatabaseNotification::where('notifiable_id',$notifyID)
       ->where('type',viewedProfileNotification::class)
       ->whereJsonContains('data->viewer_id',$viewer->id)
       ->whereJsonContains('data->profile_id',$proileowner->id)

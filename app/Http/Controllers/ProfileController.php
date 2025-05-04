@@ -32,6 +32,7 @@ class ProfileController extends Controller
 }
   public function Home(User $user,ProfileViewNotify $notifier)
   {
+    $user = User::where('username', $user->username)->firstOrFail();
     $viewer = auth()->user();
     $profileowner = $user;
 
@@ -45,36 +46,40 @@ class ProfileController extends Controller
   
   $notifier->notify($viewer,$profileowner);
   
-  $posts = $profileowner->post()->latest()->get();
+  $posts = $user->post()->latest()->get();
 
-    $meta = MetaHelpers::generateDefault("{$profileowner->name}'s Profile | Blog-Page","{$profileowner->name} profile page connect with him");
+    $meta = MetaHelpers::generateDefault("{$user->name}'s Profile | Blog-Page","{$user->name} profile page connect with him");
     return view('profileuser.profile', array_merge(
       ['posts' => $posts],
-      $this->ProfileData($profileowner, 'home', $meta)
+      $this->ProfileData($user, 'home', $meta)
     ));
   }
 public function activity(User $user){
+  $user = User::where('username', $user->username)->firstOrFail();
 
   $posts = $user->post()->select('title','created_at')->get()
   ->map(function($post){
-    return[
-      'type' => 'Posted',
-      'title' => $post->title,
-      'date' => $post->created_at,
-    ];
-  });
-  $comments = $user->comments()->select('content','created_at','parent_id')->get()
-  ->map(function($comment){
-    return[
-      'type' => $comment->parent_id ? 'Replied' : 'Commented',
-      'title' => $comment->content,
-      'date' => $comment->created_at,
-    ];
-  });
+      return [
+          'type' => 'Posted',
+          'title' => $post->title,
+          'date' => $post->created_at,
+      ];
+  })
+  ->toArray();
 
-  $activities = $posts->merge($comments)
-  ->sortByDesc('date')
-  ->groupBy(fn($activity)=>Carbon::parse($activity['date'])->format('M j Y'));
+$comments = $user->comments()->select('content','created_at','parent_id')->get()
+  ->map(function($comment){
+      return [
+          'type' => $comment->parent_id ? 'Replied' : 'Commented',
+          'title' => $comment->content,
+          'date' => $comment->created_at,
+      ];
+  })
+  ->toArray();
+
+  $merged = collect($posts)->merge($comments);
+  $activities = $merged->sortByDesc('date')
+              ->groupBy(fn($activity)=>Carbon::parse($activity['date'])->format('M j Y'));
   
   $meta = MetaHelpers::generateDefault("{$user->name}'s Activity | Blog-Page", "{$user->name} recent activity.");
   return view('profileuser.profile', array_merge(
@@ -83,6 +88,8 @@ public function activity(User $user){
   ));
 }
 public function aboutme(User $user){
+
+$user = User::where('username', $user->username)->firstOrFail();
 
   $meta = MetaHelpers::generateDefault("About {$user->name} | Blog-Page", "{$user->name} about section.");
   return view('profileuser.profile', $this->ProfileData($user, 'about', $meta));
