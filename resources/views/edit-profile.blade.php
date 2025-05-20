@@ -36,7 +36,7 @@
       @endcan
   </div>
   </form>
-  <form action="/edit-email/{{$user->id}}" method="POST">
+  <form id="phone-form" action="/edit-email/{{$user->id}}" method="POST">
     @csrf
     @method('PUT')
   <div class="flex flex-wrap mt-2">
@@ -72,9 +72,9 @@
     Phone:
   </label>
 
-  <input id="phone" type="text"
-      class="rounded-sm p-2 border-2 form-input w-full @error('phone') border-red-500 @enderror" name="phone"
-      value="{{ old('phone', $user->phone) }}" required autocomplete="phone">
+  <input id="phone" type="tel"
+    class="w-full rounded-sm p-2 border-2 form-input @error('phone') border-red-500 @enderror"
+    name="phone" value="{{ old('phone',$user->phone ?? '') }}" required autocomplete="tel">
 
   @error('phone')
   <p class="text-red-500 text-xs italic mt-4">
@@ -177,6 +177,50 @@
     }
   })
 </script>  
+<script>
+    @push('scripts')
+      <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const phoneInputField = document.querySelector("#phone");
+
+        // Initialize intl-tel-input
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+
+fetch('https://get.geojs.io/v1/ip/geo.json')
+        .then(response => response.json())
+        .then(data => {
+            const country = data.country_code;  // Country code like "US", "IN", etc.
+            phoneInput.setCountry(country);  // Set the country
+        })
+        .catch(error => console.error('Error fetching location:', error));
+        const form = document.querySelector('#phone-form');
+        form.addEventListener('submit', function (eo) {
+            eo.preventDefault();
+
+
+            const countryCode = phoneInput.getSelectedCountryData().dialCode;
+            const phoneNumber = phoneInput.getNumber(); 
+
+            
+            const countryCodeInput = document.createElement('input');
+            countryCodeInput.type = 'hidden';
+            countryCodeInput.name = 'country_code';
+            countryCodeInput.value = countryCode;
+            form.appendChild(countryCodeInput);
+
+            phoneInputField.value = phoneNumber;
+
+            form.submit();
+        });
+    });
+
+    
+    </script>
+@endpush    
+</script>
 @endpush
 
 </x-layout>

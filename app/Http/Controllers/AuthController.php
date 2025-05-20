@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\NewRegistered;
 use App\Helpers\MetaHelpers;
 use App\Models\User;
+use App\Rules\Recaptcha;
 use Illuminate\Support\Str;
 use App\Mail\ForgotPassword;
 use Illuminate\Auth\Events\Registered;
@@ -31,9 +32,11 @@ class AuthController extends Controller
       "email" => ["required", "email", "min:5", "max:50", Rule::unique("users", "email")],
       "name" => ["required", "min:5", "max:50", "alpha"],
       "username" => ["required", "min:5", "max:15", "alpha_num",Rule::unique('users','username')],
-      "phone" => ["min:8", Rule::unique("users", "phone")],
+      "phone" => ['required', 'regex:/^\+\d{8,15}$/', Rule::unique("users", "phone")],
       "password" => ["required", "alpha_num", "min:8", "max:32", "confirmed"],
       "age" => ["required", "integer", "between:18,64"]
+    ],[
+      'phone.regex'=>'The phone number must include a valid country code.'
     ]);
 
     $fields['password'] = bcrypt($fields['password']);
@@ -61,7 +64,8 @@ class AuthController extends Controller
   {
     $fields = $request->validate([
       "email" => 'required|email',
-      "password" => 'required'
+      "password" => 'required',
+      "g-recaptcha-response" => [new Recaptcha]
     ]);  
 
     if (auth()->attempt(["email" => $fields['email'], "password" => $fields['password']])) {

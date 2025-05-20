@@ -11,12 +11,10 @@
                     Login
                 </header>
 
-                <form class="border-2 w-full px-6 space-y-6 sm:px-10 sm:space-y-8" method="POST"
+                <form id="recaptcha" class="border-2 w-full px-6 space-y-6 sm:px-10 sm:space-y-8" method="POST"
                     action="{{ route('login.post') }}">
                     @csrf
-
-                  
-
+                    @method('POST')
                     <div class="flex flex-wrap">
                         <label for="email" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
                           E-Mail Address:
@@ -47,12 +45,18 @@
                             {{ $message }}
                         </p>
                         @enderror
+                          @error('g-recaptcha-response')
+                        <p class="text-red-500 text-xs italic mt-4">
+                            {{ $message }}
+                        </p>
+                        @enderror
                     </div>
-
+                      <!-- Google reCAPTCHA v2 checkbox -->
+  <div class="g-recaptcha" data-sitekey="{{env('GOOGLE_SITEKEY')}}"></div>
                     
                     <div class="flex flex-wrap">
                         <button type="submit"
-                            class="w-full select-none font-bold whitespace-no-wrap p-3 rounded-lg text-base leading-normal no-underline text-gray-100 bg-gray-700 hover:bg-gray-500 sm:py-4">
+                            class=" w-full select-none font-bold whitespace-no-wrap p-3 rounded-lg text-base leading-normal no-underline text-gray-100 bg-gray-700 hover:bg-gray-500 sm:py-4">
                             Login
                         </button>
                         
@@ -73,4 +77,11 @@
         </div>
     </div>
 </main>
+@push('scripts')
+<script>
+   function onSubmit(token) {
+     document.getElementById("recaptcha").submit();
+   }
+ </script>
+@endpush
 </x-layout>

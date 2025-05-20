@@ -185,7 +185,9 @@ $user = User::where('username', $user->username)->firstOrFail();
   public function editphone(Request $request, User $user)
   {
     $request->validate([
-      "phone" => ["min:8", Rule::unique("users", "phone")]
+      "phone" => ['required', 'regex:/^\+\d{8,15}$/', Rule::unique("users", "phone")]
+    ],[
+      'phone.regex' => 'The phone number must include a valid country code.'
     ]);
     $user->phone = strip_tags($request->phone);
     $this->authorize('update', $user);

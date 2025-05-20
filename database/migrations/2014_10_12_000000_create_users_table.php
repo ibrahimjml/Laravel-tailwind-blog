@@ -32,8 +32,8 @@ return new class extends Migration
         DB::table('users')->insert([
           'name' => 'admin',
           'username'=>'admin123',
-          'email' => 'admin@mail.ru',
-          'password' => Hash::make('adminadmin123'),
+          'email' => env('ADMIN_EMAIL'),
+          'password' => Hash::make(env('ADMIN_PASS')),
           'is_admin' => 1,
           'avatar' => 'default.jpg',
           'created_at' => Carbon::now(),
