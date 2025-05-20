@@ -7,14 +7,15 @@
 <script src="{{asset('js/fetchfollow.js')}}" defer></script>
 
 @if(Route::is('single.post'))
-<script src="{{asset('js/fetchlike.js')}}" defer></script>
-<script src="{{asset('js/randomhearts.js')}}" defer></script>
-<script src="{{asset('js/comments.js')}}" defer></script>
-<script src="{{asset('js/fetchsavedpost.js')}}" defer></script>
+<script src="{{asset('js/fetchlike.js')}}"></script>
+<script src="{{asset('js/randomhearts.js')}}" ></script>
+<script src="{{asset('js/comments.js')}}"></script>
+<script src="{{asset('js/fetchsavedpost.js')}}"></script>
 @endif
 
-@if(Route::is('admin-page','featuredpage','admin.posts','admin.users','hashtagpage'))
+@if(Route::is('admin-page','featuredpage','admin.posts','admin.users','hashtagpage','admin.notify'))
 <script src="{{asset('js/sidebar.js')}}" defer></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
 @if(Route::is('hashtagpage'))
 <script src="{{asset('js/fetchhashtags.js')}}" defer></script>
 @endif

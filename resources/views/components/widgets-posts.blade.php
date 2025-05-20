@@ -1,17 +1,76 @@
+<div class="flex-auto p-4 border-2 rounded-lg">
+  <div class="flex flex-wrap">
+    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+      <h5 class="text-blueGray-400 uppercase font-bold text-xs">
+        Posts
+      </h5>
+      <span class="font-semibold text-xl text-blueGray-700">
+        {{$posts}}
+      </span>
+    </div>
+    <div class="relative w-auto pl-4 flex-initial">
+      <div
+        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-gray-500">
+        <i class="far fa-image"></i>
+      </div>
 
-<div class="flex flex-col gap-2 items-center justify-center font-bold rounded-lg bg-red-600 text-white p-5 w-fit">
-  total posts 
-  <p>{{$posts}}</p>
+    </div>
+  </div>
 </div>
-<div class="flex flex-col gap-2 items-center justify-center font-bold rounded-lg bg-yellow-600 text-white p-5 w-fit">
-  total likes 
-  <p>{{$likes}}</p>
+<div class="flex-auto p-4 border-2 rounded-lg">
+  <div class="flex flex-wrap">
+    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+      <h5 class="text-blueGray-400 uppercase font-bold text-xs">
+        Likes
+      </h5>
+      <span class="font-semibold text-xl text-blueGray-700">
+        {{$likes}}
+      </span>
+    </div>
+    <div class="relative w-auto pl-4 flex-initial">
+      <div
+        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-gray-500">
+        <i class="far fa-heart"></i>
+      </div>
+    </div>
+  </div>
+
 </div>
-<div class="flex flex-col gap-2 items-center justify-center font-bold rounded-lg bg-green-600 text-white p-5 w-fit">
-  total comments 
-  <p>{{$comments}}</p>
+<div class="flex-auto p-4 border-2 rounded-lg">
+  <div class="flex flex-wrap">
+    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+      <h5 class="text-blueGray-400 uppercase font-bold text-xs">
+        Comments
+      </h5>
+      <span class="font-semibold text-xl text-blueGray-700">
+        {{$comments}}
+      </span>
+    </div>
+    <div class="relative w-auto pl-4 flex-initial">
+      <div
+        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-gray-500">
+        <i class="far fa-comment"></i>
+      </div>
+    </div>
+  </div>
+
 </div>
-<div class="flex flex-col gap-2 items-center justify-center font-bold rounded-lg bg-black text-white p-5 w-fit">
-  total hashtags 
-  <p>{{$hashtags}}</p>
+<div class="flex-auto p-4 border-2 rounded-lg">
+  <div class="flex flex-wrap">
+    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+      <h5 class="text-blueGray-400 uppercase font-bold text-xs">
+        Tags
+      </h5>
+      <span class="font-semibold text-xl text-blueGray-700">
+        {{$hashtags}}
+      </span>
+    </div>
+    <div class="relative w-auto pl-4 flex-initial">
+      <div
+        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-gray-500">
+        <i class="fas fa-tag"></i>
+      </div>
+    </div>
+  </div>
+
 </div>

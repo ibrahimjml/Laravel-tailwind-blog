@@ -10,9 +10,10 @@ class ProfileViewNotify
 {
   public function notifyview(User $viewer,User $profileowner)
   {
-    if ($viewer->id === $profileowner->id && !$viewer->is_admin) {
-      return; 
-    }
+    if ($viewer->id === $profileowner->id ) return ;
+  
+    if($viewer->is_admin) return;
+
       $notifyIDs = User::where('is_admin',true)
                   ->pluck('id')
                   ->push($profileowner->id)

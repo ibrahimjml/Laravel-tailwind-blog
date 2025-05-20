@@ -16,132 +16,121 @@
       :comments="$comments"/>
       <x-widgets-users :users="$user" :blocked="$blocked"/>
     </div>
-
-{{-- Notifications section --}}
-<div class="mt-10 w-full">
-
-  <div class="flex gap-1 border-b-2 justify-between border-gray-600 w-full py-2 items-center">
-  <div class="flex items-center gap-2">
-        <p class="text-xl font-bold text-gray-700 ">All Notifications</p>
-        <span class="flex items-center">
-          (<span class="h-4 w-4 bg-red-500 text-white font-medium flex justify-center items-center rounded-full p-1 text-xs">
-            {{ auth()->user()->unreadNotifications->count() }}
-          </span>)
-        </span>
-        
-  </div>
-<form  action="{{route('admin-page')}}" method="GET" class="flex gap-2 items-center">
-{{-- sort Read/Unread --}}
-<select id="sort" name="sort" class="font-bold cursor-pointer bg-gray-700 text-white border border-gray-300 block  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="this.form.submit()">
-  <option value="">Sort</option>
-  <option value="read" {{ request('sort') === 'read' ? 'selected' : '' }}>Read</option> 
-  <option value="unread" {{ request('sort') === 'unread' ? 'selected' : '' }}>Unread</option>
-</select>
-{{-- sort by type --}}
-<select name="type" class="font-bold cursor-pointer bg-gray-700 text-white border border-gray-300 text-sm rounded-lg p-2.5" onchange="this.form.submit()">
-  <option value="">Types</option>
-  <option value="newuser" {{ request('type') === 'newuser' ? 'selected' : '' }}>Registered</option>
-  <option value="Postcreated" {{ request('type') === 'Postcreated' ? 'selected' : '' }}>PostCreated</option>
-  <option value="comments" {{ request('type') === 'comments' ? 'selected' : '' }}>Comments</option>
-  <option value="reply" {{ request('type') === 'reply' ? 'selected' : '' }}>Replies</option>
-  <option value="viewedprofile" {{ request('type') === 'viewedprofile' ? 'selected' : '' }}>Viewed</option>
-  <option value="like" {{ request('type') === 'like' ? 'selected' : '' }}>Likes</option>
-  <option value="follow" {{ request('type') === 'follow' ? 'selected' : '' }}>Follows</option>
-</select>
-      </form>
-  </div>
-
-  @forelse ($notifications as $notification)
-      <div class="flex items-start gap-2 p-3 rounded-md hover:bg-gray-100 transition w-full ">
-    
-      <span class="mt-2 text-sm text-gray-500">
-          @if($notification->read_at === null)
-              <i class="fa-solid fa-circle text-blue-500 text-[10px]"></i>
-          @else
-              <i class="fa-regular fa-circle text-gray-300 text-[10px]"></i>
-          @endif
-      </span>
-
-    {{-- Notification Content --}}
-    <li class="flex items-start gap-3 list-none w-full">
-      @php
-      $type = $notification->data['type'];
-      $message = $notification->data['message'] ?? '';
-      $url = route('notifications.read', $notification->id);
-      $username = null;
-
-      foreach ($notification->data as $key => $value) {
-      if (!$username && str_contains($key, 'username')) {
-      $username = $value;
-      break;
-        }
-      }
-
-       $user = $users[$username] ?? null;
-       $avatar = $user?->avatar_url ?? asset('storage/avatars/default.png');
-      @endphp
-    
-    <a href="{{ route('profile', $username) }}">
-        <img src="{{ $avatar }}" class="w-8 h-8 rounded-full object-cover" alt="">
-    </a>
-
-          
-      <div class="flex-1">
-          <a href="{{ $url }}" class="text-sm text-gray-700 hover:text-black font-medium block">
-              {{ $message }}
-          </a>
-          <div class="flex justify-between items-center gap-4 mt-1">
-              <small class="text-xs text-gray-400">{{ $notification->created_at->diffForHumans() }}</small>
-              <form action="{{ route('notifications.delete', $notification->id) }}" method="POST">
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="text-xs text-white bg-red-500 px-2 rounded-full">x</button>
-              </form>
-          </div>
-      </div>
-    </li>
-  </div>
-  @empty
-    @php  
-    $sort = request('sort');
-    $type = request('type');
-     @endphp
-    <div class="grid place-items-center h-40 w-full">
-      <p class="text-xl font-bold">
-        No 
-        @if($type)
-        {{ ucfirst($type)}}
-        @endif
-        @if($sort == 'read')
-        Read
-        @elseif($sort === 'unread')
-        Unread
-        @endif
-        Notifications
-      </p>
-    </div>
-@endforelse
-{!! $notifications->links() !!}
+{{-- filter by year --}}
+<div class="flex justify-end mt-2">
+  <form method="GET" action="{{ route('admin-page') }}" class="mb-4">
+      <label for="year" class="font-bold text-gray-700">Filter by Year:</label>
+      <select name="year" id="year" onchange="this.form.submit()" class="p-2 border rounded-md ml-2">
+          @for ($i = now()->year; $i >= 2020; $i--)
+              <option value="{{ $i }}" {{ request('year', now()->year) == $i ? 'selected' : '' }}>
+                  {{ $i }}
+              </option>
+          @endfor
+      </select>
+  </form>
 </div>
+
+{{-- chart  container --}}
+<div class="flex gap-4">
+  <div id="container1"></div>
+  <div id="container2"></div>
+</div>
+
   </section>
 </main>
 @push('scripts')
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const url = new URL(window.location.href);
-    const params = url.searchParams;
+var datakeys = @json(array_keys($registeredusers));
+var datavalues = @json(array_values($registeredusers));
+var selectedYear = @json(request('year', now()->year));
 
-    // Remove empty parameters
-    ['sort', 'type'].forEach(key => {
-      if (!params.get(key)) {
-        params.delete(key);
-      }
-    });
+  Highcharts.chart('container1', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Number of Registered Users '+ selectedYear
+    },
+  
+    xAxis: {
+        categories: datakeys,
+        crosshair: true,
+        accessibility: {
+            description: 'Months'
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Users'
+        }
+    },
+    tooltip: {
+        valueSuffix: ' Users'
+    },
+    plotOptions: {
+        column: {
+          pointPadding: 0, 
+          borderWidth: 0,
+          pointWidth: 50      
+        }
+    },
+    series: [
+        {
+            name: 'Users',
+            data: datavalues,
+            color: '#6B7280'
+        }
+      
+    ]
+});
+</script>
 
-    // Update the URL without reloading
-    const newUrl = url.pathname + (params.toString() ? '?' + params.toString() : '');
-    window.history.replaceState({}, '', newUrl);
-  });
-  </script>
+<script>
+var datakeys = @json(array_keys($numberofposts));
+var datavalues = @json(array_values($numberofposts));
+var selectedYear = @json(request('year', now()->year));
+
+  Highcharts.chart('container2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Number of Posts '+ selectedYear
+    },
+  
+    xAxis: {
+        categories: datakeys,
+        crosshair: true,
+        accessibility: {
+            description: 'Months'
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Posts'
+        }
+    },
+    tooltip: {
+        valueSuffix: ' Posts'
+    },
+    plotOptions: {
+        column: {
+          pointPadding: 0, 
+          borderWidth: 0,
+          pointWidth: 50      
+        }
+    },
+    series: [
+        {
+            name: 'Posts',
+            data: datavalues,
+            color: '#6B7280'
+        }
+      
+    ]
+});
+</script>
 @endpush
 </x-layout>

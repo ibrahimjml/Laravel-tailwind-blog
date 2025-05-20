@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Hashtagcontroller;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\NotificationsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -122,4 +123,5 @@ Route::prefix('admin')
       Route::post('/block/{user}', 'block')->name('block.user');
       Route::post('/unblock/{user}', 'unblock')->name('unblock.user');
     });
+  Route::get('/notifications', [NotificationsController::class,'notifications'])->name('admin.notify');
 });

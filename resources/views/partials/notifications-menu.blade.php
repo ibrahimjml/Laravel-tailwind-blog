@@ -23,7 +23,7 @@
         $avatar = $user?->avatar_url ?? asset('storage/avatars/default.jpg');
      @endphp
             <a href="{{ route('profile', $username) }}">
-                <img src="{{$avatar}}"
+                <img src="{{$avatar}}?v={{ $user?->updated_at->timestamp ?? time() }}"
                      class="w-8 h-8 rounded-full object-cover" alt="">
                     </a>
                 <div class="flex-1">

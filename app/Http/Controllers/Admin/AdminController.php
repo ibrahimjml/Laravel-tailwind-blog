@@ -20,35 +20,19 @@ class AdminController extends Controller
     $hashtags = DB::table('hashtags')->count();
     $comments = DB::table('comments')->count();
     $blocked = DB::table('users')->where('is_blocked',1)->count();
+    $year = request('year', date('Y'));
 
-    $sortoption = request()->get('sort');
-    $filtertype = request()->get('type');
-
-    $notifications = auth()->user()->notifications();
-
-    $usernames = collect($notifications->get())
-            ->pluck('data')
-            ->flatMap(fn($data)=>collect($data)->filter(fn($val,$key)=> str_contains($key,'username')))
-            ->unique()
-            ->values();
-    $users = User::whereIn('username',$usernames)->get()->keyBy('username');
-    switch ($sortoption) {
-      case 'read':
-        $notifications->whereNotNull('read_at');
-        break;
-      case 'unread':
-        $notifications->whereNull('read_at');
-        break;
-      default:
-      $notifications->latest();
-        break;
-    };
-    if($filtertype){
-      $notifications->where('data->type',$filtertype);
-    }
-    $notifications = $notifications->paginate(7)->withQuerystring();
-  
-    return view('admin.adminpanel',compact(['user','post','likes','hashtags','comments','blocked','users','notifications']));
+    $registeredusers = User::select(DB::raw('COUNT(*) as count'), DB::raw('MONTHNAME(created_at) as month'))
+                            ->whereYear('created_at', $year)
+                            ->groupBy(DB::raw('MONTH(created_at)'), DB::raw('MONTHNAME(created_at)'))
+                            ->pluck('count', 'month')
+                            ->toArray();
+    $numberofposts = Post::select(DB::raw('COUNT(*) as count'), DB::raw('MONTHNAME(created_at) as month'))
+                            ->whereYear('created_at', $year)
+                            ->groupBy(DB::raw('MONTH(created_at)'), DB::raw('MONTHNAME(created_at)'))
+                            ->pluck('count', 'month')
+                            ->toArray();                    
+    return view('admin.adminpanel',compact(['user','post','likes','hashtags','comments','blocked','registeredusers','numberofposts']));
   }
 
   public function users(Request $request)

@@ -22,7 +22,7 @@
   {{-- sort featured --}}
   <div class="bg-gray-700 rounded-md p-2 h-10">
     <form action="{{route('admin.posts')}}" method="GET">
-      <input type="checkbox" name="featured" value="1" {{ request('featured') ? 'checked' : '' }} onchange="this.form.submit()" class="rounded-full w-5 h-4">
+      <input type="checkbox" name="featured" value="1" {{ request('featured') ? 'checked' : '' }} onchange="this.form.submit()" class="rounded-full w-3 h-3">
       <label class="text-white font-semibold" for="featured">Featured</label>
     </form>
   </div>
