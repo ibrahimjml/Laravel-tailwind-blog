@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded', () => {
     codesample_dialog_height: 425,
     toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code codesample ',
     license_key: 'gpl', // using the GPL version
-    
+
     // Image upload configuration
     images_upload_credentials: true,
 

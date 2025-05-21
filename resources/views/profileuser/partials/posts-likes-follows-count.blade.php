@@ -1,23 +1,22 @@
-<div class="flex flex-col">
-  <p class="text-lg font-bold ">posts</p>
-  {{-- count posts --}}
-  <p class="text-lg font-bold text-center">{{$postcount}}</p>
-</div>
-
-<div class="flex  w-30 gap-5">
-{{-- likes count --}}
-<div class="flex flex-col">
-<p class="text-lg font-bold text-center">Total likes</p>
-<p class="text-lg font-bold text-center">{{$likescount}}</p>
-</div>
-<div class="flex flex-col">
-{{-- followers counts --}}
-  <p class="text-lg font-bold text-center">Followers</p>
-  <p id="followers-count" class="text-lg font-bold text-center">{{$user->followers()->count()}}</p>
-</div>
-<div class="flex flex-col">
-{{-- followings counts --}}
-      <p class="text-lg font-bold text-center">Following</p>
-      <p  class="text-lg font-bold text-center">{{$user->followings()->count()}}</p>
+<div class="w-full lg:w-4/12 px-4 lg:order-1">
+  <div class="flex justify-center py-4 lg:pt-4 pt-8">
+    <div class="mr-4 p-3 text-center">
+      <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{{$postcount}}</span>
+      <span class="text-sm text-blueGray-400">{{ Str::plural('Post', $postcount) }}</span>
     </div>
+    <div class="mr-4 p-3 text-center">
+      <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{{$likescount}}</span>
+      <span class="text-sm text-blueGray-400">{{ Str::plural('Like', $likescount) }}</span>
+    </div>
+    <div class="lg:mr-4 p-3 text-center">
+      <span
+        class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{{$user->followers()->count()}}</span>
+      <span class="text-sm text-blueGray-400">Followers</span>
+    </div>
+    <div class="lg:mr-4 p-3 text-center">
+      <span
+        class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{{$user->followings()->count()}}</span>
+      <span class="text-sm text-blueGray-400">Following</span>
+    </div>
+  </div>
 </div>

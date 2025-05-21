@@ -1,47 +1,81 @@
 <x-layout>
-  @section('meta_title',$meta_title)
-  @section('meta_keywords',$meta_keywords)
-  @section('author',$author)
-  @section('meta_description',$meta_description)
+  @section('meta_title', $meta_title)
+  @section('meta_keywords', $meta_keywords)
+  @section('author', $author)
+  @section('meta_description', $meta_description)
 
-  
-<div class=" container mx-auto mt-[30px]">
+  <main class="profile-page">
+    <section class="relative block h-500-px">
+      <div class="absolute top-0 w-full h-full bg-center bg-cover" style="
+            background-image: url('/aditya-chinchure-XRhUTUVuXAE-unsplash.jpg');
+          ">
+        <span id="blackOverlay" class="w-full h-full absolute opacity-50 bg-black"></span>
+      </div>
+      <div class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-70-px"
+        style="transform: translateZ(0px)">
+        <svg class="absolute bottom-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+          version="1.1" viewBox="0 0 2560 100" x="0" y="0">
+          <polygon class="text-blueGray-200 fill-current" points="2560 0 2560 100 0 100"></polygon>
+        </svg>
+      </div>
+    </section>
+    <section class="relative py-16 bg-blueGray-200">
+      <div class="container mx-auto px-4 lg:w-[80%]">
+        <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
+          <div class="px-6">
+            <div class="flex flex-wrap justify-center">
+              <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
+                <div class="relative mb-5 ">
+                  <img src="{{$user->avatar_url}}" alt=""
+                    class="shadow-xl rounded-full border-none h-auto align-middle  absolute -m-16   max-w-150-px">
+                  @can('update', $user)
+            <span
+            class="absolute lg:bottom-0 lg:left-10 bottom-12 left-10 flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white"><a
+              href="/edit-avatar/{{$user->id}}"><i class="fa fa-plus" aria-hidden="true"></i></a></span>
+          @endcan
 
-  <div class="relative w-[170px]  h-[170px]   mx-auto  mb-5">
-    <img src="{{$user->avatar_url}}" alt=""  class="w-full h-full overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full border-4 border-gray-500">
-    @can('update',$user)
-    <span class="absolute  bottom-[18px] right-[10px] flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white"><a href="/edit-avatar/{{$user->id}}"><i class="fa fa-plus" aria-hidden="true"></i></a></span>
-    @endcan
+
+                </div>
+              </div>
+              <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
+                <div class="py-6 px-3 mt-32 sm:mt-0">
+                  @if(auth()->user()->id !== $user->id)
+                  <button data-id="{{$user->id}}" onclick="follow(this)" class="px-3 py-1 w-fit rounded-lg text-center text-sm font-bold {{auth()->user()->isFollowing($user) ? 'text-gray-600 border border-gray-600 ' : 'bg-gray-500 text-white' }}">
+                    {{auth()->user()->isFollowing($user) ? 'Following' : 'Follow' }}
+                  </button>
+                  @endif
+                </div>
+              </div>
+            {{-- posts-likes-follows-count --}}
+            @include('profileuser.partials.posts-likes-follows-count',['postcount'=>$postcount,'likescount'=>$likescount,'user'=>$user])
+            </div>
+            {{-- edit profile | open viewed model --}}
+              @can('update', $user)
+          <div class="flex gap-1 justify-center mb-3">
+          <span class="flex justify-center "><a
+            class="bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300"
+            href="{{route('editprofile', $user->username)}}">edit profile</a></span>
+          <button id="open-viewed"
+            class="active:scale-90 bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize  hover:border-gray-700 transition duration-300"
+            title="see who viewed">
+            <i class="fas fa-eye"></i>
+          </button>
+          </div>
+        @endcan
+  <div class="text-center mt-2">
+      <h3 class=" text-3xl font-bold text-center  tracking-wide text-gray-700">{{$user->name}} </h3>
+      <span class="text-sm text-gray-400 text-center mb-2">@ {{$user->username}}</span>
+    </h3>
     
-
-  </div>
-  @can('update',$user)
-<div class="flex gap-1 justify-center mb-3">
-    <span class="flex justify-center "><a class="bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300" href="{{route('editprofile',$user->username)}}">edit profile</a></span>
-    <button id="open-viewed" class="active:scale-90 bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize  hover:border-gray-700 transition duration-300" title="see who viewed">
-      <i class="fa-solid fa-eye"></i>
-    </button>
-</div>
-  @endcan
-  <div class="flex flex-col pb-3 justify-center items-center">
-    <h1 class=" text-3xl font-bold text-center  tracking-wide text-gray-700">{{$user->name}} </h1>
-    <span class="text-sm text-gray-400 text-center mb-2">@ {{$user->username}}</span>
+      <div class="mb-2 text-blueGray-600">
     @if($user->bio == null)
     <p class="text-lg text-gray-400 text-center mb-2">Tell people about yourself</p>
     @else
-    <p class="text-lg text-gray-600 text-center font-semibold mb-2">{{$user->bio}}</p>
+      <i class="fas fa-info mr-2 text-lg text-blueGray-400"></i>{{$user->bio}}
     @endif
-    @if(auth()->user()->id !== $user->id)
-    <button data-id="{{$user->id}}" onclick="follow(this)" class="px-3 py-1 w-fit rounded-lg text-center text-sm font-bold {{auth()->user()->isFollowing($user) ? 'text-gray-600 border border-gray-600 ' : 'bg-gray-600 text-white' }}">
-      {{auth()->user()->isFollowing($user) ? 'Following' : 'Follow' }}
-    </button>
-    @endif
+    </div>
+  
   </div>
-</div>
-<div class=" mx-auto flex  justify-center gap-6">
-  {{-- posts-likes-follows-count --}}
-  @include('profileuser.partials.posts-likes-follows-count',['postcount'=>$postcount,'likescount'=>$likescount,'user'=>$user])
-</div>
 {{-- home | Activity | About me --}}
 <div class="flex items-center gap-2 ml-4">
   <a href="{{route('profile',['user'=>$user->username])}}" class="nav-link p-1 font-bold text-gray-400  rounded-lg">Home</a>
@@ -50,9 +84,9 @@
   <div class="h-4 w-px bg-gray-400"></div>
   <a href="{{route('profile.aboutme',['user'=>$user->username])}}"  class="nav-link p-1 font-bold text-gray-400  rounded-lg">About me</a>
 </div>
-<hr class="bg-gray-300">
 
 {{-- home | activity | aboutme sections --}}
+<div class=" py-10 border-t border-blueGray-200 text-center">
 <div id="profile-content">
   @switch($section)
   @case('home')
@@ -68,10 +102,13 @@
     @break
 @endswitch
 </div>
-
-{{-- open  who viewed profile model  --}}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  {{-- open  who viewed profile model  --}}
 @include('profileuser.partials.who-viewd-profile-model',['profileviews'=>$profileviews])
-
 
 @push('scripts')
 <script>
@@ -202,6 +239,5 @@ document.addEventListener('DOMContentLoaded', () => {
   </script>
   
 @endpush
-
 
 </x-layout>

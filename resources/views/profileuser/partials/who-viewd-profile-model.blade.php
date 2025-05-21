@@ -20,6 +20,6 @@
     @empty
     <p class="text-lg text-center p-20 font-bold">No people who viewd yet</p>
     @endforelse
-    <button id="close-modal" class="absolute top-1 right-3 text-lg mt-4 text-black"><i class="fa-solid fa-xmark"></i></button>
+    <button id="close-modal" class="absolute top-1 right-3 text-lg mt-4 text-black"><i class="fas fa-times"></i></button>
   </div>
 </div>

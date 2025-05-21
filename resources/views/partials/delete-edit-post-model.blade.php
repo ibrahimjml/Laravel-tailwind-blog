@@ -1,6 +1,6 @@
 {{-- button onclick open model --}}
 <button id="openmodel" class="absolute top-3 right-3 z-10 w-6 h-6 rounded-[50%] bg-slate-100 hover:bg-opacity-65 transition-bg-opacity duration-100">
-  <i class="fa-solid fa-ellipsis"></i>
+  <i class="fas fa-ellipsis-h"></i>
 </button>
 {{-- delete|edit model  --}}
 <div id="model" class="absolute top-10 right-3 z-10 w-36 h-20 rounded-lg bg-slate-50 px-2 py-4 space-y-2 hidden">

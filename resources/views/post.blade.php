@@ -57,7 +57,7 @@
 <div id="action-bar" class=" container  mx-auto mb-5 w-fit h-14 space-x-2 flex justify-center items-center gap-2 border-2 rounded-full px-6 py-3 text-2xl bg-white transition-all duration-300 z-50">
 <div class="flex items-center justify-center">
     <span onclick="fetchLike(this)" class="cursor-pointer w-8 h-8 rounded-full flex justify-center items-center  hover:bg-gray-200 transition-bg duration-150 ">
-      <i class="fa-heart like-icon {{ $post->is_liked() ? 'fa-solid text-red-500' : 'fa-regular' }}" data-id="{{ $post->id }}"></i>
+      <i class="fa-heart like-icon {{ $post->is_liked() ? 'fas text-red-500' : 'far' }}" data-id="{{ $post->id }}"></i>
     </span>
 
     <span title="view who liked" id="likes-count" class="open-view-model text-sm cursor-pointer">
@@ -69,17 +69,17 @@
 <div class="h-4 w-px bg-gray-400"></div>
 <div class="flex items-center justify-center">
   <span title="write a comment" id="openModel" class="cursor-pointer flex items-center justify-center  w-8 h-8 rounded-full   hover:bg-gray-200 transition-bg duration-150">
-    <i class="fa-regular fa-comment"></i>
+    <i class="far fa-comment"></i>
   </span>
   <span  class="text-sm">{{ $totalcomments }}</span>
 </div>
 @endif
 <div class="h-4 w-px bg-gray-400"></div>
 <span title="save" onclick="savedTo(this,{{$post->id}})" class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full   hover:bg-gray-200 transition-bg duration-150">
-  <i class="fa-bookmark bookmark-icon {{in_array($post->id,session('saved-to',[])) ? 'fa-solid' : 'fa-regular'}}"></i>
+  <i class="fa-bookmark bookmark-icon {{in_array($post->id,session('saved-to',[])) ? 'fas' : 'far'}}"></i>
 </span>
 <div class="h-4 w-px bg-gray-400"></div>
-<span class="cursor-pointer flex items-center gap-2"><i class="fa-solid fa-share-nodes"></i></span>
+<span class="cursor-pointer flex items-center gap-2"><i class="far fa-share-square"></i></span>
 </div>
 
 
@@ -90,7 +90,7 @@
   <div class="absolute inset-0 bg-gray-900 opacity-60"></div>
 
   <div id="commentModel" class="relative h-full w-screen md:w-[50%] bg-white overflow-y-auto shadow-xl translate-x-[-110vw] transition-all duration-300 ease-in-out">
-  <span id="closeModel" title="close" class="cursor-pointer absolute top-4 right-4 text-xl"><i class="fa-solid fa-xmark"></i></span>
+  <span id="closeModel" title="close" class="cursor-pointer absolute top-4 right-4 text-xl"><i class="fas fa-times"></i></span>
     {{-- Comment Form --}}
     <p class="w-fit md:text-xl text-md mb-3 p-2 font-semibold">
       Comments (<span id="comment-count-number">{{ $totalcomments }}</span>)

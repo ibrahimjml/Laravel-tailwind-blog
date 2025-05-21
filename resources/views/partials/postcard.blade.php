@@ -44,10 +44,10 @@
     <div class="flex justify-between items-center">
       <div class="flex gap-5 text-lg text-gray-600">
         @if($post->likes_count)
-        <span><i class="fa-solid fa-heart text-red-500"></i> {{ $post->likes_count }}</span>
+        <span><i class="fas fa-heart text-red-500"></i> {{ $post->likes_count }}</span>
         @endif
         @if($post->totalcomments_count)
-        <span><i class="fa-solid fa-comment text-blue-500"></i> {{ $post->totalcomments_count }}</span>
+        <span><i class="fas fa-comment text-blue-500"></i> {{ $post->totalcomments_count }}</span>
         @endif
       </div>
       <div class="flex gap-3">
