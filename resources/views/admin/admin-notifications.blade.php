@@ -1,19 +1,14 @@
-<x-layout>
-<main class="admin w-screen  grid grid-cols-[25%,75%] overflow-hidden transition-all ease-in-out duration-300 p-5">
-<x-admin-sidebar />
-  <section id="main-section" class=" p-5 transition-all ease-in-out duration-300 ">
-  <div class="top-section flex gap-5">
-    <span id="spn" class="text-4xl text-gray-600  cursor-pointer">&leftarrow;</span>
-    <h2 id="title-body" class="text-gray-600 text-2xl font-bold p-3">Notifications</h2>
-  </div>
+@extends('admin.partials.layout')
+@section('title','Notifications | Dashboard')
+@section('content')
 {{-- Notifications section --}}
-<div class="mt-10 w-full">
+  <div class="relative md:ml-64 bg-blueGray-50">
 
   <div class="flex gap-1 border-b-2 justify-between border-gray-600 w-full py-2 items-center">
   <div class="flex items-center gap-2">
         <p class="text-xl font-bold text-gray-700 ">All Notifications</p>
         <span class="flex items-center">
-          (<span class="h-4 w-4 bg-red-500 text-white font-medium flex justify-center items-center rounded-full p-1 text-xs">
+          (<span class="h-4 w-4 bg-blue-500 mt-1 text-white font-medium flex justify-center items-center rounded-full p-1 text-xs">
             {{ auth()->user()->unreadNotifications->count() }}
           </span>)
         </span>
@@ -21,22 +16,41 @@
   </div>
 <form  action="{{route('admin.notify')}}" method="GET" class="flex gap-2 items-center">
 {{-- sort Read/Unread --}}
-<select id="sort" name="sort" class="font-bold cursor-pointer bg-gray-700 text-white border border-gray-300 block  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="this.form.submit()">
-  <option value="">Sort</option>
-  <option value="read" {{ request('sort') === 'read' ? 'selected' : '' }}>Read</option> 
-  <option value="unread" {{ request('sort') === 'unread' ? 'selected' : '' }}>Unread</option>
-</select>
+<div class="relative w-full">
+  <select id="sort" name="sort"
+    class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-blue-600 text-white text-sm rounded-lg w-full p-2.5"
+    onchange="this.form.submit()">
+    <option value="">Sort</option>
+    <option value="read" {{ request('sort') === 'read' ? 'selected' : '' }}>Read</option>
+    <option value="unread" {{ request('sort') === 'unread' ? 'selected' : '' }}>Unread</option>
+  </select>
+  <!-- Custom white arrow -->
+  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M19 9l-7 7-7-7" />
+    </svg>
+  </div>
+</div>
+
 {{-- sort by type --}}
-<select name="type" class="font-bold cursor-pointer bg-gray-700 text-white border border-gray-300 text-sm rounded-lg p-2.5" onchange="this.form.submit()">
-  <option value="">Types</option>
-  <option value="newuser" {{ request('type') === 'newuser' ? 'selected' : '' }}>Registered</option>
-  <option value="Postcreated" {{ request('type') === 'Postcreated' ? 'selected' : '' }}>PostCreated</option>
-  <option value="comments" {{ request('type') === 'comments' ? 'selected' : '' }}>Comments</option>
-  <option value="reply" {{ request('type') === 'reply' ? 'selected' : '' }}>Replies</option>
-  <option value="viewedprofile" {{ request('type') === 'viewedprofile' ? 'selected' : '' }}>Viewed</option>
-  <option value="like" {{ request('type') === 'like' ? 'selected' : '' }}>Likes</option>
-  <option value="follow" {{ request('type') === 'follow' ? 'selected' : '' }}>Follows</option>
-</select>
+<div class="relative w-full">
+  <select name="type" class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-blue-600 text-white border border-gray-300 text-sm rounded-lg p-2.5" onchange="this.form.submit()">
+    <option value="">Types</option>
+    <option value="newuser" {{ request('type') === 'newuser' ? 'selected' : '' }}>Registered</option>
+    <option value="Postcreated" {{ request('type') === 'Postcreated' ? 'selected' : '' }}>PostCreated</option>
+    <option value="comments" {{ request('type') === 'comments' ? 'selected' : '' }}>Comments</option>
+    <option value="reply" {{ request('type') === 'reply' ? 'selected' : '' }}>Replies</option>
+    <option value="viewedprofile" {{ request('type') === 'viewedprofile' ? 'selected' : '' }}>Viewed</option>
+    <option value="like" {{ request('type') === 'like' ? 'selected' : '' }}>Likes</option>
+    <option value="follow" {{ request('type') === 'follow' ? 'selected' : '' }}>Follows</option>
+  </select>
+  <!-- Custom white arrow -->
+    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+      <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+</div>
       </form>
   </div>
 
@@ -45,9 +59,9 @@
     
       <span class="mt-2 text-sm text-gray-500">
           @if($notification->read_at === null)
-              <i class="fa-solid fa-circle text-blue-500 text-[10px]"></i>
+              <i class="fas fa-circle text-blue-500 text-[10px]"></i>
           @else
-              <i class="fa-regular fa-circle text-gray-300 text-[10px]"></i>
+              <i class="fas fa-circle text-gray-300 text-[10px]"></i>
           @endif
       </span>
 
@@ -85,7 +99,7 @@
               <form action="{{ route('notifications.delete', $notification->id) }}" method="POST">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" class="text-xs text-white bg-red-500 px-2 rounded-full">x</button>
+                  <button type="submit" class="text-xs text-white bg-blue-500 px-2 rounded-full">x</button>
               </form>
           </div>
       </div>
@@ -113,8 +127,7 @@
 @endforelse
 {!! $notifications->links() !!}
 </div>
-</main>
-</section>
+
 @push('scripts')
 <script>
   document.addEventListener("DOMContentLoaded", () => {
@@ -134,4 +147,6 @@
   });
   </script>
 @endpush
-</x-layout>
+@endsection
+
+

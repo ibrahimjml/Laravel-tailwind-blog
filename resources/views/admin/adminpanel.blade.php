@@ -1,136 +1,163 @@
-<x-layout>
-<main class="admin w-screen  grid grid-cols-[25%,75%] overflow-hidden transition-all ease-in-out duration-300 p-5">
-<x-admin-sidebar/>
-  <section id="main-section" class=" p-5 transition-all ease-in-out duration-300 ">
-  
-    <div class="top-section flex gap-5">
-      <span id="spn" class="text-4xl text-gray-400  cursor-pointer">&leftarrow;</span>
-      <h2 id="title-body" class="text-black text-2xl font-bold p-3">Admin Panel</h2>
+@extends('admin.partials.layout')
+@section('title','Admin Panel | Dashboard')
+@section('content')
+  <div class="relative md:ml-64 bg-blueGray-50">
+    <nav
+    class="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
+    <div class="w-full mx-autp items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
+      <a class="text-white text-sm uppercase hidden lg:inline-block font-semibold" href="./index.html">Dashboard</a>
+      <form class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
+      <div class="relative flex w-full flex-wrap items-stretch">
+        <span
+        class="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300  bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3"><i
+          class="fas fa-search"></i></span>
+        <input type="text" placeholder="Search here..."
+        class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white  rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10" />
+      </div>
+      </form>
+      <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
+      <a class="text-blueGray-500 block" href="{{route('profile',auth()->user()->username)}}" >
+        <div class="items-center flex">
+        <span
+          class="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full"><img
+          alt="..." class="w-full rounded-full align-middle border-none shadow-lg"
+          src="{{auth()->user()->avatar_url}}" /></span>
+        </div>
+      </a>
+    
+    </nav>
+    <!-- Header -->
+    <div class="relative bg-gray-400 md:pt-32 pb-32 pt-12">
+    <div class="px-4 md:px-10 mx-auto w-full">
+      <div>
+      <!-- Card stats -->
+      <div class="flex flex-wrap gap-2">
+        <x-widgets-posts :posts="$post" :hashtags="$hashtags" :likes="$likes" :comments="$comments" />
+        <x-widgets-users :users="$user" :blocked="$blocked" />
+
+      </div>
+      </div>
     </div>
-    {{-- widgets sections --}}
-    <div class="flex flex-wrap gap-2 md:flex-nowrap items-center ">
-      <x-widgets-posts 
-      :posts="$post" 
-      :hashtags="$hashtags"
-      :likes="$likes"
-      :comments="$comments"/>
-      <x-widgets-users :users="$user" :blocked="$blocked"/>
-    </div>
-{{-- filter by year --}}
-<div class="flex justify-end mt-2">
-  <form method="GET" action="{{ route('admin-page') }}" class="mb-4">
-      <label for="year" class="font-bold text-gray-700">Filter by Year:</label>
-      <select name="year" id="year" onchange="this.form.submit()" class="p-2 border rounded-md ml-2">
-          @for ($i = now()->year; $i >= 2020; $i--)
-              <option value="{{ $i }}" {{ request('year', now()->year) == $i ? 'selected' : '' }}>
-                  {{ $i }}
-              </option>
-          @endfor
+    {{-- filter by year --}}
+
+    <div class="flex justify-end mt-8 mr-3">
+      <form method="GET" action="{{ route('admin-page') }}" class="mb-4">
+      <label for="year" class="font-bold text-white">Filter By Year:</label>
+      <select name="year" id="year" onchange="this.form.submit()"
+        class="p-2 pl-3 pr-8 border rounded-md appearance-none bg-white text-gray-700">>
+        @for ($i = now()->year; $i >= 2020; $i--)
+      <option value="{{ $i }}" {{ request('year', now()->year) == $i ? 'selected' : '' }}>
+      {{ $i }}
+      </option>
+      @endfor
       </select>
-  </form>
-</div>
+      </form>
+    </div>
+    </div>
 
-{{-- chart  container --}}
-<div class="flex gap-4">
-  <div id="container1"></div>
-  <div id="container2"></div>
-</div>
 
-  </section>
-</main>
+    {{-- chart container --}}
+    <div class="flex gap-2 px-4 md:px-10 mx-auto w-full -m-24">
+    <div id="container1"></div>
+    <div id="container2"></div>
+    </div>
+
+  </div>
+
+@endsection
+
 @push('scripts')
-<script>
-var datakeys = @json(array_keys($registeredusers));
-var datavalues = @json(array_values($registeredusers));
-var selectedYear = @json(request('year', now()->year));
+  <script>
+    var datakeys = @json(array_keys($registeredusers));
+    var datavalues = @json(array_values($registeredusers));
+    var selectedYear = @json(request('year', now()->year));
 
-  Highcharts.chart('container1', {
+    Highcharts.chart('container1', {
     chart: {
-        type: 'column'
+      type: 'column'
     },
     title: {
-        text: 'Number of Registered Users '+ selectedYear
+      text: 'Number of Registered Users ' + selectedYear
     },
-  
+
     xAxis: {
-        categories: datakeys,
-        crosshair: true,
-        accessibility: {
-            description: 'Months'
-        }
+      categories: datakeys,
+      crosshair: true,
+      accessibility: {
+      description: 'Months'
+      }
     },
     yAxis: {
-        min: 0,
-        title: {
-            text: 'Users'
-        }
+      min: 0,
+      title: {
+      text: 'Users'
+      }
     },
     tooltip: {
-        valueSuffix: ' Users'
+      valueSuffix: ' Users'
     },
     plotOptions: {
-        column: {
-          pointPadding: 0, 
-          borderWidth: 0,
-          pointWidth: 50      
-        }
+      column: {
+      pointPadding: 0,
+      borderWidth: 0,
+      pointWidth: 50
+      }
     },
     series: [
-        {
-            name: 'Users',
-            data: datavalues,
-            color: '#6B7280'
-        }
-      
+      {
+      name: 'Users',
+      data: datavalues,
+      color: '#3B82F6'
+      }
+
     ]
-});
-</script>
+    });
+  </script>
 
-<script>
-var datakeys = @json(array_keys($numberofposts));
-var datavalues = @json(array_values($numberofposts));
-var selectedYear = @json(request('year', now()->year));
+  <script>
+    var datakeys = @json(array_keys($numberofposts));
+    var datavalues = @json(array_values($numberofposts));
+    var selectedYear = @json(request('year', now()->year));
 
-  Highcharts.chart('container2', {
+    Highcharts.chart('container2', {
     chart: {
-        type: 'column'
+      type: 'column'
     },
     title: {
-        text: 'Number of Posts '+ selectedYear
+      text: 'Number of Posts ' + selectedYear
     },
-  
+
     xAxis: {
-        categories: datakeys,
-        crosshair: true,
-        accessibility: {
-            description: 'Months'
-        }
+      categories: datakeys,
+      crosshair: true,
+      accessibility: {
+      description: 'Months'
+      }
     },
     yAxis: {
-        min: 0,
-        title: {
-            text: 'Posts'
-        }
+      min: 0,
+      title: {
+      text: 'Posts'
+      }
     },
     tooltip: {
-        valueSuffix: ' Posts'
+      valueSuffix: ' Posts'
     },
     plotOptions: {
-        column: {
-          pointPadding: 0, 
-          borderWidth: 0,
-          pointWidth: 50      
-        }
+      column: {
+      pointPadding: 0,
+      borderWidth: 0,
+      pointWidth: 50
+      }
     },
     series: [
-        {
-            name: 'Posts',
-            data: datavalues,
-            color: '#6B7280'
-        }
-      
+      {
+      name: 'Posts',
+      data: datavalues,
+      color: '#3B82F6'
+      }
+
     ]
-});
-</script>
+    });
+  </script>
 @endpush
-</x-layout>

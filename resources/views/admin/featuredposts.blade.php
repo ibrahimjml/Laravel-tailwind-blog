@@ -1,16 +1,7 @@
-<x-layout>
-
-<main class="admin w-screen grid grid-cols-[25%,75%] transition-all ease-in-out duration-300 p-5">
-  {{-- admin side bar --}}
-<x-admin-sidebar/>
-<section id="main-section" class="p-5 transition-all ease-in-out duration-300 ">
-  <div class="top-section flex gap-5">
-    <span id="spn" class="text-4xl text-gray-600  cursor-pointer">&leftarrow;</span>
-    <h2 id="title-body" class="text-gray-600 text-2xl font-bold p-3">Featured Posts</h2>
-  </div>
-
-  
-  <div class="flex justify-center pt-9">
+@extends('admin.partials.layout')
+@section('title','Featured | Dashboard')
+@section('content')
+    <div class="relative md:ml-64 bg-blueGray-50">
     <form action="{{route('admin.featured')}}" method="POST" enctype="multipart/form-data" class="p-6">
       @csrf
       @method('POST')
@@ -108,12 +99,13 @@
       </div>
     </form>
   </div>
-</section>
-</main>
 @php
   $initialTags =  old('hashtag') ? explode(',', old('hashtag')) : [];
 @endphp
 <script>
   window.initialTags = @json($initialTags ?? []);
   </script>
-</x-layout>
+@endsection
+
+  
+

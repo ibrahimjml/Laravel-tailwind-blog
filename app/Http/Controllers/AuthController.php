@@ -73,6 +73,10 @@ class AuthController extends Controller
         return back();
       }
     toastr()->success('logged in successfuly',['timeOut'=>1000]);
+
+    if(auth()->user()->is_admin){
+        return redirect('/admin/panel');;
+      }
       return redirect('/');
     } else {
       toastr()->error('wrong credentials',['timeOut'=>1000]);
@@ -157,7 +161,7 @@ class AuthController extends Controller
   public function logout()
   {
     auth()->logout();
-    toastr()->success('Logged out ',['timeOut'=>2000]);
+    toastr()->success('Logged out ',['timeOut'=>1000]);
     return redirect('/');
   }
 

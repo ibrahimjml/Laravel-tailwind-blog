@@ -14,14 +14,7 @@
 <script src="{{asset('js/fetchsavedpost.js')}}"></script>
 @endif
 
-@if(Route::is('admin-page','featuredpage','admin.posts','admin.users','hashtagpage','admin.notify'))
-<script src="{{asset('js/sidebar.js')}}" defer></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-@if(Route::is('hashtagpage'))
-<script src="{{asset('js/fetchhashtags.js')}}" defer></script>
-@endif
-@endif
-@if(Route::is(['edit.post','createpage','featuredpage']))
+@if(Route::is(['edit.post','createpage']))
 <script src="{{asset('js/hashtagsUI.js')}}" defer></script>
 @endif
 

@@ -9,9 +9,9 @@
   <meta name="description" content="@yield('meta_description')">
   <meta name="keywords" content="@yield('meta_keywords')">
   <meta name="author" content="@yield('author')">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="{{asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css')}}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <link rel="stylesheet" href="{{url('style.css')}}">
@@ -51,10 +51,10 @@
         >Blog</a></li>
         @unless(request()->is('admin*'))
         <li id="hover-notification" class="text-lg relative pt-2 pb-1 cursor-pointer text-gray-700 ">
-        <span class="absolute top-2 left-3 h-4 w-4 bg-red-500 text-white flex justify-center items-center rounded-full p-1 text-xs">
+        <span class="absolute top-2 left-3 h-4 w-4 bg-gray-500 text-white flex justify-center items-center rounded-full p-1 text-xs">
           {{ auth()->user()->unreadNotifications->count() }}
         </span>
-        <i class="fa-regular fa-bell"></i>
+        <i class="fas fa-bell text-white"></i>
         </li>
     
           @include('partials.notifications-menu')

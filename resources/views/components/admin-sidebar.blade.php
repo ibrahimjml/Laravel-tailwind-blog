@@ -1,52 +1,69 @@
-<aside id="sidebar" class="h-[700px] border-2 border-gray-600  rounded-lg transition-all ease-in-out duration-300">
-  <div class="w-full h-[10%] bg-gray-600 text-white text-2xl font-semibold text-center flex justify-center items-center capitalize transition-opacity duration-300">
-    admin panel
-  </div>
-  
-  <div class="flex flex-col items-center justify-start gap-6 mt-6 transition-opacity duration-300">
-    <a href="{{route('admin.users')}}" class="{{ (Route::is('admin.users')) ? 'bg-gray-600 text-white h-12 w-48 capitalize flex justify-between items-center px-5 text-xl font-medium rounded-md text-center cursor-pointer' : 'h-12 w-48 capitalize text-xl font-medium bg-gray-400 text-white flex justify-between items-center px-5 rounded-md text-center cursor-pointer transition-colors duration-200 hover:bg-gray-600 active:scale-95' }}">
-      <span class="text-xl">
-        <i class="fa-regular fa-user"></i>
-      </span>
-      <span>Users</span>
+<ul class="md:flex-col md:min-w-full flex flex-col list-none">
+  <li class="items-center">
+    <a href="{{route('admin.users')}}" class="text-sm uppercase py-3 font-bold block {{ Route::is('admin.users') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-user mr-2 text-sm opacity-75"></i>
+      Users
     </a>
-  
-    <a href="{{route('admin.posts')}}" class="{{ (Route::is('admin.posts')) ? 'bg-gray-600 text-white h-12 w-48 capitalize flex justify-between items-center px-5 text-xl font-medium rounded-md text-center cursor-pointer' : 'h-12 w-48 capitalize text-xl font-medium bg-gray-400 text-white flex justify-between items-center px-5 rounded-md text-center cursor-pointer transition-colors duration-200 hover:bg-gray-600 active:scale-95' }}">
-      <span class="text-xl">
-        <i class="fa-solid fa-image"></i>
-      </span>
-      <span>Posts</span>
-    </a>
-  
-    <a href="{{route('hashtagpage')}}" class="{{ (Route::is('hashtagpage')) ? 'bg-gray-600 text-white h-12 w-48 capitalize flex justify-between items-center px-5 text-xl font-medium rounded-md text-center cursor-pointer' : 'h-12 w-48 capitalize flex justify-between items-center px-5 text-xl font-medium bg-gray-400 text-white rounded-md text-center cursor-pointer transition-colors duration-200 hover:bg-gray-600 active:scale-95' }}">
-      <span class="text-xl">
-        <i class="fa-solid fa-tag"></i>
-      </span>
-      <span>Tags</span>
-    </a>
-  
-    <a href="{{route('featuredpage')}}" class="{{ (Route::is('featuredpage')) ? 'bg-gray-600 text-white h-12 w-48 capitalize flex justify-between items-center px-5 text-xl font-medium rounded-md text-center cursor-pointer' : 'h-12 w-48 capitalize flex justify-between items-center px-5 text-xl font-medium bg-gray-400 text-white rounded-md text-center cursor-pointer transition-colors duration-200 hover:bg-gray-600 active:scale-95' }}">
-      <span class="text-xl">
-        <i class="fa-solid fa-star"></i>
-      </span>
-      <span>feature</span>
-    </a>
-  
-    <a href="{{route('admin-page')}}" class="{{ (Route::is('admin-page')) ? 'bg-gray-600 text-white h-12 w-48 capitalize flex justify-between items-center px-5 text-xl font-medium rounded-md text-center cursor-pointer' : 'h-12 w-48 capitalize flex justify-between items-center px-5 text-xl font-medium bg-gray-400 text-white rounded-md text-center cursor-pointer transition-colors duration-200 hover:bg-gray-600 active:scale-95' }}">
-      <span class="text-xl">
-        <i class="fa-solid fa-house "></i>
-      </span>
-      <span>Admin</span>
-    </a>
+  </li>
 
-      <a href="{{route('admin.notify')}}" class="{{ (Route::is('admin.notify')) ? 'bg-gray-600 text-white h-12 w-48 capitalize flex justify-between items-center px-3 text-xl font-medium rounded-md text-center cursor-pointer' : 'h-12 w-48 capitalize flex justify-between items-center px-3 text-xl font-medium bg-gray-400 text-white rounded-md text-center cursor-pointer transition-colors duration-200 hover:bg-gray-600 active:scale-95' }}">
-      <span class="text-xl relative">
-        <i class="fa-solid fa-bell"></i>
-        <small class="absolute top-0 left-3 h-4 w-4 bg-red-500 text-white flex justify-center items-center rounded-full p-1 text-xs"> 
+  <li class="items-center">
+    <a href="{{route('admin.posts')}}"
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is(patterns: 'admin.posts') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-image mr-2 text-sm opacity-75"></i>
+      Posts
+    </a>
+  </li>
+
+  <li class="items-center">
+    <a href="{{route('hashtagpage')}}"
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('hashtagpage') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-tag mr-2 text-sm opacity-75"></i>
+      Tags
+    </a>
+  </li>
+
+  <li class="items-center">
+    <a href="{{route('featuredpage')}}"
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('featuredpage') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-star mr-2 text-sm opacity-75"></i>
+      Featured
+    </a>
+  </li>
+
+  <li class="items-center">
+    <a href="{{route('admin-page')}}"
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('admin-page') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-home mr-2 text-sm opacity-75"></i>
+      Admin
+    </a>
+  </li>
+
+  <li class="items-center">
+    <a href="{{route('admin.notify')}}"
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('admin.notify') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+       <span class="text-sm relative">
+        <i class="fas fa-bell"></i>
+        <small class="absolute top-[-6px] left-2 h-4 w-4 bg-blue-500 text-white flex justify-center items-center rounded-full p-1 text-sm"> 
           {{ auth()->user()->unreadNotifications->count() }}
         </small>
+      <p class="ml-3 inline-block">Notifications</p>
       </span>
-      <span>Notifications</span>
+
     </a>
-  </div>
-</aside>
+  </li>
+</ul>
+  <!-- Divider -->
+ <hr class="my-4 md:min-w-full" />
+
+  <h6 class="md:min-w-full text-blueGray-500 text-sm uppercase font-bold block pt-1 pb-4 no-underline">
+            Site
+          </h6>
+  <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+    <li class="items-center">
+     <a href="{{route('home')}}"
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('home') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-globe mr-2 text-sm opacity-75"></i>
+      View Site
+    </a>
+    </li>
+  </ul>
