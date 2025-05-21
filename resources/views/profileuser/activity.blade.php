@@ -23,18 +23,20 @@
           {{-- content --}}
           <div class="pb-4 border-b-2 w-full space-y-1 mt-1 flex flex-col items-start">
           
-            <span class="mr-1">
-              @if($entry['type'] == 'Commented')
-              <i class="far fa-comment-dots"></i>
-              @elseif($entry['type'] == 'Replied')
-              <i class="fas fa-reply"></i>
-              @elseif($entry['type'] == 'Posted')
-              <i class="fas fa-edit"></i>
-              @endif
-            </span>
-              <span class="text-sm text-gray-500">
-                {{ $entry['type'] }}
+          <div class="flex items-center gap-2">
+              <span class="mr-1 ">
+                @if($entry['type'] == 'Commented')
+                <i class="far fa-comment-dots"></i>
+                @elseif($entry['type'] == 'Replied')
+                <i class="fas fa-reply"></i>
+                @elseif($entry['type'] == 'Posted')
+                <i class="fas fa-edit"></i>
+                @endif
               </span>
+                <span class="text-sm text-gray-500">
+                  {{ $entry['type'] }}
+                </span>
+          </div>
     
             <div class="text-gray-800 font-semibold">{{ $entry['title'] }}</div>
           </div>

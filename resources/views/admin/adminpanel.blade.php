@@ -27,7 +27,7 @@
     
     </nav>
     <!-- Header -->
-    <div class="relative bg-gray-400 md:pt-32 pb-32 pt-12">
+    <div class="relative bg-slate-400 md:pt-32 pb-32 pt-12">
     <div class="px-4 md:px-10 mx-auto w-full">
       <div>
       <!-- Card stats -->
@@ -58,8 +58,8 @@
 
     {{-- chart container --}}
     <div class="flex gap-2 px-4 md:px-10 mx-auto w-full -m-24">
-    <div id="container1"></div>
-    <div id="container2"></div>
+    <div id="container1" class="rounded-lg"></div>
+    <div id="container2" class="rounded-lg"></div>
     </div>
 
   </div>
