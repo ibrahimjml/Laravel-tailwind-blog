@@ -1,8 +1,10 @@
 @extends('admin.partials.layout')
 @section('title', 'Posts Table | Dashboard')
 @section('content')
-  <div class="relative md:ml-64 bg-blueGray-50 px-4 py-2 mb-3">
-    <div class="flex justify-between items-center flex-wrap gap-4">
+
+@include('admin.partials.header', ['linktext' => 'Posts Table', 'route' => 'admin.posts', 'value' => request('search')])
+  <div class=" md:ml-64  px-4 py-2 mb-3 -m-24 w-[80%]">
+    <div class="flex items-center flex-wrap gap-4 ml-3">
 
     <!-- Sort & Featured -->
     <div class="flex gap-2 items-center">
@@ -10,7 +12,7 @@
       <form action="{{ route('admin.posts') }}" method="GET">
       <div class="relative w-full">
         <select id="sort" name="sort"
-        class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-blue-600 text-white border border-gray-300 text-sm rounded-lg p-2.5"
+        class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-gray-600 text-white border-0 text-sm rounded-lg p-2.5"
         onchange="this.form.submit()" onchange="this.form.submit()">
         <option value="latest" {{ request('sort') === 'latest' ? 'selected' : '' }}>Latest</option>
         <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest</option>
@@ -25,7 +27,7 @@
       </form>
 
       <!-- Featured Checkbox -->
-      <div class="bg-blue-600 rounded-md p-2 h-10 flex items-center">
+      <div class="bg-gray-600 rounded-md p-2 h-10 flex items-center">
       <form action="{{ route('admin.posts') }}" method="GET" class="flex items-center gap-1">
         <input type="checkbox" name="featured" value="1" {{ request('featured') ? 'checked' : '' }}
         onchange="this.form.submit()" class="rounded-full w-4 h-4">
@@ -34,24 +36,13 @@
       </div>
     </div>
 
-    <!-- Search Form -->
-    <form action="{{ route('admin.posts') }}" method="GET" class="relative flex items-center w-[150px] sm:w-[250px]">
-      <input type="search" name="search" id="search" value="{{ old('search', $filter['search'] ?? '') }}"
-      class="peer block min-h-[auto] w-full rounded border-2 border-blue-600 bg-white px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear placeholder:text-blue-500 text-black"
-      placeholder="Search" />
-      <button type="submit"
-      class="absolute right-0 z-10 h-full px-4 flex items-center bg-blue-600 text-white rounded-e">
-      <i class="fas fa-search"></i>
-      </button>
-    </form>
-
     </div>
   </div>
 
-<div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow">
+<div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow w-[80%] left-6">
     <table class="min-w-full table-auto ">
 
-    <tr class="bg-blue-600">
+    <tr class="bg-gray-600">
       <th class="text-white p-2">#</th>
       <th class="text-white p-2">Username</th>
       <th class="text-white p-2">Image</th>
@@ -122,7 +113,7 @@
   </div>
 
 
-  <div class="relative md:ml-64 ">
+  <div class="relative md:ml-64 md:w-[80%] md:left-4">
     {!! $posts->links() !!}
   </div>
 @endsection

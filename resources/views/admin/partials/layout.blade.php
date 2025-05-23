@@ -8,10 +8,16 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="shortcut icon" href="{{asset('assets/img/favicon.ico')}}" />
   <link rel="apple-touch-icon" sizes="76x76" href="{{asset('assets/img/apple-icon.png')}}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" />
   <link rel="stylesheet" href="{{asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css')}}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   <title>@yield('title','Dashboard | Admin')</title>
+  <style>
+    .iti {
+  width: 100% !important;
+}
+  </style>
 </head>
 
 <body class="text-blueGray-700 antialiased">
@@ -85,14 +91,17 @@
         </div>
       </div>
     </nav>
-    
+      <div>
           @yield('content')
-  
+      </div>
 
 
   <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   @if(Route::is('hashtagpage'))
     <script src="{{asset('js/fetchhashtags.js')}}" defer></script>
   @endif

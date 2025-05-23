@@ -1,10 +1,12 @@
 @extends('admin.partials.layout')
 @section('title', 'Users Table | Dashboard')
 @section('content')
-<div class="relative md:ml-64 bg-blueGray-50 px-4 py-2 mb-3">
-  <div class="flex justify-between  items-center  mb-5">
 
-    <div class="bg-blue-600 rounded-md p-2 h-10 flex items-center">
+@include('admin.partials.header', ['linktext' => 'Users Table', 'route' => 'admin.users', 'value' => request('search')])
+<div class="md:ml-64  px-4 py-2 mb-3 -m-[120px] w-[80%]">
+  <div class="flex justify-between items-center mb-5">
+
+    <div class="bg-gray-600 rounded-md p-2 h-10 flex items-center ml-3">
     <form action="{{route('admin.users')}}" method="GET" class="flex items-center gap-1">
       <input type="checkbox" name="blocked" value="1" {{ request('blocked') ? 'checked' : '' }}
       onchange="this.form.submit()" class="rounded-full w-4 h-4">
@@ -12,29 +14,16 @@
     </form>
     </div>
 
-
-
-    <!-- Search Form -->
-    <form action="{{ route('admin.users') }}" method="GET" class="relative flex items-center w-[150px] sm:w-[250px]">
-    <input type="search" name="search" id="search" value="{{ old('search', $filter['search'] ?? '') }}"
-      class="peer block min-h-[auto] w-full rounded border-2 border-blue-600 bg-white px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear placeholder:text-blue-500 text-black"
-      placeholder="Search" />
-    <button type="submit" class="absolute right-0 z-10 h-full px-4 flex items-center bg-blue-600 text-white rounded-e">
-      <i class="fas fa-search"></i>
-    </button>
-    </form>
-
-
   </div>
 </div>
-<div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow">
-    <table class="min-w-full table-auto ">
+<div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow w-[80%] left-6">
+    <table class="min-w-full table-auto overflow-auto">
     <!-- User Table Headers -->
-    <tr class="bg-blue-600">
+    <tr class="bg-gray-600">
       <th class="text-white p-2">#</th>
       <th class="text-white p-2">Avatar</th>
       <th class="text-white p-2 w-1/4 text-left">User</th>
-      <th class="text-white p-2 w-1/6">Role</th>
+      <th class="text-white p-2 ">Role</th>
       <th class="text-white p-2 ">Followings</th>
       <th class="text-white p-2 ">Followers</th>
       <th class="text-white p-2">CreatedAt</th>
@@ -68,7 +57,7 @@
       @method('PUT')
       <div class="relative w-full">
         <select name="role"
-        class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-blue-600 text-white text-sm rounded-lg w-full p-2.5">
+        class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-gray-600 text-white text-sm rounded-lg w-full p-2.5">
         <option value="user" {{!$user->is_admin ? 'selected' : ''}}>User</option>
         <option value="admin" {{$user->is_admin ? 'selected' : ''}}>Admin</option>
         </select>
@@ -154,7 +143,7 @@
     </table>
   </div>
 
-  <div class="relative md:ml-64 ">
+  <div class="relative md:ml-64 md:w-[80%] md:left-4">
     {!! $users->links() !!}
   </div>
 @endsection

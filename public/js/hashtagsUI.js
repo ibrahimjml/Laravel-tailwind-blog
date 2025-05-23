@@ -2,9 +2,9 @@
   const input = document.getElementById('hashtagInput');
   const tagContainer = document.getElementById('tagContainer');
   const hiddenInput = document.getElementById('hashtagsHidden');
-  
+
   let tags = window.initialTags;
-  
+
   function updateTags() {
     tagContainer.innerHTML = '';
     tags.forEach((tag, index) => {
@@ -23,7 +23,7 @@
   
     hiddenInput.value = tags.join(',');
   }
-  
+
   function removeTag(index) {
     tags.splice(index, 1);
     updateTags();
@@ -53,8 +53,8 @@
   
   // Initial render
   updateTags();
-  
-  function addSelectedHashtags() {
+
+    function addSelectedHashtags() {
     const select = document.getElementById('selectedHashtag');
     const selected = [...select.selectedOptions].map(option => option.value.trim());
   

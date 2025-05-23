@@ -28,16 +28,8 @@
     </nav>
     <!-- Header -->
     <div class="relative bg-slate-400 md:pt-32 pb-32 pt-12">
-    <div class="px-4 md:px-10 mx-auto w-full">
-      <div>
       <!-- Card stats -->
-      <div class="flex flex-wrap gap-2">
-        <x-widgets-posts :posts="$post" :hashtags="$hashtags" :likes="$likes" :comments="$comments" />
-        <x-widgets-users :users="$user" :blocked="$blocked" />
-
-      </div>
-      </div>
-    </div>
+@include('admin.partials.card-stats')
     {{-- filter by year --}}
 
     <div class="flex justify-end mt-8 mr-3">
@@ -55,14 +47,11 @@
     </div>
     </div>
 
-
-    {{-- chart container --}}
-    <div class="flex gap-2 px-4 md:px-10 mx-auto w-full -m-24">
-    <div id="container1" class="rounded-lg"></div>
-    <div id="container2" class="rounded-lg"></div>
-    </div>
-
-  </div>
+{{-- chart container --}}
+<div class="flex flex-col md:flex-row gap-4 px-4 md:px-10 mx-auto w-full -m-24">
+  <div id="container1" class="rounded-lg w-full md:w-1/2"></div>
+  <div id="container2" class="rounded-lg w-full md:w-1/2"></div>
+</div>
 
 @endsection
 
@@ -107,7 +96,7 @@
       {
       name: 'Users',
       data: datavalues,
-      color: '#3B82F6'
+      color: '#9e9e9e'
       }
 
     ]
@@ -154,7 +143,7 @@
       {
       name: 'Posts',
       data: datavalues,
-      color: '#3B82F6'
+      color: '#fcba03'
       }
 
     ]

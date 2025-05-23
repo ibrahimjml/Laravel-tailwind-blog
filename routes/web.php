@@ -1,16 +1,22 @@
 <?php
-
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\Hashtagcontroller;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Admin\NotificationsController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PublicController;
-use App\Http\Controllers\TinyMCEController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\{
+  AdminController,
+  NotificationsController,
+  SettingController
+};
+use App\Http\Controllers\{
+  CommentController,
+  Hashtagcontroller,
+  HomeController,
+  NotificationController,
+  PostController,
+  ProfileController,
+  PublicController,
+  TinyMCEController
+
+};
+
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +71,8 @@ Route::get('/edit-profile/{user:username}','editprofilepage')
 ->name('editprofile');
 // Add bio 
 Route::put('/addbio/{user}','useraddbio');
+// Add aboutme 
+Route::put('/addaboutme/{user}','useraboutme');
 // Edit user settings
 Route::put('/edit-email/{user}','editemail');
 Route::put('/change-name/{user}','editname');
@@ -124,4 +132,8 @@ Route::prefix('admin')
       Route::post('/unblock/{user}', 'unblock')->name('unblock.user');
     });
   Route::get('/notifications', [NotificationsController::class,'notifications'])->name('admin.notify');
+  Route::get('/settings', [SettingController::class,'settings'])->name('admin.settings');
+  Route::post('/settings/{user}', [SettingController::class,'update_settings'])->name('admin.update');
+  Route::post('/settings-pass/{user}', [SettingController::class,'update_pass'])->name('admin.pass');
+  Route::put('/settings-aboutme/{user}', [SettingController::class,'update_aboutme'])->name('admin.aboutme');
 });

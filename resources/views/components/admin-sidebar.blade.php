@@ -43,7 +43,7 @@
       class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('admin.notify') ? 'text-blue-500 hover:text-blue-600' : ''}}">
        <span class="text-sm relative">
         <i class="fas fa-bell"></i>
-        <small class="absolute top-[-6px] left-2 h-4 w-4 bg-blue-500 text-white flex justify-center items-center rounded-full p-1 text-sm"> 
+        <small class="absolute top-[-6px] left-2 h-4 w-4 bg-blue-500 text-white flex justify-center items-center rounded-full p-1 text-xs"> 
           {{ auth()->user()->unreadNotifications->count() }}
         </small>
       <p class="ml-3 inline-block">Notifications</p>
@@ -64,6 +64,20 @@
       class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('home') ? 'text-blue-500 hover:text-blue-600' : ''}}">
       <i class="fas fa-globe mr-2 text-sm opacity-75"></i>
       View Site
+    </a>
+    </li>
+    <li class="items-center">
+     <a href="{{route('admin.settings')}}"
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('home') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-cog mr-2 text-sm opacity-75"></i>
+      Settings
+    </a>
+    </li>
+    <li class="items-center">
+     <a href="{{route('logout')}}"
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('home') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-sign-out-alt mr-2 text-sm opacity-75"></i>
+      Log out
     </a>
     </li>
   </ul>

@@ -8,6 +8,7 @@ const notifications = document.getElementById('hidden-notification');
 const shownotification = document.getElementById('hover-notification'); 
 let   hideTimeout;
 // show burger menu
+if(mobilebtn){
 mobilebtn.addEventListener('click', (e) => {
   
   mobilemenu.classList.toggle('hidden');
@@ -25,13 +26,14 @@ mobilebtn.addEventListener('click', (e) => {
 
   }
 });
+}
+
 
 // show hover menu user info
-
-    change.addEventListener("mousemove",(eo) => {
+if(change){
+  change.addEventListener("mousemove",(eo) => {
     hiddenul.style.display="block";
     });
-    
     change.addEventListener("mouseout",(eo) => {
       setTimeout(function() {
         if (!hiddenul.matches(':hover')) {
@@ -47,6 +49,10 @@ mobilebtn.addEventListener('click', (e) => {
       change.addEventListener("mouseout",(eo) => {
       hiddenul.style.display = "none";
        });
+}
+  
+    
+    
   
 
 

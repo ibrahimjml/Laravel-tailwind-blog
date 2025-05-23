@@ -70,9 +70,9 @@
             <option value="{{ $all }}">{{ $all }}</option>
           @endforeach
         </select>
-        <button type="button" onclick="addSelectedHashtags()" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
-          Add Selected Hashtags
-        </button>
+      <button type="button" onclick="addSelectedHashtags()" class="mt-2 bg-gray-500 hover:bg-gray-600 w-fit text-white px-3 py-1 rounded">
+        Add Selected Hashtags
+      </button>
       @endif
       </div>
     <div class="flex flex-col  items-start ">
@@ -80,7 +80,7 @@
         Featured:
       </label>
   <div class="flex  items-center justify-center gap-3">
-    <input id="featured" type="checkbox" class="rounded-sm p-2 border-2 form-input w-full placeholder:text-gray-300 @error('featured')  border-red-500 @enderror"
+    <input id="featured" type="checkbox" class="rounded-sm p-2 border-2 form-input  placeholder:text-gray-300 @error('featured')  border-red-500 @enderror"
     name="featured" value="1"    {{ old('featured') ? 'checked' : '' }} autocomplete="featured" autofocus placeholder="[laravel,php] with comma separated">Featured
   </div>
       

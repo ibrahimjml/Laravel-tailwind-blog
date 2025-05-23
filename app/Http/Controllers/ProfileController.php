@@ -138,16 +138,19 @@ $user = User::where('username', $user->username)->firstOrFail();
   public function editemail(Request $request, User $user)
   {
     $request->validate([
-      "email" => ["required", "email", "min:5", "max:50", Rule::unique(User::class)->ignore($request->user()->id)]
+      "email" => ["required", "email", "min:5", "max:50", Rule::unique(User::class)->ignore($user->id)]
     ]);
 
     $this->authorize('update', $user);
-    $user->email = strip_tags($request->email);
-    
-    if ($user->isDirty('email')) {
-      $user->email_verified_at = null;
-  }
+    $newemail = trim(strip_tags($request->email));
+      if ($user->email === $newemail) {
+        toastr()->info('Email is already up to date.', ['timeOut' => 1000]);
+        return redirect()->back();
+    }
+    $user->email = $newemail;
+    $user->email_verified_at = null;
     $user->save();
+
     toastr()->success('Email updated',['timeOut'=>1000]);
     return redirect()->route('profile', $user->username);
   }
@@ -155,10 +158,15 @@ $user = User::where('username', $user->username)->firstOrFail();
   public function editname(Request $request, User $user)
   {
     $request->validate([
-      "name" => ["required", "min:5", "max:50", "alpha", Rule::unique("users", "name")]
+      "name" => ["required", "min:5", "max:50", "alpha", Rule::unique("users", "name")->ignore($user->id)]
     ]);
-    $user->name = strip_tags($request->name);
+    $newname = trim(strip_tags($request->name));
+      if ($user->name === $newname) {
+        toastr()->info('Name is already up to date.', ['timeOut' => 1000]);
+        return redirect()->back();
+    }
     $this->authorize('update', $user);
+    $user->name = $newname;
     $user->save();
     toastr()->success('name updated',['timeOut'=>1000]);
     return redirect()->route('profile', $user->username);
@@ -185,12 +193,17 @@ $user = User::where('username', $user->username)->firstOrFail();
   public function editphone(Request $request, User $user)
   {
     $request->validate([
-      "phone" => ['required', 'regex:/^\+\d{8,15}$/', Rule::unique("users", "phone")]
+      "phone" => ['required', 'regex:/^\+\d{8,15}$/', Rule::unique(User::class)->ignore($user->id)]
     ],[
       'phone.regex' => 'The phone number must include a valid country code.'
     ]);
-    $user->phone = strip_tags($request->phone);
+    $newPhone = trim(strip_tags($request->phone));
+      if ($user->phone === $newPhone) {
+        toastr()->info('Phone number is already up to date.', ['timeOut' => 1000]);
+        return redirect()->back();
+    }
     $this->authorize('update', $user);
+    $user->phone = $newPhone;
     $user->save();
     toastr()->success('phone updated',['timeOut'=>1000]);
     return redirect()->route('profile', ['user' => $user->username]);
@@ -198,12 +211,28 @@ $user = User::where('username', $user->username)->firstOrFail();
 
   public function useraddbio(User $user,Request $request){
    $request->validate([
-    'bio'=>'min:5|string|'
+    'bio'=>'nullable|min:5|string'
    ]);
    $user->bio = strip_tags($request->bio);
    $this->authorize('update',$user);
    $user->save();
    toastr()->success('Bio updated',['timeOut'=>1000]);
+   return redirect()->route('profile', ['user' => $user->username]);
+  }
+
+  public function useraboutme(User $user,Request $request){
+   $request->validate([
+    'about'=>'nullable|string'
+   ]);
+   $aboutme = strip_tags($request->about);
+   $user->aboutme = $aboutme !== '' ? $aboutme : null;
+      if(!$user->isDirty('aboutme')){
+      toastr()->info('No changes detected.', ['timeOut' => 1000]);
+      return back();
+   }
+   $this->authorize('update',$user);
+   $user->save();
+   toastr()->success('aboutme updated',['timeOut'=>1000]);
    return redirect()->route('profile', ['user' => $user->username]);
   }
 

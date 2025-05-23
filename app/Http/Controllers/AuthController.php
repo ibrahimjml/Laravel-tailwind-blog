@@ -40,9 +40,9 @@ class AuthController extends Controller
     ]);
 
     $fields['password'] = bcrypt($fields['password']);
-    $fields['email'] = htmlspecialchars(strip_tags($fields['email']));
-    $fields['name'] = htmlspecialchars(strip_tags($fields['name']));
-    $fields['username'] = htmlspecialchars(strip_tags($fields['username']));
+    $fields['email'] = trim(strip_tags($fields['email']));
+    $fields['name'] = trim(strip_tags($fields['name']));
+    $fields['username'] = trim(strip_tags($fields['username']));
 
     $user = User::create($fields);
     event(new Registered($user));

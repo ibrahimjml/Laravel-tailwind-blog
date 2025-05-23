@@ -16,8 +16,8 @@ function savedTo(el,postId) {
     .then(data => {
       if (data.status === 'removed') {
         toastr.success("Bookmark Removed ");
-        icon.classList.remove('fa-solid');
-        icon.classList.add('fa-regular');
+        icon.classList.remove('fas');
+        icon.classList.add('far');
 
       } else if (data.status === 'added') {
         toastr.options = {
@@ -26,8 +26,8 @@ function savedTo(el,postId) {
           "timeOut": 1000
         };
         toastr.success("Bookmark Added ");
-        icon.classList.remove('fa-regular');
-        icon.classList.add('fa-solid');
+        icon.classList.remove('far');
+        icon.classList.add('fas');
       }
     })
     .catch(error => {

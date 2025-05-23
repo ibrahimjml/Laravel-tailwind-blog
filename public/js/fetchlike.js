@@ -1,3 +1,4 @@
+
 function fetchLike(eo) {
   const icon = eo.querySelector('.like-icon');
   const postID = icon.dataset.id;
@@ -16,13 +17,13 @@ function fetchLike(eo) {
 
 
       if (data.liked) {
-        icon.classList.remove('fa-regular');
+        icon.classList.remove('far');
         randomhearts();
-        icon.classList.add('fa-solid', 'text-red-500');
+        icon.classList.add('fas', 'text-red-500');
         countSpan.textContent = count + 1;
       } else {
-        icon.classList.remove('fa-solid', 'text-red-500');
-        icon.classList.add('fa-regular');
+        icon.classList.remove('fas', 'text-red-500');
+        icon.classList.add('far');
         countSpan.textContent = count - 1;
       }
     });

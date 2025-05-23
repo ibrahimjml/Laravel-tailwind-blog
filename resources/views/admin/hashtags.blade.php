@@ -1,13 +1,18 @@
 @extends('admin.partials.layout')
 @section('title','Tags Page | Dashboard')
 @section('content')
+
+@include('admin.partials.header', ['linktext' => 'Tags Table', 'route' => 'admin.users', 'value' => request('search')])
+<div class="w-[90%] -m-24 mx-auto">
+
+
 <div class="flex justify-end">
-  <button id="openTagModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-blue-500  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6" href="{{route('create')}}">create tag</button>
+  <button id="openTagModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6" href="{{route('create')}}">create tag</button>
 </div>
   <div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow">
       <table id="tabletags" class="min-w-full table-auto">
       
-        <tr class="bg-blue-500">         
+        <tr class="bg-gray-600">         
           <th class="text-white p-2">#</th>
           <th class="text-white p-2 text-left w-fit">Hashtags</th>
           <th class="text-white p-2">Related posts</th>
@@ -19,7 +24,7 @@
         <tr class="text-center border border-b-gray-300 last:border-none">
           <td class="p-2">{{ ($hashtags->currentPage() - 1) * $hashtags->perPage() + $loop->iteration }}</td>
           <td class=" p-2 flex justify-start items-center">
-            <span class=" py-1 px-3 text-white  text-sm rounded-md bg-blue-700 bg-opacity-70 font-semibold w-fit">
+            <span class=" py-1 px-3 text-white  text-sm rounded-md bg-gray-700 bg-opacity-70 font-semibold w-fit">
 
               {{$hashtag->name}}</td>
             </span>
@@ -36,7 +41,7 @@
                   <i class="fas fa-trash"></i>
                 </button>
               </form>
-              <button class="tagsedit text-blue-500 rounded-lg p-2 cursor-pointer hover:text-blue-300" data-name="{{ $hashtag->name }}"  data-id="{{ $hashtag->id }}"><i class="fas fa-edit"></i></button>
+              <button class="tagsedit text-gray-500 rounded-lg p-2 cursor-pointer hover:text-gray-300" data-name="{{ $hashtag->name }}"  data-id="{{ $hashtag->id }}"><i class="fas fa-edit"></i></button>
             </div>
           
           </td>
@@ -52,6 +57,7 @@
   
     <div class="relative md:ml-64 ">
   {!! $hashtags->links() !!}
+    </div>
     </div>
   {{-- edit tag model --}}
   @include('admin.partials.edit-tag-model',['hashtag'=>$hashtag])

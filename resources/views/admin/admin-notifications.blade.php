@@ -18,7 +18,7 @@
 {{-- sort Read/Unread --}}
 <div class="relative w-full">
   <select id="sort" name="sort"
-    class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-blue-600 text-white text-sm rounded-lg w-full p-2.5"
+    class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-gray-600 text-white text-sm rounded-lg w-full p-2.5"
     onchange="this.form.submit()">
     <option value="">Sort</option>
     <option value="read" {{ request('sort') === 'read' ? 'selected' : '' }}>Read</option>
@@ -34,7 +34,7 @@
 
 {{-- sort by type --}}
 <div class="relative w-full">
-  <select name="type" class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-blue-600 text-white border border-gray-300 text-sm rounded-lg p-2.5" onchange="this.form.submit()">
+  <select name="type" class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-gray-600 text-white border border-gray-300 text-sm rounded-lg p-2.5" onchange="this.form.submit()">
     <option value="">Types</option>
     <option value="newuser" {{ request('type') === 'newuser' ? 'selected' : '' }}>Registered</option>
     <option value="Postcreated" {{ request('type') === 'Postcreated' ? 'selected' : '' }}>PostCreated</option>
@@ -99,7 +99,7 @@
               <form action="{{ route('notifications.delete', $notification->id) }}" method="POST">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" class="text-xs text-white bg-blue-500 px-2 rounded-full">x</button>
+                  <button type="submit" class="text-xs text-white bg-red-500 px-2 rounded-full">x</button>
               </form>
           </div>
       </div>

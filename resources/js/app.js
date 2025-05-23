@@ -134,5 +134,3 @@ document.addEventListener("DOMContentLoaded", () => {
     Prism.highlightAllUnder(content);
   }
 });
-
-
