@@ -18,10 +18,10 @@
 ![schooldash-dahboard-page](https://i.postimg.cc/02mtbKZm/127-0-0-1-8000-veltek33-1.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/DZJrHRMs/Screenshot-2025-05-21-232532.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/W15nZy2V/Screenshot-2024-10-29-024842.png)
-![schooldash-dahboard-page](https://i.postimg.cc/dQmkpGzC/Screenshot-2025-05-21-155212.png)
-![schooldash-dahboard-page](https://i.postimg.cc/5NK0WgpX/Screenshot-2025-05-21-155230.png)
-![schooldash-dahboard-page](https://i.postimg.cc/FHcQCV65/Screenshot-2025-05-21-155243.png)
-![schooldash-dahboard-page](https://i.postimg.cc/J0tfNNXF/Screenshot-2025-05-21-155326.png)
+![schooldash-dahboard-page](https://i.postimg.cc/xCyfXLP3/Screenshot-2025-05-26-225945.png)
+![schooldash-dahboard-page](https://i.postimg.cc/3xvHyg80/Screenshot-2025-05-26-230023.png)
+![schooldash-dahboard-page](https://i.postimg.cc/Gh4WNksg/Screenshot-2025-05-26-230120.png)
+![schooldash-dahboard-page](https://i.postimg.cc/LX47VfpT/Screenshot-2025-05-26-230133.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/c4pp38LD/Screenshot-2025-05-21-155459.png)
 
 
