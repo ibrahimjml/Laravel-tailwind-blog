@@ -22,7 +22,7 @@
 ![schooldash-dahboard-page](https://i.postimg.cc/3xvHyg80/Screenshot-2025-05-26-230023.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/Gh4WNksg/Screenshot-2025-05-26-230120.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/LX47VfpT/Screenshot-2025-05-26-230133.png)
-![schooldash-dahboard-page](https://i.postimg.cc/c4pp38LD/Screenshot-2025-05-21-155459.png)
+![schooldash-dahboard-page](https://i.postimg.cc/NG333K7g/Screenshot-2025-05-26-230757.png)
 
 
 
