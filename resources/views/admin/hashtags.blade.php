@@ -5,10 +5,11 @@
 @include('admin.partials.header', ['linktext' => 'Tags Table', 'route' => 'admin.users', 'value' => request('search')])
 <div class="w-[90%] -m-24 mx-auto">
 
-
+@can('tag.create')
 <div class="flex justify-end">
   <button id="openTagModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6" href="{{route('create')}}">create tag</button>
 </div>
+@endcan
   <div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow">
       <table id="tabletags" class="min-w-full table-auto">
       
@@ -33,7 +34,7 @@
           <td class="p-2">{{$hashtag->created_at->diffForHumans()}}</td>
           <td  class=" text-white p-2">
             <div class="flex gap-2 justify-center">
-            
+            @can('tag.delete')
               <form class="tagsdelete" action='{{route('delete.hashtag',$hashtag->id)}}' method="POST">
                 @csrf
                 @method('delete')
@@ -41,7 +42,10 @@
                   <i class="fas fa-trash"></i>
                 </button>
               </form>
+              @endcan
+              @can('tag.update')
               <button class="tagsedit text-gray-500 rounded-lg p-2 cursor-pointer hover:text-gray-300" data-name="{{ $hashtag->name }}"  data-id="{{ $hashtag->id }}"><i class="fas fa-edit"></i></button>
+            @endcan
             </div>
           
           </td>

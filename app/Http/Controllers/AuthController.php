@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewRegistered;
 use App\Helpers\MetaHelpers;
+use App\Models\Role;
 use App\Models\User;
 use App\Rules\Recaptcha;
 use Illuminate\Support\Str;
@@ -45,6 +46,9 @@ class AuthController extends Controller
     $fields['username'] = trim(strip_tags($fields['username']));
 
     $user = User::create($fields);
+    $role = Role::firstOrCreate(['name' => 'User']);
+    $user->roles()->syncWithoutDetaching([$role->id]);
+
     event(new Registered($user));
     // notify admin with new user
     event(new NewRegistered($user));
@@ -74,7 +78,7 @@ class AuthController extends Controller
       }
     toastr()->success('logged in successfuly',['timeOut'=>1000]);
 
-    if(auth()->user()->is_admin){
+    if(auth()->user()->hasAnyRole(['Admin','Moderator']) || auth()->user()->hasPermission('Access')){
         return redirect('/admin/panel');;
       }
       return redirect('/');

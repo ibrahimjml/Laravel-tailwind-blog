@@ -3,7 +3,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
   AdminController,
   NotificationsController,
-  SettingController
+    PermissionsController,
+    RolesController,
+    SettingController
 };
 use App\Http\Controllers\{
   CommentController,
@@ -110,7 +112,7 @@ Route::delete('/notifications/deleteAll', [NotificationController::class, 'delet
 
 // admin panel
 Route::prefix('admin')
-    ->middleware('can:makeAdminActions,user')
+    ->middleware('can:makeAdminActions')
     ->group(function () {
     Route::controller(AdminController::class)->group(function(){
       Route::get('/panel', 'admin')->name("admin-page");
@@ -126,14 +128,16 @@ Route::prefix('admin')
       Route::post('/featured', 'features')->name('admin.featured');
   
       Route::put('/role-update/{user}', 'role')->name('role.update');
-      Route::delete('/delete/{user}', 'destroy')->name('delete.user');
   
       Route::post('/block/{user}', 'block')->name('block.user');
       Route::post('/unblock/{user}', 'unblock')->name('unblock.user');
     });
+  Route::delete('/admin/delete/{user}', [AdminController::class, 'destroy'])->name('delete.user');
   Route::get('/notifications', [NotificationsController::class,'notifications'])->name('admin.notify');
   Route::get('/settings', [SettingController::class,'settings'])->name('admin.settings');
   Route::post('/settings/{user}', [SettingController::class,'update_settings'])->name('admin.update');
   Route::post('/settings-pass/{user}', [SettingController::class,'update_pass'])->name('admin.pass');
   Route::put('/settings-aboutme/{user}', [SettingController::class,'update_aboutme'])->name('admin.aboutme');
+  Route::resource('roles',RolesController::class);
+  Route::resource('permissions',PermissionsController::class);
 });

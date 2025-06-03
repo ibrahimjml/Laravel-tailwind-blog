@@ -57,6 +57,8 @@ class Kernel extends HttpKernel
         'post.owner' => \App\Http\Middleware\PostOwner::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'check' => \App\Http\Middleware\CheckIfBlocked::class,
+        'role' => \App\Http\Middleware\CheckRole::class,
+        'permission' => \App\Http\Middleware\CheckPermission::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

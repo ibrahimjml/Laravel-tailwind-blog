@@ -31,7 +31,7 @@
 
 
  {{-- Sort dropdown --}}
- <div class="flex md:flex-row flex-col items-center justify-center gap-2 ml-2">
+ <div class="relative flex md:flex-row flex-col items-center justify-center gap-2 ml-2">
   <label for="sort" class="text-gray-500  font-semibold text-lg">Sort Posts :</label>
   <form action="/blog" method="GET">
     <select id="sort" name="sort"
@@ -44,6 +44,12 @@
       <option value="featured" {{ $sorts == 'featured' ? 'selected' : '' }}>Featured</option>
       <option value="hashtagtrend" {{ $sorts == 'hashtagtrend' ? 'selected' : '' }}>Hashtag Trend</option>
     </select>
+      <!-- Custom white arrow -->
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M19 9l-7 7-7-7" />
+        </svg>
+        </div>
   </form>
  </div>
 

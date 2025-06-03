@@ -21,7 +21,20 @@
       Tags
     </a>
   </li>
-
+  <li class="items-center">
+    <a href="{{route('roles.index')}}"
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('featuredpage') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-user-cog mr-2 text-sm opacity-75"></i>
+      Roles
+    </a>
+  </li>
+    <li class="items-center">
+    <a href="{{route('permissions.index')}}"
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('featuredpage') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-user-cog mr-2 text-sm opacity-75"></i>
+      Permissions
+    </a>
+  </li>
   <li class="items-center">
     <a href="{{route('featuredpage')}}"
       class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('featuredpage') ? 'text-blue-500 hover:text-blue-600' : ''}}">
@@ -68,14 +81,14 @@
     </li>
     <li class="items-center">
      <a href="{{route('admin.settings')}}"
-      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('home') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('admin.settings') ? 'text-blue-500 hover:text-blue-600' : ''}}">
       <i class="fas fa-cog mr-2 text-sm opacity-75"></i>
       Settings
     </a>
     </li>
     <li class="items-center">
      <a href="{{route('logout')}}"
-      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('home') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('logout') ? 'text-blue-500 hover:text-blue-600' : ''}}">
       <i class="fas fa-sign-out-alt mr-2 text-sm opacity-75"></i>
       Log out
     </a>

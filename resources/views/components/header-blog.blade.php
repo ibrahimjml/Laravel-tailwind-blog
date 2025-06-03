@@ -62,7 +62,7 @@
         <li class="{{Route::is(['profile','home','profile.aboutme','profile.activity']) ? 'text-white text-lg pt-2' : 'text-gray-700 text-lg pt-2'}} @if(Route::is('bookmarks')) font-bold text-xl  @endif">
           <a href="{{route('bookmarks')}}" >
             Saved</a></li>
-            @if(auth()->user()->is_admin)
+            @if(auth()->user()->hasAnyRole(['Admin','Moderator']) || auth()->user()->hasPermission('Access'))
             <li class="{{Route::is(['profile','home','profile.aboutme','profile.activity']) ? 'text-white text-lg pt-2' : 'text-gray-700 text-lg pt-2'}} @if(Route::is('admin-page')) font-bold text-xl  @endif ">
               <a href="{{route('admin-page')}}" >
                 Admin Panel</a></li>

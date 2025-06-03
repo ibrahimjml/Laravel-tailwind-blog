@@ -31,7 +31,7 @@
                   @can('update', $user)
             <span
             class="absolute lg:bottom-0 lg:left-10 bottom-12 left-10 flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white"><a
-              href="/edit-avatar/{{$user->id}}"><i class="fa fa-plus" aria-hidden="true"></i></a></span>
+              href="/edit-avatar/{{$user->id}}"><i class="fas fa-plus" aria-hidden="true"></i></a></span>
           @endcan
 
 

@@ -9,9 +9,21 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 
 class AdminController extends Controller
 {
+    public function __construct()
+  {
+    $this->middleware('permission:tag.view')->only('hashtagpage');
+    $this->middleware('permission:tag.create')->only('create_tag');
+    $this->middleware('permission:tag.update')->only('edit_tag');
+    $this->middleware('permission:tag.delete')->only('delete_tag');
+    $this->middleware('permission:user.view')->only('users');
+    $this->middleware('permission:user.block')->only(['block','unblock']);
+    $this->middleware('permission:user.role')->only('role');
+    $this->middleware('permission:user.delete')->only('destroy');
+  }
   public function admin(){
   
     $user = DB::table('users')->count();
@@ -39,15 +51,21 @@ class AdminController extends Controller
   {
     $blocked = $request->has('blocked') ? 1 : null;
 
-    $users = User::select('id','name','username','email','avatar','created_at','phone','age','is_blocked','email_verified_at','is_admin')
-    ->latest()
-    ->search($request->only('search'))
-    ->when($blocked,function($q){
-      $q->where('is_blocked',1);
-    })
-    ->paginate(6)
-    ->withQuerystring();
-    return view('admin.users',['users'=>$users,'filter'=>$request->only(['search','blocked'])]);
+  $users = User::with(['roles','followings','followers']) 
+               ->select('id','name','username','email','avatar','created_at','phone','age','is_blocked','email_verified_at','is_admin')
+               ->latest()
+               ->search($request->only('search'))
+               ->when($blocked, function($q){
+                   $q->where('is_blocked', 1);
+               })
+               ->paginate(6)
+               ->withQueryString();
+    $roles = Role::all();
+    return view('admin.users',[
+      'users'=>$users,
+      'filter'=>$request->only(['search','blocked']),
+      'roles'=>$roles
+    ]);
   }
 
   public function posts(Request $request)
@@ -175,20 +193,20 @@ return back();
   public function destroy(User $user){
   
     
-    $this->authorize('modify',$user);
+    $this->authorize('delete',$user);
     $user->delete();
     toastr()->success('user deleted',['timeOut'=>1000]);
     return back();
   }
   public function block(User $user){
-    $this->authorize('modify',$user);
+    $this->authorize('block',$user);
     $user->is_blocked = true;
     $user->save();
     toastr()->success('user blocked',['timeOut'=>1000]);
     return back();
   }
   public function unblock(User $user){
-    $this->authorize('modify',$user);
+    $this->authorize('block',$user);
     $user->is_blocked = false;
     $user->save();
     toastr()->success('user unblocked successfuly',['timeOut'=>1000]);
@@ -197,13 +215,14 @@ return back();
 
   public function role(Request $request,User $user)
   {
-    $this->authorize('modify',$user);
+    $this->authorize('role',$user);
     $fields= $request->validate([
-      'role'=>'required|in:user,admin'
+      'role'=>'required|exists:roles,name'
     ]);
-    $user->is_admin = $fields['role'] === 'admin' ? 1 : 0;
-    $user->save();
-    toastr()->success('user role {$request->role} updated',['timeOut'=>1000]);
+  
+     $role = Role::where('name', $fields['role'])->first();
+    $user->roles()->sync([$role->id]);
+    toastr()->success("user role '{$fields['role']}' updated",['timeOut'=>1000]);
    return back();
   }
 }

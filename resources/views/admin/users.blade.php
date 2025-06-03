@@ -51,15 +51,19 @@
       </div>
       </td>
       <td class="p-2 flex justify-center w-32">
-      @can('modify', $user)
+      @can('user.role')
       <form action="{{route('role.update', $user)}}" method="POST">
       @csrf
       @method('PUT')
       <div class="relative w-full">
         <select name="role"
+        onchange="this.form.submit()"
         class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-gray-600 text-white text-sm rounded-lg w-full p-2.5">
-        <option value="user" {{!$user->is_admin ? 'selected' : ''}}>User</option>
-        <option value="admin" {{$user->is_admin ? 'selected' : ''}}>Admin</option>
+         @foreach ($roles as $role)
+        <option value="{{ $role->name }}" {{ $user->roles->contains('name', $role->name) ? 'selected' : '' }}>
+          {{ ucfirst($role->name) }}
+        </option>
+      @endforeach
         </select>
         <!-- Custom white arrow -->
         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -101,7 +105,7 @@
       <td colspan="2" class=" bg-white text-white p-2">
       <div class="flex justify-center gap-2">
       <div>
-      @can('modify', $user)
+      @can('user.delete')
       <form action="{{ route('delete.user', $user) }}" method="POST"
       onsubmit="return confirm('Are you sure you want to delete this user?');">
       @csrf
@@ -115,7 +119,7 @@
 
       <div>
       @if($user->is_blocked)
-      @can('modify', $user)
+      @can('user.block')
       <form action="{{ route('unblock.user', $user) }}" method="POST"
       onsubmit='return confirm("Are you sure you want to unblock {{$user->name}} ?");'>
       @csrf
@@ -124,7 +128,7 @@
       </form>
       @endcan
       @else
-      @can('modify', $user)
+      @can('user.block')
       <form action="{{ route('block.user', $user) }}" method="POST"
       onsubmit="return confirm('Are you sure you want to block {{$user->name}} ?');">
       @csrf

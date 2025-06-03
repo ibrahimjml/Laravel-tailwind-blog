@@ -13,14 +13,14 @@
       </a> 
       @if(auth()->user()->id !== $viewliked->user->id)
       <button data-id="{{$viewliked->user->id}}" onclick="follow(this)" class="w-5 h-5 text-xs ml-auto text-white {{auth()->user()->isFollowing($viewliked->user) ? 'bg-green-500' : 'bg-gray-500'}} rounded-full">
-        <i class="fa-solid fa-{{auth()->user()->isFollowing($viewliked->user) ? 'check' : 'plus'}}"></i>
+        <i class="fas fa-{{auth()->user()->isFollowing($viewliked->user) ? 'check' : 'plus'}}"></i>
       </button>
       @endif
     </div>
     @empty
     <p class="text-lg text-center p-20 font-bold">No people who liked yet</p>
     @endforelse
-    <button id="close-modal" class="absolute top-1 right-3 text-lg mt-4 text-black"><i class="fa-solid fa-xmark"></i></button>
+    <button id="close-modal" class="absolute top-1 right-3 text-lg mt-4 text-black"><i class="fas fa-times"></i></button>
   </div>
 </div>
 

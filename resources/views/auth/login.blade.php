@@ -52,7 +52,7 @@
                         @enderror
                     </div>
                       <!-- Google reCAPTCHA v2 checkbox -->
-  <div class="g-recaptcha" data-sitekey="{{env('GOOGLE_SITEKEY')}}"></div>
+                    <div class="g-recaptcha" data-sitekey="{{env('GOOGLE_SITEKEY')}}"></div>
                     
                     <div class="flex flex-wrap">
                         <button type="submit"

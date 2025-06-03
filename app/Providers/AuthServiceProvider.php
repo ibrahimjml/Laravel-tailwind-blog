@@ -33,9 +33,11 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
-
+         Gate::before(function ($user, $ability) {
+        return $user->hasPermission($ability) ? true : null;
+    });
         Gate::define("makeAdminActions", function ($user) {
-          return ($user->email == "admin@mail.ru" || $user->is_admin === 1);
+          return $user->hasAnyRole(['Admin', 'Moderator']) || $user->hasPermission('Access');
       });
   
     }

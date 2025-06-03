@@ -29,15 +29,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::table('users')->insert([
-          'name' => 'admin',
-          'username'=>'admin123',
-          'email' => env('ADMIN_EMAIL'),
-          'password' => Hash::make(env('ADMIN_PASS')),
-          'is_admin' => 1,
-          'avatar' => 'default.jpg',
-          'created_at' => Carbon::now(),
-        ]);
     }
 
     /**
