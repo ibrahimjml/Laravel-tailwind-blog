@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
   AdminController,
   NotificationsController,
+  TagsController,
     PermissionsController,
     RolesController,
     SettingController
@@ -118,19 +119,23 @@ Route::prefix('admin')
       Route::get('/panel', 'admin')->name("admin-page");
       Route::get('/users', 'users')->name('admin.users');
       Route::get('/posts', 'posts')->name('admin.posts');
-  
-      Route::get('/hashtags', 'hashtagpage')->name('hashtagpage');
-      Route::post('/create/tag', 'create_tag')->name('create.hashtag');
-      Route::put('/edit/{hashtag}', 'edit_tag')->name('edit.hashtag');
-      Route::delete('/delete/{hashtag}', 'delete_tag')->name('delete.hashtag');
-  
+      // create user
+      Route::post('/create/user','createuser')->name('create.user');
+      Route::put('/edit/{user}','updateuser')->name('update.user');
+      // create feature post
       Route::get('/featured', 'featuredpage')->name('featuredpage');
       Route::post('/featured', 'features')->name('admin.featured');
-  
+      // update user role
       Route::put('/role-update/{user}', 'role')->name('role.update');
-  
+      // block user
       Route::post('/block/{user}', 'block')->name('block.user');
       Route::post('/unblock/{user}', 'unblock')->name('unblock.user');
+    });
+    Route::controller(TagsController::class)->group(function(){
+    Route::get('/hashtags', 'hashtagpage')->name('hashtagpage');
+    Route::post('/create/tag', 'create_tag')->name('create.hashtag');
+    Route::put('/edit/{hashtag}', 'edit_tag')->name('edit.hashtag');
+    Route::delete('/delete/{hashtag}', 'delete_tag')->name('delete.hashtag');
     });
   Route::delete('/admin/delete/{user}', [AdminController::class, 'destroy'])->name('delete.user');
   Route::get('/notifications', [NotificationsController::class,'notifications'])->name('admin.notify');

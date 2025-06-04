@@ -12,8 +12,12 @@
       onchange="this.form.submit()" class="rounded-full w-4 h-4">
       <label class="text-white font-semibold" for="blocked">Blocked</label>
     </form>
-    </div>
-
+  </div>
+  @can('user.create')
+  <div class="flex justify-end">
+<button id="openUserModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6" href="{{route('roles.create')}}">create user</button>
+</div>
+@endcan
   </div>
 </div>
 <div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow w-[80%] left-6">
@@ -22,10 +26,9 @@
     <tr class="bg-gray-600">
       <th class="text-white p-2">#</th>
       <th class="text-white p-2">Avatar</th>
-      <th class="text-white p-2 w-1/4 text-left">User</th>
+      <th class="text-white p-2 text-left">User</th>
       <th class="text-white p-2 ">Role</th>
-      <th class="text-white p-2 ">Followings</th>
-      <th class="text-white p-2 ">Followers</th>
+      <th class="text-white p-2 ">Permissions</th>
       <th class="text-white p-2">CreatedAt</th>
       <th class="text-white p-2">Verified</th>
       <th class="text-white p-2">Phone</th>
@@ -50,7 +53,7 @@
       <p>{{$user->email}}</p>
       </div>
       </td>
-      <td class="p-2 flex justify-center w-32">
+      <td class="p-2 flex justify-start w-40">
       @can('user.role')
       <form action="{{route('role.update', $user)}}" method="POST">
       @csrf
@@ -60,7 +63,7 @@
         onchange="this.form.submit()"
         class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-gray-600 text-white text-sm rounded-lg w-full p-2.5">
          @foreach ($roles as $role)
-        <option value="{{ $role->name }}" {{ $user->roles->contains('name', $role->name) ? 'selected' : '' }}>
+        <option value="{{ $role->name }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>
           {{ ucfirst($role->name) }}
         </option>
       @endforeach
@@ -79,8 +82,18 @@
       Admin</p>
     @endcan
       </td>
-      <td class="p-2">{{$user->followings->count()}}</td>
-      <td class="p-2">{{$user->followers->count()}}</td>
+      <td class="p-2">
+        <div class="flex flex-wrap gap-2 justify-center items-center ">
+        @forelse ($user->getAllPermissions()->take(3) as $name)
+            <span class="bg-gray-200 text-sm text-black px-2 py-1 rounded">
+             {{$name}}
+            </span>
+            @empty
+            <i class="fas fa-times text-red-600"></i>
+        @endforelse
+        </div>
+      </td>
+
       <td class=" p-2">{{$user->created_at->diffForHumans()}}</td>
       <td class=" p-2">
       <div class="flex justify-center">
@@ -138,9 +151,14 @@
       @endcan
       @endif
       </div>
-      </div>
-      </td>
-    </tr>
+      @can('user.edit')
+      <button data-user-id="{{ $user->id }}" class="editusers text-gray-500 rounded-lg p-2 cursor-pointer hover:text-gray-300" ><i class="fas fa-edit"></i></button>
+      @endcan
+    </div>
+  </td>
+</tr>
+{{-- user edit model --}}
+@include('admin.partials.edit-user-model',['permissions'=>$permissions,'roles'=>$roles,'user'=>$user])
     @empty
     <h4 class="text-center font-bold">Sorry, column not found</h4>
     @endforelse
@@ -150,4 +168,45 @@
   <div class="relative md:ml-64 md:w-[80%] md:left-4">
     {!! $users->links() !!}
   </div>
+  {{-- create user model --}}
+  @include('admin.partials.create-user-model',['permissions'=>$permissions,'roles'=>$roles])
+  
 @endsection
+
+@push('scripts')
+<script>
+    const showmenu = document.getElementById('openUserModel');
+  const closemenu = document.getElementById('closeModel');
+  const menu = document.getElementById("Model");
+
+  if (showmenu && closemenu && menu) {
+    showmenu.addEventListener('click', () => {
+      if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
+      }
+    });
+
+    closemenu.addEventListener('click', () => {
+      if (menu.classList.contains('fixed')) {
+        menu.classList.add('hidden');
+      }
+    });
+  }
+</script>
+<script>
+  document.querySelectorAll('.editusers').forEach(button => {
+    const userId = button.dataset.userId;
+    const modal = document.getElementById(`editModel-${userId}`);
+    const closeBtn = document.getElementById(`closeEditModel-${userId}`);
+
+    button.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+  });
+</script>
+
+@endpush

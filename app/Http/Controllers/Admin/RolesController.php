@@ -60,7 +60,7 @@ class RolesController extends Controller
         ], 422);
     }
 
-        $role = Role::findOrFail($id);
+        $role = Role::find($id);
         $role->update(['name' => $data['name']]);
 
   
@@ -77,7 +77,7 @@ class RolesController extends Controller
 
     public function destroy(string $id)
     {
-      $role = Role::findOrFail( $id );
+      $role = Role::find( $id );
       $role->permissions()->detach();
       $role->delete();
     return response()->json([

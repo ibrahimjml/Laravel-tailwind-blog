@@ -2,24 +2,32 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\CreatePostRequest;
 use App\Models\Hashtag;
+use App\Models\Permission;
 use App\Models\Post;
 use App\Models\User;
+use App\Services\PostHashtagsService;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Role;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
+use Intervention\Image\Laravel\Facades\Image;
 
 class AdminController extends Controller
 {
     public function __construct()
   {
-    $this->middleware('permission:tag.view')->only('hashtagpage');
-    $this->middleware('permission:tag.create')->only('create_tag');
-    $this->middleware('permission:tag.update')->only('edit_tag');
-    $this->middleware('permission:tag.delete')->only('delete_tag');
+
     $this->middleware('permission:user.view')->only('users');
+    $this->middleware('permission:user.create')->only('createuser');
+    $this->middleware('permission:user.edit')->only('updateuser');
     $this->middleware('permission:user.block')->only(['block','unblock']);
     $this->middleware('permission:user.role')->only('role');
     $this->middleware('permission:user.delete')->only('destroy');
@@ -51,8 +59,8 @@ class AdminController extends Controller
   {
     $blocked = $request->has('blocked') ? 1 : null;
 
-  $users = User::with(['roles','followings','followers']) 
-               ->select('id','name','username','email','avatar','created_at','phone','age','is_blocked','email_verified_at','is_admin')
+  $users = User::with(['roles','roles.permissions','userPermissions']) 
+               ->select('id','name','username','email','avatar','created_at','phone','age','is_blocked','email_verified_at')
                ->latest()
                ->search($request->only('search'))
                ->when($blocked, function($q){
@@ -64,10 +72,52 @@ class AdminController extends Controller
     return view('admin.users',[
       'users'=>$users,
       'filter'=>$request->only(['search','blocked']),
+      'permissions' => Permission::all(),
       'roles'=>$roles
     ]);
   }
+public function createuser(CreateUserRequest $request)
+{
+ $fields = $request->validated();
 
+   $fields['password'] = Hash::make($fields['password']);
+  $user = User::create($fields);
+    
+        $user->roles()->sync($fields['roles']);
+       $newRole = Role::find($fields['roles']);
+
+        if ($newRole && $newRole->name === 'User') {
+            $user->userPermissions()->sync($request->permissions ?? []);
+        } else {
+            $user->userPermissions()->detach();
+        }
+    toastr()->success('user created',['timeOut'=>1000]);
+    return back();
+}
+public function updateuser(UpdateUserRequest $request, User $user)
+{
+    $fields = $request->validated();
+   if (!empty($fields['password'])) {
+        $fields['password'] = Hash::make($fields['password']);
+    } else {
+        unset($fields['password']);
+    }
+    $user->update($fields);
+  
+     if (isset($fields['roles'])) {
+        $user->roles()->sync([$fields['roles']]);
+        $newRole = Role::find($fields['roles']);
+
+        if ($newRole && $newRole->name === 'User') {
+            $user->userPermissions()->sync($request->permissions ?? []);
+        } else {
+            $user->userPermissions()->detach();
+        }
+    }
+    
+      toastr()->success('user updated',['timeOut'=>1000]);
+    return back();
+}
   public function posts(Request $request)
   {
     $sort = $request->get('sort', 'latest'); 
@@ -91,102 +141,41 @@ class AdminController extends Controller
       'filter'=>$request->only('search','sort','featured')
     ]);
   }
-
-public function create_tag(Request $request){
-  $fields = $request->validate([
-  'name' =>'required|string'
-  ]);
- $hashtag = Hashtag::create($fields);
-  return response()->json([
-    'added'=>true,
-    'hashtag' => $hashtag->name
-  ]);
-}
-
-  public function hashtagpage(){
-    return view('admin.hashtags',[
-      'hashtags' => Hashtag::paginate(6)
-    ]);
-  }
-
-public function edit_tag(Hashtag $hashtag, Request $request){
-  $fields = $request->validate([
-    'name' =>'required|string'
-    ]);
-    $hashtag->update($fields);
-    $hashtag->save();
-    return response()->json([
-      'edited'=>true,
-      'message' => "Hashtag {$hashtag->name} updated",
-      'hashtag' => $hashtag->name
-    ]);
-}
-
-  public function delete_tag(Hashtag $hashtag){
-    $name = $hashtag->name;
-    $hashtag->delete();
-    return response()->json([
-      'deleted' => true,
-      'message' => "Hashtag {$name} deleted"
-  ]);
-  }
-
 public function featuredpage(){
   return view('admin.featuredposts',[
     'allhashtags' => Hashtag::pluck('name')
   ]);
 }
 
-  public function features(Request $request){
+  public function features(CreatePostRequest $request,PostHashtagsService $tagsservice){
+  
     $isFeatured = $request->has('featured') ? true : false;
-    $fields=$request->validate([
-      'title'=>'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50',
-      'description'=>'required|string',
-      'hashtag' => ['nullable', 'string', function ($attribute, $value, $fail) {
-        $tags = array_filter(array_map('trim', explode(',', $value)));
-        if (count($tags) > 5) {
-            $fail('You can only select up to 5 hashtags.');
-        }
-  }],
-      'image'=>'required|mimes:jpg,png,jpeg|max:5000000',
-      'featured'=>'nullable|boolean'
-  ],
-  ['title.regex'=>'The title accept only letters,numbers and spaces',
-]);
+    $fields = $request->validated();
 
   $fields['title'] = htmlspecialchars(strip_tags($fields['title']));
-  $fields['description'] = $fields['description'];
+    $allow_comments = $request->has('enabled') ? 1 : 0;
+    $slug = Str::slug($fields['title']);
 
-  $slug = Str::slug($fields['title']);
-  
-  
-  $newimage= uniqid().'-'.$slug.'.'.$fields['image']->extension();
-  $fields['image']->move(public_path('images'),$newimage);
+
+    $newimage = uniqid() . '-' . $slug . '.' . $fields['image']->extension();
+    $image = Image::read($request->file('image'))
+    ->resize(1300, 600)
+    ->encode();
+    Storage::disk('public')->put("uploads/{$newimage}", $image);
 
   $post = Post::create([
-    'title'=>$request->input('title'),
-    'description'=>$request->input('description'),
-    'slug'=>$slug,
-    'image_path'=>$newimage,
-    'user_id'=>auth()->user()->id,
-    'is_featured'=>$isFeatured
+      'title' => $request->input('title'),
+      'description' => $request->input('description'),
+      'slug' => $slug,
+      'image_path' => $newimage,
+      'allow_comments' => $allow_comments,
+      'user_id' => auth()->user()->id,
+      'is_featured'=>$isFeatured
   ]);
 
-$hashtagNames = [];
-
-if ($request->filled('hashtag')) {
-  $hashtags = explode(',', $request->input('hashtag'));
-
-  foreach ($hashtags as $hashtag) {
-      $hashtag = strip_tags(trim($hashtag)); 
-
-      if ($hashtag) {
-          $hashtagModel = Hashtag::firstOrCreate(['name' => $hashtag]);
-          $post->hashtags()->attach($hashtagModel->id);
-          $hashtagNames[] = $hashtagModel->name;
-      }
+if (request()->filled('hashtag')) {
+      $tagsservice->attachhashtags($post,$request->input('hashtag'));
   }
-}
 toastr()->success('post feature created',['timeOut'=>1000]);
 return back();
   }

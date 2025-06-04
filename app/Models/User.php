@@ -81,9 +81,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
   public function hasAnyPermission(array $permissions): bool
 {
-    return $this->roles->flatMap->permissions->pluck('name')->intersect($permissions)->isNotEmpty();
+    $rolePermissions = $this->roles->flatMap->permissions->pluck('name');
+    $userPermissions = $this->userPermissions->pluck('name');
+    return $rolePermissions->merge($userPermissions)->intersect($permissions)->isNotEmpty();
 }
+public function getAllPermissions()
+{
+    $rolePermissions = $this->roles->flatMap->permissions->pluck('name');
+    $userPermissions = $this->userPermissions->pluck('name');
 
+    return $rolePermissions->merge($userPermissions)->unique();
+}
 public function scopeSearch($query,$search)
 {
   if(isset($search['search'])){

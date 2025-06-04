@@ -41,19 +41,12 @@
       <div class="flex flex-col space-y-2 w-full">
         <label for="hashtagInput" class="block text-gray-700 text-sm font-bold mb-1">Hashtags:</label>
       
-        <!-- Hidden input to store comma-separated tags -->
         <input type="hidden" name="hashtag" id="hashtagsHidden">
       
         <!-- Tag container -->
         <div id="tagContainer" class="flex flex-wrap gap-2 mb-2"></div>
       
-        <!-- Input for adding new tags -->
-        <input
-          type="text"
-          id="hashtagInput"
-          placeholder="Type a hashtag and press Enter"
-          class="rounded-sm p-2 border-2 w-full"
-        />
+        <input  type="text" id="hashtagInput" placeholder="Type a hashtag and press Enter" class="rounded-sm p-2 border-2 w-full"/>
         @error('hashtag')
         <p class="text-red-500 text-xs italic mt-4">
             {{ $message }}
@@ -84,13 +77,21 @@
     name="featured" value="1"    {{ old('featured') ? 'checked' : '' }} autocomplete="featured" autofocus placeholder="[laravel,php] with comma separated">Featured
   </div>
       
-  
       @error('featured')
       <p class="text-red-500 text-xs italic mt-4">
           {{ $message }}
       </p>
       @enderror
   </div>
+    <div class="bg-gray-600  rounded-md p-2 h-11 w-fit">
+      <input type="checkbox" name="enabled" id="enabled" value="1" {{ old('enabled') ? 'checked' : '' }}>
+        <label class="text-white font-semibold" for="enabled">Enable comments</label>
+        @error('enabled')
+        <p class="text-red-500 text-xs italic mt-4">
+            {{ $message }}
+        </p>
+        @enderror
+    </div>
       <div class="mt-4 flex justify-center">
         <button type="submit"
         class="w-[200px]  select-none font-bold  p-3 rounded-lg text-xl  no-underline text-gray-100 bg-gray-700 hover:bg-gray-500 sm:py-4">

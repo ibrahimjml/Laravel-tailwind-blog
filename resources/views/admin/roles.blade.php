@@ -7,7 +7,7 @@
 
 <div class="w-[90%] -m-24 mx-auto">
 
-@can('role.view')
+@can('role.create')
 <div class="flex justify-end">
   <button id="openRoleModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6" href="{{route('roles.create')}}">create role</button>
 </div>
