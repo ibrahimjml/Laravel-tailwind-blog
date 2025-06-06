@@ -17,7 +17,6 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 use Intervention\Image\Laravel\Facades\Image;
 
 class AdminController extends Controller
@@ -28,9 +27,10 @@ class AdminController extends Controller
     $this->middleware('permission:user.view')->only('users');
     $this->middleware('permission:user.create')->only('createuser');
     $this->middleware('permission:user.edit')->only('updateuser');
-    $this->middleware('permission:user.block')->only(['block','unblock']);
+    $this->middleware('permission:user.block')->only('toggle_block');
     $this->middleware('permission:user.role')->only('role');
     $this->middleware('permission:user.delete')->only('destroy');
+    $this->middleware('permission:post.feature')->only('toggle_feature');
   }
   public function admin(){
   
@@ -187,21 +187,28 @@ return back();
     toastr()->success('user deleted',['timeOut'=>1000]);
     return back();
   }
-  public function block(User $user){
+  public function toggle_block(User $user){
     $this->authorize('block',$user);
-    $user->is_blocked = true;
-    $user->save();
-    toastr()->success('user blocked',['timeOut'=>1000]);
-    return back();
+    $user->update(['is_blocked' => !$user->is_blocked]);
+    if($user->is_blocked){
+    toastr()->success('user blocked success',['timeOut'=>1000]);
+  }else{
+      toastr()->success('user unblocked success',['timeOut'=>1000]);
   }
-  public function unblock(User $user){
-    $this->authorize('block',$user);
-    $user->is_blocked = false;
-    $user->save();
-    toastr()->success('user unblocked successfuly',['timeOut'=>1000]);
-    return back();
+      return redirect()->back();
   }
 
+ public function toggle_feature(Post $post)
+ {
+  $this->authorize('make_feature',$post);
+  $post->update(['is_featured'=>!$post->is_featured]);
+  if($post->is_featured){
+    toastr()->success('post featured success',['timeOut'=>1000]);
+  }else{
+      toastr()->success('post unfeatured success',['timeOut'=>1000]);
+  }
+  return redirect()->back();
+ }
   public function role(Request $request,User $user)
   {
     $this->authorize('role',$user);

@@ -1,9 +1,9 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
-  AdminController,
-  NotificationsController,
-  TagsController,
+    AdminController,
+    NotificationsController,
+    TagsController,
     PermissionsController,
     RolesController,
     SettingController
@@ -61,10 +61,12 @@ Route::post('/image-delete', [TinyMCEController::class, 'deleteImage'])->name('t
 // Edit user settings
 Route::controller(ProfileController::class)->group(function(){
 // User Profile 
-Route::get('/@{user:username}','Home')->name('profile');
+Route::middleware('can:view,user')->group(function(){
+ Route::get('/@{user:username}','Home')->name('profile');
  Route::get('/@{user:username}/activity','activity')->name('profile.activity');
  Route::get('/@{user:username}/about','aboutme')->name('profile.aboutme');
-// Edit Profile Image
+});
+ // Edit Profile Image
 Route::get('/edit-avatar/{user}','editpage');
 Route::put('/edit-avatar/{user}/edit','edit');
 Route::delete('/delete-avatar/{user}','destroyavatar')->name('delete.avatar');
@@ -86,25 +88,19 @@ Route::delete('/account-delete/{user}','deleteaccount')->name('account.delete');
 
 // Like
 Route::post('/post/{post}/like',[PostController::class,'like']);
-
 // Follow
 Route::post('/user/{user}/togglefollow',[PublicController::class,'togglefollow'])->name('toggle.follow');
-
 // Search
 Route::get('/search',[PublicController::class,'search'])->name('blog.search');
-
 // Comments
 Route::post('/comment/{post}',[CommentController::class,'comment']);
 Route::post('/reply/{comment}',[CommentController::class,'reply']);
 Route::put('/comment/edit/{comment}',[CommentController::class,'editcomment'])->name('edit.comment');
 Route::delete('/comment/{comment}',[CommentController::class,'deletecomment'])->name('delete.comment');
-
 // Save Post
 Route::post('/saved-post',[PostController::class,'save']);
-
 // Saved Posts Page
 Route::get('/getsavedposts',[PostController::class,'getsavedposts'])->name('bookmarks');
-
 // notifications
 Route::get('/notifications/{id}/read', [NotificationController::class, 'markasread'])->name('notifications.read');
 Route::delete('/notifications/{id}/delete', [NotificationController::class, 'delete'])->name('notifications.delete');
@@ -125,11 +121,12 @@ Route::prefix('admin')
       // create feature post
       Route::get('/featured', 'featuredpage')->name('featuredpage');
       Route::post('/featured', 'features')->name('admin.featured');
+      //toggle featured posts
+      Route::put('/toggle/feature/{post}','toggle_feature')->name('toggle.feature');
       // update user role
       Route::put('/role-update/{user}', 'role')->name('role.update');
-      // block user
-      Route::post('/block/{user}', 'block')->name('block.user');
-      Route::post('/unblock/{user}', 'unblock')->name('unblock.user');
+      //toggle blocked user status
+      Route::put('/toggle/block/{user}', 'toggle_block')->name('toggle.block');
     });
     Route::controller(TagsController::class)->group(function(){
     Route::get('/hashtags', 'hashtagpage')->name('hashtagpage');
@@ -137,12 +134,15 @@ Route::prefix('admin')
     Route::put('/edit/{hashtag}', 'edit_tag')->name('edit.hashtag');
     Route::delete('/delete/{hashtag}', 'delete_tag')->name('delete.hashtag');
     });
+    Route::resource('roles',RolesController::class);
+    Route::resource('permissions',PermissionsController::class);
   Route::delete('/admin/delete/{user}', [AdminController::class, 'destroy'])->name('delete.user');
   Route::get('/notifications', [NotificationsController::class,'notifications'])->name('admin.notify');
-  Route::get('/settings', [SettingController::class,'settings'])->name('admin.settings');
-  Route::post('/settings/{user}', [SettingController::class,'update_settings'])->name('admin.update');
-  Route::post('/settings-pass/{user}', [SettingController::class,'update_pass'])->name('admin.pass');
-  Route::put('/settings-aboutme/{user}', [SettingController::class,'update_aboutme'])->name('admin.aboutme');
-  Route::resource('roles',RolesController::class);
-  Route::resource('permissions',PermissionsController::class);
+  
+  Route::controller(SettingController::class)->group(function(){
+  Route::get('/settings', 'settings')->name('admin.settings');
+  Route::post('/settings/{user}', 'update_settings')->name('admin.update');
+  Route::post('/settings-pass/{user}', 'update_pass')->name('admin.pass');
+  Route::put('/settings-aboutme/{user}', 'update_aboutme')->name('admin.aboutme');
+  });
 });

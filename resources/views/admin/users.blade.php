@@ -68,18 +68,17 @@
         </option>
       @endforeach
         </select>
-        <!-- Custom white arrow -->
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path d="M19 9l-7 7-7-7" />
+        <!-- white arrow -->
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-white">
+        <i class="fas fa-caret-down"></i>
         </svg>
         </div>
       </div>
       </form>
     @else
       <p
-      class="cursor-not-allowed bg-gray-600 text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 ">
-      Admin</p>
+      class="cursor-not-allowed bg-gray-600 font-bold text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 ">
+      {{$user->roles->pluck('name')->implode(',')}}</p>
     @endcan
       </td>
       <td class="p-2">
@@ -118,7 +117,7 @@
       <td colspan="2" class=" bg-white text-white p-2">
       <div class="flex justify-center gap-2">
       <div>
-      @can('user.delete')
+      @can('delete',$user)
       <form action="{{ route('delete.user', $user) }}" method="POST"
       onsubmit="return confirm('Are you sure you want to delete this user?');">
       @csrf
@@ -131,25 +130,15 @@
 
 
       <div>
-      @if($user->is_blocked)
-      @can('user.block')
-      <form action="{{ route('unblock.user', $user) }}" method="POST"
-      onsubmit='return confirm("Are you sure you want to unblock {{$user->name}} ?");'>
+      @can('block',$user)
+      <form action="{{ route('toggle.block', $user->id) }}" method="POST"
+      onsubmit='return confirm("Are you sure you want to {{$user->is_blocked ? "unblock":"block"}} {{$user->name}} ?");'>
       @csrf
+      @method("PUT")
       <button type="submit" class="text-yellow-500 rounded-lg p-2 hover:text-yellow-400 "><i
-      class="fas fa-undo"></i></button>
+      class="fas {{$user->is_blocked ? "fa-undo":"fa-ban"}}"></i></button>
       </form>
       @endcan
-      @else
-      @can('user.block')
-      <form action="{{ route('block.user', $user) }}" method="POST"
-      onsubmit="return confirm('Are you sure you want to block {{$user->name}} ?');">
-      @csrf
-      <button type="submit" class="text-yellow-500 rounded-lg p-2 hover:text-yellow-400 "><i
-      class="fas fa-ban"></i></button>
-      </form>
-      @endcan
-      @endif
       </div>
       @can('user.edit')
       <button data-user-id="{{ $user->id }}" class="editusers text-gray-500 rounded-lg p-2 cursor-pointer hover:text-gray-300" ><i class="fas fa-edit"></i></button>

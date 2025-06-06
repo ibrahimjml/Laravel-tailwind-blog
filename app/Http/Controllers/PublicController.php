@@ -81,7 +81,8 @@ return response()->json(['attached'=>$attached]);
        'post' => $post,
        'totalcomments'=> Comment::where('post_id', $post->id)->count(),
        'morearticles' => $morearticles,
-       'viewwholiked' => $viewwholiked
+       'viewwholiked' => $viewwholiked,
+       'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
     ],$meta));
   }
 

@@ -12,8 +12,11 @@
         </div>
       </a> 
       @if(auth()->user()->id !== $viewliked->user->id)
-      <button data-id="{{$viewliked->user->id}}" onclick="follow(this)" class="w-5 h-5 text-xs ml-auto text-white {{auth()->user()->isFollowing($viewliked->user) ? 'bg-green-500' : 'bg-gray-500'}} rounded-full">
-        <i class="fas fa-{{auth()->user()->isFollowing($viewliked->user) ? 'check' : 'plus'}}"></i>
+          @php
+           $isFollowing = in_array($viewliked->user_id, $authFollowings);
+           @endphp
+      <button data-id="{{$viewliked->user->id}}" onclick="follow(this)" class="w-5 h-5 text-xs ml-auto text-white {{$isFollowing ? 'bg-green-500' : 'bg-gray-500'}} rounded-full">
+        <i class="fas fa-{{$isFollowing ? 'check' : 'plus'}}"></i>
       </button>
       @endif
     </div>

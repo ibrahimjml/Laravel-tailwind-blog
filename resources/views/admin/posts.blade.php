@@ -99,8 +99,15 @@
       @endcan
       <a class=" rounded-lg text-gray-700 p-2  hover:text-gray-400 transition-colors duration-100"
       href="/post/{{$post->slug}}"><i class="fas fa-eye"></i></a>
-      <a href="" class="rounded-lg text-yellow-600 p-2  hover:text-yellow-400 transition-colors duration-100"><i
-        class="fas fa-star"></i></a>
+    @can('make_feature', $post)
+     <form action="{{ route('toggle.feature', $post->id) }}" method="POST" onsubmit="return confirm('Toggle featured status?');">
+      @csrf
+      @method('PUT')
+      <button type="submit" class="rounded-lg text-yellow-600 p-2 hover:text-yellow-400 transition-colors duration-100">
+        <i class="{{ $post->is_featured ? 'fas' : 'far' }} fa-star"></i>
+      </button>
+      </form>
+     @endcan
       </div>
       </td>
     </tr>

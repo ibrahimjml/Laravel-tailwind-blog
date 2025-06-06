@@ -7,11 +7,14 @@ use App\Models\User;
 
 class Userpolicy
 {
-   public function before(User $user, string $ability): bool|null
+   public function before(User $user, string $ability,?User $model = null): bool|null
     {
         if ( $user->hasRole('Admin')) {
             return true; 
         }
+          if ($model instanceof User && $model->hasRole('Admin')) {
+        return false;
+    }
        $permission = "user.$ability";
     
     if ( $user->hasPermission($permission)) {
@@ -24,7 +27,6 @@ class Userpolicy
       return  $user->id === $model->id ;
     }
 
-  
     public function update(User $user, User $model): bool
     {
       return  $user->id === $model->id ;

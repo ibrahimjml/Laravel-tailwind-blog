@@ -37,7 +37,7 @@ class PermissionsController extends Controller
   
     public function update(Request $request, string $id)
     {
-      $permission = Permission::findOrFail($id);
+      $permission = Permission::find($id);
           $fields = $request->validate([
     'name' =>'required|string'
     ]);
@@ -54,7 +54,7 @@ class PermissionsController extends Controller
      */
     public function destroy(string $id)
     {
-          $permission = Permission::findOrFail( $id );
+      $permission = Permission::find( $id );
       $permission->roles()->detach();
       $permission->delete();
     return response()->json([
