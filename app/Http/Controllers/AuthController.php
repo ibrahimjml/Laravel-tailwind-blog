@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Events\NewRegistered;
 use App\Helpers\MetaHelpers;
+use App\Http\Requests\RegisterRequest;
 use App\Models\Role;
 use App\Models\User;
 use App\Rules\Recaptcha;
 use Illuminate\Support\Str;
 use App\Mail\ForgotPassword;
+use App\Services\RegisterUserService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -26,35 +28,11 @@ class AuthController extends Controller
     
   }
 
-  public function register(Request $request)
+  public function register(RegisterRequest $request,RegisterUserService $service)
   {
-
-    $fields = $request->validate([
-      "email" => ["required", "email", "min:5", "max:50", Rule::unique("users", "email")],
-      "name" => ["required", "min:5", "max:50", "alpha"],
-      "username" => ["required", "min:5", "max:15", "alpha_num",Rule::unique('users','username')],
-      "phone" => ['required', 'regex:/^\+\d{8,15}$/', Rule::unique("users", "phone")],
-      "password" => ["required", "alpha_num", "min:8", "max:32", "confirmed"],
-      "age" => ["required", "integer", "between:18,64"]
-    ],[
-      'phone.regex'=>'The phone number must include a valid country code.'
-    ]);
-
-    $fields['password'] = bcrypt($fields['password']);
-    $fields['email'] = trim(strip_tags($fields['email']));
-    $fields['name'] = trim(strip_tags($fields['name']));
-    $fields['username'] = trim(strip_tags($fields['username']));
-
-    $user = User::create($fields);
-    $role = Role::firstOrCreate(['name' => 'User']);
-    $user->roles()->syncWithoutDetaching([$role->id]);
-
-    event(new Registered($user));
-    // notify admin with new user
-    event(new NewRegistered($user));
-    auth()->login($user);
+    $service->register($request->validated());
     toastr()->success('Account created successfully',['timeOut'=>1000]);
-    return redirect('/');
+    return to_route('home');
   }
 
   public function loginpage()
