@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ProfileViewedEvent;
 use App\Helpers\MetaHelpers;
 use App\Http\Middleware\CheckIfBlocked;
 use App\Models\ProfileView;
 use App\Models\User;
-use App\Services\ProfileViewNotify;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -30,20 +30,19 @@ class ProfileController extends Controller
         'profileviews' => ProfileView::where('profile_id', $user->id)->with('viewer')->get(),
     ], $meta);
 }
-  public function Home(User $user,ProfileViewNotify $notifier)
+  public function Home(User $user)
   {
     $user = User::where('username', $user->username)->firstOrFail();
     $viewer = auth()->user();
 
      // create profile view
-     if ($viewer->id !== $user->id) {
+     if ($viewer->id !== $user->id && !$viewer->is_admin) {
       ProfileView::firstOrCreate([
           'viewer_id' => auth()->id(),
           'profile_id' => $user->id,
       ]);
   }
-
-    $notifier->notifyview($viewer,$user);
+   event(new ProfileViewedEvent($user, $viewer));
   
   $posts = $user->post()->latest()->get();
 

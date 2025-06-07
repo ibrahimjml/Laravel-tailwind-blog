@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ReplyCommentEvent;
 use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Comment;
 use App\Models\Post;
-use App\Models\User;
-use App\Notifications\RepliedCommentNotification;
 use Illuminate\Http\Request;
 
 
@@ -78,16 +77,8 @@ public function reply(Comment $comment, Request $request){
       $fields['post_id']=$comment->post_id;
       
      $reply = Comment::create($fields);
-     $replier = $reply->user;
-     $post= $comment->post;
-     if($comment->user->id !== auth()->user()->id){
-       $comment->user->notify(new RepliedCommentNotification($comment,$reply,$replier,$post));
-     }
+     event(new ReplyCommentEvent($reply, $comment));
 
-// Notify  admins
-User::where('is_admin', true)->get()->each(function ($admin) use ($comment,$reply, $replier,$post) {
-  $admin->notify(new RepliedCommentNotification($comment, $reply, $replier,$post));
-   });
       toastr()->success('Reply added successfully',['timeOut'=>1000]);
       return response()->json([
         'replied' => true,

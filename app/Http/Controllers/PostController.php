@@ -9,22 +9,23 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Models\Hashtag;
 use App\Models\Post;
 use App\Services\PostHashtagsService;
+use App\Services\PostService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Traits\ImageUploadTrait;
 use Illuminate\Support\Str;
-use Intervention\Image\Laravel\Facades\Image;
+
 
 
 class PostController extends Controller
 {
-
+  use ImageUploadTrait;
   public function __construct()
   {
     $this->middleware(['auth', 'verified', CheckIfBlocked::class]);
     $this->middleware('password.confirm')->only('editpost');
   }
 
-  public function blogpost(Request $request)
+  public function blogpost(Request $request, PostService $sort)
   {
 
     $sortoption = $request->get('sort', 'latest');
@@ -32,51 +33,8 @@ class PostController extends Controller
       ->with(['user:id,username,avatar', 'hashtags:id,name'])
       ->withCount('likes','totalcomments');
 
-    switch ($sortoption) {
-      case 'latest';
-        $posts->latest();
-        break;
-
-      case 'oldest';
-        $posts->oldest();
-        break;
-
-      case 'mostliked':
-        $posts->orderByDesc('likes_count');
-        break;
-
-        case 'followings':
-        $followings = auth()->user()->followings->pluck('id');
-        $posts->whereIn('user_id',$followings);
-          break;
-
-        case 'featured':
-          $posts->featured();
-          break;
-
-      case 'hashtagtrend':
-
-        $trendingHashtag = Hashtag::withCount('posts')
-          ->having('posts_count','>',0)
-          ->orderByDesc('posts_count')
-          ->first();
-
-        if ($trendingHashtag) {
-
-          $posts->whereHas('hashtags', function ($query) use ($trendingHashtag) {
-            $query->where('hashtags.id', $trendingHashtag->id);
-          });
-        } else {
-
-          $posts->whereRaw('0 = 1');
-        }
-        break;
-
-      default:
-        $posts->latest();
-        break;
-    }
-    $posts = $posts->paginate(5)->appends(['sort' => $sortoption]);
+    $sorted = $sort->sortedPosts($posts, $sortoption);
+    $posts = $sorted->paginate(5)->withQueryString();
 
     $hashtags = Hashtag::withCount('posts')->get();
 
@@ -117,19 +75,13 @@ class PostController extends Controller
 
     $fields['title'] = htmlspecialchars(strip_tags($fields['title']));
     $allow_comments = $request->has('enabled') ? 1 : 0;
-    $slug = Str::slug($fields['title']);
+    $imageslug = Str::slug($fields['title']);
 
-
-    $newimage = uniqid() . '-' . $slug . '.' . $fields['image']->extension();
-    $image = Image::read($request->file('image'))
-    ->resize(1300, 600)
-    ->encode();
-    Storage::disk('public')->put("uploads/{$newimage}", $image);
+    $newimage = $this->uploadImage($request->file('image'), $imageslug);
 
     $post = Post::create([
       'title' => $request->input('title'),
       'description' => $request->input('description'),
-      'slug' => $slug,
       'image_path' => $newimage,
       'allow_comments' => $allow_comments,
       'user_id' => auth()->user()->id
@@ -174,32 +126,21 @@ class PostController extends Controller
     ],$meta));
   }
 
-  public function update($slug, UpdatePostRequest $request)
+  public function update($slug, UpdatePostRequest $request,PostHashtagsService $tags)
   {
     $post = Post::where('slug', $slug)->firstOrFail();
     $this->authorize('update', $post);
-    $allow_comments = $request->has('enabled') ?? false;
-    $isFeatured = $request->has('featured') ?? false;
 
     $fields = $request->validated();
+    $allow_comments = $request->has('enabled') ?? false;
+    $isFeatured = $request->has('featured') ?? false;
 
     $post->title = $fields['title'];
     $post->description = $fields['description'];
     $post->allow_comments = $allow_comments;
     $post->is_featured = $isFeatured;
 
-    if (!empty($fields['hashtag'])) {
-      $hashtagNames = array_unique(array_filter(array_map('trim', explode(',', $fields['hashtag']))));
-      $hashtagIds = [];
-
-      foreach ($hashtagNames as $name) {
-          $hashtag = Hashtag::firstOrCreate(['name' => strip_tags(trim($name))]);
-          $hashtagIds[] = $hashtag->id;
-      }
-      $post->hashtags()->sync($hashtagIds);
-    } else {
-      $post->hashtags()->detach();
-    }
+   $tags->syncHashtags($post,$fields['hashtag'] ?? '');
 
     $post->save();
     toastr()->success('Post updated successfully',['timeOut'=>1000]);

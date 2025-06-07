@@ -33,7 +33,10 @@
  {{-- Sort dropdown --}}
  <div class="relative flex md:flex-row flex-col items-center justify-center gap-2 ml-2">
   <label for="sort" class="text-gray-500  font-semibold text-lg">Sort Posts :</label>
-  <form action="/blog" method="GET">
+  <form action="{{url()->current()}}" method="GET">
+      @if(request()->has('search'))
+      <input type="hidden" name="search" value="{{ request('search') }}">
+    @endif
     <select id="sort" name="sort"
             onchange="this.form.submit()"
             class="cursor-pointer bg-gray-500 text-white border border-gray-300 block  text-sm rounded-lg focus:ring-white   w-full p-2.5  ">

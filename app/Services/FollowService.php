@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Events\FollowUserEvent;
 use App\Models\User;
 use App\Notifications\FollowersNotification;
 use Illuminate\Notifications\DatabaseNotification;
@@ -26,12 +27,7 @@ class FollowService
       return false;
   } else {
       $follower->followings()->attach($user->id);
-  
-     $user->notify(new FollowersNotification($user,$follower));
-  // Notify  admins
-  User::where('is_admin', true)->get()->each(function ($admin) use ($user, $follower) {
-    $admin->notify(new FollowersNotification($user, $follower));
-     });
+      event(new FollowUserEvent($follower, $user));
       return true;
   }
 }

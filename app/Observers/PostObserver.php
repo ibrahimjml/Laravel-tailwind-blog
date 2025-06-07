@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
+use App\Events\PostCreatedEvent;
 use App\Models\Post;
-use App\Models\User;
 use App\Notifications\FollowingPostCreatedNotification;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Str;
@@ -21,16 +21,7 @@ class PostObserver
     
     public function created(Post $post){
   
-      $creator = $post->user;
-      $followers = $creator->followers->filter(fn($user) => !$user->is_admin);
-        // Notify  users
-      foreach($followers as $follower){
-        $follower->notify(new FollowingPostCreatedNotification($creator,$post));
-      }
-        // Notify  admins
-    User::where('is_admin', true)->get()->each(function ($admin) use ($creator, $post) {
-      $admin->notify(new FollowingPostCreatedNotification( $creator, $post));
-       });
+      event(new PostCreatedEvent($post));
     }
 
     public function updating(Post $post)
@@ -56,7 +47,7 @@ class PostObserver
             }
         }
 
-        // auto delete notification to follower users when auth user delete post 
+        // auto delete post notification 
         DatabaseNotification::where('type',FollowingPostCreatedNotification::class)
         ->whereJsonContains('data->postedby_id',$post->user->id)
         ->whereJsonContains('data->post_id',$post->id)

@@ -1,20 +1,35 @@
 <?php
-namespace App\Services;
 
+namespace App\Listeners;
+
+use App\Events\ProfileViewedEvent;
 use App\Models\User;
 use App\Notifications\viewedProfileNotification;
 use Carbon\Carbon;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Notifications\DatabaseNotification;
-
-class ProfileViewNotify
+class SendProfileViewNotification
 {
-  public function notifyview(User $viewer,User $profileowner)
-  {
-    if ($viewer->id === $profileowner->id ) return ;
-  
-    if($viewer->is_admin) return;
+    /**
+     * Create the event listener.
+     */
+    public function __construct()
+    {
+        //
+    }
 
-      $notifyIDs = User::where('is_admin',true)
+    /**
+     * Handle the event.
+     */
+    public function handle(ProfileViewedEvent $event): void
+    {
+      $viewer = $event->viewer;
+      $profileowner = $event->user;
+
+    if ($viewer->is_admin || $viewer->id === $profileowner->id) return;
+
+          $notifyIDs = User::where('is_admin',true)
                   ->pluck('id')
                   ->push($profileowner->id)
                   ->unique();
@@ -34,6 +49,5 @@ class ProfileViewNotify
          }
        }
      }
-    
-  }
+    }
 }

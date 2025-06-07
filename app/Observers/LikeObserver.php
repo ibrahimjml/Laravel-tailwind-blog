@@ -2,12 +2,12 @@
 
 namespace App\Observers;
 
+use App\Events\PostLikedEvent;
 use App\Models\Like;
 use App\Models\User;
 use App\Notifications\LikesNotification;
 use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\postlike;
+
 
 class LikeObserver
 {
@@ -17,18 +17,7 @@ class LikeObserver
     public function created(Like $like): void
     {
       $like->load(['user','post']);
-      $post = $like->post;
-      $liker = $like->user;
-
-      if($post->user->id !== auth()->user()->id){
-        // Mail::to($post->user)->queue(new postlike($post->user, auth()->user(), $post));
-        $post->user->notify(new LikesNotification($liker,$post));
-      }
-      // Notify  admins
-      $liker = auth()->user();
-      User::where('is_admin', true)->get()->each(function ($admin) use ($liker, $post) {
-        $admin->notify(new LikesNotification($liker,$post));
-         });
+      event(new PostLikedEvent($like));
     }
 
 

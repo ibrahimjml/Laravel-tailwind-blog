@@ -19,4 +19,19 @@ class PostHashtagsService
             }
         }
   }
+  public function syncHashtags(Post $post, ?string $hashtag)
+  {
+      if (!empty($hashtag)) {
+      $hashtags = array_unique(array_filter(array_map('trim', explode(',', $hashtag))));
+      $hashtagIds = [];
+
+      foreach ($hashtags as $name) {
+          $hashtag = Hashtag::firstOrCreate(['name' => strip_tags(trim($name))]);
+          $hashtagIds[] = $hashtag->id;
+      }
+      $post->hashtags()->sync($hashtagIds);
+    } else {
+      $post->hashtags()->detach();
+    }
+  }
 }

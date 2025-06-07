@@ -1,5 +1,7 @@
 <form action="{{route('blog.search')}}" id="search-form"  method="GET">
-  
+   @if(request()->has('sort'))
+    <input type="hidden" name="sort" value="{{ request('sort') }}">
+  @endif
   <input type="text" name="search" 
   id="search-input"
   placeholder="Search...by tags,posts"
@@ -11,9 +13,11 @@
   <span class="text-sm text-gray-700">Filtering by: <strong>{{ $searchquery }}</strong></span>
   <button id="reset-filter" class="ml-2 text-sm text-gray-500">Clear</button>
 </div>
+@push('scripts')
+    
 <script>
+  document.addEventListener('DOMContentLoaded', function () {
 
-document.addEventListener('DOMContentLoaded', function () {
   const searchInput = document.getElementById('search-input');
   const searchForm = document.getElementById('search-form');
   const appliedFilter = document.getElementById('applied-filter');
@@ -37,3 +41,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 </script>
+@endpush

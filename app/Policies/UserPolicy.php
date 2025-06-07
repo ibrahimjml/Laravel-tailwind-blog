@@ -24,9 +24,14 @@ class Userpolicy
     }
     public function view(User $user, User $model): bool
     {
-      return  $user->id === $model->id ;
+      if($user->id === $model->id) {
+        return true;
     }
-
+    if( $model->hasRole('Admin')){
+      return false;
+    }
+    return true;
+  }
     public function update(User $user, User $model): bool
     {
       return  $user->id === $model->id ;
