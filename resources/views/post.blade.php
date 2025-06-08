@@ -51,7 +51,7 @@
 </div>
 </div>
 
-{{-- like | comment | save | share Model --}}
+{{-- like | comment | TOC | save | share Model --}}
 <div id="action-bar-trigger" class="h-[1px] w-full"></div>
 
 <div id="action-bar" class=" container  mx-auto mb-5 w-fit h-14 space-x-2 flex justify-center items-center gap-2 border-2 rounded-full px-6 py-3 text-2xl bg-white transition-all duration-300 z-50">
@@ -74,6 +74,11 @@
   <span  class="text-sm">{{ $totalcomments }}</span>
 </div>
 @endif
+<div id="divider" class="h-4 w-px bg-gray-400 hidden"></div>
+<span title="table of contents" class="open-tocmodel cursor-pointer hidden">
+  <i class="fas fa-list"></i>
+</span>
+
 <div class="h-4 w-px bg-gray-400"></div>
 <span title="save" onclick="savedTo(this,{{$post->id}})" class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full   hover:bg-gray-200 transition-bg duration-150">
   <i class="fa-bookmark bookmark-icon {{in_array($post->id,session('saved-to',[])) ? 'fas' : 'far'}}"></i>
@@ -112,7 +117,7 @@
 @endforeach
 </div>
 {{-- More Articles --}}
-<p class="text-gray-500 text-lg text-center font-semibold mt-5 uppercase">More Articles</p>
+<p class="text-gray-500 text-lg text-center font-semibold mt-5 uppercase ">More Articles</p>
 <div class="flex flex-col md:flex-row  md:justify-center md:items-center md:gap-2 gap-4 mt-4 mb-3">
   @foreach($morearticles as $article)
 <div class="rounded-lg p-3 border-2 mx-auto md:mx-0 w-[400px] md:w-[500px] h-fit flex flex-col ">
@@ -137,12 +142,12 @@
 {{-- contianer random hearts--}}
 <div id="containerheart"></div>
 
+{{-- open Toc model  --}}
+@include('partials.table-of-contents-model')
 {{-- open view who liked model  --}}
 @include('partials.view-who-liked-model',['viewwholiked'=>$viewwholiked])
 
-{{-- All ----
-   scripts
- ----------}}
+{{-- All scripts ---}}
 @push('scripts')
 {{--  post menu edit and delete option--}}
 @can('view',$post)
@@ -168,17 +173,17 @@
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          // Trigger is visible (user is at bottom), show naturally
+          
           actionBar.classList.remove('fixed', 'bottom-0', 'left-1/2', '-translate-x-1/2', 'shadow-xl');
           actionBar.classList.add('relative', 'mx-auto');
         } else {
-          // Trigger is out of view — fix it to bottom
+          
           actionBar.classList.remove('relative', 'mx-auto');
           actionBar.classList.add('fixed', 'bottom-0', 'left-1/2', '-translate-x-1/2', 'shadow-xl');
         }
       });
     }, {
-      threshold: 0.5 // trigger is half-visible
+      threshold: 0.5 
     });
 
     observer.observe(trigger);

@@ -19,7 +19,6 @@ import 'prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard';
 
 
 
-
 window.addEventListener('DOMContentLoaded', () => {
   tinymce.init({
     selector: '#textarea',
@@ -28,8 +27,8 @@ window.addEventListener('DOMContentLoaded', () => {
     codesample_dialog_width: 600,
     codesample_dialog_height: 425,
     toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code codesample ',
-    license_key: 'gpl', // using the GPL version
-
+    license_key: 'gpl', 
+    
     // Image upload configuration
     images_upload_credentials: true,
 
@@ -112,7 +111,6 @@ window.addEventListener('DOMContentLoaded', () => {
     remove_script_host: false,
     forced_root_block: false,
     skin: false,
-  
 
   });
 });
