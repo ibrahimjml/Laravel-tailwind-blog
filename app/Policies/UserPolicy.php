@@ -12,6 +12,7 @@ class Userpolicy
         if ( $user->hasRole('Admin')) {
             return true; 
         }
+      
           if ($model instanceof User && $model->hasRole('Admin')) {
         return false;
     }
@@ -24,17 +25,19 @@ class Userpolicy
     }
     public function view(User $user, User $model): bool
     {
-      if($user->id === $model->id) {
-        return true;
+        if ($user->id === $model->id) return true;
+
+        if ($model->hasRole('Admin')) return false;
+
+       return true; 
     }
-    if( $model->hasRole('Admin')){
-      return false;
-    }
-    return true;
-  }
     public function update(User $user, User $model): bool
     {
       return  $user->id === $model->id ;
+    }
+    public function updateImage(User $user, User $model): bool
+    {
+    return $user->id === $model->id;
     }
     public function role(User $user, User $model): bool
     {

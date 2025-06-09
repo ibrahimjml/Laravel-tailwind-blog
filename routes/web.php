@@ -9,14 +9,15 @@ use App\Http\Controllers\Admin\{
     SettingController
 };
 use App\Http\Controllers\{
-  CommentController,
-  Hashtagcontroller,
-  HomeController,
-  NotificationController,
-  PostController,
-  ProfileController,
-  PublicController,
-  TinyMCEController
+    CommentController,
+    EditProfileController,
+    Hashtagcontroller,
+    HomeController,
+    NotificationController,
+    PostController,
+    ProfileController,
+    PublicController,
+    TinyMCEController
 
 };
 
@@ -66,10 +67,7 @@ Route::middleware('can:view,user')->group(function(){
  Route::get('/@{user:username}/activity','activity')->name('profile.activity');
  Route::get('/@{user:username}/about','aboutme')->name('profile.aboutme');
 });
- // Edit Profile Image
-Route::get('/edit-avatar/{user}','editpage');
-Route::put('/edit-avatar/{user}/edit','edit');
-Route::delete('/delete-avatar/{user}','destroyavatar')->name('delete.avatar');
+
 // Edit Profile Page
 Route::get('/edit-profile/{user:username}','editprofilepage')
 ->middleware('password.confirm')
@@ -85,7 +83,16 @@ Route::put('/change-phone/{user}','editphone');
 Route::put('/change-pass/{user}','editpassword');
 Route::delete('/account-delete/{user}','deleteaccount')->name('account.delete');
 });
-
+Route::controller(EditProfileController::class)->group(function(){
+   // Edit Profile Image
+Route::get('/edit-avatar/{user}','editavatarpage')->name('edit.avatarpage');
+Route::put('/edit-avatar/{user}/edit','editavatar')->name('edit.avatar');
+Route::delete('/delete-avatar/{user}','destroyavatar')->name('delete.avatar');
+// Edit cover photo 
+Route::get('/edit-cover/{user}','editcoverpage')->name('edit.coverpage');
+Route::put('/edit-cover/{user}/edit','editcover')->name('edit.cover');
+Route::delete('/delete-cover/{user}','destroycover')->name('delete.cover');
+});
 // Like
 Route::post('/post/{post}/like',[PostController::class,'like']);
 // Follow

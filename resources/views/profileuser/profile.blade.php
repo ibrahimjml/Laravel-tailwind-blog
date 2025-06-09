@@ -7,7 +7,7 @@
   <main class="profile-page">
     <section class="relative block h-500-px">
       <div class="absolute top-0 w-full h-full bg-center bg-cover" style="
-            background-image: url('/aditya-chinchure-XRhUTUVuXAE-unsplash.jpg');
+            background-image: url('{{$user->cover}}');
           ">
         <span id="blackOverlay" class="w-full h-full absolute opacity-50 bg-black"></span>
       </div>
@@ -18,27 +18,32 @@
           <polygon class="text-blueGray-200 fill-current" points="2560 0 2560 100 0 100"></polygon>
         </svg>
       </div>
+      
     </section>
     <section class="relative py-16 bg-blueGray-200">
       <div class="container mx-auto px-4 lg:w-[80%]">
         <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
           <div class="px-6">
-            <div class="flex flex-wrap justify-center">
+          {{-- edit cover photo --}}
+          @can('updateImage',$user)
+         <a href="{{route('edit.coverpage',$user->id)}}" class="absolute -top-10 right-0 text-black py-1 px-3 rounded-full bg-white"><i class="fas fa-camera"></i> edit cover</a>
+          @endcan
+          <div class="flex flex-wrap justify-center">
               <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                 <div class="relative mb-5 ">
-                  <img src="{{$user->avatar_url}}" alt=""
+                  <img src="{{ $user->avatar_url }}" alt=""
                     class="shadow-xl rounded-full border-none h-auto align-middle  absolute -m-16   max-w-150-px">
-                  @can('update', $user)
+                  @can('updateImage', $user)
             <span
             class="absolute lg:bottom-0 lg:left-10 bottom-12 left-10 flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white"><a
-              href="/edit-avatar/{{$user->id}}"><i class="fas fa-plus" aria-hidden="true"></i></a></span>
+              href="{{route('edit.avatarpage',$user->id)}}"><i class="fas fa-plus" aria-hidden="true"></i></a></span>
           @endcan
 
 
                 </div>
               </div>
               <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                <div class="py-6 px-3 mt-32 sm:mt-0">
+                <div class="py-6 px-3 lg:mt-10 sm:mt-0">
                   @if(auth()->user()->id !== $user->id)
                   <button data-id="{{$user->id}}" onclick="follow(this)" class="px-3 py-1 w-fit rounded-lg text-center text-sm font-bold {{auth()->user()->isFollowing($user) ? 'text-gray-600 border border-gray-600 ' : 'bg-gray-500 text-white' }}">
                     {{auth()->user()->isFollowing($user) ? 'Following' : 'Follow' }}

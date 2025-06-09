@@ -5,7 +5,8 @@
   @section('author',$author)
   
 {{-- hero --}}
-<div class="relative top-0 hero-bg-image flex flex-col items-center justify-center">
+<div class="relative top-0 hero-bg-image flex flex-col items-center justify-center"
+ style=" background: url('{{asset('storage/covers/sunset.jpg')}}') no-repeat center center /cover;">
   @if(!auth()->user())
   <h1 class="text-center text-gray-100 text-4xl uppercase font-bold pb-10 sm:text-center"> sign in to start posting</h1>
   <a class="bg-gray-100 text-gray-700 py-2 px-5 font-bold uppercase rounded-lg mt-3" href="/login">sign in</a>

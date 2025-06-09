@@ -93,37 +93,6 @@ $user = User::where('username', $user->username)->firstOrFail();
   $meta = MetaHelpers::generateDefault("About {$user->name} | Blog-Page", "{$user->name} about section.");
   return view('profileuser.profile', $this->ProfileData($user, 'about', $meta));
 }
-  public function editpage(User $user)
-  {
-    $this->authorize('view', $user);
-    return view('edit-avatar', compact('user'));
-  }
-
-  public function edit(Request $request, User $user)
-  {
-     $request->validate([
-      'avatar' => 'required|image|mimes:png,jpeg,jpg|max:5048'
-    ]);
-    $avatarname= uniqid().'-'.$user->name.'.'.$request->file('avatar')->extension();
-    $path = $request->file('avatar')->storeAs('images',$avatarname ,'public');
-
-    $this->authorize('update', $user);
-    $user->avatar = $path;
-    $user->save();
-    toastr()->success('Image updated successfully',['timeOut'=>1000]);
-    return redirect()->route('profile',  $user->username);
-    
-  }
-  public function destroyavatar(User $user){
-    if($user->avatar && $user->avatar !== 'default.jpg'){
-      Storage::delete('public/'.$user->avatar);
-    }
-    $this->authorize('delete',$user);
-    $user->avatar="default.jpg";
-    $user->save();
-    toastr()->success('Avatar deleted',['timeOut'=>1000]);
-    return redirect()->route('profile', $user->username);
-  }
 
   public function editprofilepage(User $user)
   {

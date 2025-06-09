@@ -26,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
       'phone',
       'age',
       'avatar',
+      'cover_photo',
       'is_blocked',
       'aboutme'
   ];
@@ -103,8 +104,14 @@ public function scopeSearch($query,$search)
 public function getAvatarUrlAttribute()
 {
     return $this->avatar !== "default.jpg" 
-        ? Storage::url($this->avatar) 
-        : '/storage/avatars/'.$this->avatar;
+        ? Storage::url('avatars/'.$this->avatar) 
+        : asset('storage/avatars/'.$this->avatar);
+}
+public function getCoverAttribute()
+{
+  return $this->cover_photo === 'sunset.jpg'
+        ? asset('storage/covers/'.$this->cover_photo) 
+        : Storage::url('covers/' . $this->cover_photo);
 }
     protected $hidden = [
         'password',
