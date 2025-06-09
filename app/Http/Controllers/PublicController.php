@@ -11,6 +11,7 @@ use App\Models\Comment;
 use App\Models\Hashtag;
 use App\Services\FollowService;
 use App\Services\PostService;
+use App\Services\PostviewService;
 
 class PublicController extends Controller
 {
@@ -59,11 +60,11 @@ $attached = $service->toggle($follower,$user);
 return response()->json(['attached'=>$attached]);
 }
 
-  public function viewpost($slug)
+  public function viewpost($slug,PostviewService $postview)
   {
     $post = Post::whereSlug( $slug)->firstOrFail();
-    $post->load(['user','hashtags','comments']);
-    
+    $post->load(['user','hashtags','comments','viewers:id,name,username,avatar']);
+    $postview->getPostView($post);
  $morearticles = Post::query()
   ->with(['user'=> function ($query){
     $query->select('id','name','username','avatar');

@@ -1,29 +1,29 @@
-<div id="view-liked" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+<div id="viewsmodel" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
 
   <div class="relative bg-white h-2/4 rounded-lg p-6 w-full max-w-2xl  overflow-y-auto">
-    <p class="text-2xl font-bold">People who liked</p>
-    @forelse($viewwholiked as $viewliked)
+    <p class="text-2xl font-bold">People who viewed your post</p>
+    @forelse($post->viewers as $viewer)
     <div class="rounded-xl flex items-center gap-2 mb-2 mt-4 w-full py-1 px-2 hover:bg-gray-200 transition-bg duration-200 ease-in-out">
-    <a href="{{route('profile',$viewliked->user->username)}}" class="flex items-center gap-3">
-      <img src="{{$viewliked->user->avatar_url}}"  class="w-8 h-8 overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full ">
+    <a href="{{route('profile',$viewer->username)}}" class="flex items-center gap-3">
+      <img src="{{$viewer->avatar_url}}"  class="w-8 h-8 overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full ">
         <div class="flex flex-col gap-1">
-          <strong>{{ $viewliked->user->name }}</strong>
-          <small>{{'@'.$viewliked->user->username}}</small>
+          <strong>{{$viewer->name}}</strong>
+          <small>{{'@'.$viewer->username}}</small>
         </div>
       </a> 
-      @if(auth()->user()->id !== $viewliked->user->id)
+          @if(auth()->user()->id !== $viewer->id)
           @php
-           $isFollowing = in_array($viewliked->user_id, $Followingsids);
+           $isFollowing = in_array($viewer->id, $Followingsids);
            @endphp
-      <button data-id="{{$viewliked->user->id}}" onclick="follow(this)" class="w-5 h-5 text-xs ml-auto text-white {{$isFollowing ? 'bg-green-500' : 'bg-gray-500'}} rounded-full">
+      <button data-id="{{$viewer->id}}" onclick="follow(this)" class="w-5 h-5 text-xs ml-auto text-white {{$isFollowing ? 'bg-green-500' : 'bg-gray-500'}} rounded-full">
         <i class="fas fa-{{$isFollowing ? 'check' : 'plus'}}"></i>
       </button>
       @endif
     </div>
-    @empty
-    <p class="text-lg text-center p-20 font-bold">No people who liked yet</p>
-    @endforelse
-    <button id="close-modal" class="absolute top-1 right-3 text-lg mt-4 text-black"><i class="fas fa-times"></i></button>
+  @empty
+    <p class="text-lg text-center p-20 font-bold">No viewers yet</p>
+  @endforelse
+    <button id="close-views-modal" class="absolute top-1 right-3 text-lg mt-4 text-black"><i class="fas fa-times"></i></button>
   </div>
 </div>
 

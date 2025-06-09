@@ -15,7 +15,6 @@ use App\Traits\ImageUploadTrait;
 use Illuminate\Support\Str;
 
 
-
 class PostController extends Controller
 {
   use ImageUploadTrait;
@@ -35,9 +34,8 @@ class PostController extends Controller
 
     $sorted = $sort->sortedPosts($posts, $sortoption);
     $posts = $sorted->paginate(5)->withQueryString();
-
     $hashtags = Hashtag::withCount('posts')->get();
-
+    
     $meta_keywords = Hashtag::with('posts')->latest()->first();
     $meta = MetaHelpers::generateDefault('Blog-Post | Jamal',
     'welcome to blog post',

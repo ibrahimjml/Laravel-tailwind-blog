@@ -74,6 +74,13 @@
   <span  class="text-sm">{{ $totalcomments }}</span>
 </div>
 @endif
+@if(auth()->user()->id === $post->user_id)
+<div class="h-4 w-px bg-gray-400"></div>
+<span id="openviewsmodel" class="cursor-pointer w-8 h-8 rounded-full flex justify-center items-center  hover:bg-gray-200 transition-bg duration-150 ">
+  <i class="far fa-eye "></i>
+  <span class="text-sm ml-1">{{$post->views}}</span>
+</span>
+@endif
 <div id="divider" class="h-4 w-px bg-gray-400 hidden"></div>
 <span title="table of contents" class="open-tocmodel cursor-pointer hidden">
   <i class="fas fa-list"></i>
@@ -145,8 +152,9 @@
 {{-- open Toc model  --}}
 @include('partials.table-of-contents-model')
 {{-- open view who liked model  --}}
-@include('partials.view-who-liked-model',['viewwholiked'=>$viewwholiked])
-
+@include('partials.view-who-liked-model',['viewwholiked'=>$viewwholiked,'Followingsids'=>$authFollowings])
+{{-- open views model  --}}
+@include('partials.who-viewedpost-model',['Followingsids'=>$authFollowings])
 {{-- All scripts ---}}
 @push('scripts')
 {{--  post menu edit and delete option--}}
@@ -248,7 +256,21 @@
       document.body.classList.remove('no-scroll');
     })
   </script>
+{{-- open views model  --}}
 
+  <script>
+    const openviewsmodel = document.getElementById('openviewsmodel');
+    const viewsmodel = document.getElementById('viewsmodel');
+    const closeviewsmodel = document.getElementById('close-views-modal');
+    openviewsmodel.addEventListener('click',()=>{
+      if(viewsmodel.classList.contains('hidden')) viewsmodel.classList.remove('hidden');
+      document.body.classList.add('no-scroll');
+    })
+    closeviewsmodel.addEventListener('click',()=>{
+      viewsmodel.classList.add('hidden');
+      document.body.classList.remove('no-scroll');
+    })
+  </script>
 @endpush
 </x-layout>
   

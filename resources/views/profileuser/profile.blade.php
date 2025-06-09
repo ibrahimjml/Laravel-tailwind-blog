@@ -32,7 +32,7 @@
               <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                 <div class="relative mb-5 ">
                   <img src="{{ $user->avatar_url }}" alt=""
-                    class="shadow-xl rounded-full border-none h-auto align-middle  absolute -m-16   max-w-150-px">
+                    class="shadow-xl rounded-full border-2 border-gray-700 h-auto align-middle  absolute -m-16   max-w-150-px">
                   @can('updateImage', $user)
             <span
             class="absolute lg:bottom-0 lg:left-10 bottom-12 left-10 flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white"><a

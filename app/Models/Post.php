@@ -32,8 +32,14 @@ class Post extends Model
   public function hashtags(){
     return $this->belongsToMany(Hashtag::class,'post_hashtag');
   }
-
-
+  public function views()
+  {
+    return $this->hasMany(ProfileView::class);
+  }
+  public function viewers()
+  {
+    return $this->belongsToMany(User::class,'post_views','post_id','viewer_id');
+  }
   public function toSearchableArray()
   {
     return [

@@ -20,7 +20,9 @@ class PostService
       case 'mostliked':
         $query->orderByDesc('likes_count');
         break;
-
+      case 'mostviewed':
+        $query->orderByDesc('views');
+        break;
         case 'followings':
         $followings = auth()->user()->followings->pluck('id');
         $query->whereIn('user_id',$followings);

@@ -49,6 +49,7 @@
         @if($post->totalcomments_count)
         <span><i class="fas fa-comment text-blue-500"></i> {{ $post->totalcomments_count }}</span>
         @endif
+        <span><i class="fas fa-eye mr-1 text-black"></i>{{$post->views}}</span>
       </div>
       <div class="flex gap-3">
         @if (!empty($showSaveButton))

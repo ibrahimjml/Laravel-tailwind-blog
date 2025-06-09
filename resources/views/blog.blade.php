@@ -38,11 +38,12 @@
       <input type="hidden" name="search" value="{{ request('search') }}">
     @endif
     <select id="sort" name="sort"
-            onchange="this.form.submit()"
-            class="cursor-pointer bg-gray-500 text-white border border-gray-300 block  text-sm rounded-lg focus:ring-white   w-full p-2.5  ">
+      onchange="this.form.submit()"
+      class="cursor-pointer bg-gray-500 text-white border border-gray-300 block  text-sm rounded-lg focus:ring-white   w-full p-2.5  ">
       <option value="latest" {{ $sorts == 'latest' ? 'selected' : '' }}>Latest</option>
       <option value="oldest" {{ $sorts == 'oldest' ? 'selected' : '' }}>Oldest</option>
       <option value="mostliked" {{ $sorts == 'mostliked' ? 'selected' : '' }}>Most Liked</option>
+      <option value="mostviewed" {{ $sorts == 'mostviewed' ? 'selected' : '' }}>Most Viewed</option>
       <option value="followings" {{ $sorts == 'followings' ? 'selected' : '' }}>Following</option>
       <option value="featured" {{ $sorts == 'featured' ? 'selected' : '' }}>Featured</option>
       <option value="hashtagtrend" {{ $sorts == 'hashtagtrend' ? 'selected' : '' }}>Hashtag Trend</option>
