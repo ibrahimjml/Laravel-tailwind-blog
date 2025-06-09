@@ -8,11 +8,6 @@
 /storage/app/public/avatars/*
 /storage/app/public/covers/*
 
-!/storage/app/public/images/
-!/storage/app/public/uploads/
-!/storage/app/public/avatars/
-!/storage/app/public/covers/
-
 !/storage/app/public/images/.gitkeep
 !/storage/app/public/uploads/.gitkeep
 !/storage/app/public/avatars/.gitkeep
