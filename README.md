@@ -11,8 +11,9 @@
 # Laravel Blog Application
  ![Dashboard Screenshot](https://i.postimg.cc/wTzCLcrg/127-0-0-1-8000-7.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/fRXCT0Ny/Screenshot-2025-04-25-204621.png)
-![schooldash-dahboard-page](https://i.postimg.cc/3Nc1WXN4/127-0-0-1-8000-post-using-tailwindcss-11.png)
-![schooldash-dahboard-page](https://i.postimg.cc/28PhnkMt/Screenshot-2025-04-27-010613.png)
+![schooldash-dahboard-page](https://i.postimg.cc/8CDSmhRw/Screenshot-2025-06-08-193655.png)
+![schooldash-dahboard-page](https://i.postimg.cc/nV5fP8KX/Screenshot-2025-06-08-193929.png)
+![schooldash-dahboard-page](https://i.postimg.cc/xTYh70JT/Screenshot-2025-06-08-194122.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/J4t6yk1w/127-0-0-1-8000-create-5.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/02mtbKZm/127-0-0-1-8000-veltek33-1.png)
@@ -49,6 +50,7 @@
 - **Follow:** User can follow/unfollow using fetch() for faster respond.
 - **Profileview:** users can see who viewed their profile and folow/unfollow them if they are not.
 - **WhoLiked:** users can see who liked on their posts and follow/unfollow them.
+- **Table of contents:** users can navigate between headings inside post description.
 - **OPtimization:** Used Eager loading for optimized queries and prevent N+1 queries.
 
 #### Comments and Replies 
