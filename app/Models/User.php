@@ -8,10 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
-
+use App\Traits\HasPermissionsTrait;
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasPermissionsTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -36,7 +36,6 @@ class User extends Authenticatable implements MustVerifyEmail
     return $this->hasMany(Post::class);
   }
 
-
   public function likes(){
     return $this->hasMany(Like::class);
   }
@@ -57,43 +56,7 @@ class User extends Authenticatable implements MustVerifyEmail
   {
       return $this->followings()->where('user_id', $user->id)->exists();
   }
-  public function roles()
-  {
-    return $this->belongsToMany(Role::class);
-  }
-  public function hasRole($role)
-  {
-    return $this->roles->contains('name', $role);
-  }
-  public function hasAnyRole(array $roles)
-  {
-    return $this->roles->pluck('name')->intersect($roles)->isNotEmpty();
-  }
-  public function userPermissions()
-  {
-    return $this->belongsToMany(Permission::class, 'permission_user');
-  }
-  public function hasPermission($permission)
-  {
-    $rolePermissions = $this->roles->flatMap->permissions->pluck('name');
-    $userPermissions = $this->userPermissions->pluck('name');
 
-    return $rolePermissions->merge($userPermissions)->contains($permission);
-  }
-
-  public function hasAnyPermission(array $permissions): bool
-{
-    $rolePermissions = $this->roles->flatMap->permissions->pluck('name');
-    $userPermissions = $this->userPermissions->pluck('name');
-    return $rolePermissions->merge($userPermissions)->intersect($permissions)->isNotEmpty();
-}
-public function getAllPermissions()
-{
-    $rolePermissions = $this->roles->flatMap->permissions->pluck('name');
-    $userPermissions = $this->userPermissions->pluck('name');
-
-    return $rolePermissions->merge($userPermissions)->unique();
-}
 public function scopeSearch($query,$search)
 {
   if(isset($search['search'])){

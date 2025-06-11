@@ -18,6 +18,7 @@ class Post extends Model
     'image_path',
     'is_featured',
     'likes_count',
+    'views',
     'allow_comments'
   ];
 
