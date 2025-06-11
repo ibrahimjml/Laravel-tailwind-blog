@@ -17,8 +17,8 @@ use App\Http\Controllers\{
     PostController,
     ProfileController,
     PublicController,
-    TinyMCEController
-
+    TinyMCEController,
+    UserSettingController
 };
 
 
@@ -60,29 +60,32 @@ Route::post('/upload-image', [TinyMCEController::class, 'uploadImage'])->name('t
 Route::post('/image-delete', [TinyMCEController::class, 'deleteImage'])->name('tinymce.delete');
 
 // Edit user settings
-Route::controller(ProfileController::class)->group(function(){
+Route::controller(ProfileController::class)
+->middleware('can:view,user')
+->group(function(){
 // User Profile 
-Route::middleware('can:view,user')->group(function(){
  Route::get('/@{user:username}','Home')->name('profile');
  Route::get('/@{user:username}/activity','activity')->name('profile.activity');
  Route::get('/@{user:username}/about','aboutme')->name('profile.aboutme');
-});
 
+});
+Route::controller(UserSettingController::class)->group(function(){
 // Edit Profile Page
 Route::get('/edit-profile/{user:username}','editprofilepage')
 ->middleware('password.confirm')
 ->name('editprofile');
 // Add bio 
-Route::put('/addbio/{user}','useraddbio');
+Route::put('/addbio/{user}','useraddbio')->name('add.bio');
 // Add aboutme 
-Route::put('/addaboutme/{user}','useraboutme');
+Route::put('/addaboutme/{user}','useraboutme')->name('add.about');
 // Edit user settings
-Route::put('/edit-email/{user}','editemail');
-Route::put('/change-name/{user}','editname');
-Route::put('/change-phone/{user}','editphone');
-Route::put('/change-pass/{user}','editpassword');
+Route::put('/edit-email/{user}','editemail')->name('edit.email');
+Route::put('/change-name/{user}','editname')->name('edit.name');
+Route::put('/change-phone/{user}','editphone')->name('edit.phone');;
+Route::put('/change-pass/{user}','editpassword')->name('edit.pass');;
 Route::delete('/account-delete/{user}','deleteaccount')->name('account.delete');
 });
+
 Route::controller(EditProfileController::class)->group(function(){
    // Edit Profile Image
 Route::get('/edit-avatar/{user}','editavatarpage')->name('edit.avatarpage');

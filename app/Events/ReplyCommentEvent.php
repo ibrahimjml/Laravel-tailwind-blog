@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,12 +16,14 @@ class ReplyCommentEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-  public $comment;
-  public $reply;
-    public function __construct(Comment $comment, Comment $reply)
+    public $comment;
+    public $reply;
+    public $replier;
+    public function __construct(Comment $comment, Comment $reply,User $replier)
     {
         $this->comment = $comment;
         $this->reply = $reply;
+        $this->replier = $replier;
     }
 
     /**

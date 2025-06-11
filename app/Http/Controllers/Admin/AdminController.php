@@ -7,6 +7,7 @@ use App\Models\Hashtag;
 use App\Models\Permission;
 use App\Models\Post;
 use App\Models\User;
+use App\Services\Admin\DashboardStatsService;
 use App\Services\PostHashtagsService;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -17,11 +18,12 @@ use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Laravel\Facades\Image;
+use App\Traits\ImageUploadTrait;
 
 class AdminController extends Controller
 {
-    public function __construct()
+  use ImageUploadTrait;
+    public function __construct(protected DashboardStatsService $stats)
   {
 
     $this->middleware('permission:user.view')->only('users');
@@ -42,17 +44,8 @@ class AdminController extends Controller
     $blocked = DB::table('users')->where('is_blocked',1)->count();
     $year = request('year', date('Y'));
 
-    $registeredusers = User::select(DB::raw('COUNT(*) as count'), DB::raw('MONTHNAME(created_at) as month'))
-                            ->whereYear('created_at', $year)
-                            ->groupBy(DB::raw('MONTH(created_at)'), DB::raw('MONTHNAME(created_at)'))
-                            ->pluck('count', 'month')
-                            ->toArray();
-    $numberofposts = Post::select(DB::raw('COUNT(*) as count'), DB::raw('MONTHNAME(created_at) as month'))
-                            ->whereYear('created_at', $year)
-                            ->groupBy(DB::raw('MONTH(created_at)'), DB::raw('MONTHNAME(created_at)'))
-                            ->pluck('count', 'month')
-                            ->toArray();                    
-    return view('admin.adminpanel',compact(['user','post','likes','hashtags','comments','blocked','registeredusers','numberofposts']));
+    $data = $this->stats->getStats($year);             
+    return view('admin.adminpanel',compact(['user','post','likes','hashtags','comments','blocked','data']));
   }
 
   public function users(Request $request)
@@ -156,13 +149,8 @@ public function featuredpage(){
     $allow_comments = $request->has('enabled') ? 1 : 0;
     $slug = Str::slug($fields['title']);
 
-
-    $newimage = uniqid() . '-' . $slug . '.' . $fields['image']->extension();
-    $image = Image::read($request->file('image'))
-    ->resize(1300, 600)
-    ->encode();
-    Storage::disk('public')->put("uploads/{$newimage}", $image);
-
+    $newimage = $this->uploadImage($request->file('image'),$slug);
+     
   $post = Post::create([
       'title' => $request->input('title'),
       'description' => $request->input('description'),

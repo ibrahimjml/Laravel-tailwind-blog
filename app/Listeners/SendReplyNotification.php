@@ -24,10 +24,10 @@ class SendReplyNotification
     public function handle(ReplyCommentEvent $event): void
     {    $comment = $event->comment;
          $reply = $event->reply;
-         $replier = $reply->user;
+         $replier = $event->replier;
          $post= $comment->post;
          
-     if($comment->user->id !== auth()->user()->id){
+     if($comment->user->id !== $replier->id){
        $comment->user->notify(new RepliedCommentNotification($comment,$reply,$replier,$post));
      }
 

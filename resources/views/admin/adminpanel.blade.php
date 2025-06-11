@@ -57,8 +57,8 @@
 
 @push('scripts')
   <script>
-    var datakeys = @json(array_keys($registeredusers));
-    var datavalues = @json(array_values($registeredusers));
+    var datakeys = @json(array_keys($data['registeredusers']));
+    var datavalues = @json(array_values($data['registeredusers']));
     var selectedYear = @json(request('year', now()->year));
 
     Highcharts.chart('container1', {
@@ -104,8 +104,8 @@
   </script>
 
   <script>
-    var datakeys = @json(array_keys($numberofposts));
-    var datavalues = @json(array_values($numberofposts));
+    var datakeys = @json(array_keys($data['numberofposts']));
+    var datavalues = @json(array_values($data['numberofposts']));
     var selectedYear = @json(request('year', now()->year));
 
     Highcharts.chart('container2', {

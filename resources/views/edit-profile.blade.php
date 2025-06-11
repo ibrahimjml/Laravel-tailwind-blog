@@ -12,7 +12,7 @@
         <p class="text-sm text-gray-600 mb-3">Update your account's profile information and email address.</p>
       </div>
     </div>
-    <form action="/change-name/{{$user->id}}" method="POST">
+    <form action="{{route('edit.name',$user->id)}}" method="POST">
       @csrf
       @method('PUT')
 
@@ -37,7 +37,7 @@
     @endcan
       </div>
     </form>
-    <form action="/edit-email/{{$user->id}}" method="POST">
+    <form action="{{route('edit.email',$user->id)}}" method="POST">
       @csrf
       @method('PUT')
       <div class="flex flex-wrap mt-2">
@@ -65,7 +65,7 @@
     @endcan
       </div>
     </form>
-    <form id="phone-form" action="/change-phone/{{$user->id}}" method="POST">
+    <form id="phone-form" action="{{route('edit.phone',$user->id)}}" method="POST">
       @csrf
       @method('PUT')
       <div class="flex flex-wrap mt-2">
@@ -89,7 +89,7 @@
     @endcan
       </div>
     </form>
-    <form action="/addbio/{{$user->id}}" method="POST">
+    <form action="{{route('add.bio',$user->id)}}" method="POST">
       @csrf
       @method('PUT')
       <div class="flex flex-wrap mt-2">
@@ -113,7 +113,7 @@
     @endcan
       </div>
     </form>
-    <form action="/addaboutme/{{$user->id}}" method="POST">
+    <form action="{{route('add.about',$user->id)}}" method="POST">
       @csrf
       @method('PUT')
       <div class="flex flex-wrap mt-2">
@@ -144,7 +144,7 @@
         <p class="text-sm text-gray-600 mb-3">Ensure your account is using a long, random password to stay secure.</p>
       </div>
     </div>
-    <form action="/change-pass/{{$user->id}}" method="POST">
+    <form action="{{route('edit.pass',$user->id)}}" method="POST">
       @csrf
       @method('PUT')
       <div class="flex flex-wrap">

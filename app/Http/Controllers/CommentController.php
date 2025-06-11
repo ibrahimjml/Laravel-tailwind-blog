@@ -77,7 +77,7 @@ public function reply(Comment $comment, Request $request){
       $fields['post_id']=$comment->post_id;
       
      $reply = Comment::create($fields);
-     event(new ReplyCommentEvent($reply, $comment));
+     event(new ReplyCommentEvent($comment, $reply,auth()->user()));
 
       toastr()->success('Reply added successfully',['timeOut'=>1000]);
       return response()->json([
