@@ -10,7 +10,7 @@
 ## About Laravel
 # Laravel Blog Application
  ![Dashboard Screenshot](https://i.postimg.cc/wTzCLcrg/127-0-0-1-8000-7.png)
-![schooldash-dahboard-page](https://i.postimg.cc/fRXCT0Ny/Screenshot-2025-04-25-204621.png)
+![schooldash-dahboard-page](https://i.postimg.cc/BvzK7pnT/Screenshot-2025-06-09-212746.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/8CDSmhRw/Screenshot-2025-06-08-193655.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/nV5fP8KX/Screenshot-2025-06-08-193929.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/xTYh70JT/Screenshot-2025-06-08-194122.png)
@@ -48,6 +48,7 @@
 - **Like:** Implement Like/Unkike button using fetch() with Like animation falling hearts for better user experience. 
 - **Follow:** User can follow/unfollow using fetch() for faster respond.
 - **Profileview:** users can see who viewed their profile and folow/unfollow them if they are not.
+- **Postviews:** only posters can see the viewers model and folow/unfollow them if they are not.
 - **WhoLiked:** users can see who liked on their posts and follow/unfollow them.
 - **Table of contents:** users can navigate between headings inside post description.
 - **OPtimization:** Used Eager loading for optimized queries and prevent N+1 queries.
