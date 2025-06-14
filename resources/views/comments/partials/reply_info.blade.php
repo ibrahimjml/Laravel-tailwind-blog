@@ -6,15 +6,12 @@
     <a href="{{route('profile',$reply->user->username)}}" class="hover:underline">
       <strong>{{ $reply->user->name }}</strong>
     </a>
-      <div>
+      <div class="items-center">
         @if($reply->user->hasRole('Admin'))
-        <b>·</b>
        <small class=" px-1 rounded-full bg-green-500 text-white font-semibold">Admin</small>
        @elseif($reply->user->hasRole('Moderator'))
-       <b>·</b>
        <small class=" px-1 rounded-full bg-green-500 text-white font-semibold">Moderator</small>
-       @elseif($reply->user_id === $comment->post->user_id)
-       <b>·</b>
+       @elseif($reply->user_id === $reply->post->user_id)
        <small class=" px-1 rounded-full bg-green-500 text-white font-semibold">Author</small>
        @endif
       </div>

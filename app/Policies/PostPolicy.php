@@ -32,7 +32,12 @@ class PostPolicy
     {
       return  $user->hasPermission('post.feature');
     }
-  
+  public function report(User $user, Post $post): bool
+  {
+    if($post->user_id === $user->id) return false;
+    if($post->user && $post->user->hasRole('Admin')) return false;
+    return true;
+  }
     public function delete(User $user, Post $post): bool
     {
       return  $user->id === $post->user_id;

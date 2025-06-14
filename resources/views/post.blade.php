@@ -91,7 +91,20 @@
   <i class="fa-bookmark bookmark-icon {{in_array($post->id,session('saved-to',[])) ? 'fas' : 'far'}}"></i>
 </span>
 <div class="h-4 w-px bg-gray-400"></div>
-<span class="cursor-pointer flex items-center gap-2"><i class="far fa-share-square"></i></span>
+<span class="cursor-pointer flex justify-center items-center  w-8 h-8 rounded-full   hover:bg-gray-200 transition-bg duration-150"><i class="far fa-share-square"></i></span>
+<div class="h-4 w-px bg-gray-400"></div>
+<span id="openmoremodel" title="more options" class="relative cursor-pointer flex justify-center items-center  w-8 h-8 rounded-full  hover:bg-gray-200 transition-bg duration-150"><i class="fas fa-ellipsis-v"></i></span>
+<div id="moremodel"
+  @class([
+    'absolute right-3 z-10 w-36 h-fit rounded-lg bg-slate-50 px-2 py-4 space-y-2 hidden',
+    'top-[-100px]' => auth()->user()->can('report', $post),
+    'top-[-60px]' => auth()->user()->cannot('report', $post),
+  ])>
+    <button class="block text-left text-sm font-semibold w-full rounded-md pl-3 hover:bg-gray-400 hover:text-white transition-all duration-150">Unfollow</button>
+    @can('report',$post)
+    <button onclick="openReort()" class="block text-left text-sm font-semibold w-full rounded-md pl-3 hover:bg-gray-400 hover:text-white transition-all duration-150">Report</button>
+    @endcan
+  </div>
 </div>
 
 
@@ -155,6 +168,8 @@
 @include('partials.view-who-liked-model',['viewwholiked'=>$viewwholiked,'Followingsids'=>$authFollowings])
 {{-- open views model  --}}
 @include('partials.who-viewedpost-model',['Followingsids'=>$authFollowings])
+{{-- open reports model  --}}
+@include('partials.reports-model',['reasons'=>$reasons,'post'=>$post])
 {{-- All scripts ---}}
 @push('scripts')
 {{--  post menu edit and delete option--}}
@@ -257,7 +272,7 @@
     })
   </script>
 {{-- open views model  --}}
-
+@if(auth()->user()->id === $post->user_id)
   <script>
     const openviewsmodel = document.getElementById('openviewsmodel');
     const viewsmodel = document.getElementById('viewsmodel');
@@ -271,6 +286,32 @@
       document.body.classList.remove('no-scroll');
     })
   </script>
+@endif  
+  <script>
+  const OpenMoreModel = document.getElementById('openmoremodel');
+  const moreModel = document.getElementById('moremodel');
+  OpenMoreModel.addEventListener('click',()=>{
+    if(moreModel.classList.contains('hidden')){
+      moreModel.classList.remove('hidden');
+    }else{
+      moreModel.classList.add('hidden');
+    }
+  })
+</script>
+<script>
+  function openReort(){
+    const more = document.getElementById('moremodel');
+    const reportsmodel = document.getElementById('reportsmodel');
+    const closereportsmodel = document.getElementById('close-reports-modal');
+
+   if(!more.classList.contains('hidden')) more.classList.add('hidden');
+   reportsmodel.classList.remove('hidden');
+
+ closereportsmodel.addEventListener('click',()=>{
+  reportsmodel.classList.add('hidden');
+ })
+  }
+</script>
 @endpush
 </x-layout>
   

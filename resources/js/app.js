@@ -1,4 +1,5 @@
 import './bootstrap';
+import 'flowbite';
 import { initTinyMCE } from './tinymce';
 import mediumZoom from 'medium-zoom';
 import Prism from 'prismjs';

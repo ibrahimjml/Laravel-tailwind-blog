@@ -7,15 +7,12 @@
       <a href="{{route('profile',$comment->user->username)}}" class="hover:underline">
         <strong>{{ $comment->user->name }}</strong>
       </a>
-      <div>
+      <div class="items-center">
         @if($comment->user->hasRole('Admin'))
-        <b>·</b>
        <small class=" px-1 rounded-full bg-green-500 text-white font-semibold">Admin</small>
        @elseif($comment->user->hasRole('Moderator'))
-       <b>·</b>
        <small class=" px-1 rounded-full bg-green-500 text-white font-semibold">Moderator</small>
        @elseif($comment->user_id === $comment->post->user_id)
-       <b>·</b>
        <small class=" px-1 rounded-full bg-green-500 text-white font-semibold">Author</small>
        @endif
       </div>

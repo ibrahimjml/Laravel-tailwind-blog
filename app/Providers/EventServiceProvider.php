@@ -7,6 +7,7 @@ use App\Events\FollowUserEvent;
 use App\Events\NewRegistered;
 use App\Events\PostCreatedEvent;
 use App\Events\PostLikedEvent;
+use App\Events\PostReportEvent;
 use App\Events\ProfileViewedEvent;
 use App\Events\ReplyCommentEvent;
 use App\Listeners\NotifyAdminNewUser;
@@ -14,6 +15,7 @@ use App\Listeners\SendCommentNotification;
 use App\Listeners\SendFollowNotification;
 use App\Listeners\SendLikeNotification;
 use App\Listeners\SendPostNotification;
+use App\Listeners\SendPostReportNotification;
 use App\Listeners\SendProfileViewNotification;
 use App\Listeners\SendReplyNotification;
 use Illuminate\Auth\Events\Registered;
@@ -52,6 +54,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ProfileViewedEvent::class => [
           SendProfileViewNotification::class,
+        ],
+        PostReportEvent::class => [
+          SendPostReportNotification::class,
         ],
     ];
 

@@ -41,6 +41,10 @@ class Post extends Model
   {
     return $this->belongsToMany(User::class,'post_views','post_id','viewer_id');
   }
+  public function reports()
+  {
+    return $this->hasMany(PostReport::class);
+  }
   public function toSearchableArray()
   {
     return [

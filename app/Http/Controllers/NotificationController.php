@@ -27,7 +27,7 @@ class NotificationController extends Controller
               break;
           }
       }
-      if(in_array($type, ['like', 'Postcreated', 'comments', 'reply'])){
+      if(in_array($type, ['like', 'Postcreated', 'comments', 'reply','postreport'])){
         return to_route('single.post',$data['post_link']);
         
       }elseif(in_array($type, ['follow','viewedprofile','newuser'])){

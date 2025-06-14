@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ReportReason;
 use App\Helpers\MetaHelpers;
 use App\Models\Post;
 use App\Models\User;
@@ -73,7 +74,12 @@ return response()->json(['attached'=>$attached]);
  ->where('id','!=',$post->id)
  ->take(3)
  ->get();
-
+ $reasons = collect(ReportReason::cases())->map(function($case){
+    return [
+      'name' => $case->name,
+      'value' => $case->value
+    ];
+ });
  $viewwholiked = $post->likes()
  ->with('user:id,name,username,avatar')
  ->get();
@@ -84,6 +90,7 @@ return response()->json(['attached'=>$attached]);
        'totalcomments'=> Comment::where('post_id', $post->id)->count(),
        'morearticles' => $morearticles,
        'viewwholiked' => $viewwholiked,
+       'reasons' => $reasons,
        'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
     ],$meta));
   }

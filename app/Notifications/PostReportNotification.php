@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -10,20 +9,16 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class RepliedCommentNotification extends Notification
+class PostReportNotification extends Notification
 {
     use Queueable;
 
-    protected $ParentComment;
-    protected $reply;
-    protected $replier;
     protected $post;
-    public function __construct(Comment $ParentComment,Comment $reply,User $replier,Post $post)
+    protected $user;
+    public function __construct(Post $post, User $user)
     {
-        $this->ParentComment = $ParentComment;
-        $this->reply = $reply;
-        $this->replier = $replier;
         $this->post = $post;
+        $this->user = $user;
     }
 
     /**
@@ -54,20 +49,13 @@ class RepliedCommentNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
-  
-      $message = $notifiable->is_admin
-      ? ($this->replier->id === $this->ParentComment->user->id
-      ? "{$this->replier->name} replied to their own comment '{$this->ParentComment->content}' on {$this->post->user->name}'s post"
-      : "{$this->replier->name} replied '{$this->reply->content}' to {$this->ParentComment->user->name} on {$this->post->user->name}'s post")
-      : "{$this->replier->name} replied to your comment '{$this->ParentComment->content}'";
-      
         return [
-            'reply_id' => $this->reply->id,
-            'comment_id' => $this->ParentComment->id,
-            'replier_username' => $this->replier->username,
-            'post_link' => $this->post->slug,
-            'message' => $message,
-            'type' => 'reply'
+          'user_id' => $this->user->id,
+          'user_username'=>$this->user->username,
+          'post_id' => $this->post->id,
+          'post_link'=>$this->post->slug,
+          'type'=>'postreport',
+          'message'=>"{$this->user->username} reported this post <b>{$this->post->title}</b>"
         ];
     }
 }

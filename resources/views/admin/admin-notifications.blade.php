@@ -41,6 +41,7 @@
     <option value="comments" {{ request('type') === 'comments' ? 'selected' : '' }}>Comments</option>
     <option value="reply" {{ request('type') === 'reply' ? 'selected' : '' }}>Replies</option>
     <option value="viewedprofile" {{ request('type') === 'viewedprofile' ? 'selected' : '' }}>Viewed</option>
+    <option value="postreport" {{ request('type') === 'postreport' ? 'selected' : '' }}>PostReports</option>
     <option value="like" {{ request('type') === 'like' ? 'selected' : '' }}>Likes</option>
     <option value="follow" {{ request('type') === 'follow' ? 'selected' : '' }}>Follows</option>
   </select>
@@ -92,7 +93,7 @@
 
       <div class="flex-1">
           <a href="{{ $url }}" class="text-sm text-gray-700 hover:text-black font-medium block">
-              {{ $message }}
+              {!! $message !!}
           </a>
           <div class="flex justify-between items-center gap-4 mt-1">
               <small class="text-xs text-gray-400">{{ $notification->created_at->diffForHumans() }}</small>

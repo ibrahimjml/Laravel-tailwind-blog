@@ -7,7 +7,7 @@ use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 
 class CommentController extends Controller
 {
@@ -45,7 +45,7 @@ public function reply(Comment $comment, Request $request){
         'content'=>'required|string|max:255',
         'parent_id'=>'required|exists:comments,id'
       ]);
-
+   try{
       // cannot reply to own reply
       if ($comment->user_id == auth()->id() && $comment->parent_id !== null) {
     
@@ -61,8 +61,7 @@ public function reply(Comment $comment, Request $request){
       ]);
     }
     // reply once to your parent comment
-    $selfReplyCount = Comment::where('parent_id', $fields['parent_id'])
-    ->where('user_id', auth()->id()) 
+    $selfReplyCount = Comment::where('user_id', auth()->id()) 
     ->where('parent_id', $comment->id) 
     ->exists();
     
@@ -77,13 +76,16 @@ public function reply(Comment $comment, Request $request){
       $fields['post_id']=$comment->post_id;
       
      $reply = Comment::create($fields);
+
      event(new ReplyCommentEvent($comment, $reply,auth()->user()));
 
-      toastr()->success('Reply added successfully',['timeOut'=>1000]);
       return response()->json([
         'replied' => true,
         'html' => view('comments.replies',['comments'=>[$reply]])->render()
       ]);
+    }catch (\Exception $e) {
+        Log::error('error applying reply :'.$e->getMessage());
+    }
 }
     public function editcomment(Request $request,Comment $comment){
       

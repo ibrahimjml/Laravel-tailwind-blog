@@ -32,6 +32,7 @@ class CommentObserver
       // auto delete reply notification if replier deleted his reply
       DatabaseNotification::where('type', RepliedCommentNotification::class)
       ->whereJsonContains('data->reply_id', $comment->id)
+      ->orWhereJsonContains('data->comment_id', $comment->id)
       ->delete();
     }
 

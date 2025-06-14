@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CreateUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
+use App\Models\PostReport;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -208,5 +209,17 @@ return back();
     $user->roles()->sync([$role->id]);
     toastr()->success("user role '{$fields['role']}' updated",['timeOut'=>1000]);
    return back();
+  }
+  public function post_reports()
+  {
+    $reports = PostReport::with(['user','post'])->latest()->paginate(10);
+  
+    return view('admin.post-reports',['reports'=>$reports]);
+  }
+  public function report_delete(PostReport $report)
+  {
+    PostReport::destroy($report->id);
+    toastr()->success('report deleted',['timeOut'=> 1000]);
+    return back();
   }
 }
