@@ -5,7 +5,7 @@
 @include('admin.partials.header', ['linktext' => 'Post Reports', 'route' => 'admin.posts', 'value' => request('search')])
 
 
-<div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow w-[80%] left-6">
+<div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow w-[80%] left-6 -m-24">
     <table class="min-w-full table-auto ">
 
     <tr class="bg-gray-600">

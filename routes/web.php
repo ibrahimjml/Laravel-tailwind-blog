@@ -79,6 +79,12 @@ Route::get('/edit-profile/{user:username}','editprofilepage')
 Route::put('/addbio/{user}','useraddbio')->name('add.bio');
 // Add aboutme 
 Route::put('/addaboutme/{user}','useraboutme')->name('add.about');
+// Add socail links
+Route::put('/add/socail-links/{user}','social_links')->name('add.sociallinks');
+// custom social links
+Route::put('/add/custom-links/{user}','custom_links')->name('add.customlinks');
+Route::delete('/delete/custom-link/{link}',  'destroy_link')->name('destroy.customlink');
+
 // Edit user settings
 Route::put('/edit-email/{user}','editemail')->name('edit.email');
 Route::put('/change-name/{user}','editname')->name('edit.name');

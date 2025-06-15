@@ -5,9 +5,9 @@ namespace App\Services;
 use App\Models\Post;
 use App\Models\PostView;
 
-class PostviewService
+class PostViewsService
 {
-    public function getPostView(Post $post,){
+    public function getViews(Post $post,){
       $viewer = auth()->user();
       $poster = $post->user_id;
       if($viewer->id === $poster || $viewer->is_admin) return;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ReportReason;
+
 use App\Helpers\MetaHelpers;
 use App\Models\Post;
 use App\Models\User;
@@ -12,11 +12,14 @@ use App\Models\Comment;
 use App\Models\Hashtag;
 use App\Services\FollowService;
 use App\Services\PostService;
-use App\Services\PostviewService;
+use App\Services\PostViewsService;
+use App\Services\ViewPostService;
 
 class PublicController extends Controller
 {
-  public function __construct()
+  public function __construct(
+    protected ViewPostService $singlepost,
+    protected PostViewsService $views)
   {
     $this->middleware(['auth','verified',CheckIfBlocked::class]);
   }
@@ -61,36 +64,18 @@ $attached = $service->toggle($follower,$user);
 return response()->json(['attached'=>$attached]);
 }
 
-  public function viewpost($slug,PostviewService $postview)
+  public function viewpost($slug)
   {
-    $post = Post::whereSlug( $slug)->firstOrFail();
-    $post->load(['user','hashtags','comments','viewers:id,name,username,avatar']);
-    $postview->getPostView($post);
- $morearticles = Post::query()
-  ->with(['user'=> function ($query){
-    $query->select('id','name','username','avatar');
-  }])
- ->where('user_id',$post->user_id)
- ->where('id','!=',$post->id)
- ->take(3)
- ->get();
- $reasons = collect(ReportReason::cases())->map(function($case){
-    return [
-      'name' => $case->name,
-      'value' => $case->value
-    ];
- });
- $viewwholiked = $post->likes()
- ->with('user:id,name,username,avatar')
- ->get();
+    $post = $this->singlepost->getPost($slug);
+    $this->views->getViews($post);
  
     $meta = MetaHelpers::generateMetaForPosts($post);
     return view('post', array_merge([
        'post' => $post,
        'totalcomments'=> Comment::where('post_id', $post->id)->count(),
-       'morearticles' => $morearticles,
-       'viewwholiked' => $viewwholiked,
-       'reasons' => $reasons,
+       'morearticles' => $post->morearticles,
+       'viewwholiked' => $post->viewwholiked,
+       'reasons' => $post->reasons,
        'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
     ],$meta));
   }

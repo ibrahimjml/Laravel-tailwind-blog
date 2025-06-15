@@ -27,6 +27,9 @@ class User extends Authenticatable implements MustVerifyEmail
       'age',
       'avatar',
       'cover_photo',
+      'github',
+      'linkedin',
+      'twitter',
       'is_blocked',
       'aboutme'
   ];
@@ -56,7 +59,10 @@ class User extends Authenticatable implements MustVerifyEmail
   {
       return $this->followings()->where('user_id', $user->id)->exists();
   }
-
+  public function socialLinks()
+  {
+    return $this->hasMany(SocialLink::class);
+  }
 public function scopeSearch($query,$search)
 {
   if(isset($search['search'])){

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\CheckIfBlocked;
+use App\Models\SocialLink;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -107,7 +108,53 @@ class UserSettingController extends Controller
    toastr()->success('Bio updated',['timeOut'=>1000]);
    return redirect()->route('profile', ['user' => $user->username]);
   }
+  public function social_links(User $user,Request $request)
+  {
+    $fields = $request->validate([
+      'github' => 'nullable|url',
+      'linkedin' => 'nullable|url',
+      'twitter' => 'nullable|url',
+    ]);
+      foreach ($fields as $key => $value) {
+        $fields[$key] = trim(strip_tags($value));
+    }
+      $user->fill($fields);
+      $user->save();
+  
+      toastr()->success('link added successfuly',['timeOut'=>1000]);
+      return back();
+    }
+    public function custom_links(User $user,Request $request)
+    {
+      $fields = $request->validate([
+      'social_links' => 'array',
+      'social_links.*.platform' => 'nullable|string',
+      'social_links.*.url' => 'nullable|url',
+    ]);
+      foreach ($fields as $key => $value) {
+        if(!is_array($value)){
+        $fields[$key] = trim(strip_tags($value));
+        }
+    }
 
+      foreach ($request->social_links ?? [] as $link) {
+    $user->socialLinks()->updateOrCreate([
+        'platform' => $link['platform'],
+        'url' => $link['url'],
+    ]);
+   }
+      toastr()->success('custom link added ',['timeOut'=>1000]);
+      return back();
+    }
+    public function destroy_link(SocialLink $link)
+    {
+      $this->authorize('deleteSocial',$link);
+
+     $link->delete();
+
+    return response()->json(['message' => 'Deleted']);
+   }
+    
   public function useraboutme(User $user,Request $request){
    $request->validate([
     'about'=>'nullable|string'

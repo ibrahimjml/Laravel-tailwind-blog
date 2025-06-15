@@ -79,7 +79,21 @@
       <i class="fas fa-info mr-2 text-lg text-blueGray-400"></i>{{$user->bio}}
     @endif
     </div>
-  
+  {{-- social links --}}
+  <div class="flex justify-center items-center gap-3">
+    @if($user->github)
+    <a href="{{$user->github}}" target="_blank"><i class="fab fa-github"></i></a>
+    @endif
+    @if($user->linkedin)
+    <a href="{{$user->linkedin}}" target="_blank"><i class="fab fa-linkedin"></i></a>
+    @endif
+    @if($user->twitter)
+    <a href="{{$user->twitter}}" target="_blank"><i class="fab fa-twitter"></i></a>
+    @endif
+    @foreach ($user->socialLinks as $link)
+    <a href="{{ $link->url }}" target="_blank"><i class="fas fa-link text-sm mr-1"></i>{{ $link->platform }}</a><br>
+@endforeach
+  </div>
   </div>
 {{-- home | Activity | About me --}}
 <div class="flex items-center gap-2 ml-4">
