@@ -16,7 +16,6 @@
 ![schooldash-dahboard-page](https://i.postimg.cc/xTYh70JT/Screenshot-2025-06-08-194122.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/J4t6yk1w/127-0-0-1-8000-create-5.png)
-![schooldash-dahboard-page](https://i.postimg.cc/sX2CZgyr/127-0-0-1-8000-ibrahim123-2.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/FFg5cnSB/127-0-0-1-8000-ibrahim123-3.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/Dy3cc96Y/Screenshot-2025-06-03-131925.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/85pSxY91/Screenshot-2025-06-04-112530.png)
