@@ -11,7 +11,6 @@ use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Comment;
 use App\Models\Hashtag;
 use App\Services\FollowService;
-use App\Services\PostService;
 use App\Services\PostViewsService;
 use App\Services\ViewPostService;
 
@@ -25,7 +24,7 @@ class PublicController extends Controller
   }
 
 
-  public function search(Request $request,PostService $sort)
+  public function search(Request $request)
   {
     $fields = $request->validate([
       'search' => 'required|string|max:255'
@@ -35,12 +34,10 @@ class PublicController extends Controller
      
     $posts = Post::whereIn('id',$postsid)
     ->withCount(['likes', 'comments'])
-    ->with(['user','hashtags']);
-
-   $posts = $sort->sortedPosts($posts, $sortoption)
-        ->paginate(5)
-        ->withQueryString();
-
+    ->with(['user','hashtags'])
+    ->sortby($sortoption)
+    ->paginate(5)
+    ->withQueryString();
 
     $hashtags = Hashtag::withCount('posts')->get();
     

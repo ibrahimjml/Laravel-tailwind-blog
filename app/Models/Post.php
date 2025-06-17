@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Builders\PostBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
@@ -22,6 +23,10 @@ class Post extends Model
     'allow_comments'
   ];
 
+  public function newEloquentBuilder($query): PostBuilder
+    {
+        return new PostBuilder($query);
+    }
   public function user()
   {  
     return $this->belongsTo(User::class, 'user_id');
@@ -83,19 +88,5 @@ class Post extends Model
     return $this->hasMany(Comment::class, 'post_id');
   }
 
-
-  public function scopeSearch($query, $search)
-  {
-      if (isset($search['search'])) {
-          $query->where(function ($q) use ($search) {
-              $q->where('title', 'like', '%' . $search['search'] . '%')
-                ->orWhere('description', 'like', '%' . $search['search'] . '%')
-                ->orWhereHas('hashtags', function ($q2) use ($search) {
-                    $q2->where('name', 'like', '%' . $search['search'] . '%');
-                });
-          });
-      }
-  }
-  
 
 }

@@ -9,7 +9,6 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Models\Hashtag;
 use App\Models\Post;
 use App\Services\PostHashtagsService;
-use App\Services\PostService;
 use Illuminate\Http\Request;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Support\Str;
@@ -24,16 +23,17 @@ class PostController extends Controller
     $this->middleware('password.confirm')->only('editpost');
   }
 
-  public function blogpost(Request $request, PostService $sort)
+  public function blogpost(Request $request)
   {
 
     $sortoption = $request->get('sort', 'latest');
     $posts = Post::query()
-      ->with(['user:id,username,avatar', 'hashtags:id,name'])
-      ->withCount('likes','totalcomments');
+            ->with(['user:id,username,avatar', 'hashtags:id,name'])
+            ->withCount('likes','totalcomments')
+            ->sortby($sortoption)
+            ->paginate(5)
+           ->withQueryString();
 
-    $sorted = $sort->sortedPosts($posts, $sortoption);
-    $posts = $sorted->paginate(5)->withQueryString();
     $hashtags = Hashtag::withCount('posts')->get();
     
     $meta_keywords = Hashtag::with('posts')->latest()->first();

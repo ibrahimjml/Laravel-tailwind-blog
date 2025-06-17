@@ -51,15 +51,13 @@ class AdminController extends Controller
 
   public function users(Request $request)
   {
-    $blocked = $request->has('blocked') ? 1 : null;
+    $blocked = (bool) $request->get('blocked', false);
 
   $users = User::with(['roles','roles.permissions','userPermissions']) 
                ->select('id','name','username','email','avatar','created_at','phone','age','is_blocked','email_verified_at')
                ->latest()
                ->search($request->only('search'))
-               ->when($blocked, function($q){
-                   $q->where('is_blocked', 1);
-               })
+               ->when($blocked, fn($q) => $q->where('is_blocked', 1))
                ->paginate(6)
                ->withQueryString();
     $roles = Role::all();
@@ -116,15 +114,11 @@ public function updateuser(UpdateUserRequest $request, User $user)
   {
     $sort = $request->get('sort', 'latest'); 
     $choose = $sort === 'oldest' ? 'ASC' : 'DESC';
-
-    $query = Post::with(['user','hashtags'])
-          ->search($request->only('search'))
-          ->withCount('totalcomments');
-    if($request->has('featured')){
-     $query->featured();
-    };
-
-    $posts = $query
+    $featured = (bool) $request->get('featured',false);
+    $posts = Post::with(['user','hashtags'])
+          ->search($request->get('search'))
+          ->withCount('totalcomments')
+          ->when($featured, fn($q) => $q->where('is_featured', 1))
           ->orderBy('created_at', $choose)
           ->paginate(6)
           ->withQuerystring();
