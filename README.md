@@ -16,13 +16,13 @@
 ![schooldash-dahboard-page](https://i.postimg.cc/xTYh70JT/Screenshot-2025-06-08-194122.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/J4t6yk1w/127-0-0-1-8000-create-5.png)
-![schooldash-dahboard-page](https://i.postimg.cc/sX2CZgyr/127-0-0-1-8000-ibrahim123-2.png)
-![schooldash-dahboard-page](https://i.postimg.cc/W15nZy2V/Screenshot-2024-10-29-024842.png)
+![schooldash-dahboard-page](https://i.postimg.cc/FFg5cnSB/127-0-0-1-8000-ibrahim123-3.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/Dy3cc96Y/Screenshot-2025-06-03-131925.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/85pSxY91/Screenshot-2025-06-04-112530.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/vZSrdZ0X/Screenshot-2025-06-06-122828.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/Kvc1FQ88/Screenshot-2025-06-03-132045.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/7YprXYdr/Screenshot-2025-06-03-132057.png)
+![schooldash-dahboard-page](https://i.postimg.cc/65tKmNwK/Screenshot-2025-06-15-175542.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/gJcCrwX8/Screenshot-2025-06-03-132110.png)
 
 
@@ -44,6 +44,7 @@
 - **TinyMCE codesapmples:** users can create code blocks with prism skin to display their codes with copy button for best experience.
 - **Hashtags:** Users can create there own hashtags or select used hashtags.
 - **Save Posts:** Implement Save/Unsave button using fetch(), user can access to saved page, with the ability to view and remove saved posts.
+- **Post Report:** Users can report post once with multiple reasons.
 - **Slugs:** Implemented a unique slug for each post to create descriptive, enhancing search engine visibility and improving user experience.
 - **Like:** Implement Like/Unkike button using fetch() with Like animation falling hearts for better user experience. 
 - **Follow:** User can follow/unfollow using fetch() for faster respond.
