@@ -1,8 +1,4 @@
 <x-layout>
-  @section('meta_title',$meta_title)
-  @section('meta_keywords',$meta_keywords)
-  @section('author',$author)
-  @section('meta_description',$meta_description)
 
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">

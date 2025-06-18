@@ -61,20 +61,19 @@ $attached = $service->toggle($follower,$user);
 return response()->json(['attached'=>$attached]);
 }
 
-  public function viewpost($slug)
+  public function viewpost(Post $post)
   {
-    $post = $this->singlepost->getPost($slug);
+    $post = $this->singlepost->getPost($post->slug);
     $this->views->getViews($post);
  
-    $meta = MetaHelpers::generateMetaForPosts($post);
-    return view('post', array_merge([
+    return view('post', [
        'post' => $post,
        'totalcomments'=> Comment::where('post_id', $post->id)->count(),
        'morearticles' => $post->morearticles,
        'viewwholiked' => $post->viewwholiked,
        'reasons' => $post->reasons,
        'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
-    ],$meta));
+    ]);
   }
 
 

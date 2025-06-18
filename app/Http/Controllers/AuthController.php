@@ -23,8 +23,8 @@ class AuthController extends Controller
 {
   public function registerpage()
   {
-    $meta = MetaHelpers::generateDefault('Register-Page | Blog-Post', 'Register an account to create posts with ur friends ');
-    return view('auth.register', $meta);
+  
+    return view('auth.register');
     
   }
 
@@ -37,8 +37,8 @@ class AuthController extends Controller
 
   public function loginpage()
   {
-    $meta = MetaHelpers::generateDefault('Login-Page | Blog-Post', 'Welcome to login page ');
-    return view('auth.login',$meta);
+    
+    return view('auth.login');
   }
 
 

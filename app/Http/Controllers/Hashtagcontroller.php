@@ -26,11 +26,10 @@ class Hashtagcontroller extends Controller
     ->orderBy('created_at','desc')
     ->simplepaginate(5);
 
-    $meta = MetaHelpers::generateDefault("Hashtag - {$hashtag->name} page","Welcome to {$hashtag->name} page ",[$hashtag->name]);
-      return view('hashtags.show', array_merge([
+      return view('hashtags.show', [
         'posts' => $posts,
         'hashtag' => $hashtag,
         'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
-      ],$meta));
+      ]);
     }
 }

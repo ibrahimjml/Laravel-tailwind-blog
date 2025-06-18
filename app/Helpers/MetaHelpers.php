@@ -8,9 +8,9 @@ class MetaHelpers{
   public static function generateMetaForPosts($post){
 
     $hashtags = $post->hashtags->pluck('name')->implode(', ');
-    $metaKeywords = $hashtags ?? 'blog, post, article';
+    $metaKeywords = $hashtags ?? '';
     
-    $description = $post->description ?? 'No description available';
+    $description = $post->description ?? '';
     $cleanDescription = str_replace(["\n", "\r", "\t"], '', $description);
     $metaDescription = Str::limit(strip_tags(trim($cleanDescription)), 150);
 
@@ -21,15 +21,19 @@ class MetaHelpers{
       'meta_description' => $metaDescription,
       'meta_keywords' => $metaKeywords,
       'author' => $author,
+      'og_image' => url('storage/uploads/' . $post->image_path),
+      'og_type' => 'article',
     ];
   }
-  public static function generateDefault($title = 'HOME | Blog-Post', $description = 'Welcome to Blog-Post', $hashtags = [])
+  public static function generateDefault($title = null, $description = null, $hashtags = [],$user = null)
   {
       return [
           'meta_title' => $title,
-          'meta_description' => $description ?? 'No description available',
+          'meta_description' => $description ,
           'meta_keywords' => !empty($hashtags) ? implode(', ', $hashtags) : 'blog, post, article',
-          'author' => auth()->check() ? auth()->user()->username : config('app.name', 'Blog-Post'),
+          'author' => $user?->username ,
+          'og_image' => url($user?->avatar_url) ,
+          'og_type' => $user ? 'profile':'website',
       ];
   }
 }

@@ -35,34 +35,23 @@ class PostController extends Controller
            ->withQueryString();
 
     $hashtags = Hashtag::withCount('posts')->get();
-    
-    $meta_keywords = Hashtag::with('posts')->latest()->first();
-    $meta = MetaHelpers::generateDefault('Blog-Post | Jamal',
-    'welcome to blog post',
-    $meta_keywords->pluck('name')->take(4)->toArray());
 
-    return view('blog', array_merge([
+    return view('blog', [
       'tags' => $hashtags,
       'posts' => $posts,
       'sorts' => $sortoption,
       'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
-    ],$meta)
-      
-    );
+    ]);
+
   }
 
   public function createpage()
   {
     $allhashtags = Hashtag::pluck('name');
 
-    $meta = MetaHelpers::generateDefault('Create-post | Blog-Post',
-    'create your own post ',
-    $allhashtags->take(4)->toArray());
-
-    return view('create', array_merge([
+    return view('create', [
       'allhashtags' => $allhashtags
-    ],$meta)
-  );
+    ]);
   }
 
 
@@ -116,12 +105,11 @@ class PostController extends Controller
     $hashtags = $post->hashtags()->pluck('name')->implode(', ');
     $allhashtags = Hashtag::pluck('name');
     
-    $meta = MetaHelpers::generateMetaForPosts($post);
-    return view('updatepost', array_merge([
+    return view('updatepost',[
       'post' => $post,
       'hashtags' => $hashtags,
       'allhashtags' => $allhashtags,
-    ],$meta));
+    ]);
   }
 
   public function update($slug, UpdatePostRequest $request,PostHashtagsService $tags)
@@ -193,17 +181,9 @@ class PostController extends Controller
       ->with(['user', 'hashtags'])
       ->paginate(5);
 
-
-      $meta_keywords = collect($posts->items())
-      ->flatMap(fn ($post) => $post->hashtags->pluck('name'))
-      ->unique()
-      ->implode(', ');
-
-       $meta = MetaHelpers::generateDefault('Saved-Posts | Blog-Post','Saved post page where users save posts here',[$meta_keywords]);
-
-    return view('getsavedposts',array_merge([
+    return view('getsavedposts',[
       'posts' => $posts,
       'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
-    ],$meta));
+    ]);
   }
 }

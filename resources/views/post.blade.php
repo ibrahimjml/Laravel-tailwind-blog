@@ -1,8 +1,10 @@
 <x-layout>
   @section('meta_title',$meta_title)
   @section('meta_keywords',$meta_keywords)
-  @section('author',$author)
   @section('meta_description',$meta_description)
+  @section('author',$author)
+  @section('og_type',$og_type)
+  @section('og_image',$og_image)
 
 <div class="container mx-auto ">
 

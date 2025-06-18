@@ -137,11 +137,11 @@ public function featuredpage(){
 
   public function features(CreatePostRequest $request,PostHashtagsService $tagsservice){
   
-    $isFeatured = $request->has('featured') ? true : false;
     $fields = $request->validated();
+    $isFeatured = (bool) $request->get('featured',false);
+    $allow_comments = (bool) $request->get('enabled',false);
 
-  $fields['title'] = htmlspecialchars(strip_tags($fields['title']));
-    $allow_comments = $request->has('enabled') ? 1 : 0;
+    $fields['title'] = htmlspecialchars(strip_tags($fields['title']));
     $slug = Str::slug($fields['title']);
 
     $newimage = $this->uploadImage($request->file('image'),$slug);

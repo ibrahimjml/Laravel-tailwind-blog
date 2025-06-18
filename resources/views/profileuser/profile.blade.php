@@ -3,6 +3,8 @@
   @section('meta_keywords', $meta_keywords)
   @section('author', $author)
   @section('meta_description', $meta_description)
+  @section('og_type', $og_type)
+  @section('og_image', $og_image)
 
   <main class="profile-page">
     <section class="relative block h-500-px">

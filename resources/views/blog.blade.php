@@ -1,9 +1,5 @@
 <x-layout>
 
-  @section('meta_title',$meta_title ?? 'Blog page')
-  @section('meta_keywords',$meta_keywords ?? 'blog, post , search')
-
-
 <div class="container mx-auto pt-[40px]">
   <h1 class=" text-3xl font-bold  text-center pb-5">POSTS</h1>
 </div>
