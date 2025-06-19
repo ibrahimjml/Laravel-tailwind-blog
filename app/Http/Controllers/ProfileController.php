@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
-
 use App\Http\Middleware\CheckIfBlocked;
 use App\Models\ProfileView;
 use App\Models\User;
@@ -18,7 +16,6 @@ class ProfileController extends Controller
   }
   public function Home(User $user)
   {
-    $user = User::where('username', $user->username)->firstOrFail();
     $viewer = auth()->user();
     $this->view->createView($user,$viewer);
     
@@ -31,22 +28,18 @@ class ProfileController extends Controller
   }
   
   public function activity(User $user){
-    
-  $user = User::where('username', $user->username)->firstOrFail();
+  
   $activities = $this->activity->getUserActivities($user);
   
-
   return view('profileuser.profile', array_merge(
     ['activities' => $activities],
     $this->ProfileData($user, 'activity')
   ));
 }
 public function aboutme(User $user){
-  
-  $user = User::where('username', $user->username)->firstOrFail();
   return view('profileuser.profile', $this->ProfileData($user, 'about'));
 }
-private function ProfileData(User $user, string $section, array $meta = [])
+private function ProfileData(User $user, string $section)
 {
   return [
       'user' => $user,

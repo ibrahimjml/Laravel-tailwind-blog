@@ -63,7 +63,7 @@ return response()->json(['attached'=>$attached]);
 
   public function viewpost(Post $post)
   {
-    $post = $this->singlepost->getPost($post->slug);
+    $post = $this->singlepost->getPost($post);
     $this->views->getViews($post);
  
     return view('post', [

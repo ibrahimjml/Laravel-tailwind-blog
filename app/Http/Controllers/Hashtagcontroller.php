@@ -18,13 +18,12 @@ class Hashtagcontroller extends Controller
 
     public function viewhashtag(Hashtag $hashtag):View
     {
-      $hashtag = Hashtag::where('name', $hashtag->name)->firstOrFail();
 
     $posts = $hashtag->posts()
-    ->with(['user:id,username,avatar','hashtags:id,name'])
-    ->withCount(['comments','likes'])
-    ->orderBy('created_at','desc')
-    ->simplepaginate(5);
+             ->with(['user:id,username,avatar','hashtags:id,name'])
+             ->withCount(['comments','likes'])
+             ->orderBy('created_at','desc')
+             ->simplepaginate(5);
 
       return view('hashtags.show', [
         'posts' => $posts,

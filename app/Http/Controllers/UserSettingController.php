@@ -146,8 +146,9 @@ class UserSettingController extends Controller
       toastr()->success('custom link added ',['timeOut'=>1000]);
       return back();
     }
-    public function destroy_link(SocialLink $link)
+    public function destroy_link( $id)
     {
+      $link = SocialLink::findOrFail($id);
       $this->authorize('deleteSocial',$link);
 
      $link->delete();
@@ -175,14 +176,16 @@ class UserSettingController extends Controller
     $request->validate([
       'check_pass'=>"required|alpha_num|min:8|max:32"
     ]);
+    $this->authorize('delete',$user);
   
     if (!Hash::check($request->check_pass, $user->password)) {
       toastr()->error('password is incorrect',['timeOut'=>1000]);
       return back();
   }
-  $this->authorize('delete',$user);
   $user->delete();
   auth()->logout();
+  session()->invalidate();
+  session()->regenerateToken();
   toastr()->success('Account deleted successfuly',['timeOut'=>1000]);
   return redirect()->route('login');
   }

@@ -86,7 +86,7 @@ class PostController extends Controller
   public function delete($slug)
   {
 
-    $post = Post::where('slug', $slug)->firstOrFail();
+    $post = Post::whereSlug( $slug)->firstOrFail();
     $this->authorize('delete', $post);
     $post->delete();
     if (auth()->user()->is_admin) {
@@ -99,7 +99,7 @@ class PostController extends Controller
   }
   public function editpost($slug)
   {
-    $post = Post::where('slug', $slug)->firstOrFail();
+    $post = Post::whereSlug( $slug)->firstOrFail();
     $this->authorize('view', $post);
 
     $hashtags = $post->hashtags()->pluck('name')->implode(', ');
@@ -114,7 +114,7 @@ class PostController extends Controller
 
   public function update($slug, UpdatePostRequest $request,PostHashtagsService $tags)
   {
-    $post = Post::where('slug', $slug)->firstOrFail();
+    $post = Post::whereSlug( $slug)->firstOrFail();
     $this->authorize('update', $post);
 
     $fields = $request->validated();

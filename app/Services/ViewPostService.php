@@ -7,9 +7,8 @@ use App\Models\Post;
 
 class ViewPostService
 {
-    public function getPost(string $slug)
+    public function getPost(Post $post)
     {
-        $post = Post::whereSlug( $slug)->firstOrFail();
         $post->load(['user','hashtags','comments','viewers:id,name,username,avatar']);
 
  $post->morearticles = Post::query()

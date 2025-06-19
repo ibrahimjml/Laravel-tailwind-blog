@@ -83,7 +83,7 @@ Route::put('/addaboutme/{user}','useraboutme')->name('add.about');
 Route::put('/add/socail-links/{user}','social_links')->name('add.sociallinks');
 // custom social links
 Route::put('/add/custom-links/{user}','custom_links')->name('add.customlinks');
-Route::delete('/delete/custom-link/{link}',  'destroy_link')->name('destroy.customlink');
+Route::delete('/delete/custom-link/{id}',  'destroy_link')->name('destroy.customlink');
 
 // Edit user settings
 Route::put('/edit-email/{user}','editemail')->name('edit.email');

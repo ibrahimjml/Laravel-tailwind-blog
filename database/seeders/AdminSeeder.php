@@ -30,6 +30,8 @@ class AdminSeeder extends Seeder
             'user.delete',
             'user.block',
             'user.role',
+            'user.updateImage',
+            'user.deleteSocial',
             'post.view',
             'post.update',
             'post.feature',
@@ -61,6 +63,7 @@ foreach ($permissions as $permission) {
           'password' => Hash::make(env('ADMIN_PASS')),
           'is_admin' => 1,
           'avatar' => 'default.jpg',
+          'cover_photo' => 'sunset.jpg',
           'created_at' => Carbon::now(),
         ]);
       $admin->roles()->syncWithoutDetaching([$adminrole->id]);

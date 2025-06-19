@@ -212,7 +212,7 @@ return back();
   }
   public function report_delete(PostReport $report)
   {
-    PostReport::destroy($report->id);
+    $report->delete();
     toastr()->success('report deleted',['timeOut'=> 1000]);
     return back();
   }
