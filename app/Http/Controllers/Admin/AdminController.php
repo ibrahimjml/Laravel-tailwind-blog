@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CreatePostRequest;
+use App\DTOs\CreatePostDTO;
+use App\Http\Requests\App\CreatePostRequest;
 use App\Models\Hashtag;
 use App\Models\Permission;
 use App\Models\Post;
 use App\Models\User;
 use App\Services\Admin\DashboardStatsService;
-use App\Services\PostHashtagsService;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -17,13 +16,11 @@ use App\Http\Requests\Admin\CreateUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\PostReport;
 use App\Models\Role;
+use App\Services\PostService;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use App\Traits\ImageUploadTrait;
 
 class AdminController extends Controller
 {
-  use ImageUploadTrait;
     public function __construct(protected DashboardStatsService $stats)
   {
 
@@ -135,32 +132,12 @@ public function featuredpage(){
   ]);
 }
 
-  public function features(CreatePostRequest $request,PostHashtagsService $tagsservice){
+  public function create_feature(CreatePostRequest $request,PostService $service){
   
-    $fields = $request->validated();
-    $isFeatured = (bool) $request->get('featured',false);
-    $allow_comments = (bool) $request->get('enabled',false);
-
-    $fields['title'] = htmlspecialchars(strip_tags($fields['title']));
-    $slug = Str::slug($fields['title']);
-
-    $newimage = $this->uploadImage($request->file('image'),$slug);
-     
-  $post = Post::create([
-      'title' => $request->input('title'),
-      'description' => $request->input('description'),
-      'slug' => $slug,
-      'image_path' => $newimage,
-      'allow_comments' => $allow_comments,
-      'user_id' => auth()->user()->id,
-      'is_featured'=>$isFeatured
-  ]);
-
-if (request()->filled('hashtag')) {
-      $tagsservice->attachhashtags($post,$request->input('hashtag'));
-  }
+ $dto = CreatePostDTO::fromAppRequest($request);
+ $service->create($dto);  
 toastr()->success('post feature created',['timeOut'=>1000]);
-return back();
+return to_route('admin.posts');
   }
   public function destroy(User $user){
   

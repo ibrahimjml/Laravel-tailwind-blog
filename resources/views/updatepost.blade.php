@@ -79,14 +79,14 @@
         </p>
         @enderror
     </div>
-@can('modify',$post)
+@can('make_feature',$post)
   <div class="flex flex-col  items-start ">
     <label for="featured" class="block text-gray-700 text-sm font-bold mb-2 mt-2 sm:mb-4">
       Featured:
     </label>
 <div class="flex  items-center justify-center gap-3">
   <input id="featured" type="checkbox" class="rounded-sm p-2 border-2 form-input w-full placeholder:text-gray-300 @error('featured')  border-red-500 @enderror"
-  name="featured" value="{{$post->is_featured}}" {{ $post->is_featured ? 'checked' : '' }} autocomplete="featured" autofocus placeholder="[laravel,php] with comma separated">Featured
+  name="featured" value="{{$post->is_featured}}" @checked($post->is_featured) >Featured
 </div>
   </div>
 @endcan

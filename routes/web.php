@@ -142,7 +142,7 @@ Route::prefix('admin')
       Route::put('/edit/{user}','updateuser')->name('update.user');
       // create feature post
       Route::get('/featured', 'featuredpage')->name('featuredpage');
-      Route::post('/featured', 'features')->name('admin.featured');
+      Route::post('/featured', 'create_feature')->name('admin.featured');
       //toggle featured posts
       Route::put('/toggle/feature/{post}','toggle_feature')->name('toggle.feature');
       // update user role
@@ -163,8 +163,8 @@ Route::prefix('admin')
   
   Route::controller(SettingController::class)->group(function(){
   Route::get('/settings', 'settings')->name('admin.settings');
-  Route::post('/settings/{user}', 'update_settings')->name('admin.update');
-  Route::post('/settings-pass/{user}', 'update_pass')->name('admin.pass');
+  Route::put('/settings/{user}', 'update_settings')->name('admin.update');
+  Route::put('/settings-pass/{user}', 'update_pass')->name('admin.pass');
   Route::put('/settings-aboutme/{user}', 'update_aboutme')->name('admin.aboutme');
   });
 });

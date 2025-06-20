@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\MetaHelpers;
+
+use App\DTOs\CreatePostDTO;
+use App\DTOs\UpdatePostDTO;
 use App\Http\Middleware\CheckIfBlocked;
-use App\Http\Requests\CreatePostRequest;
-use App\Http\Requests\UpdatePostRequest;
+use App\Http\Requests\App\CreatePostRequest;
+use App\Http\Requests\App\UpdatePostRequest;
 use App\Models\Hashtag;
 use App\Models\Post;
-use App\Services\PostHashtagsService;
+use App\Services\PostService;
 use Illuminate\Http\Request;
-use App\Traits\ImageUploadTrait;
-use Illuminate\Support\Str;
+
 
 
 class PostController extends Controller
 {
-  use ImageUploadTrait;
   public function __construct()
   {
     $this->middleware(['auth', 'verified', CheckIfBlocked::class]);
@@ -55,29 +55,10 @@ class PostController extends Controller
   }
 
 
-  public function create(CreatePostRequest $request,PostHashtagsService $tagsservice)
+  public function create(CreatePostRequest $request,PostService $service)
   {
-    
-    $fields = $request->validated();
-
-    $fields['title'] = htmlspecialchars(strip_tags($fields['title']));
-    $allow_comments = $request->has('enabled') ? 1 : 0;
-    $imageslug = Str::slug($fields['title']);
-
-    $newimage = $this->uploadImage($request->file('image'), $imageslug);
-
-    $post = Post::create([
-      'title' => $request->input('title'),
-      'description' => $request->input('description'),
-      'image_path' => $newimage,
-      'allow_comments' => $allow_comments,
-      'user_id' => auth()->user()->id
-    ]);
-
-    if (request()->filled('hashtag')) {
-      $tagsservice->attachhashtags($post,$request->input('hashtag'));
-  }
-
+    $dto = CreatePostDTO::fromAppRequest($request);
+    $service->create($dto);
     toastr()->success('posted successfuly',['timeOut'=>1000]);
 
     return redirect('/blog');
@@ -89,13 +70,10 @@ class PostController extends Controller
     $post = Post::whereSlug( $slug)->firstOrFail();
     $this->authorize('delete', $post);
     $post->delete();
-    if (auth()->user()->is_admin) {
-      toastr()->success('Post deleted successfully',['timeOut'=>1000]);
-      return redirect('/admin-panel');
-    } else {
+    
       toastr()->success('Post deleted successfully',['timeOut'=>1000]);
       return redirect('/blog');
-    }
+    
   }
   public function editpost($slug)
   {
@@ -112,23 +90,13 @@ class PostController extends Controller
     ]);
   }
 
-  public function update($slug, UpdatePostRequest $request,PostHashtagsService $tags)
+  public function update($slug, UpdatePostRequest $request,PostService $service)
   {
     $post = Post::whereSlug( $slug)->firstOrFail();
     $this->authorize('update', $post);
+    $dto = UpdatePostDTO::fromAppRequest($request);
+    $service->update($post,$dto);
 
-    $fields = $request->validated();
-    $allow_comments = $request->has('enabled') ?? false;
-    $isFeatured = $request->has('featured') ?? false;
-
-    $post->title = $fields['title'];
-    $post->description = $fields['description'];
-    $post->allow_comments = $allow_comments;
-    $post->is_featured = $isFeatured;
-
-   $tags->syncHashtags($post,$fields['hashtag'] ?? '');
-
-    $post->save();
     toastr()->success('Post updated successfully',['timeOut'=>1000]);
     return redirect('/blog');
   }

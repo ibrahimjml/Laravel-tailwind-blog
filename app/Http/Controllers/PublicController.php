@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 
-use App\Helpers\MetaHelpers;
+use App\DTOs\PostFilterDTO;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,16 +26,13 @@ class PublicController extends Controller
 
   public function search(Request $request)
   {
-    $fields = $request->validate([
-      'search' => 'required|string|max:255'
-    ]);
-     $sortoption = $request->get('sort', 'latest');
-    $postsid = Post::search($fields['search'])->get()->pluck('id');
+    $dto = PostFilterDTO::fromRequest($request);
+    $postsid = Post::search($dto->search)->get()->pluck('id');
      
     $posts = Post::whereIn('id',$postsid)
     ->withCount(['likes', 'comments'])
     ->with(['user','hashtags'])
-    ->sortby($sortoption)
+    ->sortby($dto->sort)
     ->paginate(5)
     ->withQueryString();
 
@@ -43,8 +40,8 @@ class PublicController extends Controller
     
     return view('blog', [
       'posts' => $posts,
-      'sorts' => $sortoption,
-      'searchquery'=>$fields['search'],
+      'sorts' => $dto->sort,
+      'searchquery'=>$dto->search,
       'tags' => $hashtags,
       'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
     ]);

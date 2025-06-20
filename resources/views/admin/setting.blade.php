@@ -23,7 +23,7 @@
         </h6>
         <form id="phone-form" action="{{route('admin.update', $user->id)}}" method="POST">
         @csrf
-        @method('POST')
+        @method('PUT')
         <div class="flex flex-wrap">
           <div class="w-full lg:w-6/12 px-4">
           <div class="relative w-full mb-3">
@@ -99,7 +99,7 @@
         </h6>
         <form action="{{route('admin.pass', $user->id)}}" method="POST">
         @csrf
-        @method('POST')
+        @method('PUT')
         <div class="flex flex-wrap">
           <div class="w-full  px-4">
           <div class="relative w-full mb-3">

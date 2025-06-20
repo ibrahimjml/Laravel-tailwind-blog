@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\App;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePostRequest extends FormRequest
+class CreatePostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,25 +23,27 @@ class UpdatePostRequest extends FormRequest
     {
         return [
 
-        'title' => 'nullable|string|regex:/^[A-Za-z0-9\s]+$/|max:50|min:6',
+        'title' => 'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50|min:6',
         'description' => 'required|string',
         'hashtag' => ['nullable', 'string', function ($attribute, $value, $fail) {
-
-        $tags = array_filter(array_map('trim', explode(',', $value)));
-        if (count($tags) > 5) {
-            $fail('You can only select up to 5 hashtags.');
-        }
-        $regexTags = '/^[A-Za-z0-9_-]+$/';
+          
+          $tags = array_filter(array_map('trim', explode(',', $value)));
+          if (count($tags) > 5) {
+              $fail('You can only select up to 5 hashtags.');
+          }
+          $regexTags = '/^[A-Za-z0-9_-]+$/';
           foreach( $tags as $tag){
             if(!preg_match($regexTags,$tag)){
               $fail("Hashtags only contain letters, numbers, dashes, or underscores");
             }
           }
-      }],
+    }],
+        'image' => 'required|image|mimes:jpg,png,jpeg|max:5120',
         'enabled' => 'nullable|boolean',
-        'featured' => 'nullable|boolean'
+        'featured' => 'nullable|boolean',
         ];
     }
+
     public function messages()
     {
         return [

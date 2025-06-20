@@ -9,14 +9,15 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\SluggableTrait;
 
 class PostObserver
 {
-    
+    use SluggableTrait;
     public function creating(Post $post)
     {
             $slug = Str::slug($post->title);
-            $post->slug = $this->generateUniqueSlug($slug);
+            $post->slug = $this->create($slug);
     }
     
     public function created(Post $post){
@@ -28,7 +29,7 @@ class PostObserver
     {
       if($post->isDirty('title')){
         $slug = Str::slug($post->title);
-        $post->slug = $this->generateUniqueSlug($slug);
+        $post->slug = $this->create($slug);
       }
     }
 
@@ -81,16 +82,4 @@ class PostObserver
       }
 }
     
-    private function generateUniqueSlug($slug)
-    {
-        $originalSlug = $slug;
-        $count = 1;
-
-        while (Post::where('slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $count;
-            $count++;
-        }
-
-        return $slug;
-    }
 }

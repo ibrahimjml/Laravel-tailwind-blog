@@ -2,19 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\NewRegistered;
-use App\Helpers\MetaHelpers;
-use App\Http\Requests\RegisterRequest;
-use App\Models\Role;
+
+use App\Http\Requests\App\RegisterRequest;
 use App\Models\User;
 use App\Rules\Recaptcha;
 use Illuminate\Support\Str;
 use App\Mail\ForgotPassword;
 use App\Services\RegisterUserService;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
