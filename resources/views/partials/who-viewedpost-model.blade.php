@@ -11,9 +11,9 @@
           <small>{{'@'.$viewer->username}}</small>
         </div>
       </a> 
-          @if(auth()->user()->id !== $viewer->id)
+          @if(!auth()->user()->is($viewer))
           @php
-           $isFollowing = in_array($viewer->id, $Followingsids);
+           $isFollowing = in_array($viewer->id, $authFollowings);
            @endphp
       <button data-id="{{$viewer->id}}" onclick="follow(this)" class="w-5 h-5 text-xs ml-auto text-white {{$isFollowing ? 'bg-green-500' : 'bg-gray-500'}} rounded-full">
         <i class="fas fa-{{$isFollowing ? 'check' : 'plus'}}"></i>

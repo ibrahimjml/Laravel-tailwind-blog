@@ -12,7 +12,7 @@
        <small class=" px-1 rounded-full bg-green-500 text-white font-semibold">Admin</small>
        @elseif($comment->user->hasRole('Moderator'))
        <small class=" px-1 rounded-full bg-green-500 text-white font-semibold">Moderator</small>
-       @elseif($comment->user_id === $comment->post->user_id)
+       @elseif($comment->user_id === $post->user_id)
        <small class=" px-1 rounded-full bg-green-500 text-white font-semibold">Author</small>
        @endif
       </div>

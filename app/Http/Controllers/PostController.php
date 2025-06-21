@@ -40,7 +40,6 @@ class PostController extends Controller
       'tags' => $hashtags,
       'posts' => $posts,
       'sorts' => $sortoption,
-      'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
     ]);
 
   }
@@ -151,7 +150,6 @@ class PostController extends Controller
 
     return view('getsavedposts',[
       'posts' => $posts,
-      'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
     ]);
   }
 }

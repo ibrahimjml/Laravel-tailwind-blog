@@ -9,7 +9,7 @@ class ViewPostService
 {
     public function getPost(Post $post)
     {
-        $post->load(['user','hashtags','comments','viewers:id,name,username,avatar']);
+        $post->load(['user','user.roles','hashtags','comments','comments.user.roles','comments.replies.user.roles','viewers:id,name,username,avatar']);
 
  $post->morearticles = Post::query()
           ->with(['user:id,name,username,avatar'])

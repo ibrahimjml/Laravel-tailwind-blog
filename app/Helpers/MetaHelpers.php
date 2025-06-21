@@ -36,4 +36,11 @@ class MetaHelpers{
           'og_type' => $user ? 'profile':'website',
       ];
   }
+  public static function setSection(array $meta): void
+   {
+    foreach ($meta as $key => $value) {
+        view()->share($key, $value);
+        app('view')->startSection($key, $value);
+    }
+   }
 }

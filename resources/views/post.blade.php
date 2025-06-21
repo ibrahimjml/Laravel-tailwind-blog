@@ -1,10 +1,5 @@
 <x-layout>
-  @section('meta_title',$meta_title)
-  @section('meta_keywords',$meta_keywords)
-  @section('meta_description',$meta_description)
-  @section('author',$author)
-  @section('og_type',$og_type)
-  @section('og_image',$og_image)
+
 
 <div class="container mx-auto ">
 
@@ -12,7 +7,7 @@
   <div class="relative w-3/4  mx-auto mt-2">
       {{-- delete|edit model  --}}
     @can('view',$post)
-      @include('partials.delete-edit-post-model',['post'=>$post])
+      @include('partials.delete-edit-post-model')
       @endcan
 
   <div class="relative mx-auto w-full max-w-6xl mt-2 h-[300px] md:h-[450px]">
@@ -41,8 +36,13 @@
       </span>
       
       &nbsp;&nbsp;
-      <span class="text-lg">
-        · {{$post->updated_at->diffForHumans()}}
+      <span class="text-lg flex items-center gap-2">
+        <b>·</b>
+        <span class="follow-status {{ !in_array($post->user->id, $authFollowings) ? 'hidden' : '' }}">
+          <small>Following</small>
+          <b>·</b>
+        </span>
+         {{$post->updated_at->diffForHumans()}}
       </span>
     </div>
   
@@ -53,7 +53,7 @@
 </div>
 </div>
 
-{{-- like | comment | TOC | save | share Model --}}
+{{-- like | comment | TOC | save | share Model | more menu--}}
 <div id="action-bar-trigger" class="h-[1px] w-full"></div>
 
 <div id="action-bar" class=" container  mx-auto mb-5 w-fit h-14 space-x-2 flex justify-center items-center gap-2 border-2 rounded-full px-6 py-3 text-2xl bg-white transition-all duration-300 z-50">
@@ -76,7 +76,7 @@
   <span  class="text-sm">{{ $totalcomments }}</span>
 </div>
 @endif
-@if(auth()->user()->id === $post->user_id)
+@if(auth()->user()->is($post->user))
 <div class="h-4 w-px bg-gray-400"></div>
 <span id="openviewsmodel" class="cursor-pointer w-8 h-8 rounded-full flex justify-center items-center  hover:bg-gray-200 transition-bg duration-150 ">
   <i class="far fa-eye "></i>
@@ -94,25 +94,21 @@
 </span>
 <div class="h-4 w-px bg-gray-400"></div>
 <span class="cursor-pointer flex justify-center items-center  w-8 h-8 rounded-full   hover:bg-gray-200 transition-bg duration-150"><i class="far fa-share-square"></i></span>
-<div class="h-4 w-px bg-gray-400"></div>
-<span id="openmoremodel" title="more options" class="relative cursor-pointer flex justify-center items-center  w-8 h-8 rounded-full  hover:bg-gray-200 transition-bg duration-150"><i class="fas fa-ellipsis-v"></i></span>
-<div id="moremodel"
-  @class([
-    'absolute right-3 z-10 w-36 h-fit rounded-lg bg-slate-50 px-2 py-4 space-y-2 hidden',
-    'top-[-100px]' => auth()->user()->can('report', $post),
-    'top-[-60px]' => auth()->user()->cannot('report', $post),
-  ])>
-    <button class="block text-left text-sm font-semibold w-full rounded-md pl-3 hover:bg-gray-400 hover:text-white transition-all duration-150">Unfollow</button>
-    @can('report',$post)
-    <button onclick="openReort()" class="block text-left text-sm font-semibold w-full rounded-md pl-3 hover:bg-gray-400 hover:text-white transition-all duration-150">Report</button>
-    @endcan
-  </div>
+<div @class([
+  'relative flex  items-center',
+  'hidden' => auth()->user()->cannot('report', $post) && auth()->user()->is($post->user)
+])>
+  <div class="h-4 w-px bg-gray-400"></div>
+  <span id="openmoremodel" title="more options" class=" cursor-pointer flex justify-center items-center  w-8 h-8 rounded-full  hover:bg-gray-200 transition-bg duration-150"><i class="fas fa-ellipsis-v"></i></span>
+  {{-- more menu --}}
+  @include('partials.more-menu')
+</div>
 </div>
 
 
 {{-- open comments model --}}
 
-@include('partials.comments-model',['totalcomments'=>$totalcomments,'post'=>$post])
+@include('partials.comments-model')
 {{-- hashtag on post  --}}
 <div class="flex justify-center items-center gap-1 mt-3">
   @foreach($post->hashtags->pluck('name') as $tag)
@@ -150,11 +146,11 @@
 {{-- open Toc model  --}}
 @include('partials.table-of-contents-model')
 {{-- open view who liked model  --}}
-@include('partials.view-who-liked-model',['viewwholiked'=>$viewwholiked,'Followingsids'=>$authFollowings])
+@include('partials.view-who-liked-model')
 {{-- open views model  --}}
-@include('partials.who-viewedpost-model',['Followingsids'=>$authFollowings])
+@include('partials.who-viewedpost-model')
 {{-- open reports model  --}}
-@include('partials.reports-model',['reasons'=>$reasons,'post'=>$post])
+@include('partials.reports-model')
 {{-- All scripts ---}}
 @push('scripts')
 {{--  post menu edit and delete option--}}
@@ -257,7 +253,7 @@
     })
   </script>
 {{-- open views model  --}}
-@if(auth()->user()->id === $post->user_id)
+@if(auth()->user()->is($post->user))
   <script>
     const openviewsmodel = document.getElementById('openviewsmodel');
     const viewsmodel = document.getElementById('viewsmodel');
@@ -272,6 +268,7 @@
     })
   </script>
 @endif  
+{{-- open more menu --}}
   <script>
   const OpenMoreModel = document.getElementById('openmoremodel');
   const moreModel = document.getElementById('moremodel');
@@ -283,6 +280,7 @@
     }
   })
 </script>
+{{-- open report menu --}}
 <script>
   function openReort(){
     const more = document.getElementById('moremodel');
@@ -295,6 +293,36 @@
  closereportsmodel.addEventListener('click',()=>{
   reportsmodel.classList.add('hidden');
  })
+  }
+</script>
+{{-- fetch follow --}}
+<script>
+    async function follows(eo) {
+    const userId = eo.dataset.id;
+    const followStatus = document.getElementsByClassName('follow-status')[0];
+    let options = {
+      method: "POST",
+      headers: {
+        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+        "Accept": "application/json"
+      },
+    };
+  
+    try {
+      const res = await fetch(`/user/${userId}/togglefollow`, options);
+      const data = await res.json();
+  
+     eo.textContent = data.attached ? "unfollow" : "follow";
+    eo.classList.toggle("text-red-500", data.attached);
+    eo.classList.toggle("text-blue-500", !data.attached);
+
+    if (followStatus) {
+      followStatus.classList.toggle("hidden", !data.attached);
+    }
+  
+    } catch (error) {
+      console.error(error);
+    }
   }
 </script>
 @endpush

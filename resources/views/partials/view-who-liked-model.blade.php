@@ -13,7 +13,7 @@
       </a> 
       @if(auth()->user()->id !== $viewliked->user->id)
           @php
-           $isFollowing = in_array($viewliked->user_id, $Followingsids);
+           $isFollowing = in_array($viewliked->user_id, $authFollowings);
            @endphp
       <button data-id="{{$viewliked->user->id}}" onclick="follow(this)" class="w-5 h-5 text-xs ml-auto text-white {{$isFollowing ? 'bg-green-500' : 'bg-gray-500'}} rounded-full">
         <i class="fas fa-{{$isFollowing ? 'check' : 'plus'}}"></i>

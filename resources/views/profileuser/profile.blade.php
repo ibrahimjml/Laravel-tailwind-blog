@@ -1,10 +1,4 @@
 <x-layout>
-  @section('meta_title', $meta_title)
-  @section('meta_keywords', $meta_keywords)
-  @section('author', $author)
-  @section('meta_description', $meta_description)
-  @section('og_type', $og_type)
-  @section('og_image', $og_image)
 
   <main class="profile-page">
     <section class="relative block h-500-px">
@@ -46,7 +40,7 @@
               </div>
               <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
                 <div class="py-6 px-3 lg:mt-10 sm:mt-0">
-                  @if(auth()->user()->id !== $user->id)
+                  @if(!auth()->user()->is($user))
                   <button data-id="{{$user->id}}" onclick="follow(this)" class="px-3 py-1 w-fit rounded-lg text-center text-sm font-bold {{auth()->user()->isFollowing($user) ? 'text-gray-600 border border-gray-600 ' : 'bg-gray-500 text-white' }}">
                     {{auth()->user()->isFollowing($user) ? 'Following' : 'Follow' }}
                   </button>

@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
-class ViewServiceprovider extends ServiceProvider
+class ViewServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -28,6 +28,7 @@ class ViewServiceprovider extends ServiceProvider
             $post = request()->route('post');
             if ($post && is_object($post)) {
                 $meta = MetaHelpers::generateMetaForPosts($post);
+                MetaHelpers::setSection($meta);
                 $view->with($meta);
             }
            });
@@ -41,6 +42,7 @@ class ViewServiceprovider extends ServiceProvider
             $title = "Hashtag - {$hashtag->name} page";
             $description = "Welcome to {$hashtag->name} page";
             $meta = MetaHelpers::generateDefault($title, $description, [$hashtag->name]);
+            MetaHelpers::setSection($meta);
 
             $view->with($meta);
                  }
@@ -52,19 +54,15 @@ class ViewServiceprovider extends ServiceProvider
             $user = request()->route('user');
     
            if ($user && is_object($user)) {
-                 switch (true) {
-                       case request()->routeIs('profile'):
-                        $title = "{$user->name}'s Profile | Blog-Post";
-                       break;
-                   case request()->routeIs('profile.activity'):
-                       $title = "{$user->name}'s Activity | Blog-Post";
-                       break;
-                   case request()->routeIs('profile.aboutme'):
-                     $title = "About {$user->name} | Blog-Post";
-                      break;
-                  }
+               $title = match(true) {
+                request()->routeIs('profile.activity') => "{$user->name}'s Activity | Blog-Post",
+                request()->routeIs('profile.aboutme') => "About {$user->name} | Blog-Post",
+                default => "{$user->name}'s Profile | Blog-Post"
+            };
         $desc = "{$user->name} profile page connect with him.";
         $meta = MetaHelpers::generateDefault($title, $desc,[],$user);
+        MetaHelpers::setSection($meta);
+
         $view->with($meta);
             }
          });
@@ -89,5 +87,12 @@ class ViewServiceprovider extends ServiceProvider
       'notifications'=>$notifications
        ]);
     });
+      /**
+       * return auth followings ids.
+       */
+      view::composer('*',function($view){
+        $authFollowings = auth()->user()->loadMissing('followings')->followings->pluck('id')->toArray();
+        $view->with('authFollowings',$authFollowings);
+      });
   }
 }

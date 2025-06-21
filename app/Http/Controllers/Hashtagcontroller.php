@@ -28,7 +28,6 @@ class Hashtagcontroller extends Controller
       return view('hashtags.show', [
         'posts' => $posts,
         'hashtag' => $hashtag,
-        'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
       ]);
     }
 }

@@ -69,7 +69,6 @@ return response()->json(['attached'=>$attached]);
        'morearticles' => $post->morearticles,
        'viewwholiked' => $post->viewwholiked,
        'reasons' => $post->reasons,
-       'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
     ]);
   }
 
