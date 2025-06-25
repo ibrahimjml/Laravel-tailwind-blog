@@ -71,10 +71,6 @@ Route::controller(ProfileController::class)
  Route::get('/@{user:username}/about','aboutme')->name('profile.aboutme');
 
 });
-Route::get('/test-qr', function () {
-    $qrCode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(512)->generate('https://example.com');
-    return response($qrCode)->header('Content-Type', 'image/png');
-});
 Route::controller(UserSettingController::class)->group(function(){
 // Edit Profile Page
 Route::get('/edit-profile/{user:username}','editprofilepage')
