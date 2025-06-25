@@ -6,7 +6,7 @@
       @include('comments.partials.comment_info',['comment' => $comment])
       <div>
         {{-- comment content & delete|edit comment --}}
-        <p class="comment-content text-gray-700 p-2">{{ $comment->content }}</p>
+        <p id="comment-{{ $comment->id }}" class="comment-content text-gray-700 p-2">{{ $comment->content }}</p>
         <div class="flex flex-row-reverse justify-end items-center gap-5">
           @if($comment->replies_count > 0)
           <p class="show-all reply-count text-sm text-gray-600 cursor-pointer w-fit" 

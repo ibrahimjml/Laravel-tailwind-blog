@@ -38,17 +38,33 @@
 
                 </div>
               </div>
-              <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                <div class="py-6 px-3 lg:mt-10 sm:mt-0">
-                  @if(!auth()->user()->is($user))
-                  <button data-id="{{$user->id}}" onclick="follow(this)" class="px-3 py-1 w-fit rounded-lg text-center text-sm font-bold {{auth()->user()->isFollowing($user) ? 'text-gray-600 border border-gray-600 ' : 'bg-gray-500 text-white' }}">
-                    {{auth()->user()->isFollowing($user) ? 'Following' : 'Follow' }}
+            <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center mt-14 lg:mt-0">
+              <div class="py-6 px-3 flex justify-center items-center gap-x-2">
+              <div class="relative">
+                  <button onclick="toggleShareMenu()" title="share" class="w-8 h-8 text-gray-500 hover:text-black transition-colors duration-150 ease-in flex items-center justify-center border border-black rounded-full">
+                 <i class="fas fa-share-alt"></i>
+                </button>
+                {{-- share model --}}
+                @include('partials.share-menu')
+              </div>
+              @if(auth()->user()->is($user))
+              <button onclick="openQrModal()" class="w-8 h-8 text-gray-500 hover:text-black transition-colors duration-150 ease-in flex items-center justify-center border border-black rounded-full">
+               <i class="fas fa-qrcode"></i>
+              </button>
+              @endif
+              @include('profileuser.partials.qrcode-model')
+              @if(auth()->user()?->isNot($user))
+               <button title="report" class="w-8 h-8 text-gray-500 hover:text-black transition-colors duration-150 ease-in flex items-center justify-center border border-black rounded-full">
+                <i class="fas fa-exclamation-triangle"></i>
+               </button>
+                  <button data-id="{{$user->id}}" onclick="follow(this)" class="px-3 py-1 w-fit rounded-lg text-center text-sm font-bold {{auth()->user()?->isFollowing($user) ? 'text-gray-600 border border-gray-600 ' : 'bg-gray-500 text-white' }}">
+                    {{auth()->user()?->isFollowing($user) ? 'Following' : 'Follow' }}
                   </button>
                   @endif
                 </div>
               </div>
             {{-- posts-likes-follows-count --}}
-            @include('profileuser.partials.posts-likes-follows-count',['postcount'=>$postcount,'likescount'=>$likescount,'user'=>$user])
+            @include('profileuser.partials.posts-likes-follows-count')
             </div>
             {{-- edit profile | open viewed model --}}
               @can('update', $user)

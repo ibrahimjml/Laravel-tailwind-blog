@@ -41,6 +41,7 @@ public function aboutme(User $user){
 }
 private function ProfileData(User $user, string $section)
 {
+   $user->loadCount(['followers','followings']);
   return [
       'user' => $user,
       'section' => $section,

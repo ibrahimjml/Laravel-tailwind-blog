@@ -11,7 +11,7 @@
           <small>{{'@'.$viewliked->user->username}}</small>
         </div>
       </a> 
-      @if(auth()->user()->id !== $viewliked->user->id)
+      @if(auth()->user()->isNot($viewliked->user))
           @php
            $isFollowing = in_array($viewliked->user_id, $authFollowings);
            @endphp
@@ -57,4 +57,19 @@
     }
   }
 </script>
+{{-- open view who liked model  --}}
+
+  <script>
+    const openmodel = document.getElementsByClassName('open-view-model')[0];
+    const viewmodel = document.getElementById('view-liked');
+    const closemodel = document.getElementById('close-modal');
+    openmodel.addEventListener('click',()=>{
+      if(viewmodel.classList.contains('hidden')) viewmodel.classList.remove('hidden');
+      document.body.classList.add('no-scroll');
+    })
+    closemodel.addEventListener('click',()=>{
+      viewmodel.classList.add('hidden');
+      document.body.classList.remove('no-scroll');
+    })
+  </script>
 @endpush

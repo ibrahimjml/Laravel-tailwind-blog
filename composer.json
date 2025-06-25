@@ -13,6 +13,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/scout": "^10.10",
         "laravel/tinker": "^2.8",
+        "simplesoftwareio/simple-qrcode": "~4",
         "teamtnt/laravel-scout-tntsearch-driver": "^15.0",
         "yoeunes/toastr": "^2.3"
     },

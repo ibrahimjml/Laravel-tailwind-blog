@@ -18,6 +18,7 @@ use App\Http\Controllers\{
     PostReportController,
     ProfileController,
     PublicController,
+    QrcodeController,
     TinyMCEController,
     UserSettingController
 };
@@ -70,6 +71,10 @@ Route::controller(ProfileController::class)
  Route::get('/@{user:username}/about','aboutme')->name('profile.aboutme');
 
 });
+Route::get('/test-qr', function () {
+    $qrCode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(512)->generate('https://example.com');
+    return response($qrCode)->header('Content-Type', 'image/png');
+});
 Route::controller(UserSettingController::class)->group(function(){
 // Edit Profile Page
 Route::get('/edit-profile/{user:username}','editprofilepage')
@@ -103,6 +108,7 @@ Route::get('/edit-cover/{user}','editcoverpage')->name('edit.coverpage');
 Route::put('/edit-cover/{user}/edit','editcover')->name('edit.cover');
 Route::delete('/delete-cover/{user}','destroycover')->name('delete.cover');
 });
+Route::get('/qr-code', QrcodeController::class)->name('qr-code.image');
 // Like
 Route::post('/post/{post}/like',[PostController::class,'like']);
 // Follow

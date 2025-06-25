@@ -151,3 +151,7 @@ body.no-scroll {
     width: 100% !important;
   }
 
+.highlight {
+  background-color: #fffbcc;
+  transition: background-color 2s ease;
+}

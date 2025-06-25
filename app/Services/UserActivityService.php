@@ -10,22 +10,28 @@ class UserActivityService
     public function getUserActivities(User $user)
     {
         $posts = $user->post()
-                ->select('title','created_at')->get()
+                ->select('title','created_at','slug')
+                ->get()
                 ->map(function($post){
                     return [
                         'type' => 'Posted',
                         'title' => $post->title,
+                        'slug' => $post->slug,
                         'date' => $post->created_at,
                     ];
                 });
             
 
         $comments = $user->comments()
-                 ->select('content','created_at','parent_id')->get()
+                 ->with('post:id,slug,title')
+                 ->select('id','created_at','parent_id','post_id')
+                 ->get()
                  ->map(function($comment){
                      return [
                          'type' => $comment->parent_id ? 'Replied' : 'Commented',
-                         'title' => $comment->content,
+                         'comment_id' => $comment->id,
+                         'slug' => $comment->post->slug,
+                         'post_title' =>$comment->post->title,
                          'date' => $comment->created_at,
                      ];
                  });

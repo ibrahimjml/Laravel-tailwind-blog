@@ -11,7 +11,7 @@
           <small>{{'@'.$viewer->username}}</small>
         </div>
       </a> 
-          @if(!auth()->user()->is($viewer))
+          @if(auth()->user()->isNot($viewer))
           @php
            $isFollowing = in_array($viewer->id, $authFollowings);
            @endphp
@@ -57,4 +57,20 @@
     }
   }
 </script>
+{{-- open views model  --}}
+@if(auth()->user()->is($post->user))
+  <script>
+    const openviewsmodel = document.getElementById('openviewsmodel');
+    const viewsmodel = document.getElementById('viewsmodel');
+    const closeviewsmodel = document.getElementById('close-views-modal');
+    openviewsmodel.addEventListener('click',()=>{
+      if(viewsmodel.classList.contains('hidden')) viewsmodel.classList.remove('hidden');
+      document.body.classList.add('no-scroll');
+    })
+    closeviewsmodel.addEventListener('click',()=>{
+      viewsmodel.classList.add('hidden');
+      document.body.classList.remove('no-scroll');
+    })
+  </script>
+@endif 
 @endpush

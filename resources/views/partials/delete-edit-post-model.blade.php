@@ -15,3 +15,18 @@
    </form>
    @endcan
 </div>
+@push('scripts')
+    @can('view',$post)
+<script>
+  const OpenModel = document.getElementById('openmodel');
+  const Model = document.getElementById('model');
+  OpenModel.addEventListener('click',()=>{
+    if(Model.classList.contains('hidden')){
+      Model.classList.remove('hidden');
+    }else{
+      Model.classList.add('hidden');
+    }
+  })
+</script>
+@endcan
+@endpush

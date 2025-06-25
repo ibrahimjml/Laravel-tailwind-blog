@@ -55,60 +55,11 @@
 
 {{-- like | comment | TOC | save | share Model | more menu--}}
 <div id="action-bar-trigger" class="h-[1px] w-full"></div>
-
-<div id="action-bar" class=" container  mx-auto mb-5 w-fit h-14 space-x-2 flex justify-center items-center gap-2 border-2 rounded-full px-6 py-3 text-2xl bg-white transition-all duration-300 z-50">
-<div class="flex items-center justify-center">
-    <span onclick="fetchLike(this)" class="cursor-pointer w-8 h-8 rounded-full flex justify-center items-center  hover:bg-gray-200 transition-bg duration-150 ">
-      <i class="fa-heart like-icon {{ $post->is_liked() ? 'fas text-red-500' : 'far' }}" data-id="{{ $post->id }}"></i>
-    </span>
-
-    <span title="view who liked" id="likes-count" class="open-view-model text-sm cursor-pointer">
-      {{ $post->likes_count}}
-    </span>
-
-</div>
-@if($post->allow_comments)
-<div class="h-4 w-px bg-gray-400"></div>
-<div class="flex items-center justify-center">
-  <span title="write a comment" id="openModel" class="cursor-pointer flex items-center justify-center  w-8 h-8 rounded-full   hover:bg-gray-200 transition-bg duration-150">
-    <i class="far fa-comment"></i>
-  </span>
-  <span  class="text-sm">{{ $totalcomments }}</span>
-</div>
-@endif
-@if(auth()->user()->is($post->user))
-<div class="h-4 w-px bg-gray-400"></div>
-<span id="openviewsmodel" class="cursor-pointer w-8 h-8 rounded-full flex justify-center items-center  hover:bg-gray-200 transition-bg duration-150 ">
-  <i class="far fa-eye "></i>
-  <span class="text-sm ml-1">{{$post->views}}</span>
-</span>
-@endif
-<div id="divider" class="h-4 w-px bg-gray-400 hidden"></div>
-<span title="table of contents" class="open-tocmodel cursor-pointer hidden">
-  <i class="fas fa-list"></i>
-</span>
-
-<div class="h-4 w-px bg-gray-400"></div>
-<span title="save" onclick="savedTo(this,{{$post->id}})" class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full   hover:bg-gray-200 transition-bg duration-150">
-  <i class="fa-bookmark bookmark-icon {{in_array($post->id,session('saved-to',[])) ? 'fas' : 'far'}}"></i>
-</span>
-<div class="h-4 w-px bg-gray-400"></div>
-<span class="cursor-pointer flex justify-center items-center  w-8 h-8 rounded-full   hover:bg-gray-200 transition-bg duration-150"><i class="far fa-share-square"></i></span>
-<div @class([
-  'relative flex  items-center',
-  'hidden' => auth()->user()->cannot('report', $post) && auth()->user()->is($post->user)
-])>
-  <div class="h-4 w-px bg-gray-400"></div>
-  <span id="openmoremodel" title="more options" class=" cursor-pointer flex justify-center items-center  w-8 h-8 rounded-full  hover:bg-gray-200 transition-bg duration-150"><i class="fas fa-ellipsis-v"></i></span>
-  {{-- more menu --}}
-  @include('partials.more-menu')
-</div>
-</div>
-
+@include('partials.interactions-post-menu')
 
 {{-- open comments model --}}
-
 @include('partials.comments-model')
+
 {{-- hashtag on post  --}}
 <div class="flex justify-center items-center gap-1 mt-3">
   @foreach($post->hashtags->pluck('name') as $tag)
@@ -117,6 +68,7 @@
 </span>
 @endforeach
 </div>
+
 {{-- More Articles --}}
 <p class="text-gray-500 text-lg text-center font-semibold mt-5 uppercase ">More Articles</p>
 <div class="flex flex-col md:flex-row  md:justify-center md:items-center md:gap-2 gap-4 mt-4 mb-3">
@@ -151,150 +103,8 @@
 @include('partials.who-viewedpost-model')
 {{-- open reports model  --}}
 @include('partials.reports-model')
-{{-- All scripts ---}}
+
 @push('scripts')
-{{--  post menu edit and delete option--}}
-@can('view',$post)
-<script>
-  const OpenModel = document.getElementById('openmodel');
-  const Model = document.getElementById('model');
-  OpenModel.addEventListener('click',()=>{
-    if(Model.classList.contains('hidden')){
-      Model.classList.remove('hidden');
-    }else{
-      Model.classList.add('hidden');
-    }
-  })
-</script>
-@endcan
-
-{{-- observer for model inertactions --}}
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const actionBar = document.getElementById('action-bar');
-    const trigger = document.getElementById('action-bar-trigger');
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          
-          actionBar.classList.remove('fixed', 'bottom-0', 'left-1/2', '-translate-x-1/2', 'shadow-xl');
-          actionBar.classList.add('relative', 'mx-auto');
-        } else {
-          
-          actionBar.classList.remove('relative', 'mx-auto');
-          actionBar.classList.add('fixed', 'bottom-0', 'left-1/2', '-translate-x-1/2', 'shadow-xl');
-        }
-      });
-    }, {
-      threshold: 0.5 
-    });
-
-    observer.observe(trigger);
-  });
-</script>
-
-{{-- open comments model if its allowed --}}
-@if($post->allow_comments)
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const opencommentModel = document.getElementById('openModel');
-    const closeModel = document.getElementById('closeModel');
-    const commentModel = document.getElementById('commentModel');
-    const bgmodel = document.getElementById('bgmodel');
-  
-    opencommentModel.addEventListener('click', () => {
-      document.body.classList.add('no-scroll');
-  
-      bgmodel.classList.remove('hidden');
-      setTimeout(() => {
-        bgmodel.classList.add('opacity-100');
-        bgmodel.classList.remove('opacity-0');
-
-        commentModel.classList.remove('translate-x-[-110vw]');
-      commentModel.classList.add('translate-x-[0]');
-      }, 10); 
-  
-
-      
-    });
-  
-    closeModel.addEventListener('click', () => {
-      document.body.classList.remove('no-scroll');
-  
-      bgmodel.classList.remove('opacity-100');
-      bgmodel.classList.add('opacity-0');
-  
-      commentModel.classList.remove('translate-x-[0]');
-      commentModel.classList.add('translate-x-[-110vw]');
-  
-
-      setTimeout(() => {
-        bgmodel.classList.add('hidden');
-      }, 300); 
-    });
-  });
-  </script>
-@endif
-
-{{-- open view who liked model  --}}
-
-  <script>
-    const openmodel = document.getElementsByClassName('open-view-model')[0];
-    const viewmodel = document.getElementById('view-liked');
-    const closemodel = document.getElementById('close-modal');
-    openmodel.addEventListener('click',()=>{
-      if(viewmodel.classList.contains('hidden')) viewmodel.classList.remove('hidden');
-      document.body.classList.add('no-scroll');
-    })
-    closemodel.addEventListener('click',()=>{
-      viewmodel.classList.add('hidden');
-      document.body.classList.remove('no-scroll');
-    })
-  </script>
-{{-- open views model  --}}
-@if(auth()->user()->is($post->user))
-  <script>
-    const openviewsmodel = document.getElementById('openviewsmodel');
-    const viewsmodel = document.getElementById('viewsmodel');
-    const closeviewsmodel = document.getElementById('close-views-modal');
-    openviewsmodel.addEventListener('click',()=>{
-      if(viewsmodel.classList.contains('hidden')) viewsmodel.classList.remove('hidden');
-      document.body.classList.add('no-scroll');
-    })
-    closeviewsmodel.addEventListener('click',()=>{
-      viewsmodel.classList.add('hidden');
-      document.body.classList.remove('no-scroll');
-    })
-  </script>
-@endif  
-{{-- open more menu --}}
-  <script>
-  const OpenMoreModel = document.getElementById('openmoremodel');
-  const moreModel = document.getElementById('moremodel');
-  OpenMoreModel.addEventListener('click',()=>{
-    if(moreModel.classList.contains('hidden')){
-      moreModel.classList.remove('hidden');
-    }else{
-      moreModel.classList.add('hidden');
-    }
-  })
-</script>
-{{-- open report menu --}}
-<script>
-  function openReort(){
-    const more = document.getElementById('moremodel');
-    const reportsmodel = document.getElementById('reportsmodel');
-    const closereportsmodel = document.getElementById('close-reports-modal');
-
-   if(!more.classList.contains('hidden')) more.classList.add('hidden');
-   reportsmodel.classList.remove('hidden');
-
- closereportsmodel.addEventListener('click',()=>{
-  reportsmodel.classList.add('hidden');
- })
-  }
-</script>
 {{-- fetch follow --}}
 <script>
     async function follows(eo) {

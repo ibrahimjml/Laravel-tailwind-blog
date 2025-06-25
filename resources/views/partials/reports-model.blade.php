@@ -42,6 +42,20 @@
     });
   });
 </script>
+{{-- open report menu --}}
+<script>
+  function openReort(){
+    const more = document.getElementById('moremodel');
+    const reportsmodel = document.getElementById('reportsmodel');
+    const closereportsmodel = document.getElementById('close-reports-modal');
 
+   if(!more.classList.contains('hidden')) more.classList.add('hidden');
+   reportsmodel.classList.remove('hidden');
+
+ closereportsmodel.addEventListener('click',()=>{
+  reportsmodel.classList.add('hidden');
+ })
+  }
+</script>
 
 @endpush

@@ -22,7 +22,6 @@
 
           {{-- content --}}
           <div class="pb-4 border-b-2 w-full space-y-1 mt-1 flex flex-col items-start">
-          
           <div class="flex items-center gap-2">
               <span class="mr-1 ">
                 @if($entry['type'] == 'Commented')
@@ -33,12 +32,32 @@
                 <i class="fas fa-edit"></i>
                 @endif
               </span>
-                <span class="text-sm text-gray-500">
-                  {{ $entry['type'] }}
-                </span>
-          </div>
-    
-            <div class="text-gray-800 font-semibold">{{ $entry['title'] }}</div>
+             <span class="text-sm text-gray-500">
+               {{ $entry['type'] }}
+              </span>
+            </div>
+              @php
+               $anchor = '';
+               if(in_array($entry['type'], ['Commented', 'Replied']) && isset($entry['comment_id'])) {
+                 $anchor = '#comment-' . $entry['comment_id'];
+               }
+             @endphp
+            <a href="{{ url('/post/' . $entry['slug'] . $anchor) }}"
+            @if(in_array($entry['type'], ['Commented', 'Replied']))
+            onclick="event.preventDefault();
+                     sessionStorage.setItem('showCommentModal', 'true');
+                     window.location.href = this.href;"
+            @endif
+            class="text-left w-full"
+             >
+            <div class="text-gray-800 ">
+              @if(in_array($entry['type'], ['Commented', 'Replied']))
+              <b>{{ $entry['post_title']}}</b>
+              @else
+              <b>{{$entry['title']}}</b>
+              @endif
+            </a>
+            </div>
           </div>
         </div>
       @endforeach

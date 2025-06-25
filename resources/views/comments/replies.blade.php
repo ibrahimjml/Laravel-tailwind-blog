@@ -1,11 +1,11 @@
 
 @foreach($comments as $reply)
-  <div class="reply relative bg-gray-50  shadow-sm rounded-lg p-4 mb-2">
+  <div  class="reply relative bg-gray-50  shadow-sm rounded-lg p-4 mb-2">
     {{-- reply user information --}}
     @include('comments.partials.reply_info',['reply' => $reply])
     {{-- relpy content --}}
     <div>
-      <p class="comment-content text-gray-700 p-2">{{ $reply->content }}</p>
+      <p id="comment-{{ $reply->id }}" class="comment-content text-gray-700 p-2">{{ $reply->content }}</p>
   
       <div class="flex flex-row-reverse justify-end items-center gap-5">
         @if($reply->replies_count > 0)

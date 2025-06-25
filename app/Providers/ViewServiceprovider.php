@@ -91,7 +91,7 @@ class ViewServiceProvider extends ServiceProvider
        * return auth followings ids.
        */
       view::composer('*',function($view){
-        $authFollowings = auth()->user()->loadMissing('followings')->followings->pluck('id')->toArray();
+        $authFollowings = auth()->user()?->loadMissing('followings')->followings->pluck('id')->toArray();
         $view->with('authFollowings',$authFollowings);
       });
   }
