@@ -2,6 +2,10 @@
 
 namespace App\Http\Requests\App;
 
+use App\Models\User;
+use App\Rules\EmailProviders;
+use App\Rules\PasswordRule;
+use App\Rules\Username;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,11 +27,11 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-             "email" => ["required", "email", "min:5", "max:50", Rule::unique("users", "email")],
+            "email" => ["required", "email", "min:5", "max:50", Rule::unique(User::class),new EmailProviders()],
             "name" => ["required", "min:5", "max:50", "alpha"],
-            "username" => ["required", "min:5", "max:15", "alpha_num", Rule::unique('users','username')],
-            "phone" => ['required', 'regex:/^\+\d{8,15}$/', Rule::unique("users", "phone")],
-            "password" => ["required", "alpha_num", "min:8", "max:32", "confirmed"],
+            "username" => ["required", "min:5", "max:15", "alpha_num", Rule::unique(User::class),new Username],
+            "phone" => ['required', 'regex:/^\+\d{8,15}$/', Rule::unique(User::class)],
+            "password" => ["required","confirmed",new PasswordRule()],
             "age" => ["required", "integer", "between:18,64"]
         ];
     }

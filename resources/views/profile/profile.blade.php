@@ -21,19 +21,21 @@
         <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
           <div class="px-6">
           {{-- edit cover photo --}}
-          @can('updateImage',$user)
-         <a href="{{route('edit.coverpage',$user->id)}}" class="absolute -top-10 right-0 text-black py-1 px-3 rounded-full bg-white"><i class="fas fa-camera"></i> edit cover</a>
-          @endcan
+          @if($user->is(auth()->user()))
+         <a href="{{route('profile.info')}}" class="absolute -top-10 right-0 text-black py-1 px-3 rounded-full bg-white"><i class="fas fa-camera"></i> edit cover</a>
+          @endif
           <div class="flex flex-wrap justify-center">
               <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                 <div class="relative mb-5 ">
                   <img src="{{ $user->avatar_url }}" alt=""
                     class="shadow-xl rounded-full border-2 border-gray-700 h-auto align-middle  absolute -m-16   max-w-150-px">
-                  @can('updateImage', $user)
+            {{-- edit avatar  --}}
+            @if($user->is(auth()->user()))
             <span
-            class="absolute lg:bottom-0 lg:left-10 bottom-12 left-10 flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white"><a
-              href="{{route('edit.avatarpage',$user->id)}}"><i class="fas fa-plus" aria-hidden="true"></i></a></span>
-          @endcan
+            class="absolute lg:bottom-0 lg:left-10 bottom-12 left-10 flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white">
+            <a href="{{route('profile.info')}}"><i class="fas fa-plus" aria-hidden="true"></i></a>
+           </span>
+          @endif
 
 
                 </div>
@@ -41,6 +43,7 @@
             <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center mt-14 lg:mt-0">
               <div class="py-6 px-3 flex justify-center items-center gap-x-2">
               <div class="relative">
+                  <!-- button share -->
                   <button onclick="toggleShareMenu()" title="share" class="w-8 h-8 text-gray-500 hover:text-black transition-colors duration-150 ease-in flex items-center justify-center border border-black rounded-full">
                  <i class="fas fa-share-alt"></i>
                 </button>
@@ -48,15 +51,31 @@
                 @include('partials.share-menu')
               </div>
               @if(auth()->user()->is($user))
-              <button onclick="openQrModal()" class="w-8 h-8 text-gray-500 hover:text-black transition-colors duration-150 ease-in flex items-center justify-center border border-black rounded-full">
+                <!-- button qrcode -->
+              <button title="qrcode" onclick="openQrModal()" class="w-8 h-8 text-gray-500 hover:text-black transition-colors duration-150 ease-in flex items-center justify-center border border-black rounded-full">
                <i class="fas fa-qrcode"></i>
               </button>
+              <!-- button who viewed -->
+              <button id="open-viewed"
+            class="w-8 h-8 text-gray-500 hover:text-black transition-colors duration-150 ease-in flex items-center justify-center border border-black rounded-full"
+            title="see who viewed">
+            <i class="fas fa-eye"></i>
+          </button>
+            <!-- button settings -->
+          <button 
+          onclick="window.location.href='{{route('profile.info')}}'"
+          title="settings"  
+          class="w-8 h-8 lg:hidden text-gray-500 hover:text-black transition-colors duration-150 ease-in flex items-center justify-center border border-black rounded-full">
+         <i class="fas fa-cog"></i>
+          </button>
               @endif
-              @include('profileuser.partials.qrcode-model')
+              @include('profile.partials.qrcode-model')
               @if(auth()->user()?->isNot($user))
+                <!-- button report -->
                <button title="report" class="w-8 h-8 text-gray-500 hover:text-black transition-colors duration-150 ease-in flex items-center justify-center border border-black rounded-full">
                 <i class="fas fa-exclamation-triangle"></i>
                </button>
+                 <!-- follow/unfollow -->
                   <button data-id="{{$user->id}}" onclick="follow(this)" class="px-3 py-1 w-fit rounded-lg text-center text-sm font-bold {{auth()->user()?->isFollowing($user) ? 'text-gray-600 border border-gray-600 ' : 'bg-gray-500 text-white' }}">
                     {{auth()->user()?->isFollowing($user) ? 'Following' : 'Follow' }}
                   </button>
@@ -64,19 +83,15 @@
                 </div>
               </div>
             {{-- posts-likes-follows-count --}}
-            @include('profileuser.partials.posts-likes-follows-count')
+            @include('profile.partials.posts-likes-follows-count')
             </div>
             {{-- edit profile | open viewed model --}}
               @can('update', $user)
-          <div class="flex gap-1 justify-center mb-3">
-          <span class="flex justify-center "><a
-            class="bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize inline-block hover:border-gray-700 transition duration-300"
-            href="{{route('editprofile', $user->username)}}">edit profile</a></span>
-          <button id="open-viewed"
-            class="active:scale-90 bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize  hover:border-gray-700 transition duration-300"
-            title="see who viewed">
-            <i class="fas fa-eye"></i>
-          </button>
+          <div class="lg:flex lg:gap-1 lg:justify-center mb-3 hidden">
+          <span class="flex justify-start items-center gap-4 bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize  hover:border-gray-700 transition duration-300">
+            <i class="fas fa-cog"></i>
+            <a href="{{route('profile.info')}}">settings</a>
+          </span>
           </div>
         @endcan
   <div class="text-center mt-2">
@@ -121,15 +136,15 @@
 <div id="profile-content">
   @switch($section)
   @case('home')
-    @include('profileuser.home', ['posts' => $posts])
+    @include('profile.home', ['posts' => $posts])
     @break
 
   @case('activity')
-    @include('profileuser.activity', ['user' => $user,'activities' => $activities])
+    @include('profile.activity', ['user' => $user,'activities' => $activities])
     @break
 
   @case('about')
-    @include('profileuser.aboutme', ['user' => $user])
+    @include('profile.aboutme', ['user' => $user])
     @break
 @endswitch
 </div>
@@ -139,7 +154,7 @@
     </section>
   </main>
   {{-- open  who viewed profile model  --}}
-@include('profileuser.partials.who-viewd-profile-model',['profileviews'=>$profileviews])
+@include('profile.partials.who-viewd-profile-model',['profileviews'=>$profileviews])
 
 @push('scripts')
 <script>

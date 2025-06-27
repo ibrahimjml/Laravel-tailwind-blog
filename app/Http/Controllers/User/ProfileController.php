@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Http\Middleware\CheckIfBlocked;
 use App\Models\ProfileView;
 use App\Models\User;
@@ -21,7 +22,7 @@ class ProfileController extends Controller
     
     $posts = $user->post()->latest()->get();
     
-    return view('profileuser.profile', array_merge(
+    return view('profile.profile', array_merge(
       ['posts' => $posts],
       $this->ProfileData($user, 'home')
     ));
@@ -31,13 +32,13 @@ class ProfileController extends Controller
   
   $activities = $this->activity->getUserActivities($user);
   
-  return view('profileuser.profile', array_merge(
+  return view('profile.profile', array_merge(
     ['activities' => $activities],
     $this->ProfileData($user, 'activity')
   ));
 }
 public function aboutme(User $user){
-  return view('profileuser.profile', $this->ProfileData($user, 'about'));
+  return view('profile.profile', $this->ProfileData($user, 'about'));
 }
 private function ProfileData(User $user, string $section)
 {

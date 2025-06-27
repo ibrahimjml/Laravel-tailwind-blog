@@ -48,6 +48,7 @@ class CreatePostRequest extends FormRequest
     {
         return [
             'title.regex' => 'The title may only contain letters, numbers, and spaces.',
+            'image.max' => 'The image may not be greater than 5MB.'
         ];
     }
 }

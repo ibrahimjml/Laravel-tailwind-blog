@@ -1,5 +1,10 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\{
+  ProfileSettingsController,
+  ProfileController,
+  QrcodeController,
+};
 use App\Http\Controllers\Admin\{
     AdminController,
     NotificationsController,
@@ -10,17 +15,13 @@ use App\Http\Controllers\Admin\{
 };
 use App\Http\Controllers\{
     CommentController,
-    EditProfileController,
     Hashtagcontroller,
     HomeController,
     NotificationController,
     PostController,
     PostReportController,
-    ProfileController,
     PublicController,
-    QrcodeController,
     TinyMCEController,
-    UserSettingController
 };
 
 
@@ -61,7 +62,7 @@ Route::put('/post/update/{slug}',[PostController::class,'update'])->name('update
 Route::post('/upload-image', [TinyMCEController::class, 'uploadImage'])->name('tinymce.upload');
 Route::post('/image-delete', [TinyMCEController::class, 'deleteImage'])->name('tinymce.delete');
 
-// Edit user settings
+// profile
 Route::controller(ProfileController::class)
 ->middleware('can:view,user')
 ->group(function(){
@@ -71,39 +72,22 @@ Route::controller(ProfileController::class)
  Route::get('/@{user:username}/about','aboutme')->name('profile.aboutme');
 
 });
-Route::controller(UserSettingController::class)->group(function(){
-// Edit Profile Page
-Route::get('/edit-profile/{user:username}','editprofilepage')
+// profile settings
+Route::prefix('/profile')
+->controller(ProfileSettingsController::class)
 ->middleware('password.confirm')
-->name('editprofile');
-// Add bio 
-Route::put('/addbio/{user}','useraddbio')->name('add.bio');
-// Add aboutme 
-Route::put('/addaboutme/{user}','useraboutme')->name('add.about');
-// Add socail links
-Route::put('/add/socail-links/{user}','social_links')->name('add.sociallinks');
-// custom social links
-Route::put('/add/custom-links/{user}','custom_links')->name('add.customlinks');
-Route::delete('/delete/custom-link/{id}',  'destroy_link')->name('destroy.customlink');
+->group(function(){
 
-// Edit user settings
-Route::put('/edit-email/{user}','editemail')->name('edit.email');
-Route::put('/change-name/{user}','editname')->name('edit.name');
-Route::put('/change-phone/{user}','editphone')->name('edit.phone');;
-Route::put('/change-pass/{user}','editpassword')->name('edit.pass');;
-Route::delete('/account-delete/{user}','deleteaccount')->name('account.delete');
+  Route::get('/settings/info','profile_info')->name('profile.info');
+  Route::put('/settings/info','update_info')->name('update.info');
+  Route::get('/settings/account','profile_account')->name('profile.account');
+  Route::put('/settings/account','update_account')->name('update.account');
+  Route::delete('/account-delete','deleteaccount')->name('account.delete');
+  Route::delete('/settings/delete/avatar','delete_avatar')->name('avatar.destroy');
+  Route::delete('/settings/delete/cover','delete_cover')->name('cover.destroy');
+  Route::delete('/delete/custom-link/{id}',  'destroy_link')->name('destroy.customlink');
 });
 
-Route::controller(EditProfileController::class)->group(function(){
-   // Edit Profile Image
-Route::get('/edit-avatar/{user}','editavatarpage')->name('edit.avatarpage');
-Route::put('/edit-avatar/{user}/edit','editavatar')->name('edit.avatar');
-Route::delete('/delete-avatar/{user}','destroyavatar')->name('delete.avatar');
-// Edit cover photo 
-Route::get('/edit-cover/{user}','editcoverpage')->name('edit.coverpage');
-Route::put('/edit-cover/{user}/edit','editcover')->name('edit.cover');
-Route::delete('/delete-cover/{user}','destroycover')->name('delete.cover');
-});
 Route::get('/qr-code', QrcodeController::class)->name('qr-code.image');
 // Like
 Route::post('/post/{post}/like',[PostController::class,'like']);
@@ -126,7 +110,6 @@ Route::get('/getsavedposts',[PostController::class,'getsavedposts'])->name('book
 Route::get('/notifications/{id}/read', [NotificationController::class, 'markasread'])->name('notifications.read');
 Route::delete('/notifications/{id}/delete', [NotificationController::class, 'delete'])->name('notifications.delete');
 Route::delete('/notifications/deleteAll', [NotificationController::class, 'deleteAll'])->name('notifications.deleteAll');
-
 
 // admin panel
 Route::prefix('admin')

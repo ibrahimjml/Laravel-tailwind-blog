@@ -2,8 +2,12 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\User;
+use App\Rules\EmailProviders;
+use App\Rules\Username;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class CreateUserRequest extends FormRequest
 {
@@ -23,11 +27,11 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-              "email" => ["required", "email", Rule::unique("users", "email")],
+              "email" => ["required", "email", Rule::unique(User::class),new EmailProviders()],
               "name" => ["required", "min:5", "max:50", "alpha"],
-              "username" => ["required", "min:5", "max:15", "alpha_num", Rule::unique('users', 'username')],
-              "phone" => ["required", Rule::unique("users", "phone")],
-              "password" => ["required", "alpha_num", "min:8", "max:32", "confirmed"],
+              "username" => ["required", "min:5", "max:15", "alpha_num", Rule::unique(User::class),new Username],
+              "phone" => ["required", Rule::unique(User::class)],
+              "password" => ["required", "confirmed",Password::defaults()],
               "age" => ["required", "numeric", "between:18,64"],
               "roles" => ["required", "exists:roles,id"],
               "permissions" => ["nullable", "array"],

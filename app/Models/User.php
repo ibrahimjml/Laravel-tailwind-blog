@@ -31,7 +31,8 @@ class User extends Authenticatable implements MustVerifyEmail
       'linkedin',
       'twitter',
       'is_blocked',
-      'aboutme'
+      'aboutme',
+      'username_changed_at'
   ];
 
 
@@ -90,5 +91,6 @@ public function getCoverAttribute()
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'username_changed_at' => 'datetime'
     ];
 }
