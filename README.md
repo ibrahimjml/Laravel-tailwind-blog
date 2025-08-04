@@ -82,6 +82,9 @@
 🔥🔥 Upcomig: likes on comments,private|public accounts.
 
 ## INSTALLATION
+-- Requirements extensions:
+- **PHP 8.3, Imagick, intl**
+
 1.📦 Install dependencies
 ```
 composer install
