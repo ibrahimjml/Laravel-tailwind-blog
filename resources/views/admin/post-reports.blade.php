@@ -11,6 +11,7 @@
     <tr class="bg-gray-600">
       <th class="text-white p-2">#</th>
       <th class="text-white p-2">Post</th>
+      <th class="text-white p-2">Author</th>
       <th class="text-white p-2">Reported By</th>
       <th class="text-white p-2">Reason</th>
       <th class="text-white p-2">Other</th>
@@ -27,7 +28,16 @@
       <span>{{$report->post->title}}</span>
         </div>
       </td>
-      <td>{{$report->user->name}}</td>
+      <td>
+        <span class="px-2 font-semibold text-white rounded-lg bg-green-400">
+          {{$report->post->user->name}}
+        </span>
+      </td>
+      <td>
+        <span class="px-2 py-2 font-semibold text-white rounded-lg bg-yellow-400">
+          {{$report->user->name}}
+        </span>
+      </td>
       <td>{{$report->reason_label}}</td>
       <td>
         @if(isset($report->other))

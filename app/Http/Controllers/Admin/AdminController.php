@@ -12,8 +12,8 @@ use App\Services\Admin\DashboardStatsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CreateUserRequest;
-use App\Http\Requests\Admin\UpdateUserRequest;
+use App\Http\Requests\App\Admin\CreateUserRequest;
+use App\Http\Requests\App\Admin\UpdateUserRequest;
 use App\Models\PostReport;
 use App\Models\Role;
 use App\Services\PostService;
@@ -40,10 +40,11 @@ class AdminController extends Controller
     $hashtags = DB::table('hashtags')->count();
     $comments = DB::table('comments')->count();
     $blocked = DB::table('users')->where('is_blocked',1)->count();
+    $reports = DB::table('post_reports')->count();
     $year = request('year', date('Y'));
 
     $data = $this->stats->getStats($year);             
-    return view('admin.adminpanel',compact(['user','post','likes','hashtags','comments','blocked','data']));
+    return view('admin.adminpanel',compact(['user','post','likes','hashtags','comments','blocked','reports','data']));
   }
 
   public function users(Request $request)

@@ -73,7 +73,7 @@ Route::controller(ProfileController::class)
 
 });
 // profile settings
-Route::prefix('/profile')
+Route::prefix('profile')
 ->controller(ProfileSettingsController::class)
 ->middleware('password.confirm')
 ->group(function(){

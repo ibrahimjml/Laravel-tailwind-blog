@@ -1,4 +1,4 @@
-<div class="flex-auto p-4 border-2 bg-white rounded-lg">
+<div class="flex p-4 w-40 border-2 bg-white rounded-lg">
   <div class="flex flex-wrap">
     <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
@@ -17,9 +17,9 @@
   </div>
 </div>
 
-<div class="flex-auto p-4 border-2 bg-white rounded-lg">
+<div class="flex p-4 w-48 border-2 bg-white rounded-lg">
   <div class="flex flex-wrap">
-    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+    <div class="relative w-full pr-4 max-w-full  flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
         Blocked
       </h5>

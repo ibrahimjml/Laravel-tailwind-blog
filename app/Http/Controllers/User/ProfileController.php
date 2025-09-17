@@ -7,7 +7,7 @@ use App\Http\Middleware\CheckIfBlocked;
 use App\Models\ProfileView;
 use App\Models\User;
 use App\Services\ProfileViewService;
-use App\Services\UserActivityService;
+use App\Services\User\UserActivityService;
 
 class ProfileController extends Controller
 {

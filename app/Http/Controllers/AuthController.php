@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Rules\Recaptcha;
 use Illuminate\Support\Str;
 use App\Mail\ForgotPassword;
-use App\Services\RegisterUserService;
+use App\Services\User\RegisterUserService;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -88,6 +88,7 @@ class AuthController extends Controller
 
     $fields = $request->validate([
       "email" => ["required", "email", "min:5", "max:50"],
+      "g-recaptcha-response" => [new Recaptcha]
     ]);
     $fields['email'] = htmlspecialchars(strip_tags($fields['email']));
 

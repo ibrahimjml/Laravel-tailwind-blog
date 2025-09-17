@@ -200,7 +200,7 @@
         <div class="w-full px-4 text-center mt-20">
           <div class="flex justify-center py-4 lg:pt-4 pt-8">
         {{-- posts-likes-follows-count --}}
-            @include('profileuser.partials.posts-likes-follows-count',['postcount'=>$postcount,'likescount'=>$likescount,'user'=>$user])
+            @include('profile.partials.posts-likes-follows-count',['postcount'=>$postcount,'likescount'=>$likescount,'user'=>$user])
           </div>
         </div>
         </div>

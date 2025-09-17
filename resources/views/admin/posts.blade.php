@@ -48,6 +48,7 @@
       <th class="text-white p-2">Image</th>
       <th class="text-white p-2">Title</th>
       <th class="text-white p-2">Body</th>
+      <th class="text-white p-2">IsReported</th>
       <th class="text-white p-2">Hashtags</th>
       <th class="text-white p-2">Featured</th>
       <th class="text-white p-2">Likes</th>
@@ -66,6 +67,13 @@
       </td>
       <td class="p-2">{{Str::limit($post->slug, 20)}}</td>
       <td class="p-2"> {!! Str::limit(strip_tags($post->description), 40) !!}</td>
+      <td class="p-2">
+        @if($post->reports_count >0)
+        {{$post->reports_count}}
+        @else
+        <i class="fas fa-times text-red-500"></i>
+        @endif
+      </td>
       <td class="p-2">
       @if($post->hashtags->isNotEmpty())
       {{$post->hashtags->pluck('name')->implode(', ')}}

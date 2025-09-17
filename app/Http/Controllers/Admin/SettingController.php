@@ -13,6 +13,7 @@ class SettingController extends Controller
     public function settings(User $user)
     {
         $user = auth()->user();
+        $user->loadCount(['followers','followings']);
         return view("admin.setting",[
           'user'=>$user,
           'postcount' => $user->post()->count(),

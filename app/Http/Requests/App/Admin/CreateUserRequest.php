@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\App\Admin;
 
 use App\Models\User;
 use App\Rules\EmailProviders;
+use App\Rules\PasswordRule;
 use App\Rules\Username;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
 
 class CreateUserRequest extends FormRequest
 {
@@ -31,7 +31,7 @@ class CreateUserRequest extends FormRequest
               "name" => ["required", "min:5", "max:50", "alpha"],
               "username" => ["required", "min:5", "max:15", "alpha_num", Rule::unique(User::class),new Username],
               "phone" => ["required", Rule::unique(User::class)],
-              "password" => ["required", "confirmed",Password::defaults()],
+              "password" => ["required", "confirmed",new PasswordRule()],
               "age" => ["required", "numeric", "between:18,64"],
               "roles" => ["required", "exists:roles,id"],
               "permissions" => ["nullable", "array"],

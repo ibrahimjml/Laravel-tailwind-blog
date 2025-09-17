@@ -34,8 +34,8 @@
         <a href="/blog" 
         >Blog</a></li>
         @unless(request()->is('admin*'))
-        <li id="hover-notification" class="text-lg relative pt-2 pb-1 cursor-pointer text-gray-700 ">
-        <span class="absolute top-2 left-3 h-4 w-4 bg-gray-500 text-white flex justify-center items-center rounded-full p-1 text-xs">
+        <li id="hover-notification" class="text-lg relative pt-2 cursor-pointer text-gray-700 ">
+        <span class="absolute top-2 left-3 h-4 w-4 bg-red-500 text-white flex justify-center items-center rounded-full p-1 text-xs font-semibold">
           {{ auth()->user()->unreadNotifications->count() }}
         </span>
         <i class="fas fa-bell {{Route::is(['profile','home','profile.aboutme','profile.activity']) ? 'text-white' : 'text-gray-700'}}"></i>

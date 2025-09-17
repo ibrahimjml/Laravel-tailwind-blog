@@ -12,7 +12,7 @@
 
               <form class="border-2 w-full px-6 space-y-6 sm:px-10 sm:space-y-8" method="POST" action="{{route('forgot.password.post')}}">
                   @csrf
-
+                  @method('POST')
                   <div class="flex flex-wrap">
                     <label for="email" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
                       E-Mail Address:
@@ -21,7 +21,14 @@
                     <input id="email" type="email"
                         class="rounded-sm p-2 border-2 form-input w-full @error('email') border-red-500 @enderror" name="email"
                         value="{{ old('email') }}" required autocomplete="email">
-
+                      <!-- Google reCAPTCHA v2 checkbox -->
+                    <div class="g-recaptcha mt-2" data-sitekey="{{env('GOOGLE_SITEKEY')}}">
+                    </div>
+                      @error('g-recaptcha-response')
+                        <p class="text-red-500 text-xs italic mt-4">
+                            {{ $message }}
+                        </p>
+                        @enderror
                     @error('email')
                     <p class="text-red-500 text-xs italic mt-4">
                         {{ $message }}
