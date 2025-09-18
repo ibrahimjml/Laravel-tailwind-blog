@@ -32,7 +32,7 @@
 
     <!-- Post Image -->
     <div class="relative h-64 sm:h-72 w-full rounded-lg overflow-hidden">
-      <img loadind="lazy" src="/storage/uploads/{{$post->image_path}}" alt="{{ $post->title }}" class="w-full h-full object-cover shadow-md">
+      <img loading="lazy" src="/storage/uploads/{{$post->image_path}}" alt="{{ $post->title }}" class="w-full h-full object-cover shadow-md">
       @if($post->is_featured)
       <span class="absolute top-4 left-4 bg-amber-400 bg-opacity-80 text-white text-sm font-medium px-3 py-1 rounded-md">
         Featured
@@ -57,7 +57,7 @@
           Remove
         </button>
         @endif
-        <a href="/post/{{ $post->slug }}" class="border-2 border-gray-600 text-gray-700 font-semibold px-4 py-1 rounded-md hover:bg-gray-100 transition">
+        <a href="/post/{{ $post->slug }}" class="border-2 border-gray-600 text-gray-700 font-semibold px-4 py-1 rounded-md hover:bg-black hover:text-white hover:border-0 transition-all duration-150 ease-in">
           Read More
         </a>
       </div>

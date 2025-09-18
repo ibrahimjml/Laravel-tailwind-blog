@@ -17,6 +17,11 @@ class ViewPostService
           ->where('id','!=',$post->id)
           ->take(3)
           ->get();
+ $post->latestblogs = Post::latest()
+          ->with(['user:id,name,username,avatar'])
+          ->where('id','!=',$post->id)
+          ->get()
+          ->take(8);          
  $post->reasons = collect(ReportReason::cases())->map(function($case){
     return [
       'name' => $case->name,

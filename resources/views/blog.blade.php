@@ -8,13 +8,13 @@
 <div>
     @auth
     <a href="{{ route('createpage') }}"
-       class="bg-gray-500 hover:bg-gray-600 text-white font-semibold text-sm px-4 py-2 rounded-lg transition duration-150 ease-in-out hidden sm:inline-block">
+       class="bg-black hover:bg-gray-800 text-white font-semibold text-sm px-4 py-2 rounded-lg transition duration-150 ease-in-out hidden sm:inline-block">
       <i class="fas fa-plus text-sm mr-2"></i>    
        Create Post
     </a>
   
     <a href="{{route('createpage')}}" 
-       class="bg-gray-500 hover:bg-gray-600 text-white font-semibold h-10 w-10 text-sm px-4 py-2 rounded-lg transition duration-150 ease-in-out flex items-center justify-center sm:hidden ml-2" 
+       class="bg-black hover:bg-gray-800 text-white font-semibold h-10 w-10 text-sm px-4 py-2 rounded-lg transition duration-150 ease-in-out flex items-center justify-center sm:hidden ml-2" 
        title="create post">
     <i class="fas fa-plus "></i>
     </a>
@@ -25,13 +25,12 @@
   {{-- search bar --}}
   <div class="md:ml-28 ml-7">
     @include('partials.search-bar', ['searchquery' => $searchquery ?? ''])
-
   </div>
 
 
  {{-- Sort dropdown --}}
  <div class="relative flex md:flex-row flex-col items-center justify-center gap-2 ml-2">
-  <label for="sort" class="text-gray-500  font-semibold text-lg">Filter by</label>
+  <label for="sort" class="text-gray-800  font-semibold text-lg">Filter :</label>
   <form action="{{url()->current()}}" method="GET">
       @if(request()->has('search'))
       <input type="hidden" name="search" value="{{ request('search') }}">
@@ -39,7 +38,7 @@
     <div class="relative w-full">
       <select id="sort" name="sort"
         onchange="this.form.submit()"
-        class="appearance-none cursor-pointer bg-gray-500 text-white border border-gray-300 text-sm rounded-lg focus:ring-white p-2.5 ">
+        class="appearance-none cursor-pointer font-semibold bg-black text-white border border-gray-300 text-sm rounded-lg focus:ring-white p-2.5 ">
        <option value="latest" {{ $sorts == 'latest' ? 'selected' : '' }}>⏰ Latest</option>
        <option value="oldest" {{ $sorts == 'oldest' ? 'selected' : '' }}>📜 Oldest</option>
        <option value="mostliked" {{ $sorts == 'mostliked' ? 'selected' : '' }}>👍 Most Liked</option>
@@ -60,36 +59,36 @@
 </div>
  {{-- show/hide Tags --}}
 <div class="flex justify-center mt-5">
-<button id="showtags" class=" sm:flex  w-fit   bg-gray-500  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6">
-  <i class="fas fa-tag mr-2 text-sm"></i>
+<button id="showtags" class=" sm:flex  w-fit bg-black text-white py-2 px-5 rounded-lg font-bold capitalize mb-6">
+  <i class="fas fa-tag mr-2 text-sm text-yellow-400"></i>
   <span class="label">Show Tags</span>
 </button>
 </div>
 <div id="tagcontainer" class="flex flex-wrap justify-center gap-2 px-3 mb-3 w-full max-w-full transition-all duration-500 ease-in-out h-0 overflow-hidden">
   @foreach ($tags as $tag)
     <a href="{{ route('viewhashtag', $tag->name) }}"
-       class="px-2 py-1 bg-gray-500 text-sm text-white rounded-lg flex items-center justify-center whitespace-nowrap">
-      {{ $tag->name }} ({{ $tag->posts_count }})
+       class="px-2 py-1 text-sm text-white rounded-lg flex items-center justify-center whitespace-nowrap
+       {{$tag->posts_count > 10 ? 
+       'bg-black border-2 border-yellow-400' : 
+       'bg-gray-500 border-none'}}
+       ">
+      @if($tag->posts_count > 10) 🔥 @else &#x23; @endif
+       {{ $tag->name }} ({{ $tag->posts_count }})
     </a>
   @endforeach
 </div>
 
 <hr>
 
-{{-- posts --}}
-
+{{-- posts feed--}}
 @if($posts->count() == 0)
-
   <h1 class=" text-4xl p p-36 font-semibold text-center w-54">No Posts Yet</h1>
-
 @else
-@foreach ($posts as $post)
-    
-
+@foreach ($posts as $post)    
 <x-postcard :post="$post" :authFollowings="$authFollowings"/>
-
 @endforeach
 @endif
+{{-- pagination --}}
 <div class="container mx-auto max-w-7xl flex justify-center gap-6 mt-2 mb-2">
   {!! $posts->links() !!}
 </div>

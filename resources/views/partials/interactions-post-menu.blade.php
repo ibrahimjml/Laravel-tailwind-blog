@@ -1,3 +1,5 @@
+{{-- start trigger observer Interactions menu --}}
+<div id="action-bar-trigger" class="h-[1px] w-full"></div>
 <div id="action-bar" class=" container  mx-auto mb-5 w-fit h-14 space-x-2 flex justify-center items-center gap-2 border-2 rounded-full px-6 py-3 text-2xl bg-white transition-all duration-300 z-50">
 <div class="flex items-center justify-center">
     <span onclick="fetchLike(this)" class="cursor-pointer w-8 h-8 rounded-full flex justify-center items-center  hover:bg-gray-200 transition-bg duration-150 ">
@@ -51,31 +53,41 @@
   @include('partials.more-menu')
 </div>
 </div>
+<!-- end trigger observer -->
+<div id="action-bar-end"></div>
 
 @push('scripts')
 {{-- observer for model inertactions --}}
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const actionBar = document.getElementById('action-bar');
-    const trigger = document.getElementById('action-bar-trigger');
+document.addEventListener('DOMContentLoaded', () => {
+  const actionBar = document.getElementById('action-bar');
+  const trigger = document.getElementById('action-bar-trigger');
+  const endtrigger = document.getElementById('action-bar-end');
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          
-          actionBar.classList.remove('fixed', 'bottom-0', 'left-1/2', '-translate-x-1/2', 'shadow-xl');
-          actionBar.classList.add('relative', 'mx-auto');
-        } else {
-          
-          actionBar.classList.remove('relative', 'mx-auto');
-          actionBar.classList.add('fixed', 'bottom-0', 'left-1/2', '-translate-x-1/2', 'shadow-xl');
-        }
-      });
-    }, {
-      threshold: 0.5 
+  const positionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        actionBar.classList.remove('fixed-bottom', 'hidden-bottom');
+      } else {
+        actionBar.classList.add('fixed-bottom');
+        actionBar.classList.remove('hidden-bottom');
+      }
     });
+  }, { threshold: 0 });
 
-    observer.observe(trigger);
-  });
+  // Observe  hide when scrolled below menu
+  const endObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        actionBar.classList.remove('hidden-bottom');
+      } else {
+        actionBar.classList.add('hidden-bottom');
+      }
+    });
+  }, { threshold: 0 });
+
+  positionObserver.observe(trigger);
+  endObserver.observe(endtrigger);
+});
 </script>
 @endpush

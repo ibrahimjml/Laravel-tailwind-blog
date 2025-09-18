@@ -4,7 +4,7 @@
 @include('components.head')
 </head>
 <body  class="min-h-screen flex  flex-col m-0 ">
-  <nav class="w-screen px-6 py-2 {{Route::is(['profile','home','profile.aboutme','profile.activity']) ? 'bg-opacity-0 absolute z-50' : 'bg-zinc-100 border-b-2'}}  ">
+  <nav class="w-screen  px-6 py-5 h-20  {{Route::is(['profile','home','profile.aboutme','profile.activity']) ? 'bg-opacity-0 absolute z-50' : 'bg-white shadow-[0_2px_5px_rgba(0,0,0,0.1)]'}}  ">
     <div class="flex justify-between items-center ">
       <div class=" text-2xl font-bold">
       <span class="bg-white text-black pr-1 pl-1 rounded-l-md border border-t-3 border-b-3">Blog</span><span class="text-white bg-black pl-1 pr-1 rounded-r-md ">Post</span> 
@@ -17,8 +17,9 @@
           @auth
         <li class="{{Route::is(['profile','home','profile.aboutme','profile.activity']) ? 'text-white' : 'text-gray-700'}} text-lg pt-2  relative" id="dropdown">
           @include('partials.hover-menu')
-        <span class="cursor-pointer" >
+        <span class="cursor-pointer">
           {{auth()->user()->name}}
+          <i class="fas fa-angle-down ml-1"></i>
         </span>
       </li>
         @endauth

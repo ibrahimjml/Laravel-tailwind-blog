@@ -66,6 +66,7 @@ return response()->json(['attached'=>$attached]);
     return view('post', [
        'post' => $post,
        'totalcomments'=> Comment::where('post_id', $post->id)->count(),
+       'latestblogs' => $post->latestblogs,
        'morearticles' => $post->morearticles,
        'viewwholiked' => $post->viewwholiked,
        'reasons' => $post->reasons,
