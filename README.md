@@ -9,16 +9,28 @@
 
 ## About Laravel
 # Laravel Blog Application
+## Screanshots
+`Home page`
  ![Dashboard Screenshot](https://i.postimg.cc/wTzCLcrg/127-0-0-1-8000-7.png)
-![schooldash-dahboard-page](https://i.postimg.cc/BvzK7pnT/Screenshot-2025-06-09-212746.png)
-![schooldash-dahboard-page](https://i.postimg.cc/8CDSmhRw/Screenshot-2025-06-08-193655.png)
+`Blog page`
+![schooldash-dahboard-page](https://i.postimg.cc/YCRZbJhk/Screenshot-2025-09-18-234429.png)
+`Post page`
+![schooldash-dahboard-page](https://i.postimg.cc/qRP5NrZc/Screenshot-2025-09-18-233005.png)
+`TOC`
 ![schooldash-dahboard-page](https://i.postimg.cc/nV5fP8KX/Screenshot-2025-06-08-193929.png)
+`Who liked model`
 ![schooldash-dahboard-page](https://i.postimg.cc/xTYh70JT/Screenshot-2025-06-08-194122.png)
+`Comments model`
 ![schooldash-dahboard-page](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
+`Setting profile info`
 ![schooldash-dahboard-page](https://i.postimg.cc/LXGFkwFJ/Screenshot-2025-06-27-223320.png)
+`Setting profile account`
 ![schooldash-dahboard-page](https://i.postimg.cc/RV5zNkT8/Screenshot-2025-06-27-223348.png)
+`Create post page`
 ![schooldash-dahboard-page](https://i.postimg.cc/J4t6yk1w/127-0-0-1-8000-create-5.png)
+`Profile page`
 ![schooldash-dahboard-page](https://i.postimg.cc/wM54tGq8/127-0-0-1-8000-jag234.png)
+`Admin pages`
 ![schooldash-dahboard-page](https://i.postimg.cc/Dy3cc96Y/Screenshot-2025-06-03-131925.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/85pSxY91/Screenshot-2025-06-04-112530.png)
 ![schooldash-dahboard-page](https://i.postimg.cc/vZSrdZ0X/Screenshot-2025-06-06-122828.png)
