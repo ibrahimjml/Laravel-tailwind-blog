@@ -36,12 +36,14 @@
                {{ $entry['type'] }}
               </span>
             </div>
+            <!-- /post/example#comment-717 put anchor  -->
               @php
                $anchor = '';
                if(in_array($entry['type'], ['Commented', 'Replied']) && isset($entry['comment_id'])) {
                  $anchor = '#comment-' . $entry['comment_id'];
                }
              @endphp
+             <!-- redirect to exact comment    -->
             <a href="{{ url('/post/' . $entry['slug'] . $anchor) }}"
             @if(in_array($entry['type'], ['Commented', 'Replied']))
             onclick="event.preventDefault();

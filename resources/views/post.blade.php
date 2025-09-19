@@ -259,6 +259,12 @@
     @endforeach
   </div>
 </div>
+<div class="flex justify-center my-10">
+  <button onclick="window.location.href='{{route('blog')}}'"
+   class="p-3 text-center text border border-black hover:text-white hover:bg-black transition-all duration-150 ease-in">
+    View all blogs <i class="fas fa-arrow-right ml-2"></i>
+  </button>
+</div>
 {{-- contianer random hearts--}}
 <div id="containerheart"></div>
 

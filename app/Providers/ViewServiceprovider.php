@@ -50,9 +50,9 @@ class ViewServiceProvider extends ServiceProvider
           /**
            * view profile blade.
            */
-            View::composer(['profileuser.profile','profileuser.activity','profileuser.aboutme'], function ($view) {
+            View::composer('profile.profile', function ($view) {
             $user = request()->route('user');
-    
+     
            if ($user && is_object($user)) {
                $title = match(true) {
                 request()->routeIs('profile.activity') => "{$user->name}'s Activity | Blog-Post",
