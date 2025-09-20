@@ -1,15 +1,15 @@
 <div id="Model" class="hidden fixed w-2/6 z-[20]  py-8 left-[50%]  top-[50%] transform translate-x-[-50%] translate-y-[-50%] items-center space-y-2 font-bold bg-gray-700 rounded-lg drop-shadow-lg border border-gray-300 transition-all duration-300">
 
   <div class="ml-6">
-    <p class="text-xl text-gray-100">Create New Hashtag.</p>
- <form id="addtag" action="{{route('create.hashtag')}}" method="POST">
+    <p class="text-xl text-gray-100">Create New Category.</p>
+ <form id="addcategory" action="{{route('create.category')}}" method="POST">
  @csrf
  @method("POST")
  <label for="name" class="mt-2 block text-slate-200 text-sm mb-1 font-bold  ">
-Hashtag:
+Category:
 </label>
  <input  type="text" class="block  w-72 rounded-lg p-2 border-2 text-white  bg-transparent @error('name') border-red-500 @enderror"
-  name="name" placeholder="type a tag">
+  name="name" placeholder="type a category">
   @error('name')
       <p class="text-red-500 text-xs italic mt-4">
           {{ $message }}
@@ -25,15 +25,15 @@ Hashtag:
 
 @push('scripts')
 <script>
-    const addtag = document.getElementById('addtag');
-  if (addtag) {
-    addtag.addEventListener('submit', (eo) => {
+    const addcategory = document.getElementById('addcategory');
+  if (addcategory) {
+    addcategory.addEventListener('submit', (eo) => {
       eo.preventDefault();
 
-      const input = addtag.querySelector('input[name="name"]');
+      const input = addcategory.querySelector('input[name="name"]');
       const content = input.value.trim();
       const menu = document.getElementById("Model");
-      const table = document.getElementById('tabletags');
+      const table = document.getElementById('tablecats');
       if (!content) return;
 
       let options = {
@@ -45,12 +45,12 @@ Hashtag:
         body: JSON.stringify({ name: content })
       };
 
-      fetch(addtag.action, options)
+      fetch(addcategory.action, options)
         .then(response => response.json())
         .then(data => {
           if (data.added === true) {
             menu.classList.add('hidden');
-            toastr.success(`Tag ${data.hashtag} Added`);
+            toastr.success(data.message);
           }
         })
         .catch(error => {

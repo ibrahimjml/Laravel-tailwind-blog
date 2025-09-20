@@ -22,6 +22,13 @@
     </a>
   </li>
   <li class="items-center">
+    <a href="{{route('categorypage')}}"
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('categorypage') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-list mr-2 text-sm opacity-75"></i>
+      Categories
+    </a>
+  </li>
+  <li class="items-center">
     <a href="{{route('roles.index')}}"
       class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('featuredpage') ? 'text-blue-500 hover:text-blue-600' : ''}}">
       <i class="fas fa-user-cog mr-2 text-sm opacity-75"></i>

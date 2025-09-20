@@ -11,6 +11,7 @@ class UpdatePostDTO
        public readonly string $description,
        public readonly ?bool $allowComments,
        public readonly ?string $hashtags,
+       public readonly ?array $categories,
        public readonly ?bool $isFeatured = false, 
     ){}
 
@@ -25,6 +26,7 @@ class UpdatePostDTO
             description: $request->validated('description'),
             allowComments: $allowComments,
             hashtags: $request->filled('hashtag') ? $request->validated('hashtag') : null,
+            categories: $request->validated('categories') ?? [],
             isFeatured: $featured
           );
     }

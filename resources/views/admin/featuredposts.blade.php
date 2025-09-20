@@ -68,6 +68,18 @@
       </button>
       @endif
       </div>
+          <label for="categories" class="block text-gray-700 text-sm font-bold mb-1">
+         Categories:
+       </label>
+       <select name="categories[]" id="categories" multiple 
+         class="w-full border rounded-md p-2">
+         @foreach($categories as $category)
+           <option value="{{ $category->id }}">{{ $category->name }}</option>
+         @endforeach
+       </select>
+      @error('categories')
+       <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+      @enderror
     <div class="flex flex-col  items-start ">
       <label for="featured" class="block text-gray-700 text-sm font-bold mb-2 mt-2 sm:mb-4">
         Featured:

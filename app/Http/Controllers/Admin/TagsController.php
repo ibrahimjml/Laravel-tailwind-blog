@@ -34,9 +34,9 @@ class TagsController extends Controller
 
 public function edit_tag(Hashtag $hashtag, Request $request){
   $fields = $request->validate([
-    'name' =>'required|string'
+    'name' =>'nullable|string'
     ]);
-    $hashtag->update($fields);
+    $hashtag->update(['name' => $fields['name']]);
     return response()->json([
       'edited'=>true,
       'message' => "Hashtag {$hashtag->name} updated",

@@ -58,10 +58,10 @@
  </div>
 </div>
  {{-- show/hide Tags --}}
-<div class="flex justify-center mt-5">
+<div class="flex items-center justify-center mt-5">
 <button id="showtags" class=" sm:flex  w-fit bg-black text-white py-2 px-5 rounded-lg font-bold capitalize mb-6">
   <i class="fas fa-tag mr-2 text-sm text-yellow-400"></i>
-  <span class="label">Show Tags</span>
+  <span class="label">Tags</span>
 </button>
 </div>
 <div id="tagcontainer" class="flex flex-wrap justify-center gap-2 px-3 mb-3 w-full max-w-full transition-all duration-500 ease-in-out h-0 overflow-hidden">
@@ -108,7 +108,7 @@
       } else {
         tagContainer.style.height = '0';
         expanded = false;
-        label.textContent = 'Show Tags';
+        label.textContent = 'Tags';
       }
     });
   

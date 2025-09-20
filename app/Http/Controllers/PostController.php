@@ -8,6 +8,7 @@ use App\DTOs\UpdatePostDTO;
 use App\Http\Middleware\CheckIfBlocked;
 use App\Http\Requests\App\CreatePostRequest;
 use App\Http\Requests\App\UpdatePostRequest;
+use App\Models\Category;
 use App\Models\Hashtag;
 use App\Models\Post;
 use App\Services\PostService;
@@ -35,9 +36,11 @@ class PostController extends Controller
            ->withQueryString();
 
     $hashtags = Hashtag::withCount('posts')->get();
+    $categories = Category::withCount('posts')->get();
 
     return view('blog', [
       'tags' => $hashtags,
+      'categories' => $categories,
       'posts' => $posts,
       'sorts' => $sortoption,
     ]);
@@ -47,9 +50,11 @@ class PostController extends Controller
   public function createpage()
   {
     $allhashtags = Hashtag::pluck('name');
+    $categories = Category::select('id','name')->get();
 
     return view('create', [
-      'allhashtags' => $allhashtags
+      'allhashtags' => $allhashtags,
+      'categories' => $categories
     ]);
   }
 
@@ -81,11 +86,13 @@ class PostController extends Controller
 
     $hashtags = $post->hashtags()->pluck('name')->implode(', ');
     $allhashtags = Hashtag::pluck('name');
+    $categories = Category::select('id','name')->get();
     
     return view('updatepost',[
       'post' => $post,
       'hashtags' => $hashtags,
       'allhashtags' => $allhashtags,
+      'categories' => $categories
     ]);
   }
 

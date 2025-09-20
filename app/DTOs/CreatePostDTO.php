@@ -14,6 +14,7 @@ class CreatePostDTO
        public readonly ?bool $allowComments,
        public readonly int $userId,
        public readonly ?string $hashtags, 
+       public readonly array $categories,
        public readonly ?bool $isFeatured = false,
     ){}
 
@@ -30,6 +31,7 @@ class CreatePostDTO
            allowComments: $allowComments,
            userId: auth()->id(),
            hashtags: $request->filled('hashtag') ? $request->validated('hashtag') : null,
+           categories: $request->validated('categories') ?? [],
            isFeatured: $featured,
        );
     }

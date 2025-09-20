@@ -48,7 +48,7 @@
       @enderror
     </div>
     <div class="flex flex-col space-y-2 w-full">
-      <label for="hashtagInput" class="block text-gray-700 text-sm font-bold mb-1">Hashtags:</label>
+      <label for="hashtagInput" class="block text-gray-700 text-sm font-bold mb-1">Hashtags (optional):</label>
     
       <!-- Hidden input to store comma-separated tags -->
       <input type="hidden" name="hashtag" id="hashtagsHidden">
@@ -79,11 +79,31 @@
           <option value="{{ $all }}">{{ $all }}</option>
         @endforeach
       </select>
+      <p class="text-gray-600 text-xs mt-2">
+      <i class="fas fa-info-circle text-black"></i>
+      select one or more max: 5
+      </p>
       <button type="button" onclick="addSelectedHashtags()" class="mt-2 bg-gray-500 hover:bg-gray-600 w-fit text-white px-3 py-1 rounded">
         Add Selected Hashtags
       </button>
     @endif
-    <div class="bg-gray-600  rounded-md p-2 h-11 w-fit">
+    <label for="categories" class="block text-gray-700 text-sm font-bold mb-1">
+     Categories (optional):
+    </label>
+    <select name="categories[]" id="categories" multiple 
+      class="w-full border rounded-md p-2">
+      @foreach($categories as $category)
+        <option value="{{ $category->id }}">{{ $category->name }}</option>
+      @endforeach
+    </select>
+    <p class="text-gray-600 text-xs mt-2">
+      <i class="fas fa-info-circle text-black"></i>
+      select one or more max: 4
+    </p>
+    @error('categories')
+      <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+    @enderror
+    <div class="bg-gray-500  rounded-md p-2 h-11 w-fit">
       <input type="checkbox" name="enabled" id="enabled" value="1" {{ old('enabled') ? 'checked' : '' }}>
         <label class="text-white font-semibold" for="enabled">Enable comments</label>
         @error('enabled')

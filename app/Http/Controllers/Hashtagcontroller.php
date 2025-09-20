@@ -27,7 +27,7 @@ class Hashtagcontroller extends Controller
 
       return view('hashtags.show', [
         'posts' => $posts,
-        'hashtag' => $hashtag,
+        'currentHashtag' => $hashtag,
       ]);
     }
 }

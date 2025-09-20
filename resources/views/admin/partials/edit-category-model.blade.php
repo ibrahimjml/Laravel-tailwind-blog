@@ -1,12 +1,12 @@
 <div id="editModel" class="hidden fixed w-2/6 z-[20]  py-8 left-[50%]  top-[50%] transform translate-x-[-50%] translate-y-[-50%] items-center space-y-2 font-bold bg-gray-700 rounded-lg drop-shadow-lg border border-gray-300 transition-all duration-300">
 
   <div class="ml-6">
-    <p class="text-xl text-gray-100">Create New Hashtag.</p>
- <form id="edittag" action="{{route('edit.hashtag',$hashtag->id)}}" method="POST">
+    <p class="text-xl text-gray-100">Edit Category.</p>
+ <form id="editcategory" method="POST">
  @csrf
  @method("PUT")
  <label for="name" class="mt-2 block text-slate-200 text-sm mb-1 font-bold  ">
-Hashtag:
+Category:
 </label>
  <input  type="text" class="block  w-72 rounded-lg p-2 border-2 text-white  bg-transparent @error('name') border-red-500 @enderror"
   name="name" value="">
@@ -25,11 +25,11 @@ Hashtag:
 
 @push('scripts')
 <script>
-    // edit hashtag
-    const editButtons = document.querySelectorAll('.tagsedit');
+    // edit category
+    const editButtons = document.querySelectorAll('.catsedit');
   const editModal = document.getElementById('editModel');
   const closeEditBtn = document.getElementById('closeEditModel');
-  const editForm = document.getElementById('edittag');
+  const editForm = document.getElementById('editcategory');
 
   if (editModal && closeEditBtn && editForm) {
     const nameInput = editForm.querySelector('input[name="name"]');
@@ -37,11 +37,11 @@ Hashtag:
 
     editButtons.forEach(button => {
       button.addEventListener('click', () => {
-        const tagId = button.dataset.id;
-        const tagName = button.dataset.name;
+        const catId = button.dataset.id;
+        const catName = button.dataset.name;
 
-        editForm.action = `/admin/edit/tag/${tagId}`;
-        nameInput.value = tagName;
+        editForm.action = `/admin/edit/category/${catId}`;
+        nameInput.value = catName;
 
         editModal.classList.remove('hidden');
       });
@@ -63,7 +63,7 @@ Hashtag:
       fetch(editForm.action, options)
         .then(response => response.json())
         .then(data => {
-          if (data.edited === true) {
+          if (data.updated === true) {
             toastr.success(data.message);
             editModal.classList.add('hidden');
           }

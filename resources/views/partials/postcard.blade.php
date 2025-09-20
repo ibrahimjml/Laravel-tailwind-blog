@@ -41,17 +41,32 @@
     </div>
 
     <!-- Interactions -->
-    <div class="flex justify-between items-center">
-      <div class="flex gap-5 text-lg text-gray-600">
-        @if($post->likes_count)
-        <span><i class="fas fa-heart text-red-500"></i> {{ $post->likes_count }}</span>
-        @endif
-        @if($post->totalcomments_count)
-        <span><i class="fas fa-comment text-blue-500"></i> {{ $post->totalcomments_count }}</span>
-        @endif
-        <span><i class="fas fa-eye mr-1 text-black"></i>{{$post->views}}</span>
-      </div>
-      <div class="flex gap-3">
+    @if($post->categories->isNotEmpty())
+    <div class="flex items-center gap-2 text-md text-gray-600">
+      <b>in :</b>
+      @foreach($post->categories as $category)
+      @php
+      $isActive = isset($currentCategory) && $currentCategory->name == $category->name;
+      @endphp
+    <a href="{{route('viewcategory',$category->name)}}" 
+      class=" text-white px-2 py-1 text-sm rounded-md
+       {{ $isActive ? ' bg-yellow-400' : 'bg-gray-500' }}">
+       {{ $category->name }}
+    </a>
+    @endforeach
+    </div>
+    @endif
+    <div class="flex justify-between items-center ">
+        <div class="flex gap-5 text-lg text-gray-600">
+          @if($post->likes_count)
+          <span><i class="fas fa-heart text-red-500"></i> {{ $post->likes_count }}</span>
+          @endif
+          @if($post->totalcomments_count)
+          <span><i class="fas fa-comment text-blue-500"></i> {{ $post->totalcomments_count }}</span>
+          @endif
+          <span><i class="fas fa-eye mr-1 text-black"></i>{{$post->views}}</span>
+        </div>
+      <div class="flex">
         @if (!empty($showSaveButton))
         <button onclick="unsavedposts({{ $post->id }})" class="border-2 border-red-600 text-red-600 font-semibold px-4 py-1 rounded-md hover:bg-red-50 transition">
           Remove
@@ -74,8 +89,14 @@
     @if($post->hashtags->isNotEmpty())
     <div class="flex flex-wrap gap-2 mt-4">
       @foreach($post->hashtags as $hashtag)
-      <a href="{{ route('viewhashtag', $hashtag->name) }}" class="bg-gray-700 text-white px-2 py-1 text-sm rounded-md">
-        #{{ $hashtag->name }}
+        @php
+        $isActive = isset($currentHashtag) && $currentHashtag->name == $hashtag->name;
+        @endphp
+      <a href="{{ route('viewhashtag', $hashtag->name) }}" 
+        class="text-white px-2 py-1 text-sm rounded-md
+        {{$isActive ? 'bg-yellow-400 font-semibold' : 'bg-gray-500'}}
+        ">
+        # {{ $hashtag->name }}
       </a>
       @endforeach
     </div>

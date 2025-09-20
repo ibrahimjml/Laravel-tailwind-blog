@@ -29,6 +29,9 @@ class PostService
         if($dto->hashtags){
           $this->tagservice->attachhashtags($post,$dto->hashtags);
         }
+        if($dto->categories){
+          $post->categories()->sync($dto->categories);
+        }
         return $post;
     }
 
@@ -41,6 +44,7 @@ class PostService
         'is_featured' => $dto->isFeatured
     ]);
         $this->tagservice->syncHashtags($post, $dto->hashtags);
+        $post->categories()->sync($dto->categories);
        return $post;
     }
 }

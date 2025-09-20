@@ -25,6 +25,8 @@ class UpdatePostRequest extends FormRequest
 
         'title' => 'nullable|string|regex:/^[A-Za-z0-9\s]+$/|max:50|min:6',
         'description' => 'required|string',
+        'categories' => 'required|array|min:1|max:4', 
+        'categories.*' => 'exists:categories,id',
         'hashtag' => ['nullable', 'string', function ($attribute, $value, $fail) {
 
         $tags = array_filter(array_map('trim', explode(',', $value)));
@@ -46,6 +48,7 @@ class UpdatePostRequest extends FormRequest
     {
         return [
             'title.regex' => 'The title may only contain letters, numbers, and spaces.',
+            'categories.max' => 'Categories are greater than 4'
         ];
     }
 }

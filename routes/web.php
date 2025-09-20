@@ -7,6 +7,7 @@ use App\Http\Controllers\User\{
 };
 use App\Http\Controllers\Admin\{
     AdminController,
+    CategoriesController,
     NotificationsController,
     TagsController,
     PermissionsController,
@@ -14,6 +15,7 @@ use App\Http\Controllers\Admin\{
     SettingController
 };
 use App\Http\Controllers\{
+    CategoryController,
     CommentController,
     Hashtagcontroller,
     HomeController,
@@ -48,8 +50,10 @@ Route::get('/blog',[PostController::class,'blogpost'])->name('blog')->middleware
 // Post Page
 Route::get('/post/{post:slug}',[PublicController::class,'viewpost'])->name('single.post')->middleware('auth');
 
-//hashtag page
+//recent posts page by hashtag 
 Route::get('/hashtag/{hashtag:name}',[Hashtagcontroller::class,'viewhashtag'])->name('viewhashtag');
+//recent posts page by category
+Route::get('/category/{category:name}',[CategoryController::class,'viewcategory'])->name('viewcategory');
 
 // Create Post
 Route::get('/createpage',[PostController::class,'createpage'])->name('createpage')->middleware('auth');
@@ -135,12 +139,20 @@ Route::prefix('admin')
       //toggle blocked user status
       Route::put('/toggle/block/{user}', 'toggle_block')->name('toggle.block');
     });
+    // manage Tags
     Route::controller(TagsController::class)->group(function(){
     Route::get('/hashtags', 'hashtagpage')->name('hashtagpage');
     Route::post('/create/tag', 'create_tag')->name('create.hashtag');
-    Route::put('/edit/{hashtag}', 'edit_tag')->name('edit.hashtag');
+    Route::put('/edit/tag/{hashtag}', 'edit_tag')->name('edit.hashtag');
     Route::delete('/delete/{hashtag}', 'delete_tag')->name('delete.hashtag');
     });
+    // manage Categories 
+    Route::controller(CategoriesController::class)->group(function(){
+    Route::get('Categories','categorypage')->name('categorypage');
+    Route::post('/create/category', 'create_category')->name('create.category');
+    Route::put('/edit/category/{category}', 'edit_category')->name('edit.category');
+    Route::delete('/delete/category/{category}', 'delete_category')->name('delete.category');
+  });
     Route::resource('roles',RolesController::class);
     Route::resource('permissions',PermissionsController::class);
   Route::delete('/admin/delete/{user}', [AdminController::class, 'destroy'])->name('delete.user');

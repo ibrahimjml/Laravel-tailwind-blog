@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\App\Admin\CreateUserRequest;
 use App\Http\Requests\App\Admin\UpdateUserRequest;
+use App\Models\Category;
 use App\Models\PostReport;
 use App\Models\Role;
 use App\Services\PostService;
@@ -129,7 +130,8 @@ public function updateuser(UpdateUserRequest $request, User $user)
   }
 public function featuredpage(){
   return view('admin.featuredposts',[
-    'allhashtags' => Hashtag::pluck('name')
+    'allhashtags' => Hashtag::pluck('name'),
+    'categories' => Category::select('id','name')->get()
   ]);
 }
 

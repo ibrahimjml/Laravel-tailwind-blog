@@ -38,6 +38,10 @@ class Post extends Model
   public function hashtags(){
     return $this->belongsToMany(Hashtag::class,'post_hashtag');
   }
+  public function categories()
+  {
+    return $this->belongsToMany(Category::class,'post_category');
+  }
   public function views()
   {
     return $this->hasMany(ProfileView::class);

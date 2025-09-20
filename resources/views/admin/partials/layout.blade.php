@@ -106,10 +106,8 @@
   <script src="https://code.highcharts.com/modules/accessibility.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-  @if(Route::is('hashtagpage'))
-    <script src="{{asset('js/fetchhashtags.js')}}" defer></script>
-  @endif
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+ 
   @if(Route::is('featuredpage'))
     <script src="{{asset('js/hashtagsUI.js')}}" defer></script>
   @endif
