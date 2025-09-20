@@ -53,6 +53,13 @@
               <i class="fas fa-edit"></i>
               </button>
             @endcan
+            <form action="{{ route('feature.category', $category->id) }}" method="POST" onsubmit="return confirm('Toggle featured status?');">
+            @csrf
+            @method('PUT')
+            <button type="submit" class="rounded-lg text-yellow-600 p-2 hover:text-yellow-400 transition-colors duration-100">
+              <i class="{{ $category->is_featured ? 'fas' : 'far' }} fa-star"></i>
+            </button>
+            </form>
             </div>
           
           </td>

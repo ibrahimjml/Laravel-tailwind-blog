@@ -68,11 +68,11 @@
   @foreach ($tags as $tag)
     <a href="{{ route('viewhashtag', $tag->name) }}"
        class="px-2 py-1 text-sm text-white rounded-lg flex items-center justify-center whitespace-nowrap
-       {{$tag->posts_count > 10 ? 
+       {{$tag->is_featured ? 
        'bg-black border-2 border-yellow-400' : 
-       'bg-gray-500 border-none'}}
+       'bg-gray-600 border-none'}}
        ">
-      @if($tag->posts_count > 10) 🔥 @else &#x23; @endif
+      @if($tag->is_featured) 🔥 @else &#x23; @endif
        {{ $tag->name }} ({{ $tag->posts_count }})
     </a>
   @endforeach

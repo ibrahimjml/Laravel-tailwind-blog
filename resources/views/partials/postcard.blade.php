@@ -49,9 +49,10 @@
       $isActive = isset($currentCategory) && $currentCategory->name == $category->name;
       @endphp
     <a href="{{route('viewcategory',$category->name)}}" 
-      class=" text-white px-2 py-1 text-sm rounded-md
-       {{ $isActive ? ' bg-yellow-400' : 'bg-gray-500' }}">
-       {{ $category->name }}
+      class=" px-2 py-1 text-sm rounded-md
+       {{ $isActive ? ' bg-yellow-500' : 'bg-gray-500' }}
+        {{$category->is_featured ? ' bg-[#f5b576] text-gray-700 font-semibold' : 'bg-gray-600 text-white'}}">
+       @if($category->is_featured) &#x1F525; @endif {{ $category->name }}
     </a>
     @endforeach
     </div>
@@ -93,10 +94,10 @@
         $isActive = isset($currentHashtag) && $currentHashtag->name == $hashtag->name;
         @endphp
       <a href="{{ route('viewhashtag', $hashtag->name) }}" 
-        class="text-white px-2 py-1 text-sm rounded-md
-        {{$isActive ? 'bg-yellow-400 font-semibold' : 'bg-gray-500'}}
-        ">
-        # {{ $hashtag->name }}
+        class="px-2 py-1 text-sm rounded-md
+        {{$isActive ? 'bg-yellow-400 font-semibold' : 'bg-gray-600'}}
+         {{$hashtag->is_featured ? ' bg-[#f5b576] text-gray-700 font-semibold' : 'bg-gray-600 text-white'}}">
+        @if($hashtag->is_featured) &#x1F525; @else &#x23; @endif {{ $hashtag->name }}
       </a>
       @endforeach
     </div>

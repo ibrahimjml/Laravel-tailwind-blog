@@ -52,4 +52,15 @@ public function edit_tag(Hashtag $hashtag, Request $request){
       'message' => "Hashtag {$name} deleted"
   ]);
   }
+
+  public function toggle_feature_tag(Hashtag $hashtag)
+  {
+      $hashtag->update(['is_featured'=>!$hashtag->is_featured]);
+      if($hashtag->is_featured){
+       toastr()->success('hashtag featured success',['timeOut'=>1000]);
+      }else{
+      toastr()->success('hashtag unfeatured success',['timeOut'=>1000]);
+      }
+      return redirect()->back();
+  }
 }

@@ -9,7 +9,7 @@ class Hashtag extends Model
 {
     use HasFactory;
 
-    protected $fillable=['name'];
+    protected $fillable=['name','is_featured'];
 
     public function posts(){
       return $this->belongsToMany(Post::class,'post_hashtag');

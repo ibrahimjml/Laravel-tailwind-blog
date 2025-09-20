@@ -20,7 +20,7 @@ class Hashtagcontroller extends Controller
     {
 
     $posts = $hashtag->posts()
-             ->with(['user:id,username,avatar','hashtags:id,name'])
+             ->with(['user:id,username,avatar','hashtags:id,name,is_featured','categories:id,name,is_featured'])
              ->withCount(['comments','likes'])
              ->orderBy('created_at','desc')
              ->simplepaginate(5);

@@ -52,4 +52,15 @@ class CategoriesController extends Controller
       'message' => "Category {$name} deleted"
      ]);
     }
+
+    public function toggle_feature_category(Category $category)
+    {
+       $category->update(['is_featured'=>!$category->is_featured]);
+       if($category->is_featured){
+         toastr()->success('category featured success',['timeOut'=>1000]);
+       }else{
+           toastr()->success('category unfeatured success',['timeOut'=>1000]);
+       }
+       return redirect()->back();
+    }
 }

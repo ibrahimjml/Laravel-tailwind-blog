@@ -45,7 +45,14 @@
               @endcan
               @can('tag.update')
               <button class="tagsedit text-gray-500 rounded-lg p-2 cursor-pointer hover:text-gray-300" data-name="{{ $hashtag->name }}"  data-id="{{ $hashtag->id }}"><i class="fas fa-edit"></i></button>
-            @endcan
+              @endcan
+              <form action="{{ route('feature.tag', $hashtag->id) }}" method="POST" onsubmit="return confirm('Toggle featured status?');">
+              @csrf
+              @method('PUT')
+              <button type="submit" class="rounded-lg text-yellow-600 p-2 hover:text-yellow-400 transition-colors duration-100">
+                <i class="{{ $hashtag->is_featured ? 'fas' : 'far' }} fa-star"></i>
+              </button>
+              </form>
             </div>
           
           </td>

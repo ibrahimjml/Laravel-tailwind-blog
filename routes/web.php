@@ -145,6 +145,8 @@ Route::prefix('admin')
     Route::post('/create/tag', 'create_tag')->name('create.hashtag');
     Route::put('/edit/tag/{hashtag}', 'edit_tag')->name('edit.hashtag');
     Route::delete('/delete/{hashtag}', 'delete_tag')->name('delete.hashtag');
+    // toggle feature tag
+    Route::put('feature/tag/{hashtag}','toggle_feature_tag')->name('feature.tag');
     });
     // manage Categories 
     Route::controller(CategoriesController::class)->group(function(){
@@ -152,11 +154,13 @@ Route::prefix('admin')
     Route::post('/create/category', 'create_category')->name('create.category');
     Route::put('/edit/category/{category}', 'edit_category')->name('edit.category');
     Route::delete('/delete/category/{category}', 'delete_category')->name('delete.category');
+    // toggle feature category
+    Route::put('feature/category/{category}','toggle_feature_category')->name('feature.category');
   });
     Route::resource('roles',RolesController::class);
     Route::resource('permissions',PermissionsController::class);
-  Route::delete('/admin/delete/{user}', [AdminController::class, 'destroy'])->name('delete.user');
-  Route::get('/notifications', [NotificationsController::class,'notifications'])->name('admin.notify');
+    Route::delete('/admin/delete/{user}', [AdminController::class, 'destroy'])->name('delete.user');
+    Route::get('/notifications', [NotificationsController::class,'notifications'])->name('admin.notify');
   
   Route::controller(SettingController::class)->group(function(){
   Route::get('/settings', 'settings')->name('admin.settings');

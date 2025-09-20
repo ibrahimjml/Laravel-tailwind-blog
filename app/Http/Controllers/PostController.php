@@ -29,7 +29,7 @@ class PostController extends Controller
 
     $sortoption = $request->get('sort', 'latest');
     $posts = Post::query()
-            ->with(['user:id,username,avatar', 'hashtags:id,name'])
+            ->with(['user:id,username,avatar', 'hashtags:id,name,is_featured','categories:id,name,is_featured'])
             ->withCount('likes','totalcomments')
             ->sortby($sortoption)
             ->paginate(5)
