@@ -20,6 +20,7 @@
 ![Profile activity](https://i.postimg.cc/q7g38kpV/Screenshot-2025-09-20-233621.png)
 ![Qrcode](https://i.postimg.cc/4NZHWvX1/Screenshot-2025-09-20-232729.png)
 ![Profileinfo setting](https://i.postimg.cc/LXGFkwFJ/Screenshot-2025-06-27-223320.png)
+![Profileinfo setting](https://i.postimg.cc/qMwSk0kk/Screenshot-2025-09-21-110503.png)
 ![{rofileaccount setting](https://i.postimg.cc/RV5zNkT8/Screenshot-2025-06-27-223348.png)
 ![Create page](https://i.postimg.cc/J4t6yk1w/127-0-0-1-8000-create-5.png)
 ![Admin home](https://i.postimg.cc/qvNG8Dgy/Screenshot-2025-09-20-225312.png)
