@@ -25,11 +25,11 @@
 ![Create page](https://i.postimg.cc/J4t6yk1w/127-0-0-1-8000-create-5.png)
 ![Admin home](https://i.postimg.cc/qvNG8Dgy/Screenshot-2025-09-20-225312.png)
 ![Admin users](https://i.postimg.cc/85pSxY91/Screenshot-2025-06-04-112530.png)
-![Admin posts](https://i.postimg.cc/vZSrdZ0X/Screenshot-2025-06-06-122828.png)
+![Admin posts](https://i.postimg.cc/sDFm5Y1p/Screenshot-2025-09-22-002507.png)
 ![Admin tags](https://i.postimg.cc/bNsnMD8j/Screenshot-2025-09-20-225451.png)
 ![Admin categories](https://i.postimg.cc/zB8WPxDd/Screenshot-2025-09-20-225347.png)
 ![Admin roles](https://i.postimg.cc/7YprXYdr/Screenshot-2025-06-03-132057.png)
-![Admin reports](https://i.postimg.cc/65tKmNwK/Screenshot-2025-06-15-175542.png)
+![Admin reports](https://i.postimg.cc/nrqv3WMq/Screenshot-2025-09-22-004247.png)
 ![Admin notifications](https://i.postimg.cc/gJcCrwX8/Screenshot-2025-06-03-132110.png)
 
 
@@ -60,7 +60,7 @@
 - **Adminpanel Categories:** Categories management Ajax  create new category / edit category / delete category / make feature category 'hot'.
 - **Adminpanel Roles:** Roles management Ajax  create new role + assign permissions to this role / edit role + edit permissions assigned for role / delete role.
 - **Adminpanel Permissions:** Permissions management Ajax  create new permission / edit permission / delete permission.
-- **Adminpanel Post/Comment Reports:** Post Report management reported by / block victim if he broke community roles / delete report.
+- **Adminpanel Post/Comment Reports:** Post Report management filter by status / change status + sending notification to reporter according to the status / delete post  if he broke community roles / delete report.
 - **Adminpanel Notifications:** Admin notifications sort by read / unread / notification types by post created / registered new users / commented / replies / likes / follows / profile views / post report.
 - **Adminpanel Settings:** Admin settings change  bio  / password change / phone number / username / Aboutme.
 
