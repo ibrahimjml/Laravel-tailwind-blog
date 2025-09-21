@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\{
     NotificationsController,
     TagsController,
     PermissionsController,
+    PostReportController,
     RolesController,
     SettingController
 };
@@ -21,7 +22,7 @@ use App\Http\Controllers\{
     HomeController,
     NotificationController,
     PostController,
-    PostReportController,
+    ReportPostController,
     PublicController,
     TinyMCEController,
 };
@@ -105,7 +106,7 @@ Route::post('/reply/{comment}',[CommentController::class,'reply']);
 Route::put('/comment/edit/{comment}',[CommentController::class,'editcomment'])->name('edit.comment');
 Route::delete('/comment/{comment}',[CommentController::class,'deletecomment'])->name('delete.comment');
 // post report
-Route::post('/report-post/{post}',[PostReportController::class,'report_post'])->name('post.report');
+Route::post('/report-post/{post}',[ReportPostController::class,'report_post'])->name('post.report');
 // Save Post
 Route::post('/saved-post',[PostController::class,'save']);
 // Saved Posts Page
@@ -123,8 +124,12 @@ Route::prefix('admin')
       Route::get('/panel', 'admin')->name("admin-page");
       Route::get('/users', 'users')->name('admin.users');
       Route::get('/posts', 'posts')->name('admin.posts');
-      Route::get('/post-reports', 'post_reports')->name('admin.postreports');
-      Route::delete('/report/delete/{report}', 'report_delete')->name('delete.report');
+
+      Route::controller(PostReportController::class)->group(function(){
+        Route::get('/post-reports', 'post_reports')->name('admin.postreports');
+        Route::delete('/report/delete/{report}', 'report_delete')->name('delete.report');
+        Route::patch('/reports/{report}/status','toggle_status')->name('toggle.status');
+      });
 
       // create user
       Route::post('/create/user','createuser')->name('create.user');

@@ -83,7 +83,7 @@
             </li>
             @endif
         @endif
-        @unless(request()->is('home'))
+        @unless(request()->routeIs('home'))
           <li @class([
             'text-white text-lg pt-2' => Route::is(['profile','home']),
             'text-gray-700 text-lg pt-2' => ! Route::is(['profile','home'])

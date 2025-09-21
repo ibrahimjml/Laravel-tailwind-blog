@@ -15,7 +15,7 @@
           @endif
           {{-- delete | edit model --}}
           @can('edit',$comment)
-          @include('partials.delete-edit-comment-model',['comment'=>$comment])
+          @include('comments.partials.delete-edit-comment-model',['comment'=>$comment])
           @endcan
           <p class="reply-btn text-sm text-blue-600 cursor-pointer w-fit">Reply</p>
 

@@ -42,6 +42,12 @@ class AdminSeeder extends Seeder
             'tag.view',
             'tag.update',
             'tag.delete',
+            'tag.feature',
+            'category.create',
+            'category.view',
+            'category.update',
+            'category.delete',
+            'category.feature',
             'comment.edit',
             'comment.delete',
         ];

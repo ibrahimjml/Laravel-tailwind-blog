@@ -3,7 +3,7 @@ id="mobile-menu"
 class="absolute z-[20] hidden flex flex-col py-8 left-6 right-6 top-16 items-center space-y-2 font-bold bg-gray-50 rounded-lg drop-shadow-lg border border-gray-300 transition-all duration-300">
 
 
-@if(!auth()->user())
+@guest
 <a href="{{route('login')}}" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">Login</a>
 <a href="{{route('register')}}" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">Register</a>
 @else
@@ -17,7 +17,8 @@ class="absolute z-[20] hidden flex flex-col py-8 left-6 right-6 top-16 items-cen
 <a href="{{route('logout')}}" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">Logout</a>
 <a href="/blog" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">Blog</a>
 <a href="/getsavedposts" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">Saved</a>
-@endif
+@endguest
+@unless(request()->routeIs('home'))
 <a href="/" class="hover:scale-110 border-b-2 hover:border-b-black text-xl text-gray-600 hover:text-black transition-all duration-300">Home</a>
-
+@endunless
 </div>

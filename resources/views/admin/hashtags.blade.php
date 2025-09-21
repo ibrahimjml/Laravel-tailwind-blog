@@ -48,6 +48,7 @@
               @can('tag.update')
               <button class="tagsedit text-gray-500 rounded-lg p-2 cursor-pointer hover:text-gray-300" data-name="{{ $hashtag->name }}"  data-id="{{ $hashtag->id }}"><i class="fas fa-edit"></i></button>
               @endcan
+              @can('tag.feature')
               <form action="{{ route('feature.tag', $hashtag->id) }}" method="POST" onsubmit="return confirm('Toggle featured status?');">
               @csrf
               @method('PUT')
@@ -55,6 +56,7 @@
                 <i class="{{ $hashtag->is_featured ? 'fas' : 'far' }} fa-star"></i>
               </button>
               </form>
+              @endcan
             </div>
           
           </td>

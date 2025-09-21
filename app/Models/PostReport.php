@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ReportReason;
+use App\Enums\ReportStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,8 +15,11 @@ use Illuminate\Database\Eloquent\Model;
 class PostReport extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id','post_id','reason','other'];
-    protected $casts = ['reason' => ReportReason::class];
+    protected $fillable = ['user_id','post_id','reason','other','status'];
+    protected $casts = [
+      'reason' => ReportReason::class,
+      'status' => ReportStatus::class
+    ];
 
     public function user()
     {

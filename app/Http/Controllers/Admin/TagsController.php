@@ -14,6 +14,7 @@ class TagsController extends Controller
     $this->middleware('permission:tag.create')->only('create_tag');
     $this->middleware('permission:tag.update')->only('edit_tag');
     $this->middleware('permission:tag.delete')->only('delete_tag');
+    $this->middleware('permission:tag.feature')->only('toggle_feature_tag');
   }
     public function create_tag(Request $request){
   $fields = $request->validate([

@@ -14,6 +14,7 @@ class CategoriesController extends Controller
     $this->middleware('permission:category.create')->only('create_category');
     $this->middleware('permission:category.update')->only('edit_category');
     $this->middleware('permission:category.delete')->only('delete_category');
+    $this->middleware('permission:category.feature')->only('toggle_feature_category');
   }
     public function categorypage()
     {

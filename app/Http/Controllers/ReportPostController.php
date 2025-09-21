@@ -9,7 +9,7 @@ use App\Services\PostReportService;
 use Illuminate\Http\Request;
 
 
-class PostReportController extends Controller
+class ReportPostController extends Controller
 {
   public function __construct(protected PostReportService $service){
       $this->middleware(['auth', 'verified', CheckIfBlocked::class]);
@@ -24,6 +24,7 @@ class PostReportController extends Controller
         return back();
     }
       toastr()->success('post report success',['timeOut'=>1000]);
+      
     return back();
   }
 }

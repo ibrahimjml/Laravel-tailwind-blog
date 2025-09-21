@@ -22,11 +22,13 @@
         $user =  $users[$username] ?? null;;
         $avatar = $user?->avatar_url ?? asset('storage/avatars/default.jpg');
      @endphp
+            @if($user)
             <a href="{{ route('profile', $username) }}">
                 <img src="{{$avatar}}?v={{ $user?->updated_at->timestamp ?? time() }}"
                      class="w-8 h-8 rounded-full object-cover" alt="">
                     </a>
-                <div class="flex-1">
+                @endif
+                    <div class="flex-1">
                     <a href="{{$url}}"
                        class="text-sm text-gray-700 hover:text-black font-medium block">
                         {{$message}}
@@ -41,6 +43,7 @@
                       </form>
                     </div>
                 </div>
+                
             </li>
     @empty
         <li class="text-center text-gray-500 py-6">No new notifications.</li>

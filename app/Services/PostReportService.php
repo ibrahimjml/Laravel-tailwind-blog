@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTOs\PostReportDTO;
+use App\Enums\ReportStatus;
 use App\Models\Post;
 use App\Models\PostReport;
 
@@ -19,6 +20,7 @@ class PostReportService
             'user_id' => $dto->userId,
             'post_id' => $post->id,
             'reason' => $dto->reason,
+            'status'  => ReportStatus::Pending,
             'other' => $dto->other
         ]);
         

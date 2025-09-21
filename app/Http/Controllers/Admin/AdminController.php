@@ -115,10 +115,12 @@ public function updateuser(UpdateUserRequest $request, User $user)
     $sort = $request->get('sort', 'latest'); 
     $choose = $sort === 'oldest' ? 'ASC' : 'DESC';
     $featured = (bool) $request->get('featured',false);
+    $reported = (bool) $request->get('reported',false);
     $posts = Post::with(['user','hashtags'])
           ->search($request->get('search'))
           ->withCount('totalcomments')
           ->when($featured, fn($q) => $q->where('is_featured', 1))
+          ->when($reported, fn($q) => $q->where('is_reported', 1))
           ->orderBy('created_at', $choose)
           ->paginate(6)
           ->withQuerystring();
@@ -184,17 +186,5 @@ return to_route('admin.posts');
     $user->roles()->sync([$role->id]);
     toastr()->success("user role '{$fields['role']}' updated",['timeOut'=>1000]);
    return back();
-  }
-  public function post_reports()
-  {
-    $reports = PostReport::with(['user','post'])->latest()->paginate(10);
-  
-    return view('admin.post-reports',['reports'=>$reports]);
-  }
-  public function report_delete(PostReport $report)
-  {
-    $report->delete();
-    toastr()->success('report deleted',['timeOut'=> 1000]);
-    return back();
   }
 }
