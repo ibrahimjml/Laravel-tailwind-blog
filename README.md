@@ -10,41 +10,69 @@
 ## About Laravel
 # Laravel Blog Application
 ## Screanshots
- ![Dashboard Screenshot](https://i.postimg.cc/wTzCLcrg/127-0-0-1-8000-7.png)
-![schooldash-dahboard-page](https://i.postimg.cc/YCRZbJhk/Screenshot-2025-09-18-234429.png)
-![schooldash-dahboard-page](https://i.postimg.cc/qRP5NrZc/Screenshot-2025-09-18-233005.png)
-![schooldash-dahboard-page](https://i.postimg.cc/V6v8qzR3/Screenshot-2025-09-18-235631.png)
-![schooldash-dahboard-page](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
-![schooldash-dahboard-page](https://i.postimg.cc/LXGFkwFJ/Screenshot-2025-06-27-223320.png)
-![schooldash-dahboard-page](https://i.postimg.cc/RV5zNkT8/Screenshot-2025-06-27-223348.png)
-![schooldash-dahboard-page](https://i.postimg.cc/J4t6yk1w/127-0-0-1-8000-create-5.png)
-![schooldash-dahboard-page](https://i.postimg.cc/wM54tGq8/127-0-0-1-8000-jag234.png)
-![schooldash-dahboard-page](https://i.postimg.cc/Dy3cc96Y/Screenshot-2025-06-03-131925.png)
-![schooldash-dahboard-page](https://i.postimg.cc/85pSxY91/Screenshot-2025-06-04-112530.png)
-![schooldash-dahboard-page](https://i.postimg.cc/vZSrdZ0X/Screenshot-2025-06-06-122828.png)
-![schooldash-dahboard-page](https://i.postimg.cc/Kvc1FQ88/Screenshot-2025-06-03-132045.png)
-![schooldash-dahboard-page](https://i.postimg.cc/7YprXYdr/Screenshot-2025-06-03-132057.png)
-![schooldash-dahboard-page](https://i.postimg.cc/65tKmNwK/Screenshot-2025-06-15-175542.png)
-![schooldash-dahboard-page](https://i.postimg.cc/gJcCrwX8/Screenshot-2025-06-03-132110.png)
+ ![Homepage](https://i.postimg.cc/wTzCLcrg/127-0-0-1-8000-7.png)
+![Blogpage](https://i.postimg.cc/Y0dRMJDD/Screenshot-2025-09-20-223552.png)
+![Recentposts categorypage](https://i.postimg.cc/j5gn5tKf/Screenshot-2025-09-20-223429.png)
+![Postpage](https://i.postimg.cc/qRP5NrZc/Screenshot-2025-09-18-233005.png)
+![Reportpost](https://i.postimg.cc/V6v8qzR3/Screenshot-2025-09-18-235631.png)
+![Commentsmodel](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
+![Profile home](https://i.postimg.cc/xdFL7X61/Screenshot-2025-09-20-233534.png)
+![Profile activity](https://i.postimg.cc/q7g38kpV/Screenshot-2025-09-20-233621.png)
+![Qrcode](https://i.postimg.cc/4NZHWvX1/Screenshot-2025-09-20-232729.png)
+![Profileinfo setting](https://i.postimg.cc/LXGFkwFJ/Screenshot-2025-06-27-223320.png)
+![{rofileaccount setting](https://i.postimg.cc/RV5zNkT8/Screenshot-2025-06-27-223348.png)
+![Create page](https://i.postimg.cc/J4t6yk1w/127-0-0-1-8000-create-5.png)
+![Admin home](https://i.postimg.cc/qvNG8Dgy/Screenshot-2025-09-20-225312.png)
+![Admin users](https://i.postimg.cc/85pSxY91/Screenshot-2025-06-04-112530.png)
+![Admin posts](https://i.postimg.cc/vZSrdZ0X/Screenshot-2025-06-06-122828.png)
+![Admin tags](https://i.postimg.cc/bNsnMD8j/Screenshot-2025-09-20-225451.png)
+![Admin categories](https://i.postimg.cc/zB8WPxDd/Screenshot-2025-09-20-225347.png)
+![Admin roles](https://i.postimg.cc/7YprXYdr/Screenshot-2025-06-03-132057.png)
+![Admin reports](https://i.postimg.cc/65tKmNwK/Screenshot-2025-06-15-175542.png)
+![Admin notifications](https://i.postimg.cc/gJcCrwX8/Screenshot-2025-06-03-132110.png)
 
 
 
-### Features
+## Features
 
-#### User Authentication/Authorization and Admin/profile Management
+## User Authentication/Authorization
 - **User Registration and Login:** Manually implemented Secure user authentication register/login integrated with reCapthcha v2.
-- **Admin Panel:** Admin page management system with notifications sections/manage hashtags/posts/users/reports/roles/permissions, create featured posts to display on homescreen,with filtering and pagination.
-- **Profile Management:** profile management for users to see their posts,number of posts,total likes/comments,and edit profile settings users must confirm their passwords before accessing this page,they can edit bio/name/email/change current password, and delete their account by confirming current password,including changing their profile image,update and delete current one,edit cover photo.
-- **Profile/RecentActivities/About:** users can see their recent activities in their profile and see their about page.
-- **Password Management:** Users can change their passwords and reset them if forgotten.
+- **Forget Password:** Users can reset password via email notification with reset password button.
+- **Confirmation Password:** Confirmation password for accessing edit post page or user settings for more secure.
 - **Email Verification:** User must verfied his email berfore making any action.
-- **Middleware/Policies/Gate:** Implement custom middleware and policies on user/post for more secure.
+- **Middleware/Policies/Gate:** Implement custom middleware for permissions and policies on user/post/comment for more secure and gate for admin action.
+  
+## Profile Management
+- **Profile Home:** Profile home page for posts and managemnt.
+- **Profile Activity:** Recent activities for user in creating post / commented on posts / replied on posts.
+- **Profile Aboutme:** User description or talikng about his works.
+- **Share Profile:** User can share his profile via whatsapp / facebook / linkedin / twitter / or copy link.
+- **Qrcode Profile:** User qrcode profile he can download it to share it.
+- **Profile Info Settings:** User profile info update profile image / cover image / name / phone number / profile bio / add socail links / add custom links.
+- **Profile Account Settings:** User profile account for updating username 'user can change username only once '/ email / change password / delete account.
 
-#### Blog Posts
+## Admin Management
+- **Adminpanel Home:** Card stats with analytics + filter by year management.
+- **Adminpanel Users:** User management Ajax blocked users filter / create new user / edit user / delete user / block user /  changing user roles.
+- **Adminpanel Posts:** Post management Ajax Sort posts filter / featured images filter /  create new post / edit post / delete post / make feature posts / view posts.
+- **Adminpanel Tags:** Tags management Ajax create new Tag / edit tag / delete tag / make feature tag 'hot'.
+- **Adminpanel Categories:** Categories management Ajax  create new category / edit category / delete category / make feature category 'hot'.
+- **Adminpanel Roles:** Roles management Ajax  create new role + assign permissions to this role / edit role + edit permissions assigned for role / delete role.
+- **Adminpanel Permissions:** Permissions management Ajax  create new permission / edit permission / delete permission.
+- **Adminpanel Post/Comment Reports:** Post Report management reported by / block victim if he broke community roles / delete report.
+- **Adminpanel Notifications:** Admin notifications sort by read / unread / notification types by post created / registered new users / commented / replies / likes / follows / profile views / post report.
+- **Adminpanel Settings:** Admin settings change  bio  / password change / phone number / username / Aboutme.
+
+## Blog/Post Page
 - **Create, Read, Update, and Delete (CRUD) Operations:** Users can create new blog post, edit existing one, and delete post they have authored.
 - **TinyMCE editor:** Users can upload images within Tinymce and design fonts for best description and delete them.
 - **TinyMCE codesapmples:** users can create code blocks with prism skin to display their codes with copy button for best experience.
-- **Hashtags:** Users can create there own hashtags or select used hashtags.
+- **Hashtags:** Users can create there own hashtags or select hashtags.
+- **Categories:** Users can select one or more categories.
+- **Recent posts tags:** Users view posts related to post tag.
+- **Recent posts categories:** Users can view posts releated to post category.
+- **Sort Posts:** User can sort posts by latest, oldest, most liked, most viewed, featured, following, and trending hashtags.
+- **Search Functionality:** implemented scout driver tntsearch indexed posts with fast search ability.
 - **Save Posts:** Implement Save/Unsave button using fetch(), user can access to saved page, with the ability to view and remove saved posts.
 - **Post Report:** Users can report post once with multiple reasons.
 - **Slugs:** Implemented a unique slug for each post to create descriptive, enhancing search engine visibility and improving user experience.
@@ -52,33 +80,28 @@
 - **Follow:** User can follow/unfollow using fetch() for faster respond.
 - **Profileview:** users can see who viewed their profile and folow/unfollow them if they are not.
 - **Postviews:** only posters can see the viewers model and folow/unfollow them if they are not.
-- **WhoLiked:** users can see who liked on their posts and follow/unfollow them.
-- **Table of contents:** users can navigate between headings inside post description.
+- **WhoLiked post :** users can see who liked on their posts and follow/unfollow them.
+- **Whoviewed post :** users can see who viewed on their posts and follow/unfollow them.
+- **Table Of Contents:** users can navigate between headings inside post description.
 - **OPtimization:** Used Eager loading for optimized queries and prevent N+1 queries.
 
-#### Comments and Replies 
+## Comments and Replies Ajax
 - **Disable/Enable:** Users can diasble or enable comments from creating or editing post.
 - **Comment on Posts:** Users can add comments to blog posts using fetch().
 - **Reply to Comments:** Users can replies to comments, creating nested comment system with reply on reply using fetch(), they can see total replies on a comment with ability to hide and show those replies.
 - **Delete/Edit Comments/Replies:** Users can delete or edit their own comments and replies using fetch().
 
-
-#### Post Sorting and Searching and pagination
-- **Sort Posts:** User can sort posts by latest, oldest, most liked, most viewed, featured, following, and trending hashtags.
-- **Search Functionality:** implemented scout driver tntsearch indexed posts with fast search ability.
-- **Pagination:** User can paginate between post pages. 
-
-### Notifications database and Emails notification
+## Notifications database and Emails notification
 - **Email notification:** Users will get emailed if posts are liked, commented, replied , or viewed their profiles or followed used queues for faster respond.
 - **Notification:** users can manage notifications unread or delete notifications.
 - **Observer notification:** Auto send and delete notifications for both admin and users based created/deleted structure.
 
-### Custom Roles and Permissions
-- **Custom Roles** 
-- **Custom Permissions** 
+## Custom Roles and Permissions
+- **Roles management** 
+- **Permissions management** 
 - **Give permissions to any user** 
 
-#### 🚀 All Pages Styled With TailwindCss ,more experience ,more responsive.
+## 🚀 All Pages Styled With TailwindCss ,more experience ,more responsive.
 🔥🔥 Upcomig: likes on comments,private|public accounts.
 
 ## INSTALLATION
