@@ -48,10 +48,13 @@
       @php
       $isActive = isset($currentCategory) && $currentCategory->name == $category->name;
       @endphp
-    <a href="{{route('viewcategory',$category->name)}}" 
-      class=" px-2 py-1 text-sm rounded-md
-       {{ $isActive ? ' bg-yellow-500' : 'bg-gray-500' }}
-        {{$category->is_featured ? ' bg-[#f5b576] text-gray-700 font-semibold' : 'bg-gray-600 text-white'}}">
+       <a href="{{route('viewcategory',$category->name)}}"
+          @class([
+            'px-2 py-1 text-sm rounded-md',
+            'bg-[#f5b576] text-gray-700 font-semibold' => $category->is_featured,
+            'bg-gray-600 text-white' => !$category->is_featured,
+            'bg-yellow-500' => $isActive
+          ])> 
        @if($category->is_featured) &#x1F525; @endif {{ $category->name }}
     </a>
     @endforeach
@@ -94,9 +97,12 @@
         $isActive = isset($currentHashtag) && $currentHashtag->name == $hashtag->name;
         @endphp
       <a href="{{ route('viewhashtag', $hashtag->name) }}" 
-        class="px-2 py-1 text-sm rounded-md
-        {{$isActive ? 'bg-yellow-400 font-semibold' : 'bg-gray-600'}}
-         {{$hashtag->is_featured ? ' bg-[#f5b576] text-gray-700 font-semibold' : 'bg-gray-600 text-white'}}">
+         @class([
+          'px-2 py-1 text-sm rounded-md font-semibold', 
+          'bg-[#f5b576] text-gray-700' => $hashtag->is_featured,
+          'bg-gray-600 text-white' => !$hashtag->is_featured,
+          'bg-yellow-400' => $isActive
+           ])>
         @if($hashtag->is_featured) &#x1F525; @else &#x23; @endif {{ $hashtag->name }}
       </a>
       @endforeach

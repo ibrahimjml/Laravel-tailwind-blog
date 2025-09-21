@@ -18,6 +18,7 @@
           <th class="text-white p-2 text-left w-fit">Hashtags</th>
           <th class="text-white p-2">Related posts</th>
           <th class="text-white p-2">CreatedAt</th>
+          <th class="text-white p-2">UpdatedAt</th>
           <th colspan="2" class="text-white  p-2">Actions</th>
   
         </tr>
@@ -32,6 +33,7 @@
           <td class="p-2">  {{$hashtag->posts->count()}}</td>
           
           <td class="p-2">{{$hashtag->created_at->diffForHumans()}}</td>
+          <td class="p-2">{{$hashtag->updated_at->diffForHumans()}}</td>
           <td  class=" text-white p-2">
             <div class="flex gap-2 justify-center">
             @can('tag.delete')

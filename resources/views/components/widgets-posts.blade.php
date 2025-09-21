@@ -1,5 +1,5 @@
 <!-- posts -->
-<div class="flex-auto p-4 w-40 border-2 bg-white rounded-lg">
+<div class="flex-auto h-[85px] p-4 w-40 border-2 bg-white rounded-lg">
   <div class="flex flex-wrap">
     <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
@@ -19,7 +19,7 @@
   </div>
 </div>
 <!-- likes -->
-<div class="flex-auto p-4 w-40 border-2 bg-white rounded-lg">
+<div class="flex-auto h-fit p-4 w-40 border-2 bg-white rounded-lg">
   <div class="flex flex-wrap">
     <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
@@ -39,7 +39,7 @@
 
 </div>
 <!-- comments -->
-<div class="flex-auto p-4 w-40 border-2 bg-white rounded-lg">
+<div class="flex-auto h-fit p-4 w-40 border-2 bg-white rounded-lg">
   <div class="flex flex-wrap">
     <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
@@ -59,7 +59,7 @@
 
 </div>
 <!-- tags -->
-<div class="flex-auto p-4 w-40 border-2 bg-white rounded-lg">
+<div class="flex-auto h-fit p-4 w-40 border-2 bg-white rounded-lg">
   <div class="flex flex-wrap">
     <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
@@ -76,10 +76,28 @@
       </div>
     </div>
   </div>
-
+</div>
+<!-- categories -->
+<div class="flex-auto h-[85px] p-4 w-40 border-2 bg-white rounded-lg">
+  <div class="flex flex-wrap">
+    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+      <h5 class="text-blueGray-400 uppercase font-bold text-xs">
+        Category
+      </h5>
+      <span class="font-semibold text-xl text-blueGray-700">
+        {{$categories}}
+      </span>
+    </div>
+    <div class="relative w-auto pl-4 flex-initial">
+      <div
+        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-500">
+        <i class="fas fa-list"></i>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- reports -->
-<div class="flex-auto  p-4 w-40 border-2 bg-white rounded-lg">
+<div class="flex-auto h-fit p-4 w-40 border-2 bg-white rounded-lg">
   <div class="flex flex-wrap">
     <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
