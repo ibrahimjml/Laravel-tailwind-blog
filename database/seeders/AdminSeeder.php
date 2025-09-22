@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdminSeeder extends Seeder
 {
@@ -17,45 +18,61 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
       $permissions = [
+            // user & account management
             'Access',
-            'role.create',
-            'role.view',
-            'role.update',
-            'role.delete',
-            'permission.create',
-            'permission.view',
-            'permission.update',
-            'permission.delete',
             'user.view',
             'user.delete',
             'user.block',
             'user.role',
             'user.updateImage',
             'user.deleteSocial',
+            'user.update',
+            'user.edit',
+            // roles management
+            'role.create',
+            'role.view',
+            'role.update',
+            'role.delete',
+            // permissions management
+            'permission.create',
+            'permission.view',
+            'permission.update',
+            'permission.delete',
+            // posts management
             'post.view',
             'post.update',
             'post.feature',
-            'user.update',
-            'user.edit',
             'post.delete',
+            // tags management
             'tag.create',
             'tag.view',
             'tag.update',
             'tag.delete',
             'tag.feature',
+            // categories management
             'category.create',
             'category.view',
             'category.update',
             'category.delete',
             'category.feature',
+            // comments post management
             'comment.edit',
             'comment.delete',
+            // post reports management
+            'postreport.view',
+            'postreport.delete',
+            'postreport.status'
         ];
 
 
-foreach ($permissions as $permission) {
+      foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
         }
+       Permission::all()->each(function ($perm) {
+               $perm->slug = Str::slug($perm->name);
+               $perm->save();
+        });
+
         Role::firstOrCreate(['name' => 'Moderator']);
         Role::firstOrCreate(['name' => 'User']);
         $adminrole = Role::firstOrCreate(['name' => 'Admin']);

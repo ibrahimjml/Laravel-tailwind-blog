@@ -83,22 +83,26 @@
       <td>{{$report->created_at->format('y/m/j')}}</td>
       <td>
         <div class="flex items-center justify-center gap-2">
-        <form action='{{route('delete.report',$report->id)}}' method="POST"
-      onsubmit="return confirm('Are you sure you want to delete this report?');">
-      @csrf
-      @method('delete')
-      <button type="submit"
-      class="rounded-lg text-red-600 p-2  hover:text-red-300 transition-colors duration-100">
-      <i class="fas fa-trash"></i></button>
-      </form>
-          <a href="{{route('single.post',$report->post->slug)}}"><i class="fas fa-eye "></i></a>
+      @can('postreport.delete')
+          <form action='{{route('delete.report',$report->id)}}' method="POST"
+         onsubmit="return confirm('Are you sure you want to delete this report?');">
+         @csrf
+         @method('delete')
+         <button type="submit"
+         class="rounded-lg text-red-600 p-2  hover:text-red-300 transition-colors duration-100">
+         <i class="fas fa-trash"></i></button>
+       </form>
+        @endcan
+       <a href="{{route('single.post',$report->post->slug)}}"><i class="fas fa-eye "></i></a>
         {{-- action report status menu --}}
+        @can('postreport.status')
         <div class="relative inline-block">
         <button  class="toggle-menu w-6 h-6 rounded-[50%] bg-slate-50 hover:bg-opacity-65 transition-bg-opacity duration-100">
          <i class="fas fa-ellipsis-v"></i>
         </button>
         @include('admin.partials.action-report-status-menu')
         </div>
+        @endcan
       </div>
       </td>
      </tr>

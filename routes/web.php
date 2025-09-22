@@ -69,12 +69,13 @@ Route::post('/image-delete', [TinyMCEController::class, 'deleteImage'])->name('t
 
 // profile
 Route::controller(ProfileController::class)
+->prefix('/@{user:username}')
 ->middleware('can:view,user')
 ->group(function(){
 // User Profile 
- Route::get('/@{user:username}','Home')->name('profile');
- Route::get('/@{user:username}/activity','activity')->name('profile.activity');
- Route::get('/@{user:username}/about','aboutme')->name('profile.aboutme');
+ Route::get('/','Home')->name('profile');
+ Route::get('activity','activity')->name('profile.activity');
+ Route::get('/about','aboutme')->name('profile.aboutme');
 
 });
 // profile settings

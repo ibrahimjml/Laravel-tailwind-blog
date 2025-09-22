@@ -17,29 +17,36 @@ class PermissionsController extends Controller
 }
     public function index()
     {
-        return view('admin.permissions',[
-          'permissions' => Permission::all()
-        ]);
+      return view('admin.permissions', [
+               'permissions' => Permission::orderBy('module')
+                          ->orderBy('slug')
+                          ->get()
+                          ->groupBy('module'), 
+               ]);
     }
 
     public function store(Request $request)
     {
         $fields = $request->validate([
-          'name' =>'required|string'
+          'name' =>'required|string',
+          'module' => 'required|string',
+          'description' => 'sometimes|nullable|string'
              ]);
         $permission = Permission::create($fields);
-     return response()->json([
-        'added'=>true,
-         'Permission' => $permission->name
-        ]);
-    }
+        return response()->json([
+           'added'=>true,
+            'Permission' => $permission->name
+           ]);
+       }
 
   
     public function update(Request $request, string $id)
     {
       $permission = Permission::find($id);
-          $fields = $request->validate([
-    'name' =>'required|string'
+      $fields = $request->validate([
+           'name' =>'required|string',
+           'module' => 'required|string',
+           'description' => 'sometimes|nullable|string'
     ]);
     $permission->update($fields);
     $permission->save();
