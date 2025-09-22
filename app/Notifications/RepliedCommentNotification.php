@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Enums\NotificationType;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
@@ -67,7 +68,7 @@ class RepliedCommentNotification extends Notification
             'replier_username' => $this->replier->username,
             'post_link' => $this->post->slug,
             'message' => $message,
-            'type' => 'reply'
+            'type' => NotificationType::COMMENTS->value
         ];
     }
 }

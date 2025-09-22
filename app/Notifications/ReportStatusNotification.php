@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Enums\NotificationType;
 use App\Enums\ReportStatus;
 use App\Models\PostReport;
 use Illuminate\Bus\Queueable;
@@ -52,7 +53,7 @@ class ReportStatusNotification extends Notification
             'post_id' => $this->report->post->id,
             'post_link' => $this->report->post->slug,
             'status' => $this->report->status->value,
-            'type'=>'postreport',
+            'type'=> NotificationType::REPORT->value,
             'message' => match($this->report->status) {
                 ReportStatus::Pending => "Your report on {$this->report->post->title} will be reviewed shortly status ".ReportStatus::Pending->value .".",
                 ReportStatus::Reviewed => "Action has been taken on your report for '{$this->report->post->title}'.",

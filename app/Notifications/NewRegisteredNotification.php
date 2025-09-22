@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Enums\NotificationType;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -50,7 +51,7 @@ class NewRegisteredNotification extends Notification
             'user_id' => $this->user->id,
             'username' => $this->user->username,
             'message' => "{$this->user->username} has registered a new account",
-            'type' => 'newuser'
+            'type' => NotificationType::NEWUSER->value
         ];
     }
 }

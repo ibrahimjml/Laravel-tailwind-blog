@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Enums\NotificationType;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -54,7 +55,7 @@ class PostReportNotification extends Notification
           'user_username'=>$this->user->username,
           'post_id' => $this->post->id,
           'post_link'=>$this->post->slug,
-          'type'=>'postreport',
+          'type'=> NotificationType::REPORT->value,
           'message'=>"{$this->user->username} reported this post <b>{$this->post->title}</b>"
         ];
     }

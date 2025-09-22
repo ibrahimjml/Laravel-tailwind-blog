@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Enums\NotificationType;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -60,7 +61,7 @@ class FollowersNotification extends Notification
         'follower_id' => $this->follower->id,
         'follower_name' => $this->follower->name,
         'follower_username' => $this->follower->username,
-        'type'=>'follow',
+        'type'=> NotificationType::FOLLOW->value,
         'message' => $message,
         
     ];

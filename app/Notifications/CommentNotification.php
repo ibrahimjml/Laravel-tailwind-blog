@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Enums\NotificationType;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
@@ -61,7 +62,7 @@ class CommentNotification extends Notification
             'commenter_username' => $this->commenter->username,
             'post_link'=> $this->post->slug,
             'message' => $message,
-            'type' => 'comments'
+            'type' => NotificationType::COMMENTS->value
         ];
     }
 }

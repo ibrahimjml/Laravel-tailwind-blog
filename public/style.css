@@ -53,8 +53,7 @@ html,body{
   border-radius: 0.5rem;
   color: #3d4a59;
   background-color: #fff;
-  transform: translateX(-98px);
-  cursor: pointer;
+  transform: translateX(-200px);
   line-height: 30px;
   text-align: center;
   min-width: 140px;

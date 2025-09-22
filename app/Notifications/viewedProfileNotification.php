@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Enums\NotificationType;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -60,7 +61,7 @@ class viewedProfileNotification extends Notification
             'viewer_name' =>$this->viewer->name,
             'viewer_username' => $this->viewer->username,
             'message' => $message,
-            'type'=>'viewedprofile'
+            'type'=> NotificationType::VIEWEDPROFILE->value
         ];
     }
 }

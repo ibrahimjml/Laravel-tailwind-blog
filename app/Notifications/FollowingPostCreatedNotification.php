@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Enums\NotificationType;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -61,7 +62,7 @@ class FollowingPostCreatedNotification extends Notification
             'post_id' => $this->post->id,
             'post_link' => $this->post->slug,
             'message' => $message,
-            'type' => 'Postcreated',
+            'type' => NotificationType::POSTCREATED->value,
         ];
     }
 }

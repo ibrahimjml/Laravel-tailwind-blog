@@ -113,6 +113,7 @@ Route::post('/saved-post',[PostController::class,'save']);
 Route::get('/getsavedposts',[PostController::class,'getsavedposts'])->name('bookmarks');
 // notifications
 Route::get('/notifications/{id}/read', [NotificationController::class, 'markasread'])->name('notifications.read');
+Route::get('/notifications/read/all', [NotificationController::class, 'markasreadall'])->name('notifications.readall');
 Route::delete('/notifications/{id}/delete', [NotificationController::class, 'delete'])->name('notifications.delete');
 Route::delete('/notifications/deleteAll', [NotificationController::class, 'deleteAll'])->name('notifications.deleteAll');
 
