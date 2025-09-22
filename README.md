@@ -14,6 +14,7 @@
 ![Blogpage](https://i.postimg.cc/Y0dRMJDD/Screenshot-2025-09-20-223552.png)
 ![Recentposts categorypage](https://i.postimg.cc/j5gn5tKf/Screenshot-2025-09-20-223429.png)
 ![Postpage](https://i.postimg.cc/qRP5NrZc/Screenshot-2025-09-18-233005.png)
+![Notification menu](https://i.postimg.cc/kMjCrJdM/Screenshot-2025-09-22-125701.png)
 ![Reportpost](https://i.postimg.cc/V6v8qzR3/Screenshot-2025-09-18-235631.png)
 ![Commentsmodel](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
 ![Profile home](https://i.postimg.cc/xdFL7X61/Screenshot-2025-09-20-233534.png)
