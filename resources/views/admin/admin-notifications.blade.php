@@ -36,14 +36,9 @@
 <div class="relative w-full">
   <select name="type" class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-gray-600 text-white border border-gray-300 text-sm rounded-lg p-2.5" onchange="this.form.submit()">
     <option value="">Types</option>
-    <option value="newuser" {{ request('type') === 'newuser' ? 'selected' : '' }}>Registered</option>
-    <option value="Postcreated" {{ request('type') === 'Postcreated' ? 'selected' : '' }}>PostCreated</option>
-    <option value="comments" {{ request('type') === 'comments' ? 'selected' : '' }}>Comments</option>
-    <option value="reply" {{ request('type') === 'reply' ? 'selected' : '' }}>Replies</option>
-    <option value="viewedprofile" {{ request('type') === 'viewedprofile' ? 'selected' : '' }}>Viewed</option>
-    <option value="postreport" {{ request('type') === 'postreport' ? 'selected' : '' }}>PostReports</option>
-    <option value="like" {{ request('type') === 'like' ? 'selected' : '' }}>Likes</option>
-    <option value="follow" {{ request('type') === 'follow' ? 'selected' : '' }}>Follows</option>
+    @foreach (\App\Enums\NotificationType::cases() as $type)
+    <option value="{{$type->value}}" {{ request('type') === $type->value ? 'selected' : '' }}>{{$type->name}}</option>
+    @endforeach
   </select>
   <!-- Custom white arrow -->
     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
