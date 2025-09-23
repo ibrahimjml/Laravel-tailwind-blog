@@ -26,7 +26,7 @@ class PostReportController extends Controller
                  ->latest()
                  ->paginate(10);
    
-    return view('admin.post-reports',['reports'=>$reports]);
+    return view('admin.reports.post-reports',['reports'=>$reports]);
   }
   public function report_delete(PostReport $report)
   {

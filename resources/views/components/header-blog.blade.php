@@ -72,7 +72,7 @@
             'text-white text-lg pt-2' => Route::is(['profile','home']),
             'text-gray-700 text-lg  pt-2' => ! Route::is(['profile','home'])
             ])>
-          <a href="{{route('bookmarks')}}">Saved</a>
+          <a href="{{route('bookmarks')}}"><i class="far fa-bookmark"></i></a>
           </li>
             @if(auth()->user()->hasAnyRole(['Admin','Moderator']) || auth()->user()->hasPermission('Access'))
               <li @class([

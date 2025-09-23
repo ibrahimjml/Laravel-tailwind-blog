@@ -58,7 +58,10 @@
         <a href="{{route('admin.postreports')}}" class="block px-4 py-2 hover:bg-gray-100 text-gray-700">Post Reports</a>
       </li>
       <li>
-        <a href="#" class="block px-4 py-2 hover:bg-gray-100 text-gray-700">Comment Reports</a>
+        <a href="{{route('admin.profilereports')}}" class="block px-4 py-2 hover:bg-gray-100 text-gray-700">Profile Reports</a>
+      </li>
+      <li>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 text-gray-700">Comments Reports</a>
       </li>
     </ul>
 </div>

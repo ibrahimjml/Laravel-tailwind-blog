@@ -1,8 +1,7 @@
-<div class="container mx-auto max-w-7xl border rounded-md my-4 border-gray-200 bg-white shadow-md hover:shadow-xl transition-shadow duration-300 py-6 px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 gap-8">
-
+<article class="container mx-auto max-h-[20%] max-w-4xl border rounded-2xl my-4 border-gray-200 bg-white py-6 px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 gap-8">
 
   <!-- Left Section: User Info + Image + Buttons -->
-  <div class="flex flex-col gap-5">
+  <section class="flex flex-col gap-5 h-full">
     <!-- User Info -->
     <div class="flex items-center gap-4">
       <a href="{{ route('profile', $post->user->username) }}">
@@ -31,8 +30,10 @@
     </div>
 
     <!-- Post Image -->
-    <div class="relative h-64 sm:h-72 w-full rounded-lg overflow-hidden">
-      <img loading="lazy" src="/storage/uploads/{{$post->image_path}}" alt="{{ $post->title }}" class="w-full h-full object-cover shadow-md">
+    <div class="relative h-64 sm:h-56 w-full rounded-lg overflow-hidden">
+      <a href="{{route('single.post',$post->slug)}}">
+        <img loading="lazy" src="/storage/uploads/{{$post->image_path}}" alt="{{ $post->title }}" class="w-full h-full object-fill shadow-md">
+      </a>
       @if($post->is_featured)
       <span class="absolute top-4 left-4 bg-amber-400 bg-opacity-80 text-white text-sm font-medium px-3 py-1 rounded-md">
         Featured
@@ -61,35 +62,35 @@
     </div>
     @endif
     <div class="flex justify-between items-center ">
-        <div class="flex gap-5 text-lg text-gray-600">
+        <div class="flex gap-2 text-md text-gray-600">
           @if($post->likes_count)
-          <span><i class="fas fa-heart text-red-500"></i> {{ $post->likes_count }}</span>
+          <span>{{ $post->likes_count }} {{ Str::plural('like',$post->likes_count) }}</span>
+          <b>·</b>
           @endif
           @if($post->totalcomments_count)
-          <span><i class="fas fa-comment text-blue-500"></i> {{ $post->totalcomments_count }}</span>
+          <span>{{$post->totalcomments_count}} {{ Str::plural('comment',$post->totalcomments_count) }}</span>
+          <b>·</b>
           @endif
-          <span><i class="fas fa-eye mr-1 text-black"></i>{{$post->views}}</span>
+          <span>{{$post->views}} {{ Str::plural('view',$post->views)}}</span>
         </div>
-      <div class="flex">
+      <div class="flex items-center">
         @if (!empty($showSaveButton))
         <button onclick="unsavedposts({{ $post->id }})" class="border-2 border-red-600 text-red-600 font-semibold px-4 py-1 rounded-md hover:bg-red-50 transition">
           Remove
         </button>
         @endif
-        <a href="/post/{{ $post->slug }}" class="border-2 border-gray-600 text-gray-700 font-semibold px-4 py-1 rounded-md hover:bg-black hover:text-white hover:border-0 transition-all duration-150 ease-in">
-          Read More
-        </a>
+        <b class="text-gray-500">&plus;</b><i class="far fa-bookmark text-gray-500"></i>
       </div>
     </div>
-  </div>
-
+  </section>
   <!-- Right Section: Title + Description + Hashtags -->
-  <div class="flex flex-col gap-4 md:mt-12 mt-0">
+  <section class="flex flex-col gap-4 md:mt-12 mt-0 h-full">
+    <a href="{{route('single.post',$post->slug)}}">
     <h2 class="text-2xl font-bold text-gray-800 mt-2">{{ $post->title }}</h2>
-    <div class="text-gray-600 leading-relaxed max-h-52 overflow-y-auto">
-      {!! Str::words(strip_tags($post->description), 90) !!}
+    <div class="text-gray-600 leading-relaxed">
+      {!! Str::words(strip_tags($post->description), 20) !!}
     </div>
-
+    </a>
     @if($post->hashtags->isNotEmpty())
     <div class="flex flex-wrap gap-2 mt-4">
       @foreach($post->hashtags as $hashtag)
@@ -108,5 +109,5 @@
       @endforeach
     </div>
     @endif
-  </div>
-</div>
+  </section>
+</article>

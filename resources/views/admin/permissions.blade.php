@@ -100,6 +100,8 @@
       eo.preventDefault();
 
       const input = addpermission.querySelector('input[name="name"]');
+      const moduleSelect = addpermission.querySelector('[name="module"]');
+      const descriptionInput = addpermission.querySelector('[name="description"]');
       const content = input.value.trim();
       const menu = document.getElementById("Model");
       if (!content) return;
@@ -110,7 +112,7 @@
           'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name: content })
+        body: JSON.stringify({ name: content, module:moduleSelect.value, description:descriptionInput.value })
       };
 
       fetch(addpermission.action, options)

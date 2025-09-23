@@ -6,7 +6,7 @@
     @endphp
 <div class="statusmodel absolute -top-12 right-0 z-10 w-36 bg-white border border-black rounded-lg px-2 py-4 space-y-2 hidden">
   @foreach($availableStatuses as $status)
-  <button  onclick="updateStatus('{{ $report->id }}', '{{ $status->value }}')"
+  <button  onclick="updateStatus('{{ $report->id }}', '{{ $status->value }}', '{{$type}}')"
          @class([
             'block font-semibold w-full rounded-md pl-3 hover:text-white transition-all duration-150 cursor-pointer',
             'hover:bg-green-600'  => $status === \App\Enums\ReportStatus::Reviewed,
@@ -39,10 +39,20 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <script>
-function updateStatus(reportId, newStatus) {
+function updateStatus(reportId, newStatus, type) {
   if (!confirm(`Change status to ${newStatus}?`)) return;
+   let url = '';
 
-  fetch(`/admin/reports/${reportId}/status`, {
+   if(type === 'post'){
+    url = `/admin/postreports/toggle/${reportId}/status`;
+   } else if(type ==='profile'){
+    url = `/admin/profilereports/toggle/${reportId}/status`;
+   } else {
+    alert('Invalid report type');
+    return;
+   }
+   
+  fetch(url, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',

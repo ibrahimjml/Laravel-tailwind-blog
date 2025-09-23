@@ -100,7 +100,7 @@
         <button  class="toggle-menu w-6 h-6 rounded-[50%] bg-slate-50 hover:bg-opacity-65 transition-bg-opacity duration-100">
          <i class="fas fa-ellipsis-v"></i>
         </button>
-        @include('admin.partials.action-report-status-menu')
+        @include('admin.partials.action-report-status-menu',['type'=>'post','report'=>$report])
         </div>
         @endcan
       </div>

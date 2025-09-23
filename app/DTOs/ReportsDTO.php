@@ -6,7 +6,7 @@ use App\Enums\ReportReason;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
 
-class PostReportDTO
+class ReportsDTO
 {
     public function __construct(
       public readonly int $userId,
@@ -18,7 +18,11 @@ class PostReportDTO
     {
         $validated = $request->validate([
             'report_reason' => ['required', new Enum(ReportReason::class)],
-            'other' => 'nullable|string'
+            'other' => [
+                 'nullable',
+                 'string',
+                 'required_if:report_reason,' . ReportReason::Other->value
+                ],
         ]);
 
         return new self(

@@ -22,7 +22,7 @@ class ViewPostService
           ->where('id','!=',$post->id)
           ->get()
           ->take(8);          
- $post->reasons = collect(ReportReason::cases())->map(function($case){
+ $post->reasons = collect(ReportReason::postReasons())->map(function($case){
     return [
       'name' => $case->name,
       'value' => $case->value

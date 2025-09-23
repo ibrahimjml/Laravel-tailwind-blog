@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\{
     TagsController,
     PermissionsController,
     PostReportController,
+    ProfileReportController,
     RolesController,
     SettingController
 };
@@ -24,6 +25,7 @@ use App\Http\Controllers\{
     PostController,
     ReportPostController,
     PublicController,
+    ReportProfileController,
     TinyMCEController,
 };
 
@@ -106,8 +108,11 @@ Route::post('/comment/{post}',[CommentController::class,'comment']);
 Route::post('/reply/{comment}',[CommentController::class,'reply']);
 Route::put('/comment/edit/{comment}',[CommentController::class,'editcomment'])->name('edit.comment');
 Route::delete('/comment/{comment}',[CommentController::class,'deletecomment'])->name('delete.comment');
-// post report
-Route::post('/report-post/{post}',[ReportPostController::class,'report_post'])->name('post.report');
+// reports
+Route::prefix('/reports')->group(function(){
+  Route::post('/post/{post}',[ReportPostController::class,'report_post'])->name('post.report');
+  Route::post('/profile/{user:username}',[ReportProfileController::class,'report_profile'])->name('profile.report');
+});
 // Save Post
 Route::post('/saved-post',[PostController::class,'save']);
 // Saved Posts Page
@@ -126,13 +131,6 @@ Route::prefix('admin')
       Route::get('/panel', 'admin')->name("admin-page");
       Route::get('/users', 'users')->name('admin.users');
       Route::get('/posts', 'posts')->name('admin.posts');
-
-      Route::controller(PostReportController::class)->group(function(){
-        Route::get('/post-reports', 'post_reports')->name('admin.postreports');
-        Route::delete('/report/delete/{report}', 'report_delete')->name('delete.report');
-        Route::patch('/reports/{report}/status','toggle_status')->name('toggle.status');
-      });
-
       // create user
       Route::post('/create/user','createuser')->name('create.user');
       Route::put('/edit/{user}','updateuser')->name('update.user');
@@ -146,6 +144,20 @@ Route::prefix('admin')
       //toggle blocked user status
       Route::put('/toggle/block/{user}', 'toggle_block')->name('toggle.block');
     });
+      // post reports
+      Route::controller(PostReportController::class)
+        ->prefix('postreports')->group(function(){
+        Route::get('/', 'post_reports')->name('admin.postreports');
+        Route::delete('/delete/{report}', 'report_delete')->name('delete.report');
+        Route::patch('/toggle/{report}/status','toggle_status')->name('toggle.status');
+      });
+      // profile reports
+         Route::controller(ProfileReportController::class)
+        ->prefix('profilereports')->group(function(){
+        Route::get('/', 'profile_reports')->name('admin.profilereports');
+        Route::delete('/delete/{report}', 'profile_report_delete')->name('delete.profile.report');
+        Route::patch('/toggle/{report}/status','toggle_status')->name('toggle.profile.status');
+      });
     // manage Tags
     Route::controller(TagsController::class)->group(function(){
     Route::get('/hashtags', 'hashtagpage')->name('hashtagpage');
@@ -174,5 +186,5 @@ Route::prefix('admin')
   Route::put('/settings/{user}', 'update_settings')->name('admin.update');
   Route::put('/settings-pass/{user}', 'update_pass')->name('admin.pass');
   Route::put('/settings-aboutme/{user}', 'update_aboutme')->name('admin.aboutme');
-  });
+    });
 });

@@ -44,8 +44,8 @@
               <div class="py-6 px-3 flex justify-center items-center gap-x-2">
               <div class="relative">
                   <!-- button share -->
-                  <button onclick="toggleShareMenu()" title="share" class="w-8 h-8 text-gray-500 hover:text-black transition-colors duration-150 ease-in flex items-center justify-center border border-black rounded-full">
-                 <i class="fas fa-share-alt"></i>
+                  <button onclick="toggleShareMenu()" title="share" class="w-8 h-8 text-gray-500 hover:text-black text-sm transition-colors duration-150 ease-in flex items-center justify-center border-2 border-black rounded-full">
+                 <svg class="w-5 h-5" viewBox="0 0 500 500"><path d="M432.31 135.261h-47.672a17.595 17.595 0 0 0-12.442 30.039c3.3 3.3 7.775 5.154 12.442 5.154h30.075v294.353H86.193V170.454h30.085a17.595 17.595 0 0 0 12.442-30.039 17.595 17.595 0 0 0-12.442-5.154H68.596A17.61 17.61 0 0 0 51 152.858v329.546A17.597 17.597 0 0 0 68.596 500H432.31a17.586 17.586 0 0 0 17.596-17.596V152.858a17.597 17.597 0 0 0-17.596-17.597Z" fill="inherit"></path><path d="M204.521 95.101a17.553 17.553 0 0 0 12.81-5.53l26.083-27.652v206.13a17.595 17.595 0 0 0 30.039 12.442c3.3-3.3 5.154-7.775 5.154-12.442V61.809L304.75 89.59a17.609 17.609 0 0 0 12.332 5.711 17.6 17.6 0 0 0 16.733-10.43 17.61 17.61 0 0 0 .301-13.588 17.603 17.603 0 0 0-3.755-5.825L274.997 6.717a18.147 18.147 0 0 0-1.809-2.011A17.51 17.51 0 0 0 263.223.06h-.503l-.955-.06h-2.283c-.271 0-.543.06-.814.09-.272.03-.593.08-.885.141l-.845.171-.824.221c-.282.08-.553.161-.825.262-.271.1-.543.18-.804.291l-.784.332-.785.382-.744.413-.744.442-.724.503-.663.503c-.252.2-.493.402-.724.613l-.413.352-.17.18c-.232.222-.443.453-.664.695-.221.241-.372.392-.543.593-.171.201-.302.382-.453.583L191.771 65.49a17.59 17.59 0 0 0-3.321 18.98 17.588 17.588 0 0 0 16.071 10.632Z" fill="inherit"></path></svg>
                 </button>
                 {{-- share model --}}
                 @include('partials.share-menu')
@@ -72,11 +72,15 @@
               @include('profile.partials.qrcode-model')
               @if(auth()->user()?->isNot($user))
                 <!-- button report -->
-               <button title="report" class="w-8 h-8 text-gray-500 hover:text-black transition-colors duration-150 ease-in flex items-center justify-center border border-black rounded-full">
-                <i class="fas fa-exclamation-triangle"></i>
+               <button onclick="openReort()"
+                       title="report" 
+                       class="w-8 h-8 text-gray-500 hover:text-black transition-colors duration-150 ease-in flex items-center justify-center ">
+               <svg  viewBox="0 0 512 512"><path d="M255.1 128c9.7 0 16.9 7.2 16.9 16v128c0 8.8-7.2 16-16.9 16-7.9 0-16-7.2-16-16V144c0-8.8 8.1-16 16-16zM280 352c0 13.3-10.7 24-24.9 24-12.4 0-24-10.7-24-24s11.6-24 24-24c14.2 0 24.9 10.7 24.9 24zM169.1 32H342c25.1 0 48.5 13.1 61.5 34.56L496 218.6c14 23 14 51.8 0 74.8l-92.5 152c-13 21.5-36.4 34.6-61.5 34.6H169.1c-24.2 0-47.6-13.1-60.6-34.6l-92.54-152a71.866 71.866 0 0 1 0-74.8L108.5 66.56C121.5 45.1 144.9 32 169.1 32zM43.29 235.2c-7.77 11.9-7.77 28.8 0 41.6l92.51 152c7.3 11.9 20.2 19.2 33.3 19.2H342c13.1 0 26.9-7.3 34.2-19.2l92.5-152c7.8-12.8 7.8-29.7 0-41.6l-92.5-152C368.9 71.28 355.1 64 342 64H169.1c-13.1 0-26 7.28-33.3 19.2l-92.51 152z"></path></svg>
                </button>
+               {{-- report profile model  --}}
+               @include('profile.partials.report-profile')
                  <!-- follow/unfollow -->
-                  <button data-id="{{$user->id}}" onclick="follow(this)" class="px-3 py-1 w-fit rounded-lg text-center text-sm font-bold {{auth()->user()?->isFollowing($user) ? 'text-gray-600 border border-gray-600 ' : 'bg-gray-500 text-white' }}">
+                  <button data-id="{{$user->id}}" onclick="follow(this)" class="px-3 py-1 w-fit rounded-lg text-center text-sm font-bold {{auth()->user()?->isFollowing($user) ? 'text-gray-600 border border-gray-600 ' : 'bg-gray-600 text-white' }}">
                     {{auth()->user()?->isFollowing($user) ? 'Following' : 'Follow' }}
                   </button>
                   @endif
@@ -115,7 +119,9 @@
     <a href="{{$user->linkedin}}" target="_blank"><i class="fab fa-linkedin"></i></a>
     @endif
     @if($user->twitter)
-    <a href="{{$user->twitter}}" target="_blank"><i class="fab fa-twitter"></i></a>
+    <a href="{{$user->twitter}}" target="_blank">
+      <svg fill="none" viewBox="0 0 20 20" width="20" height="20"><path stroke="currentColor" d="M8.87 11.122 3.556 4.057a.69.69 0 0 1 .551-1.103h1.907c.215 0 .418.1.548.271l4.192 5.498M8.87 11.122 4.328 17.09m4.541-5.97 4.3 5.61c.13.17.331.269.545.27l1.946.006a.69.69 0 0 0 .551-1.107l-5.456-7.177m0 0 4.427-5.799" stroke-linecap="round" stroke-width="1.25"></path></svg>
+    </a>
     @endif
     @foreach ($user->socialLinks as $link)
     <a href="{{ $link->url }}" target="_blank"><i class="fas fa-link text-sm mr-1"></i>{{ $link->platform }}</a><br>
