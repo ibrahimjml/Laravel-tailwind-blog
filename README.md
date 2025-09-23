@@ -30,6 +30,7 @@
 ![Admin tags](https://i.postimg.cc/bNsnMD8j/Screenshot-2025-09-20-225451.png)
 ![Admin categories](https://i.postimg.cc/zB8WPxDd/Screenshot-2025-09-20-225347.png)
 ![Admin roles](https://i.postimg.cc/7YprXYdr/Screenshot-2025-06-03-132057.png)
+![Admin permissions](https://i.postimg.cc/2j9tN03Z/Screenshot-2025-09-22-182850.png)
 ![Admin reports](https://i.postimg.cc/nrqv3WMq/Screenshot-2025-09-22-004247.png)
 ![Admin notifications](https://i.postimg.cc/gJcCrwX8/Screenshot-2025-06-03-132110.png)
 
