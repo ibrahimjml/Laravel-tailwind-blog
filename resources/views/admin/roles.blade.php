@@ -56,7 +56,12 @@
               </form>
               @endcan
               @can('role.update')
-              <button class="roleedit text-gray-500 rounded-lg p-2 cursor-pointer hover:text-gray-300" data-name="{{ $role->name }}"  data-id="{{ $role->id }}" data-permissions='@json($role->permissions->pluck("id"))'><i class="fas fa-edit"></i></button>
+              <button class="roleedit text-gray-500 rounded-lg p-2 cursor-pointer hover:text-gray-300" 
+                      data-name="{{ $role->name }}"  
+                      data-id="{{ $role->id }}" 
+                      data-permissions='@json($role->permissions->pluck('id')->toArray())'>
+              <i class="fas fa-edit"></i>
+            </button>
              @endcan
             </div>
           
@@ -73,7 +78,7 @@
     </div>
     @include('admin.partials.create-role-model',['permissions'=>$permissions])
 
-@include('admin.partials.edit-role-model',['role'=>$role,'permissions'=>$permissions])
+@include('admin.partials.edit-role-model',['permissions'=>$permissions])
 
 @endsection
 @push('scripts')
