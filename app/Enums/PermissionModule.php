@@ -14,4 +14,5 @@ enum PermissionModule:string
     case POSTREPORT = 'Post Reports';
     case PROFILEREPORT = 'Profile Reports';
     case COMMENTREPORT = 'Comment Reports';
+    case NOTIFICATIONS = 'Notifications';
 }

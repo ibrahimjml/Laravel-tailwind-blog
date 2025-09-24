@@ -80,14 +80,18 @@
         <td class="p-2"> {!! Str::limit(strip_tags($post->description), 40) !!}</td>
         <td class="p-2">
            @if($post->hashtags->isNotEmpty())
-             {{$post->hashtags->pluck('name')->implode(', ')}}
+           <span class="bg-gray-200 text-sm text-black px-2 py-1 rounded">
+             {{$post->hashtags->pluck('name')->implode(' | ')}}
+           </span>
            @else
             <i class="fas fa-times text-red-600 "></i>
            @endif
         </td>
         <td class="p-2">
            @if($post->categories->isNotEmpty())
-             {{$post->categories->pluck('name')->implode(', ')}}
+              <span class="bg-yellow-200 text-sm text-black px-2 py-1 rounded">
+             {{$post->categories->pluck('name')->implode(' | ')}}
+              </span>
            @else
             <i class="fas fa-times text-red-600 "></i>
            @endif

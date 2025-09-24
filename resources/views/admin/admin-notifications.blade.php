@@ -9,7 +9,7 @@
         <p class="text-xl font-bold text-gray-700 ">All Notifications</p>
         <span class="flex items-center">
           (<span class="h-4 w-4 bg-blue-500 mt-1 text-white font-medium flex justify-center items-center rounded-full p-1 text-xs">
-            {{ auth()->user()->unreadNotifications->count() }}
+            {{ $unreadCount }}
           </span>)
         </span>
         
@@ -66,7 +66,7 @@
       @php
       $type = $notification->data['type'];
       $message = $notification->data['message'] ?? '';
-      $url = route('notifications.read', $notification->id);
+      $url = route('admin.notifications.read', $notification->id);
       $username = null;
 
       foreach ($notification->data as $key => $value) {

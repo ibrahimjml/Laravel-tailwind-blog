@@ -68,7 +68,7 @@ public function reply(Comment $comment, Request $request){
     if ($selfReplyCount) {
   
     return response()->json([
-      'error' =>'You can only reply once to your own comment'
+      'error' =>'You can only reply once on comment'
     ]);
 }
       $fields['content']=strip_tags($fields['content']);

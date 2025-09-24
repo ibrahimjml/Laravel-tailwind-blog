@@ -5,10 +5,14 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 
 use App\Models\Comment;
+use App\Models\Notification;
 use App\Models\Post;
+use App\Models\SocialLink;
 use App\Models\User;
 use App\Policies\CommentPolicy;
+use App\Policies\NotificationPolicy;
 use App\Policies\PostPolicy;
+use App\Policies\SocialLinkPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -24,7 +28,8 @@ class AuthServiceProvider extends ServiceProvider
       Post::class=>PostPolicy::class,
       User::class=>UserPolicy::class,
       Comment::class=>CommentPolicy::class,
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+      SocialLink::class=>SocialLinkPolicy::class,
+      Notification::class=>NotificationPolicy::class,
     ];
 
     /**

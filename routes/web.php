@@ -186,10 +186,13 @@ Route::prefix('admin')
     // toggle feature category
     Route::put('feature/category/{category}','toggle_feature_category')->name('feature.category');
   });
+  Route::controller(NotificationsController::class)->group(function(){
+    Route::get('/notifications', 'notifications')->name('admin.notify');
+    Route::get('/notifications/{id}/read',  'markasread')->name('admin.notifications.read');
+  });
     Route::resource('roles',RolesController::class);
     Route::resource('permissions',PermissionsController::class);
     Route::delete('/admin/delete/{user}', [AdminController::class, 'destroy'])->name('delete.user');
-    Route::get('/notifications', [NotificationsController::class,'notifications'])->name('admin.notify');
   
   Route::controller(SettingController::class)->group(function(){
   Route::get('/settings', 'settings')->name('admin.settings');
