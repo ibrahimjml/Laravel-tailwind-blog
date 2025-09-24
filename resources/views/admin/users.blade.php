@@ -20,8 +20,9 @@
 @endcan
   </div>
 </div>
-<div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow w-[80%] left-6">
-    <table class="min-w-full table-auto overflow-auto">
+<div class="relative md:ml-60 rounded-xl bg-white shadow w-[85%] left-6 overflow-hidden">
+  <div class="w-full overflow-x-auto">
+    <table class="min-w-max table-auto w-full">
     <!-- User Table Headers -->
     <tr class="bg-gray-600">
       <th class="text-white p-2">#</th>
@@ -35,6 +36,7 @@
       <th class="text-white p-2">Phone</th>
       <th class="text-white p-2">Age</th>
       <th class="text-white p-2">Blocked</th>
+      <th class="text-white p-2">Username ChangedAt</th>
       <th class="text-white p-2">CreatedAt</th>
       <th colspan="2" class="text-white p-2">Actions</th>
 
@@ -94,8 +96,8 @@
         @endforelse
         </div>
       </td>
-      <td>{{$user->reportsSubmitted()?->count() ?: '--'}}</td>
-      <td>{{$user->reportsReceived()->count() ?: '--'}}</td>
+      <td>{{ $user->reports_submitted_count ?: '--' }}</td>
+      <td>{{ $user->reports_received_count ?: '--' }}</td>
       <td class=" p-2">
       <div class="flex justify-center">
       @if($user->email_verified_at)
@@ -116,6 +118,7 @@
       @endif
       </div>
       </td>
+      <td class=" p-2">{{ $user->username_changed_at ? $user->username_changed_at->format('Y-m-d H:i') : '-' }}</td>
       <td class=" p-2">{{$user->created_at->diffForHumans()}}</td>
       <td colspan="2" class=" bg-white text-white p-2">
       <div class="flex justify-center gap-2">
@@ -156,7 +159,7 @@
     @endforelse
     </table>
   </div>
-
+</div>
   <div class="relative md:ml-64 md:w-[80%] md:left-4">
     {!! $users->links() !!}
   </div>

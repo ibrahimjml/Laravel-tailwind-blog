@@ -15,7 +15,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\App\Admin\CreateUserRequest;
 use App\Http\Requests\App\Admin\UpdateUserRequest;
 use App\Models\Category;
-use App\Models\PostReport;
 use App\Models\Role;
 use App\Services\PostService;
 use Illuminate\Support\Facades\Hash;
@@ -56,7 +55,7 @@ class AdminController extends Controller
     $blocked = (bool) $request->get('blocked', false);
 
   $users = User::with(['roles','roles.permissions','userPermissions']) 
-               ->select('id','name','username','email','avatar','created_at','phone','age','is_blocked','email_verified_at')
+                ->withCount(['reportsSubmitted', 'reportsReceived'])
                ->latest()
                ->search($request->only('search'))
                ->when($blocked, fn($q) => $q->where('is_blocked', 1))
@@ -66,7 +65,7 @@ class AdminController extends Controller
     return view('admin.users',[
       'users'=>$users,
       'filter'=>$request->only(['search','blocked']),
-      'permissions' => Permission::all(),
+      'permissions' => Permission::all()->groupBy('module'),
       'roles'=>$roles
     ]);
   }
@@ -91,6 +90,7 @@ public function createuser(CreateUserRequest $request)
 public function updateuser(UpdateUserRequest $request, User $user)
 {
     $fields = $request->validated();
+
    if (!empty($fields['password'])) {
         $fields['password'] = Hash::make($fields['password']);
     } else {
