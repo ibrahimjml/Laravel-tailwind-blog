@@ -28,6 +28,12 @@ class CommentPolicy
     {
       return  $user->id === $comment->user_id;
     }
-
+    
+    public function report(User $user, Comment $comment): bool
+    {
+      if($comment->user_id === $user->id) return false;
+      if($comment->user && $comment->user->hasRole('Admin')) return false;
+       return true;
+    }
   
 }

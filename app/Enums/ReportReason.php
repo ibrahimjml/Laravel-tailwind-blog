@@ -9,7 +9,9 @@ enum ReportReason: string
     case Harasment = 'Harasment';
     case RulesViolation = 'RulesViolation';
     case InappropriateUploads = 'Inappropriate uploads';
-    case Other = 'Other';
+    case NotInterested = 'not interested';
+    case NotInBlog = 'should not be in blogpost';
+    case Other = 'other';
 
     public function label(): string
     {
@@ -19,6 +21,8 @@ enum ReportReason: string
       self::Harasment => 'Harassment or hate speech',
       self::RulesViolation => 'Broke Community Rules',
       self::InappropriateUploads => 'Inappropriate uploads images/categories/tags',
+      self::NotInterested => 'Iam not interested',
+      self::NotInBlog => 'This should not be in blogpost',
       self::Other => 'Other',
 
       };
@@ -40,6 +44,16 @@ enum ReportReason: string
                self::Abusive,
                self::Harasment,
                self::InappropriateUploads,
+               self::Other,
+           ];
+    }
+    public static function commentReasons()
+    {
+           return [
+               self::Spam,
+               self::Abusive,
+               self::NotInterested,
+               self::NotInBlog,
                self::Other,
            ];
     }

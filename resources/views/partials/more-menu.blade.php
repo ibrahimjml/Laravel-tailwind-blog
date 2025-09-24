@@ -2,12 +2,7 @@
     $canReport = auth()->user()->can('report', $post);
     $canFollow = auth()->user()->isNot($post->user);
 @endphp
-<div id="moremodel"
-  @class([
-    'absolute -right-12 z-10 w-36 h-fit rounded-lg bg-slate-50 px-2 py-4 space-y-2 hidden',
-    'top-[-110px]' => $canReport && $canFollow,
-    'top-[-70px]' =>  !$canFollow || !$canReport,
-  ])>
+<div id="moremodel" class="absolute top-[-100px] -right-12 z-10 w-36 h-fit rounded-lg bg-slate-50 px-2 py-4 space-y-2 hidden">
     @if($canFollow)
     <button 
     data-id="{{$post->user->id}}" onclick="follows(this)"

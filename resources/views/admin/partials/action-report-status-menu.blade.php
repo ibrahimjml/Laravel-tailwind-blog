@@ -47,9 +47,8 @@ function updateStatus(reportId, newStatus, type) {
     url = `/admin/postreports/toggle/${reportId}/status`;
    } else if(type ==='profile'){
     url = `/admin/profilereports/toggle/${reportId}/status`;
-   } else {
-    alert('Invalid report type');
-    return;
+   } else if(type === 'comment'){
+    url = `/admin/commentreports/toggle/${reportId}/status`;
    }
    
   fetch(url, {

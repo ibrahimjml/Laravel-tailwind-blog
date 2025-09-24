@@ -60,6 +60,14 @@ class User extends Authenticatable implements MustVerifyEmail
   {
       return $this->followings()->where('user_id', $user->id)->exists();
   }
+  public function reportsReceived()
+  {
+    return $this->hasMany(ProfileReport::class, 'profile_id');
+  }
+  public function reportsSubmitted()
+  {
+    return $this->hasMany(ProfileReport::class, 'reporter_id');
+  }
   public function socialLinks()
   {
     return $this->hasMany(SocialLink::class);

@@ -8,6 +8,7 @@ use App\Http\Controllers\User\{
 use App\Http\Controllers\Admin\{
     AdminController,
     CategoriesController,
+    CommentReportController,
     NotificationsController,
     TagsController,
     PermissionsController,
@@ -25,6 +26,7 @@ use App\Http\Controllers\{
     PostController,
     ReportPostController,
     PublicController,
+    ReportCommentController,
     ReportProfileController,
     TinyMCEController,
 };
@@ -112,6 +114,7 @@ Route::delete('/comment/{comment}',[CommentController::class,'deletecomment'])->
 Route::prefix('/reports')->group(function(){
   Route::post('/post/{post}',[ReportPostController::class,'report_post'])->name('post.report');
   Route::post('/profile/{user:username}',[ReportProfileController::class,'report_profile'])->name('profile.report');
+  Route::post('/comment/{comment}',[ReportCommentController::class,'report_comment'])->name('comment.report');
 });
 // Save Post
 Route::post('/saved-post',[PostController::class,'save']);
@@ -146,17 +149,24 @@ Route::prefix('admin')
     });
       // post reports
       Route::controller(PostReportController::class)
-        ->prefix('postreports')->group(function(){
+            ->prefix('postreports')->group(function(){
         Route::get('/', 'post_reports')->name('admin.postreports');
         Route::delete('/delete/{report}', 'report_delete')->name('delete.report');
         Route::patch('/toggle/{report}/status','toggle_status')->name('toggle.status');
       });
       // profile reports
          Route::controller(ProfileReportController::class)
-        ->prefix('profilereports')->group(function(){
+              ->prefix('profilereports')->group(function(){
         Route::get('/', 'profile_reports')->name('admin.profilereports');
         Route::delete('/delete/{report}', 'profile_report_delete')->name('delete.profile.report');
         Route::patch('/toggle/{report}/status','toggle_status')->name('toggle.profile.status');
+      });
+      // comment reports
+         Route::controller(CommentReportController::class)
+             ->prefix('commentreports')->group(function(){
+        Route::get('/', 'comment_reports')->name('admin.commentreports');
+        Route::delete('/delete/{report}', 'comment_report_delete')->name('delete.comment.report');
+        Route::patch('/toggle/{report}/status','toggle_status')->name('toggle.comment.status');
       });
     // manage Tags
     Route::controller(TagsController::class)->group(function(){

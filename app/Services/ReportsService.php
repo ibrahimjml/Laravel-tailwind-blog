@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\DTOs\ReportsDTO;
 use App\Enums\ReportStatus;
+use App\Models\Comment;
+use App\Models\CommentReport;
 use App\Models\Post;
 use App\Models\PostReport;
 use App\Models\ProfileReport;
@@ -39,6 +41,23 @@ class ReportsService
      ProfileReport::create([
             'reporter_id' => $dto->userId,
             'profile_id' => $user->id,
+            'reason' => $dto->reason,
+            'status'  => ReportStatus::Pending,
+            'other' => $dto->other
+        ]);
+        
+        return true;
+    }
+    public function reportComment(Comment $comment,ReportsDTO $dto)
+    {
+        $exists = CommentReport::where('reporter_id',$dto->userId)
+                 ->where('comment_id',$comment->id)
+                 ->exists();
+    if ($exists) return false;
+    
+     CommentReport::create([
+            'reporter_id' => $dto->userId,
+            'comment_id' => $comment->id,
             'reason' => $dto->reason,
             'status'  => ReportStatus::Pending,
             'other' => $dto->other

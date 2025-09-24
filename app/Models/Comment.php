@@ -28,5 +28,8 @@ class Comment extends Model
     public function replies(){
       return $this->hasMany(Comment::class, 'parent_id')->orderBy('created_at','desc');
     }
-
+    public function reports()
+    {
+      return $this->hasMany(CommentReport::class);
+    }
 }

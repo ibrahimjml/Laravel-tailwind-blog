@@ -21,6 +21,7 @@ class AdminSeeder extends Seeder
             // user & account management
             'Access',
             'user.view',
+            'user.create',
             'user.delete',
             'user.block',
             'user.role',
@@ -61,7 +62,15 @@ class AdminSeeder extends Seeder
             // post reports management
             'postreport.view',
             'postreport.delete',
-            'postreport.status'
+            'postreport.status',
+            // profile reports management
+            'profilereport.view',
+            'profilereport.delete',
+            'profilereport.status',
+            // comment reports management
+            'commentreport.view',
+            'commentreport.delete',
+            'commentreport.status'
         ];
 
 

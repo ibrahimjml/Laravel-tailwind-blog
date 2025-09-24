@@ -12,9 +12,8 @@
         <p class="view-all  text-sm text-gray-600 cursor-pointer  w-fit" reply-replies-count="{{$reply->replies_count}}">view {{ $reply->replies_count }} {{ Str::plural('reply', $reply->replies_count) }}</p>
         @endif
         {{-- delete | edit model --}}
-        @can('edit',$reply)
         @include('comments.partials.delete-edit-comment-model',['comment'=>$reply])
-        @endcan
+        
         <p class="reply-btn text-sm text-blue-600 cursor-pointer w-fit">Reply</p>
       </div>
     </div>

@@ -6,13 +6,13 @@
   <span id="closeModel" title="close" class="cursor-pointer absolute top-4 right-4 text-xl"><i class="fas fa-times"></i></span>
     {{-- Comment Form --}}
     <p class="w-fit md:text-xl text-md mb-3 p-2 font-semibold">
-      Comments (<span id="comment-count-number">{{ $totalcomments }}</span>)
+      Comments <span id="comment-count-number">{{'('. $totalcomments .')' }}</span>
     </p>
     <div class="w-fit mb-4 border-2 p-1 rounded-lg px-5 mx-auto">
       @include('comments.partials.comment_form', ['post' => $post])
     </div>
 
-       {{-- display comments | replies UI --}}
+    {{-- display comments | replies UI --}}
     @include('comments.comments',['comments'=>$post->comments])
   </div>
 </div>
@@ -37,9 +37,6 @@
         commentModel.classList.remove('translate-x-[-110vw]');
       commentModel.classList.add('translate-x-[0]');
       }, 10); 
-  
-
-      
     });
   
     closeModel.addEventListener('click', () => {
@@ -106,7 +103,6 @@ window.addEventListener('open-comment-modal', function () {
 
 </script>
 <script>
-
 document.addEventListener('DOMContentLoaded', () => {
 
   if (sessionStorage.getItem('showCommentModal') === 'true') {
@@ -114,6 +110,5 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionStorage.removeItem('showCommentModal'); 
   }
 });
-
 </script>
 @endpush

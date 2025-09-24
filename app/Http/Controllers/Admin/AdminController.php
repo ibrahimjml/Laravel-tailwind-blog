@@ -42,11 +42,13 @@ class AdminController extends Controller
     $categories = DB::table('categories')->count();
     $comments = DB::table('comments')->count();
     $blocked = DB::table('users')->where('is_blocked',1)->count();
-    $reports = DB::table('post_reports')->count();
+    $postreports = DB::table('post_reports')->count();
+    $profilereports = DB::table('profile_reports')->count();
+    $commentreports = DB::table('comment_reports')->count();
     $year = request('year', date('Y'));
 
     $data = $this->stats->getStats($year);             
-    return view('admin.adminpanel',compact(['user','post','likes','hashtags','categories','comments','blocked','reports','data']));
+    return view('admin.adminpanel',compact(['user','post','likes','hashtags','categories','comments','blocked','postreports','profilereports','commentreports','data']));
   }
 
   public function users(Request $request)

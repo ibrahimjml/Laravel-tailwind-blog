@@ -29,11 +29,13 @@
       <th class="text-white p-2 text-left">User</th>
       <th class="text-white p-2 ">Role</th>
       <th class="text-white p-2 ">Permissions</th>
-      <th class="text-white p-2">CreatedAt</th>
+      <th class="text-white p-2 ">Submitted Reports</th>
+      <th class="text-white p-2 ">Reports Recieved</th>
       <th class="text-white p-2">Verified</th>
       <th class="text-white p-2">Phone</th>
       <th class="text-white p-2">Age</th>
       <th class="text-white p-2">Blocked</th>
+      <th class="text-white p-2">CreatedAt</th>
       <th colspan="2" class="text-white p-2">Actions</th>
 
     </tr>
@@ -92,8 +94,8 @@
         @endforelse
         </div>
       </td>
-
-      <td class=" p-2">{{$user->created_at->diffForHumans()}}</td>
+      <td>{{$user->reportsSubmitted()?->count() ?: '--'}}</td>
+      <td>{{$user->reportsReceived()->count() ?: '--'}}</td>
       <td class=" p-2">
       <div class="flex justify-center">
       @if($user->email_verified_at)
@@ -114,6 +116,7 @@
       @endif
       </div>
       </td>
+      <td class=" p-2">{{$user->created_at->diffForHumans()}}</td>
       <td colspan="2" class=" bg-white text-white p-2">
       <div class="flex justify-center gap-2">
       <div>
