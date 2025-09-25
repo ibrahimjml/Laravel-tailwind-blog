@@ -18,7 +18,7 @@ class CategoriesController extends Controller
   }
     public function categorypage()
     {
-      return view('admin.categories',[
+      return view('admin.categories.categories',[
         'categories' => Category::paginate(7)
       ]);
     }

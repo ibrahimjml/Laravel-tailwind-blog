@@ -62,7 +62,7 @@ class AdminController extends Controller
                ->paginate(6)
                ->withQueryString();
     $roles = Role::all();
-    return view('admin.users',[
+    return view('admin.users.users',[
       'users'=>$users,
       'filter'=>$request->only(['search','blocked']),
       'permissions' => Permission::all()->groupBy('module'),
@@ -128,7 +128,7 @@ public function updateuser(UpdateUserRequest $request, User $user)
           ->withQuerystring();
 
 
-    return view('admin.posts',[
+    return view('admin.posts.posts',[
       'posts'=>$posts,
       'filter'=>$request->only('search','sort','featured')
     ]);

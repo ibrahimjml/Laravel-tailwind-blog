@@ -18,7 +18,7 @@ class NotificationsController extends Controller
     $filtertype = request()->get('type');
 
     $data = $service->sortNotifications($sortoption,$filtertype);
-    return view('admin.admin-notifications', [
+    return view('admin.notifications.admin-notifications', [
       'notifiedUsers'=>$data['notifiedUsers'],
       'notifications'=>$data['notifications'],
       'unreadCount'=>$data['unreadCount'],

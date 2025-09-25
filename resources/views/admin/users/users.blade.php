@@ -2,48 +2,36 @@
 @section('title', 'Users Table | Dashboard')
 @section('content')
 
-@include('admin.partials.header', ['linktext' => 'Users Table', 'route' => 'admin.users', 'value' => request('search')])
+@include('admin.partials.header', [
+        'linktext'        => 'Users Table',
+        'route'           => 'admin.users',
+        'value'           => request('search'),
+       'searchColor'      => 'bg-blueGray-200',
+       'borderColor'      => 'border-blueGray-200',
+       'backgroundColor'  => 'bg-gray-400'
+    ])
 <div class="md:ml-64  px-4 py-2 mb-3 -m-[120px] w-[80%]">
   <div class="flex justify-between items-center mb-5">
 
-    <div class="bg-gray-600 rounded-md p-2 h-10 flex items-center ml-3">
+    <div class="bg-blueGray-200 rounded-md p-2 h-10 flex items-center ml-3">
     <form action="{{route('admin.users')}}" method="GET" class="flex items-center gap-1">
       <input type="checkbox" name="blocked" value="1" {{ request('blocked') ? 'checked' : '' }}
       onchange="this.form.submit()" class="rounded-full w-4 h-4">
-      <label class="text-white font-semibold" for="blocked">Blocked</label>
+      <label class="text-blueGray-500 font-semibold" for="blocked">Blocked</label>
     </form>
   </div>
   @can('user.create')
   <div class="flex justify-end">
-<button id="openUserModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6" href="{{route('roles.create')}}">create user</button>
+<button id="openUserModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-blueGray-200  text-blueGray-500 py-2 px-5 rounded-lg font-bold capitalize mb-6" href="{{route('roles.create')}}">create user</button>
 </div>
 @endcan
   </div>
 </div>
-<div class="relative md:ml-60 rounded-xl bg-white shadow w-[85%] left-6 overflow-hidden">
-  <div class="w-full overflow-x-auto">
-    <table class="min-w-max table-auto w-full">
-    <!-- User Table Headers -->
-    <tr class="bg-gray-600">
-      <th class="text-white p-2">#</th>
-      <th class="text-white p-2">Avatar</th>
-      <th class="text-white p-2 text-left">User</th>
-      <th class="text-white p-2 ">Role</th>
-      <th class="text-white p-2 ">Permissions</th>
-      <th class="text-white p-2 ">Submitted Reports</th>
-      <th class="text-white p-2 ">Reports Recieved</th>
-      <th class="text-white p-2">Verified</th>
-      <th class="text-white p-2">Phone</th>
-      <th class="text-white p-2">Age</th>
-      <th class="text-white p-2">Blocked</th>
-      <th class="text-white p-2">Username ChangedAt</th>
-      <th class="text-white p-2">CreatedAt</th>
-      <th colspan="2" class="text-white p-2">Actions</th>
-
-    </tr>
+<div class="relative md:ml-60 rounded-xl bg-white shadow w-[80%] left-6 overflow-hidden">
+  <x-tables.table id='' :headers="['#','Avatar','User','Role','Permissions','Submitted Reports','Reports Recieved','Verified','Phone','Age','Blocked','Username ChangedAt','CreatedAt','Actions']" title="Users Table" >
     @forelse ($users as $user)
 
-    <tr class="text-center border border-b-gray-300 ">
+    <tr>
       <td class="p-2"> {{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}</td>
       <td class=" p-2">
       <div class="inline-block">
@@ -59,36 +47,17 @@
       </td>
       <td class="p-2 flex justify-start w-40">
       @can('user.role')
-      <form action="{{route('role.update', $user)}}" method="POST">
-      @csrf
-      @method('PUT')
-      <div class="relative w-full">
-        <select name="role"
-        onchange="this.form.submit()"
-        class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-gray-600 text-white text-sm rounded-lg w-full p-2.5">
-         @foreach ($roles as $role)
-        <option value="{{ $role->name }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>
-          {{ ucfirst($role->name) }}
-        </option>
-      @endforeach
-        </select>
-        <!-- white arrow -->
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-white">
-        <i class="fas fa-caret-down"></i>
-        </svg>
-        </div>
-      </div>
-      </form>
-    @else
+      @include('admin.users.partials.change-role')
+     @else
       <p
       class="cursor-not-allowed bg-gray-600 font-bold text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 ">
       {{$user->roles->pluck('name')->implode(',')}}</p>
     @endcan
       </td>
       <td class="p-2">
-        <div class="flex flex-wrap gap-2 justify-center items-center ">
+        <div class="flex flex-wrap gap-2 justify-start items-center ">
         @forelse ($user->getAllPermissions()->take(3) as $name)
-            <span class="bg-gray-200 text-sm text-black px-2 py-1 rounded">
+        <span class="bg-blueGray-200 text-sm font-semibold text-blueGray-500 px-2 py-1 rounded">
              {{$name}}
             </span>
             @empty
@@ -153,18 +122,17 @@
   </td>
 </tr>
 {{-- user edit model --}}
-@include('admin.partials.edit-user-model',['permissions'=>$permissions,'roles'=>$roles,'user'=>$user])
+@include('admin.users.partials.edit-user-model',['permissions'=>$permissions,'roles'=>$roles,'user'=>$user])
     @empty
     <h4 class="text-center font-bold">Sorry, column not found</h4>
     @endforelse
-    </table>
-  </div>
+</x-tables.table>
 </div>
   <div class="relative md:ml-64 md:w-[80%] md:left-4">
     {!! $users->links() !!}
   </div>
   {{-- create user model --}}
-  @include('admin.partials.create-user-model',['permissions'=>$permissions,'roles'=>$roles])
+  @include('admin.users.partials.create-user-model',['permissions'=>$permissions,'roles'=>$roles])
   
 @endsection
 

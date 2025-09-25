@@ -2,7 +2,14 @@
 @section('title','Tags Page | Dashboard')
 @section('content')
 
-@include('admin.partials.header', ['linktext' => 'Roles table', 'route' => 'roles.index', 'value' => request('search')])
+@include('admin.partials.header', [
+  'linktext' => 'Roles table',
+   'route' => 'roles.index', 
+   'value' => request('search'),
+    'searchColor'     => 'bg-blueGray-200',
+       'borderColor'     => 'border-blueGray-200',
+       'backgroundColor' => 'bg-gray-400'
+   ])
 
 
 <div class="w-[90%] -m-24 mx-auto">
@@ -13,39 +20,30 @@
 </div>
 @endcan
   <div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow">
-      <table id="tableroles" class="min-w-full table-auto">
-      
-        <tr class="bg-gray-600">         
-          <th class="text-white p-2">#</th>
-          <th class="text-white p-2 text-left w-fit">Roles</th>
-          <th class="text-white p-2 text-center w-fit">Permissions</th>
-          <th class="text-white p-2">CreatedAt</th>
-          <th colspan="2" class="text-white  p-2">Actions</th>
-  
-        </tr>
+    <x-tables.table id="tableroles" :headers="['#','Roles','Permissions','CreatedAt','Actions']" title="Roles Table" >
         @foreach ( $roles as $role )
-        <tr class="text-center border border-b-gray-300 last:border-none">
+         <tr>
           <td class="p-2">{{ ($roles->currentPage() - 1) * $roles->perPage() + $loop->iteration }}</td>
-    <td class="p-2 text-center align-middle">
-    <div class="flex justify-center items-center h-full">
+    <td class="p-2 ">
+    <div class="flex justify-start  h-full">
         <span class="py-1 px-3 text-white text-sm rounded-md bg-gray-700 bg-opacity-70 font-semibold">
             {{ $role->name }}
         </span>
      </div>
       </td>
-            <td>
-              <div class="flex flex-wrap gap-2">
-               @foreach($role->permissions as $permission)
-               <span class="bg-gray-200 text-sm text-black px-2 py-1 rounded">
-                {{ $permission->name }}
-               </span>
-              @endforeach
-              </div>
-             </td>
+        <td class="max-w-[200px] ">
+         <div class="flex flex-wrap gap-2">
+           @foreach($role->permissions->take(10) as $permission)
+             <span class="bg-gray-200 gap-2 text-sm text-black px-2 py-1 rounded">
+               {{ $permission->name }}
+             </span>
+           @endforeach
+         </div>
+       </td>
           
           <td class="p-2">{{$role->created_at}}</td>
           <td  class=" text-white p-2">
-            <div class="flex gap-2 justify-center">
+            <div class="flex gap-2 justify-start">
               @can('role.delete')
               <form class="rolesdelete" action="{{route('roles.destroy',$role->id)}}"  method="POST">
                 @csrf
@@ -68,17 +66,16 @@
           </td>
         </tr>
       @endforeach
-      </table>
+      </x-tables.table>
     </div>
-
   
     <div class="relative md:ml-64 ">
  {!! $roles->links() !!} 
     </div>
     </div>
-    @include('admin.partials.create-role-model',['permissions'=>$permissions])
+    @include('admin.roles.partials.create-role-model',['permissions'=>$permissions])
 
-@include('admin.partials.edit-role-model',['permissions'=>$permissions])
+@include('admin.roles.partials.edit-role-model',['permissions'=>$permissions])
 
 @endsection
 @push('scripts')

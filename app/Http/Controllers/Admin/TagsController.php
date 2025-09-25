@@ -28,7 +28,7 @@ class TagsController extends Controller
 }
 
   public function hashtagpage(){
-    return view('admin.hashtags',[
+    return view('admin.hashtags.hashtags',[
       'hashtags' => Hashtag::paginate(6)
     ]);
   }

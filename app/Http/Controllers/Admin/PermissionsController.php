@@ -17,7 +17,7 @@ class PermissionsController extends Controller
 }
     public function index()
     {
-      return view('admin.permissions', [
+      return view('admin.permissions.permissions', [
                'permissions' => Permission::orderBy('module')
                           ->orderBy('slug')
                           ->get()

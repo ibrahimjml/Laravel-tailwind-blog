@@ -2,31 +2,28 @@
 @section('title','Tags Page | Dashboard')
 @section('content')
 
-@include('admin.partials.header', ['linktext' => 'Tags Table', 'route' => 'admin.users', 'value' => request('search')])
+@include('admin.partials.header', [
+  'linktext' => 'Tags Table', 
+  'route' => 'admin.users',
+   'value' => request('search'),
+   'searchColor'      => 'bg-blueGray-200',
+       'borderColor'      => 'border-blueGray-200',
+       'backgroundColor'  => 'bg-gray-400'
+   ])
 <div class="w-[90%] -m-24 mx-auto">
 
 @can('tag.create')
 <div class="flex justify-end">
-  <button id="openTagModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6" href="{{route('create')}}">create tag</button>
+  <button id="openTagModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6">create tag</button>
 </div>
 @endcan
   <div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow">
-      <table id="tabletags" class="min-w-full table-auto">
-      
-        <tr class="bg-gray-600">         
-          <th class="text-white p-2">#</th>
-          <th class="text-white p-2 text-left w-fit">Hashtags</th>
-          <th class="text-white p-2">Related posts</th>
-          <th class="text-white p-2">CreatedAt</th>
-          <th class="text-white p-2">UpdatedAt</th>
-          <th colspan="2" class="text-white  p-2">Actions</th>
-  
-        </tr>
+    <x-tables.table id="tablehashtags" :headers="['#','Hashtag','Related Posts','CreatedAt','UpdatedAt','Actions']" title="Hashtags Table" >
         @forelse ($hashtags as $hashtag)
-        <tr class="text-center border border-b-gray-300 last:border-none">
+        <tr>
           <td class="p-2">{{ ($hashtags->currentPage() - 1) * $hashtags->perPage() + $loop->iteration }}</td>
-          <td class=" p-2 flex justify-start items-center">
-            <span class=" py-1 px-3 text-white  text-sm rounded-md bg-gray-700 bg-opacity-70 font-semibold w-fit">
+          <td class=" p-2 ">
+            <span class=" py-1 px-3 text-blueGray-500  text-sm rounded-md bg-blueGray-200 bg-opacity-70 font-semibold w-fit">
 
               {{$hashtag->name}}</td>
             </span>
@@ -35,7 +32,7 @@
           <td class="p-2">{{$hashtag->created_at->diffForHumans()}}</td>
           <td class="p-2">{{$hashtag->updated_at->diffForHumans()}}</td>
           <td  class=" text-white p-2">
-            <div class="flex gap-2 justify-center">
+            <div class="flex gap-2 justify-start">
             @can('tag.delete')
               <form class="tagsdelete" action='{{route('delete.hashtag',$hashtag->id)}}' method="POST">
                 @csrf
@@ -62,11 +59,9 @@
           </td>
         </tr>
         @empty
-      
           <h4 class="text-center font-bold">Sorry, column not found</h4>
-      
         @endforelse
-      </table>
+    </x-tables.table>
     </div>
 
   
@@ -75,9 +70,9 @@
     </div>
     </div>
   {{-- edit tag model --}}
-  @include('admin.partials.edit-tag-model',['hashtag'=>$hashtag])
+  @include('admin.hashtags.partials.edit-tag-model',['hashtag'=>$hashtag])
 {{-- tag model --}}
-@include('admin.partials.create-tag-model')
+@include('admin.hashtags.partials.create-tag-model')
 
 @push('scripts')
 <script>

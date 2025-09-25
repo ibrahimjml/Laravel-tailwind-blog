@@ -90,7 +90,7 @@
           </h6>
           <!-- Navigation -->
 
-          @include('components.admin-sidebar')
+          @include('admin.partials.admin-sidebar')
           <!-- Divider -->
           <hr class="my-4 md:min-w-full" />
         </div>

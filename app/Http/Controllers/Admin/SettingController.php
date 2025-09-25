@@ -14,7 +14,7 @@ class SettingController extends Controller
     {
         $user = auth()->user();
         $user->loadCount(['followers','followings']);
-        return view("admin.setting",[
+        return view("admin.settings.setting",[
           'user'=>$user,
           'postcount' => $user->post()->count(),
           'likescount' => $user->post()->withCount('likes')->get()->sum('likes_count'),

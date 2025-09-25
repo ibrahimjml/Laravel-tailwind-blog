@@ -20,7 +20,7 @@ class RolesController extends Controller
   
     public function index()
     {
-        return view('admin.roles',[
+        return view('admin.roles.roles',[
           'roles'=> Role::with('permissions')->paginate(6),
           'permissions' => Permission::all()->groupBy('module')
         ]);
