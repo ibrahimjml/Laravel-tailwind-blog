@@ -25,7 +25,7 @@
 ![Profileinfo setting](https://i.postimg.cc/qMwSk0kk/Screenshot-2025-09-21-110503.png)
 ![{rofileaccount setting](https://i.postimg.cc/RV5zNkT8/Screenshot-2025-06-27-223348.png)
 ![Create page](https://i.postimg.cc/J4t6yk1w/127-0-0-1-8000-create-5.png)
-![Admin home](https://i.postimg.cc/qvNG8Dgy/Screenshot-2025-09-20-225312.png)
+![Admin home](https://i.postimg.cc/j2ZNBwpR/Screenshot-2025-09-25-210913.png)
 ![Admin users](https://i.postimg.cc/Dy67GdTC/Screenshot-2025-09-25-204056.png)
 ![Admin posts](https://i.postimg.cc/fbN4gVD3/Screenshot-2025-09-25-204318.png)
 ![Admin tags](https://i.postimg.cc/jjK94B4P/Screenshot-2025-09-25-204359.png)
