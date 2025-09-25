@@ -17,8 +17,9 @@
 ![Notification menu](https://i.postimg.cc/kMjCrJdM/Screenshot-2025-09-22-125701.png)
 ![Reportpost](https://i.postimg.cc/V6v8qzR3/Screenshot-2025-09-18-235631.png)
 ![Commentsmodel](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
-![Profile home](https://i.postimg.cc/xdFL7X61/Screenshot-2025-09-20-233534.png)
+![Profile home](https://i.postimg.cc/D0PmWtV8/Screenshot-2025-09-24-185546.png)
 ![Profile activity](https://i.postimg.cc/q7g38kpV/Screenshot-2025-09-20-233621.png)
+![Profile report](https://i.postimg.cc/L6y6rkmK/Screenshot-2025-09-24-185620.png)
 ![Qrcode](https://i.postimg.cc/4NZHWvX1/Screenshot-2025-09-20-232729.png)
 ![Profileinfo setting](https://i.postimg.cc/LXGFkwFJ/Screenshot-2025-06-27-223320.png)
 ![Profileinfo setting](https://i.postimg.cc/qMwSk0kk/Screenshot-2025-09-21-110503.png)
@@ -105,7 +106,7 @@
 - **Give permissions to any user** 
 
 ## 🚀 All Pages Styled With TailwindCss ,more experience ,more responsive.
-🔥🔥 Upcomig: likes on comments,private|public accounts.
+🔥🔥 Upcomig: winning badges by completing competitions | Using AI for recommended posts.
 
 ## INSTALLATION
 -- Requirements extensions:
