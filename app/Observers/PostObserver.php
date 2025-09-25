@@ -22,7 +22,7 @@ class PostObserver
     
     public function created(Post $post){
   
-      event(new PostCreatedEvent($post));
+      // event(new PostCreatedEvent($post));
     }
 
     public function updating(Post $post)

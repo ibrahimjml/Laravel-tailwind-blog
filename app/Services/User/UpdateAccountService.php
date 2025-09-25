@@ -4,10 +4,12 @@ namespace App\Services\User;
 
 use App\DTOs\User\UpdateAccountDTO;
 use App\Models\User;
+use App\Services\IdentityCheckService;
 use Illuminate\Support\Facades\Hash;
 
 class UpdateAccountService
 {
+  public function __construct(private IdentityCheckService $check) {}
     public function update(User $user,UpdateAccountDTO $dto):array
     {
         $data = [
@@ -39,6 +41,9 @@ class UpdateAccountService
         if($user->wasChanged('email')){
           $user->sendEmailVerificationNotification();
         };
+          if($user->wasChanged('password')){
+          $this->check->IdentityCheck($user);
+        }
         return [
           'status' => true,
           'message' => 'Account updated successfully.',

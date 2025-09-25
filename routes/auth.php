@@ -1,5 +1,6 @@
-<?php 
+<?php
 
+use App\Http\Controllers\Auth\IdentityVerificationController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +28,9 @@ Route::middleware('auth')
   Route::post('/confirm-password', 'confirm')
   ->middleware('throttle:6,1')
   ->name('confirm.password');
-  
+  // identity verification
+  Route::get('/verify-password-code', [IdentityVerificationController::class, 'showVerification'])->name('verify.code.show');
+  Route::post('/verify-password-code', [IdentityVerificationController::class, 'verifyCode'])->name('verify.code');
   // email verification
   Route::get('/email/verify', 'verify_notice')
   ->name('verification.notice');

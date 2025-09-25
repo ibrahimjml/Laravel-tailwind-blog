@@ -22,7 +22,7 @@ class ProfileSettingsController extends Controller
       protected UpdateAccountService $update
       )
     {
-      $this->middleware(['auth',CheckIfBlocked::class]);
+      $this->middleware(['auth','verified',CheckIfBlocked::class]);
     }
     /**
       * profile info page

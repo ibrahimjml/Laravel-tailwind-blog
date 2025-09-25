@@ -16,11 +16,11 @@ class NotificationController extends Controller
   
       return $read->readNotications($id);
   }
-  public function markasreadall()
+  public function markallasread()
   {
       $notifications = auth()->user()->unreadNotifications;
       $notifications->markAsRead();
-      toastr()->success('Notifications marked all ad read',['timeOut'=>1000]);
+      toastr()->success('Notifications marked all as read',['timeOut'=>1000]);
       return back();
   }
     public function delete($id){

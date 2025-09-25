@@ -73,11 +73,11 @@
   </ul>
   <!-- delete all / mark all as read -->
     <div class="flex items-center p-4 h-20 border-t-2 border-t-black">
-      <form id="myform" action="{{ route('notifications.readall') }}" method="GET" class="text-right mb-2">
+      <form id="marksall" action="{{ route('notifications.readall') }}" method="GET" class="text-right mb-2">
       </form> 
       <span class="text-blue-500 p-2 rounded-full  hover:border border-blue-600 ">
         <i class="fas fa-check mr-1"></i>
-      <button form="myform" type="submit" >Mark all as read</button>
+      <button form="marksall" type="submit" >Mark all as read</button>
       </span>
      <form action="{{ route('notifications.deleteAll') }}" method="POST" class="text-right mb-2 w-fit ml-auto">
           @csrf
