@@ -2,24 +2,22 @@
 @section('title','Tags Page | Dashboard')
 @section('content')
 
+<div class="md:ml-64 ">
 @include('admin.partials.header', [
-  'linktext' => 'Roles table',
-   'route' => 'roles.index', 
-   'value' => request('search'),
-    'searchColor'     => 'bg-blueGray-200',
-       'borderColor'     => 'border-blueGray-200',
-       'backgroundColor' => 'bg-gray-400'
+      'linktext'      => 'Manage Roles',
+      'route'        => 'roles.index', 
+      'value'         => request('search'),
+      'searchColor'     => 'bg-blueGray-200',
+      'borderColor'     => 'border-blueGray-200',
+      'backgroundColor' => 'bg-gray-400'
    ])
 
-
-<div class="w-[90%] -m-24 mx-auto">
-
 @can('role.create')
-<div class="flex justify-end">
+<div class="flex justify-end transform -translate-y-40">
   <button id="openRoleModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6" href="{{route('roles.create')}}">create role</button>
 </div>
 @endcan
-  <div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow">
+ <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl mx-4 transform -translate-y-40 ">
     <x-tables.table id="tableroles" :headers="['#','Roles','Permissions','CreatedAt','Actions']" title="Roles Table" >
         @foreach ( $roles as $role )
          <tr>

@@ -2,19 +2,20 @@
 @section('title', 'Posts Reports | Dashboard')
 @section('content')
 
+<div class="md:ml-64 ">
 @include('admin.partials.header', [
-  'linktext' => 'Post Reports',
-   'route' => 'admin.posts', 
-   'value' => request('search'),
-    'searchColor'     => 'bg-blueGray-200',
-       'borderColor'     => 'border-blueGray-200',
-       'backgroundColor' => 'bg-gray-400'
+        'linktext'       => 'manage Post Reports',
+         'route'         => 'admin.posts', 
+         'value'         => request('search'),
+         'searchColor'     => 'bg-blueGray-200',
+         'borderColor'     => 'border-blueGray-200',
+         'backgroundColor' => 'bg-gray-400'
    ])
 {{-- sort by status --}}
-<div class=" md:ml-64  px-4 py-2 mb-3 -m-24 w-[80%]">
+<div class="w-fit transform -translate-y-48 ml-4">
   @include('admin.reports.partials.filter')
 </div>      
-<div class="relative md:ml-60 rounded-md bg-white shadow w-[80%] left-6 overflow-hidden">
+ <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl mx-4 transform -translate-y-40 ">
 <x-tables.table id="tablepostreports" :headers="['#','Post','Post Owner','Reporter','Reason','Other','Status','CreatedAt','Actions']" title="Post Reports Table">
     @forelse ($reports as $report)
         <tr>
@@ -82,10 +83,10 @@
         <h4 class="text-center font-bold">No Reports yet</h4>
     @endforelse
      
-</x-tables.table>
+  </x-tables.table>
+<div class="relative md:ml-64 md:w-[80%] md:left-4">
+  {!! $reports->links() !!}
+</div>
   </div>
-
-  <div class="relative md:ml-64 md:w-[80%] md:left-4">
-    {!! $reports->links() !!}
-  </div>
+</div>
 @endsection

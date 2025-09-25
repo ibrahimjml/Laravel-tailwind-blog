@@ -2,6 +2,7 @@
 @section('title', 'Posts Table | Dashboard')
 @section('content')
 
+<div class="md:ml-64 ">
 @include('admin.partials.header', [
        'linktext'        => 'Manage Posts', 
        'route'           => 'admin.posts', 
@@ -11,10 +12,10 @@
        'backgroundColor' => 'bg-gray-400'
   ])
   {{-- filters  --}}
-<div class=" md:ml-64  px-4 py-2 mb-3 -m-24 w-[80%]">
+<div class="transform -translate-y-52">
   @include('admin.posts.filters')
 </div>
-<div class="relative md:ml-60 rounded-md bg-white shadow w-[80%] left-6 overflow-hidden">
+ <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl mx-4 transform -translate-y-40 ">
 {{-- post table --}}
 <x-tables.table id='' :headers="['#','Username','Image','Title','Body','Hashtags','Categories','Reported','Reports Count','Featured','Likes','Comments','CreatedAt','Actions']" title="Posts Table" >
       @forelse ($posts as $post)
@@ -28,7 +29,7 @@
         <td class="p-2"> {!! Str::limit(strip_tags($post->description), 40) !!}</td>
         <td class="p-2">
            @if($post->hashtags->isNotEmpty())
-           <span class="bg-gray-200 text-sm text-black px-2 py-1 rounded">
+           <span class="bg-blueGray-200 text-sm text-blueGray-500 px-2 py-1 rounded">
              {{$post->hashtags->pluck('name')->implode(' | ')}}
            </span>
            @else
@@ -37,7 +38,7 @@
         </td>
         <td class="p-2">
            @if($post->categories->isNotEmpty())
-              <span class="bg-yellow-200 text-sm text-black px-2 py-1 rounded">
+              <span class="bg-blueGray-200 text-sm text-blueGray-500 px-2 py-1 rounded">
              {{$post->categories->pluck('name')->implode(' | ')}}
               </span>
            @else
@@ -100,10 +101,10 @@
       <h4 class="text-center font-bold">Sorry, column not found</h4>
       @endforelse
 </x-tables.table>
-  </div>
-
-
-  <div class="relative md:ml-64 md:w-[80%] md:left-4">
+ <div class="relative ">
     {!! $posts->links() !!}
   </div>
+  </div>
+</div>
+  
 @endsection

@@ -2,8 +2,9 @@
 @section('title', 'Permissions page | Dashboard')
 @section('content')
 
+<div class="md:ml-64 ">
   @include('admin.partials.header', [
-       'linktext'           => 'Permissions table', 
+       'linktext'           => 'Manage Permissions', 
        'route'              => 'permissions.index', 
        'value'              => request('search'),
        'searchColor'       => 'bg-blueGray-200',
@@ -11,18 +12,15 @@
        'backgroundColor'   => 'bg-gray-400'
     ])
 
-
-  <div class="w-[90%] -m-24 mx-auto">
-
     @can('permission.create')
-      <div class="flex justify-end">
+      <div class="flex justify-end transform -translate-y-40">
         <button id="openPermissionModel"
           class="text-center ml-0 mr-2 sm:ml-auto w-fit   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6"
           href="{{route('permissions.create')}}">create permission</button>
       </div>
     @endcan
 
-    <div class="relative md:ml-64 rounded-md overflow-hidden bg-white shadow">
+   <div class="bg-white shadow rounded-xl overflow-hidden w-7xl mx-4 transform -translate-y-40 ">
       @foreach ($permissions as $module => $group)
         <x-tables.table id="tablepermissions" :headers="['#', 'Permission', 'Module', 'Description', 'CreatedAt', 'Actions']"
           title="{{ $module }} Permissions">
@@ -38,7 +36,7 @@
               <td>{{ $permission->description ?? '--' }}</td>
               <td class="p-2">{{ $permission->created_at->format('Y-m-d') }}</td>
               <td class="text-white p-2">
-                <div class="flex gap-2 justify-center">
+                <div class="flex gap-2 justify-start">
                   @can('permission.delete')
                     <form class="permissiondelete" action="{{ route('permissions.destroy', $permission->id) }}" method="POST">
                       @csrf
@@ -62,8 +60,8 @@
         </x-tables.table>
       @endforeach
 
-    </div>
   </div>
+</div>
   @include('admin.permissions.partials.create-permission-model')
   @include('admin.permissions.partials.edit-permission-model', ['permission' => $permission])
 @endsection

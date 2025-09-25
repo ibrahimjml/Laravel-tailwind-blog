@@ -2,22 +2,22 @@
 @section('title','Tags Page | Dashboard')
 @section('content')
 
+<div class="md:ml-64 ">
 @include('admin.partials.header', [
-  'linktext' => 'Tags Table', 
+  'linktext' => 'Manage Tags', 
   'route' => 'admin.users',
    'value' => request('search'),
    'searchColor'      => 'bg-blueGray-200',
        'borderColor'      => 'border-blueGray-200',
        'backgroundColor'  => 'bg-gray-400'
    ])
-<div class="w-[90%] -m-24 mx-auto">
 
 @can('tag.create')
-<div class="flex justify-end">
+<div class="flex justify-end transform -translate-y-40">
   <button id="openTagModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6">create tag</button>
 </div>
 @endcan
-  <div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow">
+ <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl mx-4 transform -translate-y-40 ">
     <x-tables.table id="tablehashtags" :headers="['#','Hashtag','Related Posts','CreatedAt','UpdatedAt','Actions']" title="Hashtags Table" >
         @forelse ($hashtags as $hashtag)
         <tr>
@@ -61,14 +61,12 @@
         @empty
           <h4 class="text-center font-bold">Sorry, column not found</h4>
         @endforelse
-    </x-tables.table>
+      </x-tables.table>
+        <div class="relative">
+        {!! $hashtags->links() !!}
+       </div>
     </div>
-
-  
-    <div class="relative md:ml-64 ">
-  {!! $hashtags->links() !!}
-    </div>
-    </div>
+</div>
   {{-- edit tag model --}}
   @include('admin.hashtags.partials.edit-tag-model',['hashtag'=>$hashtag])
 {{-- tag model --}}
@@ -114,7 +112,7 @@ const tags = document.querySelectorAll('.tagsdelete');
           if (data.deleted === true) {
             toastr.success(data.message);
             tag.closest('tr').remove();
-          }
+    }
         })
         .catch(error => {
           console.error('Error:', error);

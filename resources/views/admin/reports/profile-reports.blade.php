@@ -2,18 +2,19 @@
 @section('title', 'Profile Reports | Dashboard')
 @section('content')
 
+<div class="md:ml-64 ">
 @include('admin.partials.header', [
-  'linktext' => 'Profile Reports',
-   'route' => 'admin.posts', 
-   'value' => request('search'),
-    'searchColor'     => 'bg-blueGray-200',
-       'borderColor'     => 'border-blueGray-200',
-       'backgroundColor' => 'bg-gray-400'
+         'linktext'     => 'Manage Profile Reports',
+         'route'        => 'admin.posts', 
+         'value'         => request('search'),
+          'searchColor'     => 'bg-blueGray-200',
+          'borderColor'     => 'border-blueGray-200',
+         'backgroundColor' => 'bg-gray-400'
    ])
-<div class=" md:ml-64  px-4 py-2 mb-3 -m-24 w-[80%]">
+<div class="w-fit transform -translate-y-48 ml-4">
 @include('admin.reports.partials.filter')
 </div>
-<div class="relative md:ml-60 rounded-md bg-white shadow w-[80%] left-6 overflow-hidden">
+ <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl mx-4 transform -translate-y-40 ">
 <x-tables.table id="tableprofilereports" :headers="['#','Profile','Profile Owner','Reporter','Reason','Other','Status','CreatedAt','Actions']" title="Profile Reports Table">
     @forelse ($reports as $report)
         <tr>
@@ -44,7 +45,7 @@
       </td>
       <td>
           <i @class([
-            "fas fa-circle  mr-2",
+            "fas fa-circle  mr-2 text-xs",
             'text-orange-400' => $report->status === \App\Enums\ReportStatus::Pending,
             'text-green-600' => $report->status === \App\Enums\ReportStatus::Reviewed,
             'text-red-600' => $report->status === \App\Enums\ReportStatus::Rejected,
@@ -82,9 +83,9 @@
     @endforelse
      
 </x-tables.table>
+<div class="relative md:ml-64 md:w-[80%] md:left-4">
+  {!! $reports->links() !!}
 </div>
-
-  <div class="relative md:ml-64 md:w-[80%] md:left-4">
-    {!! $reports->links() !!}
-  </div>
+</div>
+</div>
 @endsection

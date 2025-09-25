@@ -9,7 +9,7 @@
 </div>
 
 <div class="w-full overflow-x-auto">
-  <table id="{{$id}}" class="min-w-max table-auto w-full ">
+  <table id="{{$id}}"  class="min-w-max table-auto w-full">
     <thead class="text-left px-4">
       <tr class="bg-blueGray-200 text-blueGray-500">
         @foreach($headers as $header)
@@ -17,7 +17,7 @@
         @endforeach
       </tr>
     </thead>
-    <tbody class="text-left border-separate border-spacing-x-10">
+    <tbody class="text-left">
       {{ $slot }}
     </tbody>
   </table>

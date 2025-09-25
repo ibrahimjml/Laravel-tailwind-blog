@@ -9,21 +9,25 @@
   'backgroundColor' => 'bg-gray-600'
 ])
 
-<div class="{{$backgroundColor}} py-12 lg:ml-64 h-60 overflow-x-hidden">
-  <nav class="relative top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
-    <div class="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
-      <a class="text-white text-lg uppercase hidden lg:inline-block font-semibold" href="{{ route($route) }}">{{ $linktext }}</a>
+<div class="{{ $backgroundColor }} py-6 w-full h-80">
+  <nav class="flex flex-col md:flex-row md:items-center md:justify-between px-6">
+    <a href="{{ route($route) }}" class="text-white text-lg font-semibold uppercase mb-2 md:mb-0">
+      {{ $linktext }}
+    </a>
 
-      <!-- Search Form -->
-      <form action="{{ route($route) }}" method="GET" class="relative flex items-center w-[150px] sm:w-[250px]">
-        <input type="search" name="{{ $name }}" id="{{ $name }}" value="{{ old($name, $value) }}"
-          class="peer block min-h-[auto] w-full rounded border-2 {{$borderColor}} bg-white px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear placeholder:text-gray-500 text-black"
-          placeholder="{{ $placeholder }}" />
-        <button type="submit"
-          class="absolute right-0 z-10 h-full px-4 flex items-center {{$searchColor}} text-white rounded-e">
-          <i class="fas fa-search"></i>
-        </button>
-      </form>
-    </div>
+    {{-- Search Form --}}
+    <form action="{{ route($route) }}" method="GET" class="relative w-full md:w-64">
+      <input 
+        type="search" 
+        name="{{ $name }}" 
+        id="{{ $name }}" 
+        value="{{ old($name, $value) }}"
+        placeholder="{{ $placeholder }}"
+        class="w-full rounded border-2 {{ $borderColor }} px-3 py-2 text-black placeholder-gray-500 focus:outline-none"
+      />
+      <button type="submit" class="absolute right-0 top-0 h-full px-4 {{ $searchColor }} text-white rounded-r">
+        <i class="fas fa-search"></i>
+      </button>
+    </form>
   </nav>
 </div>

@@ -2,6 +2,7 @@
 @section('title', 'Categories Page | Dashboard')
 @section('content')
 
+<div class="md:ml-64 ">
   @include('admin.partials.header', [
     'linktext' => 'Categories Table',
      'route' => 'admin.users', 
@@ -10,16 +11,16 @@
        'borderColor'      => 'border-blueGray-200',
        'backgroundColor'  => 'bg-gray-400'
      ])
-  <div class="w-[90%] -m-24 mx-auto">
+
 
     @can('category.create')
-      <div class="flex justify-end">
+      <div class="flex justify-end transform -translate-y-40">
         <button id="openCatModel"
           class="text-center ml-0 mr-2 sm:ml-auto w-48 bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6">create
           category</button>
       </div>
     @endcan
-    <div class="relative md:ml-64 rounded-xl overflow-hidden bg-white shadow">
+   <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl mx-4 transform -translate-y-40 ">
       <x-tables.table id="tablecategories" :headers="['#', 'Category', 'Related Posts', 'CreatedAt', 'UpdatedAt', 'Actions']"
         title="Categories Table">
         @forelse ($categories as $category)
@@ -71,13 +72,11 @@
           <h4 class="text-center font-bold">Sorry, column not found</h4>
         @endforelse
       </x-tables.table>
+      <div class="relative md:ml-64 ">
+        {!! $categories->links() !!}
+      </div>
     </div>
-
-
-    <div class="relative md:ml-64 ">
-      {!! $categories->links() !!}
-    </div>
-  </div>
+</div>
   {{-- create category model --}}
   @include('admin.categories.partials.create-category-model')
   {{-- edit category model --}}
