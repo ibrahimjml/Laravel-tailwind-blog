@@ -110,8 +110,11 @@
 🔥🔥 Upcomig: winning badges by completing competitions | Using AI for recommended posts.
 
 ## INSTALLATION
--- Requirements extensions:
-- **PHP 8.3, Imagick, intl**
+- **Requirements extensions:**
+- **PHP 8.3**
+- **Imagick**
+- **intl**
+- **tokenizer**
 
 1.📦 Install dependencies
 ```
@@ -149,6 +152,19 @@ php artisan db:seed --AdminSeeder
 9.💻 Run the application
 ```
 php artisan serve
+```
+
+## Test the Application
+- **Copy .env.testing.example to .env.testing**
+- **Run the commands:**
+```
+php artisan key:generate --env=testing
+```
+```
+php artisan migrate --seed --env=testing
+```
+```
+php artisan serve --env=testing
 ```
 ## Admin Login
 `Use these credentails to log in as admin`
