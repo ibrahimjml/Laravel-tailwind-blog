@@ -28,7 +28,7 @@
 ![Admin home](https://i.postimg.cc/j2ZNBwpR/Screenshot-2025-09-25-210913.png)
 ![Admin users](https://i.postimg.cc/Dy67GdTC/Screenshot-2025-09-25-204056.png)
 ![Admin posts](https://i.postimg.cc/fbN4gVD3/Screenshot-2025-09-25-204318.png)
-![Admin tags](https://i.postimg.cc/jjK94B4P/Screenshot-2025-09-25-204359.png)
+![Admin tags](https://i.postimg.cc/WbFHNTB5/Screenshot-2025-09-27-023607.png)
 ![Admin categories](https://i.postimg.cc/66Smm8h9/Screenshot-2025-09-25-204413.png)
 ![Admin roles](https://i.postimg.cc/N0pN7FMv/Screenshot-2025-09-25-204428.png)
 ![Admin permissions](https://i.postimg.cc/wxypM8fj/Screenshot-2025-09-25-204618.png)
@@ -60,7 +60,7 @@
 - **Adminpanel Home:** Card stats with analytics + filter by year management.
 - **Adminpanel Users:** User management Ajax blocked users filter / create new user / edit user / delete user / block user /  changing user roles.
 - **Adminpanel Posts:** Post management Ajax Sort posts filter / featured images filter /  create new post / edit post / delete post / make feature posts / view posts.
-- **Adminpanel Tags:** Tags management Ajax create new Tag / edit tag / delete tag / make feature tag 'hot'.
+- **Adminpanel Tags:** Tags management Ajax create new Tag / edit tag / delete tag / make feature tag 'hot' / change status 'active','disabled' action.
 - **Adminpanel Categories:** Categories management Ajax  create new category / edit category / delete category / make feature category 'hot'.
 - **Adminpanel Roles:** Roles management Ajax  create new role + assign permissions to this role / edit role + edit permissions assigned for role / delete role.
 - **Adminpanel Permissions:** Permissions management Ajax  create new permission / edit permission / delete permission.
@@ -72,7 +72,7 @@
 - **Create, Read, Update, and Delete (CRUD) Operations:** Users can create new blog post, edit existing one, and delete post they have authored.
 - **TinyMCE editor:** Users can upload images within Tinymce and design fonts for best description and delete them.
 - **TinyMCE codesapmples:** users can create code blocks with prism skin to display their codes with copy button for best experience.
-- **Hashtags:** Users can create there own hashtags or select hashtags.
+- **Hashtags:** Users can create there own hashtags or select one or max 5 hashtags if they are active.
 - **Categories:** Users can select one or more categories.
 - **Recent posts tags:** Users view posts related to post tag.
 - **Recent posts categories:** Users can view posts releated to post category.
