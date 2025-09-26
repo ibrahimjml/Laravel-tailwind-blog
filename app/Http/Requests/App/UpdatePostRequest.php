@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\App;
 
+use App\Rules\ValidHashtag;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePostRequest extends FormRequest
 {
@@ -25,21 +27,9 @@ class UpdatePostRequest extends FormRequest
 
         'title' => 'nullable|string|regex:/^[A-Za-z0-9\s]+$/|max:50|min:6',
         'description' => 'required|string',
-        'categories' => 'required|array|min:1|max:4', 
+        'categories' => 'sometimes|nullable|array|min:1|max:4', 
         'categories.*' => 'exists:categories,id',
-        'hashtag' => ['nullable', 'string', function ($attribute, $value, $fail) {
-
-        $tags = array_filter(array_map('trim', explode(',', $value)));
-        if (count($tags) > 5) {
-            $fail('You can only select up to 5 hashtags.');
-        }
-        $regexTags = '/^[A-Za-z0-9_-]+$/';
-          foreach( $tags as $tag){
-            if(!preg_match($regexTags,$tag)){
-              $fail("Hashtags only contain letters, numbers, dashes, or underscores");
-            }
-          }
-      }],
+        'hashtag' => ['nullable', 'string', new ValidHashtag(5)],
         'enabled' => 'nullable|boolean',
         'featured' => 'nullable|boolean'
         ];

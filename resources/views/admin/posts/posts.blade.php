@@ -28,17 +28,24 @@
         <td class="p-2">{{Str::limit($post->slug, 20)}}</td>
         <td class="p-2"> {!! Str::limit(strip_tags($post->description), 40) !!}</td>
         <td class="p-2">
-           @if($post->hashtags->isNotEmpty())
-           <span class="bg-blueGray-200 text-sm text-blueGray-500 px-2 py-1 rounded">
-             {{$post->hashtags->pluck('name')->implode(' | ')}}
+           @if($post->allHashtags->isNotEmpty())
+           @foreach($post->allHashtags as $hashtag)
+           <span 
+             @class([
+               "bg-gray-100 text-sm mr-2 px-2 py-1 rounded font-semibold",
+               'text-green-600'  => $hashtag->status === \App\Enums\TagStatus::ACTIVE,
+               'text-red-600'    => $hashtag->status === \App\Enums\TagStatus::DISABLED, 
+             ])>
+             {{ $hashtag->name }}
            </span>
+         @endforeach
            @else
             <b>--</b>
            @endif
         </td>
         <td class="p-2">
            @if($post->categories->isNotEmpty())
-              <span class="bg-blueGray-200 text-sm text-blueGray-500 px-2 py-1 rounded">
+              <span class="bg-blueGray-200 text-sm text-blueGray-500 font-semibold px-2 py-1 rounded">
              {{$post->categories->pluck('name')->implode(' | ')}}
               </span>
            @else

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\TagStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Hashtag;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
 
 class TagsController extends Controller
 {
@@ -18,7 +20,8 @@ class TagsController extends Controller
   }
     public function create_tag(Request $request){
   $fields = $request->validate([
-  'name' =>'required|string'
+  'name' =>'required|string',
+  'status' => ['required', new Enum(TagStatus::class)]
   ]);
  $hashtag = Hashtag::create($fields);
   return response()->json([
@@ -27,17 +30,25 @@ class TagsController extends Controller
   ]);
 }
 
-  public function hashtagpage(){
+  public function hashtagpage(Request $request){
+    $sort = $request->get('sort','all');
+    $hashtags = Hashtag::query()
+              ->status($sort)
+              ->paginate(6);
     return view('admin.hashtags.hashtags',[
-      'hashtags' => Hashtag::paginate(6)
+      'hashtags' => $hashtags
     ]);
   }
 
 public function edit_tag(Hashtag $hashtag, Request $request){
   $fields = $request->validate([
-    'name' =>'nullable|string'
+    'name' =>'nullable|string',
+    'status' => ['required', new Enum(TagStatus::class)]
     ]);
-    $hashtag->update(['name' => $fields['name']]);
+    $hashtag->update([
+              'name' => $fields['name'],
+              'status' => $fields['status']
+            ]);
     return response()->json([
       'edited'=>true,
       'message' => "Hashtag {$hashtag->name} updated",

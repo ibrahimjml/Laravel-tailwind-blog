@@ -18,7 +18,9 @@ class Hashtagcontroller extends Controller
 
     public function viewhashtag(Hashtag $hashtag):View
     {
-
+      if ($hashtag->status !== \App\Enums\TagStatus::ACTIVE) {
+          abort(404); 
+        }
     $posts = $hashtag->posts()
              ->with(['user:id,username,avatar','hashtags:id,name,is_featured','categories:id,name,is_featured'])
              ->withCount(['comments','likes'])

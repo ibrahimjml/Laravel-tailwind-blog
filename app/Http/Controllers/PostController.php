@@ -36,7 +36,9 @@ class PostController extends Controller
             ->paginate(5)
            ->withQueryString();
 
-    $hashtags = Hashtag::withCount('posts')->get();
+    $hashtags = Hashtag::active()
+                     ->withCount('posts')
+                     ->get();
     $categories = Category::withCount('posts')->get();
 
     return view('blog', [
@@ -50,7 +52,7 @@ class PostController extends Controller
 
   public function createpage()
   {
-    $allhashtags = Hashtag::pluck('name');
+    $allhashtags = Hashtag::active()->pluck('name');
     $categories = Category::select('id','name')->get();
 
     return view('create', [
@@ -86,7 +88,7 @@ class PostController extends Controller
     $this->authorize('view', $post);
 
     $hashtags = $post->hashtags()->pluck('name')->implode(', ');
-    $allhashtags = Hashtag::pluck('name');
+    $allhashtags = Hashtag::active()->pluck('name');
     $categories = Category::select('id','name')->get();
     
     return view('updatepost',[

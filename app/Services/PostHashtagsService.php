@@ -14,8 +14,11 @@ class PostHashtagsService
             $tag = strip_tags(trim($tag));
 
             if ($tag) {
-                $hashtagModel = Hashtag::firstOrCreate(['name' => $tag]);
-                $post->hashtags()->attach($hashtagModel->id);
+                $hashtag = Hashtag::firstOrCreate(['name' => $tag]);
+
+                if($hashtag->status === \App\Enums\TagStatus::ACTIVE){
+                  $post->hashtags()->attach($hashtag->id);
+                }
             }
         }
   }
@@ -27,7 +30,10 @@ class PostHashtagsService
 
       foreach ($hashtags as $name) {
           $hashtag = Hashtag::firstOrCreate(['name' => strip_tags(trim($name))]);
-          $hashtagIds[] = $hashtag->id;
+          
+          if($hashtag->status === \App\Enums\TagStatus::ACTIVE){
+            $hashtagIds[] = $hashtag->id;
+          }
       }
       $post->hashtags()->sync($hashtagIds);
     } else {

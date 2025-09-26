@@ -2,7 +2,7 @@
 
   <div class="ml-6">
     <p class="text-xl text-gray-100">Create New Hashtag.</p>
- <form id="edittag" action="{{route('edit.hashtag',$hashtag->id)}}" method="POST">
+ <form id="edittag" method="POST">
  @csrf
  @method("PUT")
  <label for="name" class="mt-2 block text-slate-200 text-sm mb-1 font-bold  ">
@@ -15,10 +15,15 @@ Hashtag:
           {{ $message }}
       </p>
       @enderror
+<label for="status" class="mt-2 block text-slate-200 text-sm mb-1 font-bold  ">Status:</label>      
+<select name="status" id="status" class="pl-3 w-36 appearance-none font-bold cursor-pointer bg-blueGray-200 text-blueGray-500 border-0 text-sm rounded-lg p-2.5">
+@foreach (\App\Enums\TagStatus::cases() as $status )
+<option value="{{$status->value}}">{{$status->name}}</option>
+@endforeach  
+</select>     
+<button type="submit" class="block w-42 bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center cursor-pointer">Edit</button>
     
-        <button type="submit" class="w-42 bg-blue-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center cursor-pointer">Edit</button>
-    
-    </form> 
+</form> 
 <button id="closeEditModel" class=" bg-transparent border-2 text-slate-200 py-2 px-5 rounded-lg font-bold capitalize hover:border-gray-500 transition duration-300 mt-2">Cancel</button>
 </div>
 </div>
@@ -33,15 +38,18 @@ Hashtag:
 
   if (editModal && closeEditBtn && editForm) {
     const nameInput = editForm.querySelector('input[name="name"]');
+    const statusInput = editForm.querySelector('[name="status"]');
     const token = editForm.querySelector('input[name="_token"]').value;
 
     editButtons.forEach(button => {
       button.addEventListener('click', () => {
         const tagId = button.dataset.id;
         const tagName = button.dataset.name;
+        const tagStatus = button.dataset.status;
 
         editForm.action = `/admin/edit/tag/${tagId}`;
         nameInput.value = tagName;
+        statusInput.value = tagStatus;
 
         editModal.classList.remove('hidden');
       });
@@ -57,7 +65,7 @@ Hashtag:
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify({ name: nameInput.value })
+        body: JSON.stringify({ name: nameInput.value , status: statusInput.value })
       };
 
       fetch(editForm.action, options)

@@ -118,7 +118,7 @@ public function updateuser(UpdateUserRequest $request, User $user)
     $choose = $sort === 'oldest' ? 'ASC' : 'DESC';
     $featured = (bool) $request->get('featured',false);
     $reported = (bool) $request->get('reported',false);
-    $posts = Post::with(['user','hashtags'])
+    $posts = Post::with(['user','allHashtags'])
           ->search($request->get('search'))
           ->withCount('totalcomments')
           ->when($featured, fn($q) => $q->where('is_featured', 1))

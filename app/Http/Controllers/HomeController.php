@@ -12,7 +12,6 @@ class HomeController extends Controller
 {
   public function __invoke()
   {
-    // dd(Cache::has('featuredPosts'), Cache::get('featuredPosts'));
     $featuredPosts = Cache::remember('featuredPosts', now()->addSeconds(20), function () {
       return Post::featured()->latest()->take(3)->get();
     
@@ -20,7 +19,10 @@ class HomeController extends Controller
 
 
   $trendingHashtag = Cache::remember('trendingHashtag', now()->addMinutes(2), function () {
-    return Hashtag::withCount('posts')->orderByDesc('posts_count')->first();
+    return Hashtag::active()
+              ->withCount('posts')
+              ->orderByDesc('posts_count')
+              ->first();
 });
 
 $oldestPosts = collect();
@@ -35,12 +37,12 @@ if ($trendingHashtag) {
         ->take(3)
         ->get();
 }
- $meta = MetaHelpers::generateDefault();
-  return view('index', array_merge([
+
+  return view('index', [
       'featuredPosts' => $featuredPosts,
       'oldestPosts' => $oldestPosts,
       'trendingHashtag' => $trendingHashtag
-  ],$meta));
+       ]);
 
   }
 }
