@@ -11,10 +11,13 @@ trait SluggableTrait
        $originalSlug = $slug;
        $count = 1;
 
-       do {
-           $slug = $originalSlug . '-' . $count;
-           $count++;
-       } while (Post::where('slug', $slug)->exists());
+       do { 
+           $exists = Post::where('slug', $slug)->exists();
+          if ($exists) {
+            $slug = $originalSlug . '-' . $count;
+            $count++;
+        }
+       } while ($exists);
 
        return $slug;
     }

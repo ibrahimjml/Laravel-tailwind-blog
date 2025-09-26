@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Builders\PostBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Scout\Searchable;
 
 class Post extends Model
@@ -74,7 +75,13 @@ class Post extends Model
   {
     return  $query->where('is_featured', true);
   }
-
+  
+  public function getImageUrlAttribute()
+{
+    return $this->image_path 
+        ? Storage::url( 'uploads/' .$this->image_path)
+        : Storage::url('covers/sunset.jpg');
+}
   public function comments(){
     return $this->hasMany(Comment::class)
     ->whereNull('parent_id')

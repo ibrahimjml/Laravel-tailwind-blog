@@ -1,3 +1,6 @@
+@php
+$selectedRole = $user->roles->first()?->name;
+@endphp
 <form action="{{route('role.update', $user)}}" method="POST">
       @csrf
       @method('PUT')
@@ -6,8 +9,8 @@
         onchange="this.form.submit()"
         class="pl-3 pr-8 appearance-none font-bold border-0 cursor-pointer bg-blueGray-200 text-blueGray-500 text-sm rounded-lg w-full p-2.5">
          @foreach ($roles as $role)
-        <option value="{{ $role->name }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>
-          {{ ucfirst($role->name) }}
+        <option value="{{ $role->name }}" {{ $selectedRole === $role->name ? 'selected' : '' }}>
+        {{ $role->name }}
         </option>
       @endforeach
         </select>

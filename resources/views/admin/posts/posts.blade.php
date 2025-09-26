@@ -22,7 +22,7 @@
       <tr class="py-4">
         <td class="p-2"> {{ ($posts->currentPage() - 1) * $posts->perPage() + $loop->iteration }}</td>
         <td class="p-2">{{$post->user->name}}</td>
-        <td class="p-2"><img class="object-contain inline-block" src="/storage/uploads/{{$post->image_path}}" width="40px" height="40px"
+        <td class="p-2"><img class="object-contain inline-block" src="{{$post->image_url}}" width="40px" height="40px"
         alt="{{$post->title}}">
         </td>
         <td class="p-2">{{Str::limit($post->slug, 20)}}</td>

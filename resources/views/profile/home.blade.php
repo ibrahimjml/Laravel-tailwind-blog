@@ -2,7 +2,7 @@
   @forelse($posts as $post)
   <div class="flex flex-wrap items-center justify-center ">
     <a  href="/post/{{$post->slug}}">
-      <img src="/storage/uploads/{{$post->image_path}}" alt="{{$post->title}}" class="ml-auto w-80 h-40 mr-auto  rounded-lg mb-5">
+      <img src="{{$post->image_url}}" alt="{{$post->title}}" class="ml-auto w-80 h-40 mr-auto  rounded-lg mb-5">
     </a>
     
   </div>

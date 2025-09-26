@@ -32,7 +32,7 @@ class MetaHelpers{
           'meta_description' => $description ,
           'meta_keywords' => !empty($hashtags) ? implode(', ', $hashtags) : 'blog, post, article',
           'author' => $user?->username ,
-          'og_image' => url($user->avatar_url) ,
+          'og_image' => url($user?->avatar_url),
           'og_type' => $user ? 'profile':'website',
       ];
   }

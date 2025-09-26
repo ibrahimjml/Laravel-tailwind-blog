@@ -32,7 +32,7 @@
     <!-- Post Image -->
     <div class="relative h-64 sm:h-56 w-full rounded-lg overflow-hidden">
       <a href="{{route('single.post',$post->slug)}}">
-        <img loading="lazy" src="/storage/uploads/{{$post->image_path}}" alt="{{ $post->title }}" class="w-full h-full object-fill shadow-md">
+        <img loading="lazy" src="{{ $post->image_url }}" alt="{{ $post->title }}" class="w-full h-full object-fill shadow-md">
       </a>
       @if($post->is_featured)
       <span class="absolute top-4 left-4 bg-amber-400 bg-opacity-80 text-white text-sm font-medium px-3 py-1 rounded-md">

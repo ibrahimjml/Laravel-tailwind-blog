@@ -25,7 +25,12 @@ class DatabaseSeeder extends Seeder
       \App\Models\User::factory(20)->create()->each(function ($user) use ($userRole) {
         $user->roles()->attach($userRole);
     });
-        \App\Models\Post::factory(10)->create();
+    $users = \App\Models\User::all();
+
+    \App\Models\Post::factory(10)->make()->each(function ($post) use ($users) {
+    $post->user_id = $users->random()->id; 
+    $post->save();
+   });
         // \App\Models\Comment::factory(20)->create();
     }
 }

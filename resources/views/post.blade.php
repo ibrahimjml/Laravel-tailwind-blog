@@ -155,7 +155,7 @@
 </div>
 {{-- 3- post Image --}}
   <div class="relative mx-auto w-full max-w-6xl mt-2 h-[300px] md:h-[450px]">
-      <img class="absolute top-0 left-0 w-full h-full object-cover rounded-none  shadow-lg hover:shadow-md" src="/storage/uploads/{{$post->image_path}}"  alt="{{$post->title}}">
+      <img class="absolute top-0 left-0 w-full h-full object-cover rounded-none  shadow-lg hover:shadow-md" src="{{$post->image_url}}"  alt="{{$post->title}}">
     {{-- delete|edit model  --}}
       @can('view',$post)
       @include('partials.delete-edit-post-model')
@@ -206,7 +206,7 @@
     </a>
 </div>
 <a href="{{route('single.post',$article->slug)}}">
-<img src="/storage/uploads/{{$article->image_path}}"  alt="" class="w-full h-[270px] object-cover mt-2">
+<img src="{{$article->image_url}}"  alt="" class="w-full h-[270px] object-cover mt-2">
 <div class="flex justify-between text-sm text-gray-400 my-3">
                 <p>{{$article->comments()->count()}} comments</p>
                 <p>{{$article->created_at->format('F d, Y')}}</p>
@@ -246,7 +246,7 @@
           </a>
         </div>
         <a href="{{ route('single.post',$blogs->slug) }}">
-          <img src="/storage/uploads/{{ $blogs->image_path }}"
+          <img src="{{ $blogs->image_url }}"
                alt="{{$blogs->title}}"
                class="w-full h-[270px] object-cover mt-2">
                <div class="flex justify-between text-sm text-gray-400 my-3">

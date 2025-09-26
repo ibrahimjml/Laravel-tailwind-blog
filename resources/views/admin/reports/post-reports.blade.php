@@ -22,7 +22,7 @@
       <td>{{ ($reports->currentPage() - 1) * $reports->perPage() + $loop->iteration }}</td>
       <td>
         <div class="flex items-center gap-2">
-        <img class="object-contain inline-block" src="/storage/uploads/{{$report->post->image_path}}" width="40px" height="40px"
+        <img class="object-contain inline-block" src="{{$report->post->image_url}}" width="40px" height="40px"
       alt="{{$report->post->title}}">
       <span>{{$report->post->title}}</span>
         </div>
