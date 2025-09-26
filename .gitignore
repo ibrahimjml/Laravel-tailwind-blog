@@ -21,6 +21,7 @@
 /storage/posts.index-wal
 /vendor
 .env
+.env.testing
 .env.backup
 .phpunit.result.cache
 Homestead.json

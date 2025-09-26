@@ -124,7 +124,7 @@ public function updateuser(UpdateUserRequest $request, User $user)
           ->when($featured, fn($q) => $q->where('is_featured', 1))
           ->when($reported, fn($q) => $q->where('is_reported', 1))
           ->orderBy('created_at', $choose)
-          ->paginate(6)
+          ->paginate(7,['*'],'admin_posts')
           ->withQuerystring();
 
 

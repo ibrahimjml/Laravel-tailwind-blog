@@ -18,8 +18,14 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        \App\Models\User::factory(10)->create();
+    $this->call(AdminSeeder::class);
+
+    $userRole =  \App\Models\Role::where('name', 'User')->first();
+
+      \App\Models\User::factory(20)->create()->each(function ($user) use ($userRole) {
+        $user->roles()->attach($userRole);
+    });
         \App\Models\Post::factory(10)->create();
-        \App\Models\Comment::factory(20)->create();
+        // \App\Models\Comment::factory(20)->create();
     }
 }
