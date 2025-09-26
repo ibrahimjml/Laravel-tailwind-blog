@@ -25,14 +25,14 @@
 ![Profileinfo setting](https://i.postimg.cc/qMwSk0kk/Screenshot-2025-09-21-110503.png)
 ![{rofileaccount setting](https://i.postimg.cc/RV5zNkT8/Screenshot-2025-06-27-223348.png)
 ![Create page](https://i.postimg.cc/J4t6yk1w/127-0-0-1-8000-create-5.png)
-![Admin home](https://i.postimg.cc/qvNG8Dgy/Screenshot-2025-09-20-225312.png)
-![Admin users](https://i.postimg.cc/85pSxY91/Screenshot-2025-06-04-112530.png)
-![Admin posts](https://i.postimg.cc/sDFm5Y1p/Screenshot-2025-09-22-002507.png)
-![Admin tags](https://i.postimg.cc/bNsnMD8j/Screenshot-2025-09-20-225451.png)
-![Admin categories](https://i.postimg.cc/zB8WPxDd/Screenshot-2025-09-20-225347.png)
-![Admin roles](https://i.postimg.cc/7YprXYdr/Screenshot-2025-06-03-132057.png)
-![Admin permissions](https://i.postimg.cc/2j9tN03Z/Screenshot-2025-09-22-182850.png)
-![Admin reports](https://i.postimg.cc/nrqv3WMq/Screenshot-2025-09-22-004247.png)
+![Admin home](https://i.postimg.cc/j2ZNBwpR/Screenshot-2025-09-25-210913.png)
+![Admin users](https://i.postimg.cc/Dy67GdTC/Screenshot-2025-09-25-204056.png)
+![Admin posts](https://i.postimg.cc/fbN4gVD3/Screenshot-2025-09-25-204318.png)
+![Admin tags](https://i.postimg.cc/jjK94B4P/Screenshot-2025-09-25-204359.png)
+![Admin categories](https://i.postimg.cc/66Smm8h9/Screenshot-2025-09-25-204413.png)
+![Admin roles](https://i.postimg.cc/N0pN7FMv/Screenshot-2025-09-25-204428.png)
+![Admin permissions](https://i.postimg.cc/wxypM8fj/Screenshot-2025-09-25-204618.png)
+![Admin reports](https://i.postimg.cc/gkFf0wLg/Screenshot-2025-09-25-204732.png)
 ![Admin notifications](https://i.postimg.cc/gJcCrwX8/Screenshot-2025-06-03-132110.png)
 
 
@@ -44,6 +44,7 @@
 - **Forget Password:** Users can reset password via email notification with reset password button.
 - **Confirmation Password:** Confirmation password for accessing edit post page or user settings for more secure.
 - **Email Verification:** User must verfied his email berfore making any action.
+- **Identity Verification:** User must verify his identity via email verification code after updating his password or reseting his password.
 - **Middleware/Policies/Gate:** Implement custom middleware for permissions and policies on user/post/comment for more secure and gate for admin action.
   
 ## Profile Management
