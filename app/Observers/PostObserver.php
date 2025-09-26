@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Events\PostCreatedEvent;
+
 use App\Models\Post;
 use App\Notifications\FollowingPostCreatedNotification;
 use Illuminate\Notifications\DatabaseNotification;
@@ -19,12 +19,6 @@ class PostObserver
             $slug = Str::slug($post->title);
             $post->slug = $this->create($slug);
     }
-    
-    public function created(Post $post){
-  
-      // event(new PostCreatedEvent($post));
-    }
-
     public function updating(Post $post)
     {
       if($post->isDirty('title')){

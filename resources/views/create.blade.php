@@ -87,6 +87,7 @@
         Add Selected Hashtags
       </button>
     @endif
+    @if($categories->isNotEmpty())
     <label for="categories" class="block text-gray-700 text-sm font-bold mb-1">
      Categories (optional):
     </label>
@@ -103,6 +104,7 @@
     @error('categories')
       <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
     @enderror
+    @endif
     <div class="bg-gray-500  rounded-md p-2 h-11 w-fit">
       <input type="checkbox" name="enabled" id="enabled" value="1" {{ old('enabled') ? 'checked' : '' }}>
         <label class="text-white font-semibold" for="enabled">Enable comments</label>

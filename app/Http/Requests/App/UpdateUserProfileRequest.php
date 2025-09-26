@@ -24,21 +24,21 @@ class UpdateUserProfileRequest extends FormRequest
     {
       /** @var \App\Models\User $user */
       $user = $this->user();
-      $imageRule = 'nullable|image|mimes:png,jpeg,jpg|max:5048';
+      $imageRule = 'sometimes|nullable|image|mimes:png,jpeg,jpg|max:5048';
 
         return [
             'avatar'   => $imageRule,
             'cover'    => $imageRule,
-            "name"     => ["required", "min:3", "max:50", "alpha"],
-            "phone"    => ['required', 'regex:/^\+\d{8,15}$/', Rule::unique(User::class)->ignore($user->id)],
-            'bio'      =>'nullable|min:5|string',
-            'about'    =>'nullable|string|min:10|max:255',
-            'github'   => 'nullable|url|starts_with:https',
-            'linkedin' => 'nullable|url|starts_with:https',
-            'twitter'     => 'nullable|url|starts_with:https',
-            'social_links' => 'nullable|array',
-            'social_links.*.platform' => 'nullable|string',
-            'social_links.*.url' => 'nullable|url|starts_with:https',
+            "name"     => ["sometimes","nullable", "min:3", "max:50", "alpha"],
+            "phone"    => ["sometimes","nullable", 'regex:/^\+\d{8,15}$/', Rule::unique(User::class)->ignore($user->id)],
+            'bio'      =>'sometimes|nullable|min:5|string',
+            'about'    =>'sometimes|nullable|string|min:10|max:255',
+            'github'   => 'sometimes|nullable|url|starts_with:https',
+            'linkedin' => 'sometimes|nullable|url|starts_with:https',
+            'twitter'     => 'sometimes|nullable|url|starts_with:https',
+            'social_links' => 'sometimes|nullable|array',
+            'social_links.*.platform' => 'string',
+            'social_links.*.url' => 'url|starts_with:https',
 
         ];
     }

@@ -5,7 +5,7 @@ namespace App\Services\User;
 use App\DTOs\User\UpdateUserProfileDTO;
 use App\Models\User;
 use App\Traits\ImageUploadTrait;
-use App\Helpers\DeleteOldFile;
+use App\Helpers\DeleteFile;
 class UpdateProfileInfoService
 {
     use ImageUploadTrait;
@@ -29,7 +29,7 @@ class UpdateProfileInfoService
            * user avatar
            **/
         if($dto->avatar) {
-            DeleteOldFile::Cleanimage("avatars/{$user->avatar}",'default.jpg');
+            DeleteFile::cleanImage("avatars/{$user->avatar}",'default.jpg');
             $newAvatar = $this->uploadAvatarImage($dto->avatar, $user->name);
             $user->avatar = $newAvatar;
             $changed = true;
@@ -38,7 +38,7 @@ class UpdateProfileInfoService
           * user cover photo
           **/
         if ($dto->cover) {
-            DeleteOldFile::Cleanimage("covers/{$user->cover_photo}","sunset.jpg");
+            DeleteFile::cleanImage("covers/{$user->cover_photo}","sunset.jpg");
             $newCover = $this->uploadCoverImage($dto->cover, $user->name);
             $user->cover_photo = $newCover;
             $changed = true;

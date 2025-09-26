@@ -74,6 +74,7 @@
       </button>
     @endif
     </div>
+    @if($categories->isNotEmpty())
     <label for="categories" class="block text-gray-700 text-sm font-bold mb-1 mt-1">
      Categories:
    </label>
@@ -90,6 +91,7 @@
    @error('categories')
      <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
    @enderror
+   @endif
     <div class="bg-gray-500  rounded-md p-2 h-11 w-fit mt-1">
       <input type="checkbox" name="enabled" id="enabled" value="{{$post->allow_comments}}" {{ $post->allow_comments ? 'checked' : '' }}>
         <label class="text-white font-semibold" for="enabled">Enable comments</label>

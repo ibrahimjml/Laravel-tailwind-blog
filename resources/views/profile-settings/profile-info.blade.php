@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (!confirm('Are you sure you want to delete this link?')) return;
 
-            fetch(`/delete/custom-link/${linkId}`, {
+            fetch(`/profile/delete/custom-link/${linkId}`, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
