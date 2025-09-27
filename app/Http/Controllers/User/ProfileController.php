@@ -20,7 +20,10 @@ class ProfileController extends Controller
     $viewer = auth()->user();
     $this->view->createView($user,$viewer);
     
-    $posts = $user->post()->latest()->get();
+    $posts = $user->post()
+             ->orderByDesc('is_pinned')
+             ->latest()
+             ->get();
     
     return view('profile.profile', array_merge(
       ['posts' => $posts],

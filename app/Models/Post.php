@@ -19,6 +19,7 @@ class Post extends Model
     'user_id',
     'image_path',
     'is_featured',
+    'is_pinned',
     'is_reported',
     'report_count',
     'likes_count',

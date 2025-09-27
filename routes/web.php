@@ -1,7 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\{
-  ProfileSettingsController,
+    PinController,
+    ProfileSettingsController,
   ProfileController,
   QrcodeController,
 };
@@ -80,7 +81,7 @@ Route::controller(ProfileController::class)
  Route::get('/','Home')->name('profile');
  Route::get('activity','activity')->name('profile.activity');
  Route::get('/about','aboutme')->name('profile.aboutme');
-
+ 
 });
 // profile settings
 Route::prefix('profile')
@@ -99,6 +100,7 @@ Route::prefix('profile')
 });
 
 Route::get('/qr-code', QrcodeController::class)->name('qr-code.image');
+Route::post('/toggle/{post}/pin',[PinController::class,'togglePin'])->name('toggle.pin');
 // Like
 Route::post('/post/{post}/like',[PostController::class,'like']);
 // Follow
