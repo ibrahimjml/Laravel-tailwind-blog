@@ -30,6 +30,7 @@ class PostController extends Controller
 
     $sortoption = $request->get('sort', 'latest');
     $posts = Post::query()
+            ->published()
             ->with(['user:id,username,avatar', 'hashtags:id,name,is_featured','categories:id,name,is_featured'])
             ->withCount('likes','totalcomments')
             ->sortby($sortoption)
@@ -74,7 +75,7 @@ class PostController extends Controller
   public function delete($slug)
   {
 
-    $post = Post::whereSlug( $slug)->firstOrFail();
+    $post = Post::published()->whereSlug( $slug)->firstOrFail();
     $this->authorize('delete', $post);
     $post->delete();
     
@@ -84,7 +85,7 @@ class PostController extends Controller
   }
   public function editpost($slug)
   {
-    $post = Post::whereSlug( $slug)->firstOrFail();
+    $post = Post::published()->whereSlug( $slug)->firstOrFail();
     $this->authorize('view', $post);
 
     $hashtags = $post->hashtags()->pluck('name')->implode(', ');
@@ -101,7 +102,7 @@ class PostController extends Controller
 
   public function update($slug, UpdatePostRequest $request,PostService $service)
   {
-    $post = Post::whereSlug( $slug)->firstOrFail();
+    $post = Post::published()->whereSlug( $slug)->firstOrFail();
     $this->authorize('update', $post);
     $dto = UpdatePostDTO::fromAppRequest($request);
     $service->update($post,$dto);
@@ -153,7 +154,8 @@ class PostController extends Controller
   {
 
     $getposts = session('saved-to', []);
-    $posts = Post::whereIn('id', $getposts)
+    $posts = Post::published()
+      ->whereIn('id', $getposts)
       ->withCount(['likes', 'comments'])
       ->with(['user', 'hashtags'])
       ->paginate(5);

@@ -12,6 +12,10 @@ class Category extends Model
 
     public function posts()
     {
+      return $this->belongsToMany(Post::class,'post_category')->published();
+    }
+    public function allPosts()
+    {
       return $this->belongsToMany(Post::class,'post_category');
     }
 }

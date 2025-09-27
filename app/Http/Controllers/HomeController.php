@@ -13,7 +13,7 @@ class HomeController extends Controller
   public function __invoke()
   {
     $featuredPosts = Cache::remember('featuredPosts', now()->addSeconds(20), function () {
-      return Post::featured()->latest()->take(3)->get();
+      return Post::published()->featured()->latest()->take(3)->get();
     
   });
 
@@ -28,7 +28,8 @@ class HomeController extends Controller
 $oldestPosts = collect();
 
 if ($trendingHashtag) {
-    $oldestPosts = Post::with(['user', 'hashtags'])
+    $oldestPosts = Post::published()
+        ->with(['user', 'hashtags'])
         ->withCount(['likes', 'comments'])
         ->whereHas('hashtags', function ($query) use ($trendingHashtag) {
             $query->where('hashtags.id', $trendingHashtag->id);

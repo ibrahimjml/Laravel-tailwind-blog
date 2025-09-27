@@ -8,16 +8,21 @@ use App\Models\Post;
 class ViewPostService
 {
     public function getPost(Post $post)
-    {
+    {   
+        if ($post->status !== \App\Enums\PostStatus::PUBLISHED){
+            abort(404);
+        }
         $post->load(['user','user.roles','hashtags','comments','comments.user.roles','comments.replies.user.roles','viewers:id,name,username,avatar']);
 
  $post->morearticles = Post::query()
+          ->published()
           ->with(['user:id,name,username,avatar'])
           ->where('user_id',$post->user_id)
           ->where('id','!=',$post->id)
           ->take(3)
           ->get();
- $post->latestblogs = Post::latest()
+ $post->latestblogs = Post::published()
+          ->latest()
           ->with(['user:id,name,username,avatar'])
           ->where('id','!=',$post->id)
           ->get()

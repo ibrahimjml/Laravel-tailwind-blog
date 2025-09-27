@@ -31,7 +31,7 @@
               {{$hashtag->name}}
             </span>
             </td>
-          <td class="p-2">  {{$hashtag->posts->count()}}</td>
+          <td class="p-2">  {{$hashtag->allPosts->count()}}</td>
           
           <td>
             <i @class([

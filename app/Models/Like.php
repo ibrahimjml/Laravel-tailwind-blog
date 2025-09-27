@@ -12,7 +12,7 @@ class Like extends Model
     protected $fillable =['user_id','post_id'];
 
     public function post(){
-      return $this->belongsTo(Post::class);
+      return $this->belongsTo(Post::class)->published();
     }
 
     public function user(){

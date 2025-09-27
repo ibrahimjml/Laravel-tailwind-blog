@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Builders\PostBuilder;
+use App\Enums\PostStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -16,6 +17,7 @@ class Post extends Model
     'title',
     'slug',
     'description',
+    'status',
     'user_id',
     'image_path',
     'is_featured',
@@ -25,11 +27,21 @@ class Post extends Model
     'report_count',
     'likes_count',
     'views',
-    'allow_comments'
+    'allow_comments',
+    'published_at',
+    'banned_at',
+    'trashed_at'
+  ];
+  protected $attributes = [
+    'status' => PostStatus::PUBLISHED->value,
   ];
    protected $casts = [
         'is_pinned' => 'boolean',
         'pinned_at' => 'datetime',  
+        'published_at' => 'datetime',  
+        'banned_at' => 'datetime',  
+        'trashed_at' => 'datetime',  
+        'status' => PostStatus::class
     ];
   public function newEloquentBuilder($query): PostBuilder
     {
@@ -84,7 +96,14 @@ class Post extends Model
   {
     return  $query->where('is_featured', true);
   }
-  
+  public function scopeStatus($query, $status)
+  {
+    return  $query->where('status', $status);
+  }
+  public function scopePublished($query)
+  {
+    return  $query->where('status', PostStatus::PUBLISHED->value);
+  }
   public function getImageUrlAttribute()
 {
     return $this->image_path 

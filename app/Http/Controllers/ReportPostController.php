@@ -17,6 +17,9 @@ class ReportPostController extends Controller
       public function report_post(Post $post,Request $request)
   {
     $this->authorize('report',$post);
+     if ($post->status !== \App\Enums\PostStatus::PUBLISHED) {
+        return back(); 
+    }
     $dto = ReportsDTO::fromRequest($request);
 
      if (! $this->service->reportPost($post, $dto)) {

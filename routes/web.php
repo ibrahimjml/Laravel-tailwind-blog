@@ -137,14 +137,16 @@ Route::prefix('admin')
       Route::get('/panel', 'admin')->name("admin-page");
       Route::get('/users', 'users')->name('admin.users');
       Route::get('/posts', 'posts')->name('admin.posts');
-      // create user
-      Route::post('/create/user','createuser')->name('create.user');
-      Route::put('/edit/{user}','updateuser')->name('update.user');
       // create feature post
       Route::get('/featured', 'featuredpage')->name('featuredpage');
       Route::post('/featured', 'create_feature')->name('admin.featured');
       //toggle featured posts
       Route::put('/toggle/feature/{post}','toggle_feature')->name('toggle.feature');
+      // edit status post
+      Route::put('/edit/post/{post}','edit_status')->name('edit.status');
+      // create user
+      Route::post('/create/user','createuser')->name('create.user');
+      Route::put('/edit/{user}','updateuser')->name('update.user');
       // update user role
       Route::put('/role-update/{user}', 'role')->name('role.update');
       //toggle blocked user status

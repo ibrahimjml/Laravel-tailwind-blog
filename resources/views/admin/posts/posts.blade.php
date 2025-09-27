@@ -13,11 +13,11 @@
   ])
   {{-- filters  --}}
 <div class="transform -translate-y-52">
-  @include('admin.posts.filters')
+  @include('admin.posts.partials.filters')
 </div>
  <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl mx-4 transform -translate-y-40 ">
 {{-- post table --}}
-<x-tables.table id='' :headers="['#','Username','Image','Title','Body','Hashtags','Categories','Reported','Reports Count','Featured','Likes','Comments','CreatedAt','Actions']" title="Posts Table" >
+<x-tables.table id='' :headers="['#','Username','Image','Title','Body','Status','Hashtags','Categories','Reported','Reports Count','Featured','Likes','Comments','publishedAt','bannedAt','trashedAt','CreatedAt','Actions']" title="Posts Table" >
       @forelse ($posts as $post)
       <tr class="py-4">
         <td class="p-2"> {{ ($posts->currentPage() - 1) * $posts->perPage() + $loop->iteration }}</td>
@@ -27,6 +27,17 @@
         </td>
         <td class="p-2">{{Str::limit($post->slug, 20)}}</td>
         <td class="p-2"> {!! Str::limit(strip_tags($post->description), 40) !!}</td>
+        <td class="p-2">
+          <small>
+            <i @class([
+                "fas fa-circle  mr-2 text-xs",
+                'text-green-600' => $post->status === \App\Enums\PostStatus::PUBLISHED,
+                'text-orange-600' => $post->status === \App\Enums\PostStatus::BANNED,
+                'text-red-600' => $post->status === \App\Enums\PostStatus::TRASHED,
+          ])></i>
+          {{$post->status->value}}
+          </small>
+        </td>
         <td class="p-2">
            @if($post->allHashtags->isNotEmpty())
            @foreach($post->allHashtags as $hashtag)
@@ -77,30 +88,15 @@
         </td>
         <td class="p-2">{{$post->likes_count}}</td>
         <td class="p-2">{{$post->totalcomments_count}}</td>
+        @foreach (['published_at', 'banned_at', 'trashed_at'] as $column)
+        <td class="p-2">
+         {{ $post->$column ? $post->$column->diffForHumans() : '--' }}
+        </td>
+        @endforeach
         <td class="p-2">{{$post->created_at->diffForHumans()}}</td>
         <td class=" text-white p-2 ">
         <div class="flex items-center justify-center">
-        @can('delete', $post)
-        <form action='/post/{{$post->slug}}' method="POST"
-        onsubmit="return confirm('Are you sure you want to delete this post?');">
-        @csrf
-        @method('delete')
-        <button type="submit"
-        class="rounded-lg text-red-600 p-2  hover:text-red-300 transition-colors duration-100"><i
-        class="fas fa-trash"></i></button>
-        </form>
-        @endcan
-        <a class=" rounded-lg text-gray-700 p-2  hover:text-gray-400 transition-colors duration-100"
-        href="/post/{{$post->slug}}"><i class="fas fa-eye"></i></a>
-      @can('make_feature', $post)
-       <form action="{{ route('toggle.feature', $post->id) }}" method="POST" onsubmit="return confirm('Toggle featured status?');">
-        @csrf
-        @method('PUT')
-        <button type="submit" class="rounded-lg text-yellow-600 p-2 hover:text-yellow-400 transition-colors duration-100">
-          <i class="{{ $post->is_featured ? 'fas' : 'far' }} fa-star"></i>
-        </button>
-        </form>
-       @endcan
+        @include('admin.posts.partials.actions', ['post' => $post])
         </div>
         </td>
       </tr>
@@ -113,5 +109,72 @@
   </div>
   </div>
 </div>
-  
+  {{-- edit post model --}}
+  @include('admin.posts.partials.edit-model')
+  <!-- -->
 @endsection
+@push('scripts')
+<script>
+// open edit model + edit post
+const open = document.getElementById('openModel');
+const buttons = document.querySelectorAll('.edit-btn');
+const postTitle = document.getElementById('title');
+const form = document.getElementById('editpost');
+const close = document.getElementById('closeModel');
+
+if (open && buttons && form && close) {
+  const statusInput = form.querySelector('[name="status"]');
+  
+  const token = form.querySelector('input[name="_token"]').value;
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const postId = button.dataset.id;
+      const postStatus = button.dataset.status;
+      const postSlug = button.dataset.slug;
+     
+      form.action = `/admin/edit/post/${postId}`;
+      statusInput.value = postStatus;
+      postTitle.textContent = postSlug;
+
+      open.classList.remove('hidden');
+    });
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    let options = {
+      method: 'PUT',
+      headers: {
+        'X-CSRF-TOKEN': token,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        status: statusInput.value,
+      }),
+    };
+
+    fetch(form.action, options)
+      .then(response => response.json())
+      .then(data => {
+        if (data.updated) {
+          toastr.success(data.message);
+          location.reload();
+        } else {
+          alert('An error occurred while updating the post status.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the post status.');
+      });
+  });
+
+  close.addEventListener('click', () => {
+    open.classList.add('hidden');
+  });
+}
+</script>
+@endpush

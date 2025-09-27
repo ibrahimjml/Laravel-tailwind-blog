@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DTOs\CreatePostDTO;
+use App\Enums\PostStatus;
 use App\Http\Requests\App\CreatePostRequest;
 use App\Models\Hashtag;
 use App\Models\Permission;
@@ -18,6 +19,7 @@ use App\Models\Category;
 use App\Models\Role;
 use App\Services\PostService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Enum;
 
 class AdminController extends Controller
 {
@@ -118,9 +120,10 @@ public function updateuser(UpdateUserRequest $request, User $user)
     $choose = $sort === 'oldest' ? 'ASC' : 'DESC';
     $featured = (bool) $request->get('featured',false);
     $reported = (bool) $request->get('reported',false);
-    $posts = Post::with(['user','allHashtags'])
+    $posts = Post::with(['user','allHashtags','categories'])
           ->search($request->get('search'))
           ->withCount('totalcomments')
+          ->when($sort && in_array($sort, array_map(fn($case) => $case->value, PostStatus::cases())), fn($q) => $q->status($sort))
           ->when($featured, fn($q) => $q->where('is_featured', 1))
           ->when($reported, fn($q) => $q->where('is_reported', 1))
           ->orderBy('created_at', $choose)
@@ -146,6 +149,31 @@ public function featuredpage(){
  $service->create($dto);  
 toastr()->success('post feature created',['timeOut'=>1000]);
 return to_route('admin.posts');
+  }
+  public function edit_status(Post $post,Request $request)
+  {
+    $fields = $request->validate([
+      'status' => ['required',new Enum(PostStatus::class)]
+    ]);
+    $status = PostStatus::from($fields['status']);
+
+    $post->published_at = null;
+    $post->banned_at = null;
+    $post->trashed_at = null;
+
+     match ($status) {
+        PostStatus::PUBLISHED => $post->published_at = now(),
+        PostStatus::BANNED    => $post->banned_at = now(),
+        PostStatus::TRASHED   => $post->trashed_at = now(),
+        default               => null, 
+    };
+     $post->status = $status;
+     $post->save();
+     
+    return response()->json([
+      'updated' => true,
+      'message' => "status updated {$post->status->value}"
+     ],200);
   }
   public function destroy(User $user){
   

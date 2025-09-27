@@ -19,6 +19,10 @@ class Hashtag extends Model
         'status'=> TagStatus::class
     ];
     public function posts(){
+      return $this->belongsToMany(Post::class,'post_hashtag')->published();
+    }
+    public function allPosts()
+    {
       return $this->belongsToMany(Post::class,'post_hashtag');
     }
     public function scopeStatus($query,$status){

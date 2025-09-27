@@ -1,7 +1,7 @@
 <div id="editModel" class="hidden fixed w-2/6 z-[20]  py-8 left-[50%]  top-[50%] transform translate-x-[-50%] translate-y-[-50%] items-center space-y-2 font-bold bg-gray-700 rounded-lg drop-shadow-lg border border-gray-300 transition-all duration-300">
 
   <div class="ml-6">
-    <p class="text-xl text-gray-100">Create New Hashtag.</p>
+    <p class="text-xl text-gray-100">Edit Hashtag.</p>
  <form id="edittag" method="POST">
  @csrf
  @method("PUT")

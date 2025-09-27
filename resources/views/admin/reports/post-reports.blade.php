@@ -16,7 +16,7 @@
   @include('admin.reports.partials.filter')
 </div>      
  <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl mx-4 transform -translate-y-40 ">
-<x-tables.table id="tablepostreports" :headers="['#','Post','Post Owner','Reporter','Reason','Other','Status','CreatedAt','Actions']" title="Post Reports Table">
+<x-tables.table id="tablepostreports" :headers="['#','Post','Post Owner','Reporter','Post Status','Reason','Other','Report Status','CreatedAt','Actions']" title="Post Reports Table">
     @forelse ($reports as $report)
         <tr>
       <td>{{ ($reports->currentPage() - 1) * $reports->perPage() + $loop->iteration }}</td>
@@ -36,6 +36,14 @@
         <span class="px-2 py-2">
           {!! $report->user->name.'<b class="text-blue-400">'.' @'.$report->user->username.'</b>'!!} 
         </span>
+      </td>
+      <td>
+          <i @class([
+            "fas fa-circle  mr-2 text-xs",
+            'text-orange-400' => $report->post->status === \App\Enums\PostStatus::BANNED,
+            'text-green-600' => $report->post->status === \App\Enums\PostStatus::PUBLISHED,
+            'text-red-600' => $report->post->status === \App\Enums\PostStatus::TRASHED,
+          ])></i>  {{$report->post->status->value}}
       </td>
       <td>{{$report->reason_label}}</td>
       <td>

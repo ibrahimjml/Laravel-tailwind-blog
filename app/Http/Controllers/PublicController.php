@@ -29,12 +29,13 @@ class PublicController extends Controller
     $dto = PostFilterDTO::fromRequest($request);
     $postsid = Post::search($dto->search)->get()->pluck('id');
      
-    $posts = Post::whereIn('id',$postsid)
-    ->withCount(['likes', 'comments'])
-    ->with(['user','hashtags'])
-    ->sortby($dto->sort)
-    ->paginate(5)
-    ->withQueryString();
+    $posts = Post::published()
+             ->whereIn('id',$postsid)
+             ->withCount(['likes', 'comments'])
+             ->with(['user','hashtags'])
+             ->sortby($dto->sort)
+             ->paginate(5)
+             ->withQueryString();
 
     $hashtags = Hashtag::withCount('posts')->get();
     

@@ -32,7 +32,7 @@
                 {{$category->name}}
             </td>
             </span>
-            <td class="p-2"> {{$category->posts->count()}}</td>
+            <td class="p-2"> {{$category->allPosts->count()}}</td>
 
             <td class="p-2">{{$category->created_at->diffForHumans()}}</td>
             <td class="p-2">{{$category->updated_at->diffForHumans()}}</td>
