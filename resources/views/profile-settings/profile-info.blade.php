@@ -33,7 +33,7 @@
               <!-- cover -->
               <div class="absolute top-1 right-1 edit-group  w-fit p-2 rounded-xl text-white bg-blue-600 cursor-pointer ">
                 <i class="fas fa-image"></i>
-                <label for="cover"  class="align-middle inline-block max-w-0 overflow-hidden label-expand transition-all duration-300 whitespace-nowrap text-sm cursor-pointer">
+                <label for="cover"  class="label-expand align-middle inline-block max-w-0 overflow-hidden  transition-all duration-300 whitespace-nowrap text-sm cursor-pointer">
                  Change cover
                 </label>
                 <input name="cover" id="cover" class="hidden" type="file">

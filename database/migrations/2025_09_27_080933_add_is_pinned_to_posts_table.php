@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('posts', function (Blueprint $table) {
             $table->boolean('is_pinned')->default(false)->after('is_featured');
+            $table->timestamp('pinned_at')->nullable()->after('is_pinned');
         });
     }
 
@@ -22,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->dropColumn('is_pinned');
+            $table->dropColumn(['is_pinned', 'pinned_at']);
         });
     }
 };

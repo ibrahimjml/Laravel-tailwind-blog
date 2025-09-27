@@ -22,7 +22,8 @@ class ProfileController extends Controller
     
     $posts = $user->post()
              ->orderByDesc('is_pinned')
-             ->latest()
+             ->orderByDesc('pinned_at')
+             ->orderByDesc('created_at')
              ->get();
     
     return view('profile.profile', array_merge(

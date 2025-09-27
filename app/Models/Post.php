@@ -20,13 +20,17 @@ class Post extends Model
     'image_path',
     'is_featured',
     'is_pinned',
+    'pinned_at',
     'is_reported',
     'report_count',
     'likes_count',
     'views',
     'allow_comments'
   ];
-
+   protected $casts = [
+        'is_pinned' => 'boolean',
+        'pinned_at' => 'datetime',  
+    ];
   public function newEloquentBuilder($query): PostBuilder
     {
         return new PostBuilder($query);

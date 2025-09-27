@@ -17,6 +17,7 @@ class PinController extends Controller
 
        if ($post->is_pinned) {
         $post->is_pinned = false;
+        $post->pinned_at = null;
         $post->save();
 
         return response()->json([
@@ -35,6 +36,7 @@ class PinController extends Controller
         ], 422);
         }
       $post->is_pinned = true;
+      $post->pinned_at = now();
       $post->save();
 
     return response()->json([

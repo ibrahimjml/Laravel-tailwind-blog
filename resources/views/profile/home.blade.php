@@ -1,7 +1,7 @@
 <div class="mt-5 sm:grid grid-cols-4 gap-6 space-y-6 sm:space-y-0">
   @forelse($posts as $post)
   <div id="post-{{ $post->id }}" class="flex flex-wrap items-center justify-center ">
-    <div class="relative">
+    <div class="relative group">
     <a  href="{{route('single.post', $post->slug)}}">
         <img src="{{$post->image_url}}" alt="{{$post->title}}" class="ml-auto w-80 h-40 mr-auto  rounded-lg mb-5">
         @if($post->user->isNot(auth()->user()) && $post->is_pinned)
@@ -13,9 +13,10 @@
       @can('update', $post)
         <button title="{{ $post->is_pinned ? 'Unpin' : 'Pin' }}"
                 data-id="{{ $post->id }}"
-                class="pin-btn absolute top-1 right-1 p-2 w-8 h-8 flex place-content-center rounded-full bg-white ">
-          <i class="fas fa-thumbtack transform rotate-45 {{$post->is_pinned ? 'text-red-600' : 'text-gray-400'}} " aria-hidden="true">
-            </i>
+                class="pin-btn absolute top-1 right-1 p-2 w-8 h-8 {{$post->is_pinned ? 'opacity-100' :'opacity-0'}} group-hover:opacity-100 transition-opacity duration-200 flex place-content-center rounded-full bg-white ">
+    
+            <i class="fas fa-thumbtack transform rotate-45 {{$post->is_pinned ? 'text-red-600' : 'text-gray-400'}} " aria-hidden="true">
+              </i>
           </button>
       @endcan
     </div>
