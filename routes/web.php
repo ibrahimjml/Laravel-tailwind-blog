@@ -98,8 +98,9 @@ Route::prefix('profile')
   Route::delete('/settings/delete/cover','delete_cover')->name('cover.destroy');
   Route::delete('/delete/custom-link/{id}',  'destroy_link')->name('destroy.customlink');
 });
-
+// qrcode generator
 Route::get('/qr-code', QrcodeController::class)->name('qr-code.image');
+// toggle pin/unpin
 Route::post('/toggle/{post}/pin',[PinController::class,'togglePin'])->name('toggle.pin');
 // Like
 Route::post('/post/{post}/like',[PostController::class,'like']);

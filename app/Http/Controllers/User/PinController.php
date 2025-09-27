@@ -14,17 +14,32 @@ class PinController extends Controller
     }
     public function togglePin(Post $post){
       $this->authorize('update', $post);
+
+       if ($post->is_pinned) {
+        $post->is_pinned = false;
+        $post->save();
+
+        return response()->json([
+            'status' => 'unpinned',
+            'post_id' => $post->id
+        ], 200);
+    }
       $pinnedCount = Post::where('user_id', auth()->id())
             ->where('is_pinned', true)
             ->count();
 
         if ($pinnedCount >= 3) {
-            toastr()->error('You can pin a maximum of 3 posts', ['timeOut' => 2000]);
-            return back();
+          return response()->json([
+            'status' => 'limit_reached',
+            'message' => 'You can only pin up to 3 posts.'
+        ], 422);
         }
-      $post->is_pinned = !$post->is_pinned;
+      $post->is_pinned = true;
       $post->save();
-      toastr()->success('Post pin status updated successfully',['timeOut'=>1000]);
-      return back();
+
+    return response()->json([
+          'status' => 'pinned',
+          'post_id' => $post->id
+        ], 200);
     }
 }
