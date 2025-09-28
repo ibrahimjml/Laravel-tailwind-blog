@@ -9,9 +9,11 @@ use App\Http\Controllers\Admin\{
     TagsController,
     PermissionsController,
     PostReportController,
+    PostsController,
     ProfileReportController,
     RolesController,
-    SettingController
+    SettingController,
+    UsersController
 };
 
 Route::prefix('admin')
@@ -21,27 +23,27 @@ Route::prefix('admin')
   
       Route::get('/panel', [AdminController::class,'admin'])->name("panel");
       // posts
-      Route::controller(AdminController::class)
+      Route::controller(PostsController::class)
              ->prefix('posts')
              ->name('posts.')
              ->group(function () {
       Route::get('/', 'posts')->name('page');
-      Route::get('/featured', 'featuredpage')->name('featured.page');
-      Route::post('/featured', 'create_feature')->name('featured.create');
-      Route::put('/{post}/feature','toggle_feature')->name('featured.toggle');
-      Route::put('/{post}/status','edit_status')->name('status');
+      Route::get('/featured', 'featuredPage')->name('featured.page');
+      Route::post('/featured', 'createFeature')->name('featured.create');
+      Route::put('/{post}/feature','toggleFeature')->name('featured.toggle');
+      Route::put('/{post}/status','editStatus')->name('status');
   });
       // users
-      Route::controller(AdminController::class)
+      Route::controller(UsersController::class)
             ->prefix('users')
             ->name('users.')
             ->group(function () {
       Route::get('/', 'users')->name('page');
-      Route::post('/create','createuser')->name('create');
-      Route::put('/{user}/edit','updateuser')->name('update');
+      Route::post('/create','createUser')->name('create');
+      Route::put('/{user}/edit','updateUser')->name('update');
       Route::put('/{user}/role', 'role')->name('role');
-      Route::put('/{user}/toggle', 'toggle_block')->name('block');
-      Route::delete('/{user}/delete', [AdminController::class, 'destroy'])->name('delete');
+      Route::put('/{user}/toggle', 'toggle')->name('block');
+      Route::delete('/{user}/delete', 'destroy')->name('delete');
       });
       // reports
       Route::prefix('reports')->group(function () {
@@ -49,25 +51,25 @@ Route::prefix('admin')
              ->prefix('posts')
             ->name('reports.posts.')
             ->group(function(){
-        Route::get('/', 'post_reports')->name('index');
-        Route::delete('/{report}', 'report_delete')->name('delete');
-        Route::patch('/{report}/status','toggle_status')->name('status');
+        Route::get('/', 'reports')->name('index');
+        Route::delete('/{report}/delete', 'delete')->name('delete');
+        Route::patch('/{report}/status','status')->name('status');
       });
          Route::controller(ProfileReportController::class)
               ->prefix('profiles')
               ->name('reports.profiles.')
               ->group(function(){
-        Route::get('/', 'profile_reports')->name('index');
-        Route::delete('/{report}', 'profile_report_delete')->name('delete');
-        Route::patch('/{report}/status','toggle_status')->name('status');
+        Route::get('/', 'reports')->name('index');
+        Route::delete('/{report}/delete', 'delete')->name('delete');
+        Route::patch('/{report}/status','status')->name('status');
       });
          Route::controller(CommentReportController::class)
               ->prefix('comments')
               ->name('reports.comments.')
              ->group(function(){
-        Route::get('/', 'comment_reports')->name('index');
-        Route::delete('/{report}', 'comment_report_delete')->name('delete');
-        Route::patch('/{report}/status','toggle_status')->name('status');
+        Route::get('/', 'reports')->name('index');
+        Route::delete('/{report}/delete', 'delete')->name('delete');
+        Route::patch('/{report}/status','status')->name('status');
       });
     });
     // manage Tags
@@ -75,22 +77,22 @@ Route::prefix('admin')
           ->prefix('tags')
           ->name('tags.')
           ->group(function(){
-    Route::get('/', 'hashtagpage')->name('index');
-    Route::post('/tag', 'create_tag')->name('create');
-    Route::put('/edit/{hashtag}', 'edit_tag')->name('update');
-    Route::delete('/{hashtag}', 'delete_tag')->name('delete');
-    Route::put('/{hashtag}/feature','toggle_feature_tag')->name('feature');
+    Route::get('/', 'hashtags')->name('index');
+    Route::post('/tag', 'create')->name('create');
+    Route::put('/edit/{hashtag}', 'edit')->name('update');
+    Route::delete('/{hashtag}', 'delete')->name('delete');
+    Route::put('/{hashtag}/feature','toggle')->name('feature');
     });
     // Categories 
     Route::controller(CategoriesController::class)
             ->prefix('categories')
             ->name('categories.')
             ->group(function(){
-    Route::get('/','categorypage')->name('index');
-    Route::post('/category', 'create_category')->name('create');
-    Route::put('/edit/{category}', 'edit_category')->name('update');
-    Route::delete('/delete/{category}', 'delete_category')->name('delete');
-    Route::put('/{category}/feature','toggle_feature_category')->name('feature');
+    Route::get('/','categories')->name('index');
+    Route::post('/category', 'create')->name('create');
+    Route::put('/edit/{category}', 'edit')->name('update');
+    Route::delete('/delete/{category}', 'delete')->name('delete');
+    Route::put('/{category}/feature','toggle')->name('feature');
   });
   // notifications
   Route::controller(NotificationsController::class)
@@ -110,8 +112,8 @@ Route::prefix('admin')
             ->name('settings.')
             ->group(function(){
   Route::get('/', 'settings')->name('index');
-  Route::put('/{user}/edit', 'update_settings')->name('update');
-  Route::put('/{user}/password', 'update_pass')->name('password');
-  Route::put('/{user}/aboutme', 'update_aboutme')->name('aboutme');
+  Route::put('/{user}/edit', 'updateSettings')->name('update');
+  Route::put('/{user}/password', 'updatePassword')->name('password');
+  Route::put('/{user}/aboutme', 'updateAboutme')->name('aboutme');
     });
 });

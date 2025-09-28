@@ -12,12 +12,12 @@ class ProfileReportController extends Controller
 {
         public function __construct()
 {
-    $this->middleware('permission:profilereport.view')->only('profile_reports');
-    $this->middleware('permission:profilereport.delete')->only('profile_report_delete');
-    $this->middleware('permission:profilereport.status')->only('toggle_status');
+    $this->middleware('permission:profilereport.view')->only('reports');
+    $this->middleware('permission:profilereport.delete')->only('delete');
+    $this->middleware('permission:profilereport.status')->only('status');
   
 }
-    public function profile_reports(Request $request)
+    public function reports(Request $request)
     {
           $sort = $request->get('sort'); 
           $reports = ProfileReport::with(['user','profile'])
@@ -27,14 +27,14 @@ class ProfileReportController extends Controller
       return view('admin.reports.profile-reports',['reports'=>$reports]);
     }
 
-      public function profile_report_delete(ProfileReport $report)
+      public function delete(ProfileReport $report)
       {
         $report->delete();
         toastr()->success('report deleted',['timeOut'=> 1000]);
         return back();
       }
 
-  public function toggle_status(Request $request, ProfileReport $report)
+  public function status(Request $request, ProfileReport $report)
   {
     try {
        $fields = $request->validate([

@@ -12,12 +12,12 @@ class CommentReportController extends Controller
 {
         public function __construct()
 {
-    $this->middleware('permission:commentreport.view')->only('comment_reports');
-    $this->middleware('permission:commentreport.delete')->only('comment_report_delete');
-    $this->middleware('permission:commentreport.status')->only('toggle_status');
+    $this->middleware('permission:commentreport.view')->only('reports');
+    $this->middleware('permission:commentreport.delete')->only('delete');
+    $this->middleware('permission:commentreport.status')->only('status');
   
 }
-    public function comment_reports(Request $request)
+    public function reports(Request $request)
     {
           $sort = $request->get('sort'); 
           $reports = CommentReport::with(['reporter','comment'])
@@ -27,14 +27,14 @@ class CommentReportController extends Controller
       return view('admin.reports.comment-reports',['reports'=>$reports]);
     }
 
-      public function comment_report_delete(CommentReport $report)
+      public function delete(CommentReport $report)
       {
         $report->delete();
         toastr()->success('report deleted',['timeOut'=> 1000]);
         return back();
       }
 
-  public function toggle_status(Request $request, CommentReport $report)
+  public function status(Request $request, CommentReport $report)
   {
     try {
        $fields = $request->validate([

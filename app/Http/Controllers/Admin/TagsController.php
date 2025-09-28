@@ -12,13 +12,13 @@ class TagsController extends Controller
 {
       public  function __construct() {
     
-    $this->middleware('permission:tag.view')->only('hashtagpage');
-    $this->middleware('permission:tag.create')->only('create_tag');
-    $this->middleware('permission:tag.update')->only('edit_tag');
-    $this->middleware('permission:tag.delete')->only('delete_tag');
-    $this->middleware('permission:tag.feature')->only('toggle_feature_tag');
+    $this->middleware('permission:tag.view')->only('hashtags');
+    $this->middleware('permission:tag.create')->only('create');
+    $this->middleware('permission:tag.update')->only('edit');
+    $this->middleware('permission:tag.delete')->only('delete');
+    $this->middleware('permission:tag.feature')->only('toggle');
   }
-    public function create_tag(Request $request){
+    public function create(Request $request){
   $fields = $request->validate([
   'name' =>'required|string',
   'status' => ['required', new Enum(TagStatus::class)]
@@ -30,7 +30,7 @@ class TagsController extends Controller
   ]);
 }
 
-  public function hashtagpage(Request $request){
+  public function hashtags(Request $request){
     $sort = $request->get('sort','all');
     $hashtags = Hashtag::query()
               ->status($sort)
@@ -40,7 +40,7 @@ class TagsController extends Controller
     ]);
   }
 
-public function edit_tag(Hashtag $hashtag, Request $request){
+public function edit(Hashtag $hashtag, Request $request){
   $fields = $request->validate([
     'name' =>'nullable|string',
     'status' => ['required', new Enum(TagStatus::class)]
@@ -56,7 +56,7 @@ public function edit_tag(Hashtag $hashtag, Request $request){
     ]);
 }
 
-  public function delete_tag(Hashtag $hashtag){
+  public function delete(Hashtag $hashtag){
     $name = $hashtag->name;
     $hashtag->delete();
     return response()->json([
@@ -65,7 +65,7 @@ public function edit_tag(Hashtag $hashtag, Request $request){
   ]);
   }
 
-  public function toggle_feature_tag(Hashtag $hashtag)
+  public function toggle(Hashtag $hashtag)
   {
       $hashtag->update(['is_featured'=>!$hashtag->is_featured]);
       if($hashtag->is_featured){

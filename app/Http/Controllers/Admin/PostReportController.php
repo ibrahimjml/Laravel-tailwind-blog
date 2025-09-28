@@ -13,12 +13,12 @@ class PostReportController extends Controller
 {
       public function __construct()
 {
-    $this->middleware('permission:postreport.view')->only('post_reports');
-    $this->middleware('permission:postreport.delete')->only('report_delete');
-    $this->middleware('permission:postreport.status')->only('toggle_status');
+    $this->middleware('permission:postreport.view')->only('reports');
+    $this->middleware('permission:postreport.delete')->only('delete');
+    $this->middleware('permission:postreport.status')->only('status');
   
 }
-      public function post_reports(Request $request)
+      public function reports(Request $request)
   {
     $sort = $request->get('sort'); 
     $reports = PostReport::with(['user','post.user'])
@@ -28,14 +28,14 @@ class PostReportController extends Controller
    
     return view('admin.reports.post-reports',['reports'=>$reports]);
   }
-  public function report_delete(PostReport $report)
+  public function delete(PostReport $report)
   {
     $report->delete();
     toastr()->success('report deleted',['timeOut'=> 1000]);
     return back();
   }
 
-  public function toggle_status(Request $request, PostReport $report)
+  public function status(Request $request, PostReport $report)
   {
     try {
        $fields = $request->validate([

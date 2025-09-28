@@ -22,7 +22,7 @@ class SettingController extends Controller
         ]);
     }
 
-  public function update_settings(Request $request, User $user)
+  public function updateSettings(Request $request, User $user)
 {
     $fields = $request->validate([
         "name" => ["required", "min:5", "max:50", "alpha", Rule::unique(User::class)->ignore($user->id)],
@@ -54,7 +54,7 @@ class SettingController extends Controller
     return redirect()->back();
    }
   
-   public function update_pass(Request $request,User $user)
+   public function updatePassword(Request $request,User $user)
    {
       $request->validate([
       "current_password"=>["required"],
@@ -71,7 +71,7 @@ class SettingController extends Controller
     return redirect()->back();
    }
 
-   public function update_aboutme(Request $request,User $user)
+   public function updateAboutme(Request $request,User $user)
    {
        $request->validate([
          'about'=>'nullable|string|'

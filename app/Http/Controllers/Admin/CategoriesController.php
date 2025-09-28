@@ -10,19 +10,19 @@ class CategoriesController extends Controller
 {
     public  function __construct() {
     
-    $this->middleware('permission:category.view')->only('categorypage');
-    $this->middleware('permission:category.create')->only('create_category');
-    $this->middleware('permission:category.update')->only('edit_category');
-    $this->middleware('permission:category.delete')->only('delete_category');
-    $this->middleware('permission:category.feature')->only('toggle_feature_category');
+    $this->middleware('permission:category.view')->only('categories');
+    $this->middleware('permission:category.create')->only('create');
+    $this->middleware('permission:category.update')->only('edit');
+    $this->middleware('permission:category.delete')->only('delete');
+    $this->middleware('permission:category.feature')->only('toggle');
   }
-    public function categorypage()
+    public function categories()
     {
       return view('admin.categories.categories',[
         'categories' => Category::paginate(7)
       ]);
     }
-    public function create_category(Request $request)
+    public function create(Request $request)
     {
        $fields = $request->validate([
        'name' =>'required|string'
@@ -33,7 +33,7 @@ class CategoriesController extends Controller
          'message' =>"Category {$category->name} added !" 
        ]);
     }
-      public function edit_category(Category $category, Request $request)
+      public function edit(Category $category, Request $request)
     {
         $fields = $request->validate([
     'name' =>'required|string'
@@ -44,7 +44,7 @@ class CategoriesController extends Controller
       'message' => "Updated to {$category->name}"
     ]);
     }
-      public function delete_category(Category $category)
+      public function delete(Category $category)
     {
       $name = $category->name;
       $category->delete();
@@ -54,7 +54,7 @@ class CategoriesController extends Controller
      ]);
     }
 
-    public function toggle_feature_category(Category $category)
+    public function toggle(Category $category)
     {
        $category->update(['is_featured'=>!$category->is_featured]);
        if($category->is_featured){
