@@ -52,9 +52,9 @@
         @can('user.role')
         @include('admin.users.partials.change-role')
        @else
-        <p
-        class="cursor-not-allowed bg-gray-600 font-bold text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 ">
-        {{$user->roles->pluck('name')->implode(',')}}</p>
+        <p class="cursor-not-allowed bg-gray-600 font-bold text-white border border-gray-300 block  text-sm rounded-lg   w-full p-2.5 ">
+        {{$user->roles->pluck('name')->implode(',')}}
+        </p>
       @endcan
         </td>
         <td class="p-2">

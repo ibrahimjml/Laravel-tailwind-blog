@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DTOs\Admin\CreateUserDTO;
+use App\DTOs\Admin\UpdateUserDTO;
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\App\Admin\{CreateUserRequest, UpdateUserRequest};
 use App\Models\{Permission, Role, User};
+use App\Services\Admin\UsersService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Enum;
 
 class UsersController extends Controller
 {
-     public function __construct(){
+     public function __construct(private UsersService $service){
         $this->middleware('permission:user.view')->only('users');
         $this->middleware('permission:user.create')->only('createUser');
         $this->middleware('permission:user.edit')->only('updateUser');
@@ -20,15 +25,7 @@ class UsersController extends Controller
      }
       public function users(Request $request)
   {
-    $blocked = (bool) $request->get('blocked', false);
-
-  $users = User::with(['roles','roles.permissions','userPermissions']) 
-                ->withCount(['reportsSubmitted', 'reportsReceived'])
-               ->latest()
-               ->search($request->only('search'))
-               ->when($blocked, fn($q) => $q->where('is_blocked', 1))
-               ->paginate(6)
-               ->withQueryString();
+    $users = $this->service->getUsers($request->only('search','blocked'));
     $roles = Role::all();
     return view('admin.users.users',[
       'users'=>$users,
@@ -39,77 +36,51 @@ class UsersController extends Controller
   }
 public function createUser(CreateUserRequest $request)
 {
- $fields = $request->validated();
+    $dto = CreateUserDTO::fromRequest($request);
+    $this->service->createUser($dto);
 
-   $fields['password'] = Hash::make($fields['password']);
-  $user = User::create($fields);
-    
-        $user->roles()->sync($fields['roles']);
-       $newRole = Role::find($fields['roles']);
-
-        if ($newRole && $newRole->name === 'User') {
-            $user->userPermissions()->sync($request->permissions ?? []);
-        } else {
-            $user->userPermissions()->detach();
-        }
     toastr()->success('user created',['timeOut'=>1000]);
     return back();
 }
 public function updateUser(UpdateUserRequest $request, User $user)
 {
-    $fields = $request->validated();
+      $dto = UpdateUserDTO::fromRequest($request);
+      $this->service->updateUser($user,$dto);
 
-   if (!empty($fields['password'])) {
-        $fields['password'] = Hash::make($fields['password']);
-    } else {
-        unset($fields['password']);
-    }
-    $user->update($fields);
-  
-     if (isset($fields['roles'])) {
-        $user->roles()->sync([$fields['roles']]);
-        $newRole = Role::find($fields['roles']);
-
-        if ($newRole && $newRole->name === 'User') {
-            $user->userPermissions()->sync($request->permissions ?? []);
-        } else {
-            $user->userPermissions()->detach();
-        }
-    }
-    
       toastr()->success('user updated',['timeOut'=>1000]);
-    return back();
+      return back();
 }
   
   public function toggle(User $user){
+    
     $this->authorize('block',$user);
-    $user->update(['is_blocked' => !$user->is_blocked]);
-    if($user->is_blocked){
-    toastr()->success('user blocked success',['timeOut'=>1000]);
-  }else{
-      toastr()->success('user unblocked success',['timeOut'=>1000]);
-  }
-      return redirect()->back();
+    $this->service->toggleStatus($user);
+    
+    $message = $user->fresh()->is_blocked ? 'User blocked successfully' : 'User unblocked successfully';
+    
+    toastr()->success($message,['timeOut'=>1000]);
+    return redirect()->back();
   }
 
   public function destroy(User $user){
-  
-    
+
     $this->authorize('delete',$user);
-    $user->delete();
+     $this->service->deleteUser($user);
+
     toastr()->success('user deleted',['timeOut'=>1000]);
     return back();
   }
   public function role(Request $request,User $user)
   {
     $this->authorize('role',$user);
+
     $fields= $request->validate([
-      'role'=>'required|exists:roles,name'
+      'role'=>['required', new Enum(UserRole::class)]
     ]);
-  
-     $role = Role::where('name', $fields['role'])->first();
-    $user->roles()->sync([$role->id]);
+    
+    $this->service->changeRole($user, UserRole::from($fields['role']));
+    
     toastr()->success("user role '{$fields['role']}' updated",['timeOut'=>1000]);
-   return back();
+    return back();
   }
 }

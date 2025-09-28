@@ -8,9 +8,9 @@ $selectedRole = $user->roles->first()?->name;
         <select name="role"
         onchange="this.form.submit()"
         class="pl-3 pr-8 appearance-none font-bold border-0 cursor-pointer bg-blueGray-200 text-blueGray-500 text-sm rounded-lg w-full p-2.5">
-         @foreach ($roles as $role)
-        <option value="{{ $role->name }}" {{ $selectedRole === $role->name ? 'selected' : '' }}>
-        {{ $role->name }}
+         @foreach (\App\Enums\UserRole::cases() as $role)
+        <option value="{{ $role->value }}" {{ $selectedRole === $role->value ? 'selected' : '' }}>
+        {{ $role->value }}
         </option>
       @endforeach
         </select>

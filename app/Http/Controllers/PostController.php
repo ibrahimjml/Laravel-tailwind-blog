@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 use App\DTOs\CreatePostDTO;
 use App\DTOs\UpdatePostDTO;
 use App\Http\Middleware\CheckIfBlocked;
-use App\Http\Middleware\EnsureIdentityVerified;
 use App\Http\Requests\App\CreatePostRequest;
 use App\Http\Requests\App\UpdatePostRequest;
 use App\Models\Category;

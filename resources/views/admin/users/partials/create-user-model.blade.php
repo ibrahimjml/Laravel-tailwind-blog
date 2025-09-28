@@ -79,10 +79,10 @@ Confirm password:
       @enderror
       <div class="flex flex-col ">
   <label for="roles" class="mt-2 block text-slate-200 text-sm mb-1 font-bold">Roles:</label>
-  @foreach ($roles as $role)  
+  @foreach (\App\Enums\UserRole::cases() as $role)  
     <label class="mr-4 text-white">
-      <input type="radio" name="roles" value="{{ $role->id }}" class="mr-1">
-      {{ $role->name }}
+      <input type="radio" name="roles" value="{{ $role->value }}" class="mr-1">
+      {{ $role->value }}
     </label>
   @endforeach
 </div>

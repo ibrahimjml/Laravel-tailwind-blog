@@ -47,7 +47,7 @@
 </p>
 @enderror
 <label for="phone" class="mt-2 block text-slate-200 text-sm mb-1 font-bold  ">phone:</label>
-<input id="phone" 
+<input 
        name="phone"
        type="tel"
        value="{{ old('username', $user->phone) }}"
@@ -77,10 +77,10 @@
 @enderror
 <div class="flex flex-col ">
   <label for="roles" class="mt-2 block text-slate-200 text-sm mb-1 font-bold">Roles:</label>
-  @foreach ($roles as $role)  
+  @foreach (\App\Enums\UserRole::cases() as $role)  
     <label class="mr-4 text-white">
-      <input type="radio" name="roles" value="{{ $role->id }}" class="mr-1" {{$user->hasRole($role->name) ? 'checked' :''}}>
-      {{ $role->name }}
+      <input type="radio" name="roles" value="{{ $role->value }}" class="mr-1" {{$role->value === $user->roles->first()?->name ? 'checked' : ''}}>
+      {{ $role->value }}
     </label>
   @endforeach
 </div>

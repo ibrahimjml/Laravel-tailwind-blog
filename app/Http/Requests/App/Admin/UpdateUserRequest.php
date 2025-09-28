@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests\App\Admin;
 
+use App\Enums\UserRole;
 use App\Rules\EmailProviders;
 use App\Rules\PasswordRule;
-use App\Rules\Username;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -31,13 +32,13 @@ class UpdateUserRequest extends FormRequest
         return [
               "email" => ["nullable", "email", Rule::unique("users", "email")->ignore($user->id),new EmailProviders()],
               "name" => ["nullable", "min:5", "max:50", "alpha"],
-              "username" => ["nullable", "min:5", "max:15", "alpha_num", Rule::unique('users', 'username')->ignore($user->id),new Username($user)],
+              "username" => ["nullable", "min:5", "max:15", "alpha_num", Rule::unique('users', 'username')->ignore($user->id)],
               "phone" => ["nullable", Rule::unique("users", "phone")->ignore($user->id)],
               "password" => ["nullable","confirmed",new PasswordRule()],
               "age" => ["nullable", "numeric", "between:18,64"],
-              "roles" => ["nullable", "exists:roles,id"],
+              "roles" => ["nullable", new Enum(UserRole::class)],
               "permissions" => ["nullable", "array"],
-              "permissions.*" => ["string","exists:permissions,id"],
+              "permissions.*" => ["integer","exists:permissions,id"],
         ];
     }
 }
