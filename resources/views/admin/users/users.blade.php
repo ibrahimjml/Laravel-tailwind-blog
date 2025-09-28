@@ -5,7 +5,7 @@
 <div class="md:ml-64">
   @include('admin.partials.header', [
           'linktext'        => 'Users Table',
-          'route'           => 'admin.users',
+          'route'           => 'admin.users.page',
           'value'           => request('search'),
          'searchColor'      => 'bg-blueGray-200',
          'borderColor'      => 'border-blueGray-200',
@@ -15,7 +15,7 @@
     {{-- Filter + Button --}}
   <div class="flex justify-between items-center mb-5 transform -translate-y-40 px-4">
     <div class="bg-blueGray-200 rounded-md p-2 h-10 flex items-center">
-      <form action="{{ route('admin.users') }}" method="GET" class="flex items-center gap-2">
+      <form action="{{ url()->current() }}" method="GET" class="flex items-center gap-2">
         <input type="checkbox" name="blocked" value="1"
           {{ request('blocked') ? 'checked' : '' }}
           onchange="this.form.submit()" class="rounded w-4 h-4">
@@ -96,7 +96,7 @@
         <div class="flex justify-center gap-2">
         <div>
         @can('delete',$user)
-        <form action="{{ route('delete.user', $user) }}" method="POST"
+        <form action="{{ route('admin.users.delete', $user) }}" method="POST"
         onsubmit="return confirm('Are you sure you want to delete this user?');">
         @csrf
         @method('DELETE')
@@ -109,7 +109,7 @@
   
         <div>
         @can('block',$user)
-        <form action="{{ route('toggle.block', $user->id) }}" method="POST"
+        <form action="{{ route('admin.users.block', $user->id) }}" method="POST"
         onsubmit='return confirm("Are you sure you want to {{$user->is_blocked ? "unblock":"block"}} {{$user->name}} ?");'>
         @csrf
         @method("PUT")

@@ -44,11 +44,11 @@ function updateStatus(reportId, newStatus, type) {
    let url = '';
 
    if(type === 'post'){
-    url = `/admin/postreports/toggle/${reportId}/status`;
+    url = `/admin/reports/posts/${reportId}/status`;
    } else if(type ==='profile'){
-    url = `/admin/profilereports/toggle/${reportId}/status`;
+    url = `/admin/reports/profiles/${reportId}/status`;
    } else if(type === 'comment'){
-    url = `/admin/commentreports/toggle/${reportId}/status`;
+    url = `/admin/reports/comments/${reportId}/status`;
    }
    
   fetch(url, {

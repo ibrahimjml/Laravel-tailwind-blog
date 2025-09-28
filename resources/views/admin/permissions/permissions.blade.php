@@ -5,7 +5,7 @@
 <div class="md:ml-64 ">
   @include('admin.partials.header', [
        'linktext'           => 'Manage Permissions', 
-       'route'              => 'permissions.index', 
+       'route'              => 'admin.permissions.index', 
        'value'              => request('search'),
        'searchColor'       => 'bg-blueGray-200',
        'borderColor'       => 'border-blueGray-200',
@@ -15,8 +15,7 @@
     @can('permission.create')
       <div class="flex justify-end transform -translate-y-40">
         <button id="openPermissionModel"
-          class="text-center ml-0 mr-2 sm:ml-auto w-fit   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6"
-          href="{{route('permissions.create')}}">create permission</button>
+          class="text-center ml-0 mr-2 sm:ml-auto w-fit   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6">create permission</button>
       </div>
     @endcan
 
@@ -38,7 +37,7 @@
               <td class="text-white p-2">
                 <div class="flex gap-2 justify-start">
                   @can('permission.delete')
-                    <form class="permissiondelete" action="{{ route('permissions.destroy', $permission->id) }}" method="POST">
+                    <form class="permissiondelete" action="{{ route('admin.permissions.destroy', $permission->id) }}" method="POST">
                       @csrf
                       @method('delete')
                       <button type="submit" class="text-red-500 rounded-lg p-2 cursor-pointer hover:text-red-300">

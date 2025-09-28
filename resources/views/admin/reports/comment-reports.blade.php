@@ -5,7 +5,7 @@
 <div class="md:ml-64 ">
 @include('admin.partials.header', [
   'linktext' => 'Manage Comment Reports',
-   'route' => 'admin.posts', 
+   'route' => 'admin.reports.comments.index', 
    'value' => request('search'),
     'searchColor'     => 'bg-blueGray-200',
        'borderColor'     => 'border-blueGray-200',
@@ -65,7 +65,7 @@
       <td>
         <div class="flex items-center justify-start gap-2">
       @can('commentreport.delete')
-          <form action='{{route('delete.comment.report',$report->id)}}' method="POST"
+          <form action='{{route('admin.reports.comments.delete',$report->id)}}' method="POST"
          onsubmit="return confirm('Are you sure you want to delete this report?');">
          @csrf
          @method('delete')

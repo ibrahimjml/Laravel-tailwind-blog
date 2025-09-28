@@ -14,7 +14,7 @@
         </span>
         
   </div>
-<form  action="{{route('admin.notify')}}" method="GET" class="flex gap-2 items-center">
+<form  action="{{url()->current()}}" method="GET" class="flex gap-2 items-center">
 {{-- sort Read/Unread --}}
 <div class="relative w-full">
   <select id="sort" name="sort"

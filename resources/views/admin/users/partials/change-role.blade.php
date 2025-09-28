@@ -1,7 +1,7 @@
 @php
 $selectedRole = $user->roles->first()?->name;
 @endphp
-<form action="{{route('role.update', $user)}}" method="POST">
+<form action="{{route('admin.users.role', $user)}}" method="POST">
       @csrf
       @method('PUT')
       <div class="relative w-full">

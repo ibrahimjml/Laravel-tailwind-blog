@@ -5,7 +5,7 @@
 <div class="md:ml-64 ">
 @include('admin.partials.header', [
         'linktext'     => 'Manage Tags', 
-        'route'        => 'admin.users',
+        'route'        => 'admin.users.page',
         'value'         => request('search'),
        'searchColor'      => 'bg-blueGray-200',
        'borderColor'      => 'border-blueGray-200',
@@ -46,7 +46,7 @@
           <td  class=" text-white p-2">
             <div class="flex gap-2 justify-start">
             @can('tag.delete')
-              <form class="tagsdelete" action='{{route('delete.hashtag',$hashtag->id)}}' method="POST">
+              <form class="tagsdelete" action='{{route('admin.tags.delete',$hashtag->id)}}' method="POST">
                 @csrf
                 @method('delete')
                 <button type="submit" class="text-red-500 rounded-lg p-2 cursor-pointer hover:text-red-300">
@@ -64,7 +64,7 @@
               </button>
               @endcan
               @can('tag.feature')
-              <form action="{{ route('feature.tag', $hashtag->id) }}" method="POST" onsubmit="return confirm('Toggle featured status?');">
+              <form action="{{ route('admin.tags.feature', $hashtag->id) }}" method="POST" onsubmit="return confirm('Toggle featured status?');">
               @csrf
               @method('PUT')
               <button type="submit" class="rounded-lg text-yellow-600 p-2 hover:text-yellow-400 transition-colors duration-100">

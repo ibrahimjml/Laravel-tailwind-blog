@@ -2,7 +2,7 @@
 
   <div class="ml-6">
     <p class="text-xl text-gray-100">Edit User {{$user->name}}</p>
- <form  action="{{route('update.user',$user->id)}}" method="POST">
+ <form  action="{{route('admin.users.update',$user->id)}}" method="POST">
  @csrf
  @method("PUT")
  <label for="name" class="mt-2 block text-slate-200 text-sm mb-1 font-bold  ">Name:</label>

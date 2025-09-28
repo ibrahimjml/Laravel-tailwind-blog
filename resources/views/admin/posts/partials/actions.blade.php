@@ -13,7 +13,7 @@
   href="/post/{{$post->slug}}"><i class="fas fa-eye"></i></a>
 {{-- feature/unfeature --}}
 @can('make_feature', $post)
-  <form action="{{ route('toggle.feature', $post->id) }}" method="POST"
+  <form action="{{ route('admin.posts.featured.toggle', $post->id) }}" method="POST"
     onsubmit="return confirm('Toggle featured status?');">
     @csrf
     @method('PUT')

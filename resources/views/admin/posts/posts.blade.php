@@ -5,7 +5,7 @@
 <div class="md:ml-64 ">
 @include('admin.partials.header', [
        'linktext'        => 'Manage Posts', 
-       'route'           => 'admin.posts', 
+       'route'           => 'admin.posts.page', 
        'value'           => request('search'),
        'searchColor'     => 'bg-blueGray-200',
        'borderColor'     => 'border-blueGray-200',
@@ -117,6 +117,7 @@
 <script>
 // open edit model + edit post
 const open = document.getElementById('openModel');
+const route = "{{ route('admin.posts.status', ':id') }}";
 const buttons = document.querySelectorAll('.edit-btn');
 const postTitle = document.getElementById('title');
 const form = document.getElementById('editpost');
@@ -133,7 +134,7 @@ if (open && buttons && form && close) {
       const postStatus = button.dataset.status;
       const postSlug = button.dataset.slug;
      
-      form.action = `/admin/edit/post/${postId}`;
+      form.action = route.replace(':id', postId);
       statusInput.value = postStatus;
       postTitle.textContent = postSlug;
 

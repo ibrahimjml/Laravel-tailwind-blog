@@ -26,7 +26,8 @@ Category:
 @push('scripts')
 <script>
     // edit category
-    const editButtons = document.querySelectorAll('.catsedit');
+  const editButtons = document.querySelectorAll('.catsedit');
+  const route = "{{ route('admin.categories.update', ':id') }}";
   const editModal = document.getElementById('editModel');
   const closeEditBtn = document.getElementById('closeEditModel');
   const editForm = document.getElementById('editcategory');
@@ -40,7 +41,7 @@ Category:
         const catId = button.dataset.id;
         const catName = button.dataset.name;
 
-        editForm.action = `/admin/edit/category/${catId}`;
+        editForm.action = route.replace(':id',catId);
         nameInput.value = catName;
 
         editModal.classList.remove('hidden');

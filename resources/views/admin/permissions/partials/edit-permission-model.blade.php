@@ -5,7 +5,7 @@
 
   <div class="ml-6">
     <p class="text-xl text-gray-100">Edit permission.</p>
- <form id="edittag" action="{{route('permissions.update',$permission->id)}}" method="POST">
+ <form id="edittag" action="{{route('admin.permissions.update',$permission->id)}}" method="POST">
  @csrf
  @method("PUT")
  <label for="name" class="mt-2 block text-slate-200 text-sm mb-1 font-bold  ">

@@ -32,7 +32,7 @@
     {{-- filter by year --}}
 
     <div class="flex justify-end mt-8 mr-3">
-      <form method="GET" action="{{ route('admin-page') }}" class="mb-4">
+      <form method="GET" action="{{ route('admin.panel') }}" class="mb-4">
       <label for="year" class="font-bold text-white">Filter By Year:</label>
       <select name="year" id="year" onchange="this.form.submit()"
         class="p-2 pl-3 pr-8 border rounded-md appearance-none bg-white text-gray-700">>

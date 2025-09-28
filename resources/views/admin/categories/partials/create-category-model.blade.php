@@ -2,7 +2,7 @@
 
   <div class="ml-6">
     <p class="text-xl text-gray-100">Create New Category.</p>
- <form id="addcategory" action="{{route('create.category')}}" method="POST">
+ <form id="addcategory" action="{{route('admin.categories.create')}}" method="POST">
  @csrf
  @method("POST")
  <label for="name" class="mt-2 block text-slate-200 text-sm mb-1 font-bold  ">

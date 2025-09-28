@@ -2,7 +2,7 @@
 @section('title','Featured | Dashboard')
 @section('content')
     <div class="relative md:ml-64 bg-blueGray-50">
-    <form action="{{route('admin.featured')}}" method="POST" enctype="multipart/form-data" class="p-6">
+    <form action="{{route('admin.posts.featured.create')}}" method="POST" enctype="multipart/form-data" class="p-6">
       @csrf
       @method('POST')
     

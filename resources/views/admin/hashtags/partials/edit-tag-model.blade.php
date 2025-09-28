@@ -31,7 +31,8 @@ Hashtag:
 @push('scripts')
 <script>
     // edit hashtag
-    const editButtons = document.querySelectorAll('.tagsedit');
+  const editButtons = document.querySelectorAll('.tagsedit');
+  const route = "{{ route('admin.tags.update', ':id') }}";
   const editModal = document.getElementById('editModel');
   const closeEditBtn = document.getElementById('closeEditModel');
   const editForm = document.getElementById('edittag');
@@ -47,7 +48,7 @@ Hashtag:
         const tagName = button.dataset.name;
         const tagStatus = button.dataset.status;
 
-        editForm.action = `/admin/edit/tag/${tagId}`;
+        editForm.action = route.replace(':id', tagId);
         nameInput.value = tagName;
         statusInput.value = tagStatus;
 

@@ -5,7 +5,7 @@
 <div class="md:ml-64 ">
   @include('admin.partials.header', [
     'linktext' => 'Categories Table',
-     'route' => 'admin.users', 
+     'route' => 'admin.users.page', 
      'value' => request('search'),
      'searchColor'      => 'bg-blueGray-200',
        'borderColor'      => 'border-blueGray-200',
@@ -39,7 +39,7 @@
             <td class=" text-white p-2">
               <div class="flex gap-2 justify-start">
                 @can('category.delete')
-                  <form class="catsdelete" action='{{route('delete.category', $category->id)}}' method="POST">
+                  <form class="catsdelete" action='{{route('admin.categories.delete', $category->id)}}' method="POST">
                     @csrf
                     @method('delete')
                     <button type="submit" class="text-red-500 rounded-lg p-2 cursor-pointer hover:text-red-300">
@@ -54,7 +54,7 @@
                   </button>
                 @endcan
                 @can('category.feature')
-                  <form action="{{ route('feature.category', $category->id) }}" method="POST"
+                  <form action="{{ route('admin.categories.feature', $category->id) }}" method="POST"
                     onsubmit="return confirm('Toggle featured status?');">
                     @csrf
                     @method('PUT')

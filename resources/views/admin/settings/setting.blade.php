@@ -2,7 +2,7 @@
 @section('title', 'Settings | Dashboard')
 @section('content')
   <!-- Header -->
-@include('admin.partials.header', ['linktext' => 'Admin Settings', 'route' => 'admin.posts', 'value' => request('search')])
+@include('admin.partials.header', ['linktext' => 'Admin Settings', 'route' => 'admin.settings.index', 'value' => request('search')])
 
   <div class=" px-4 md:px-10 mx-auto lg:w-[80%] lg:ml-64 -m-24">
     <div class="flex flex-wrap">
@@ -21,7 +21,7 @@
         <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
         User Information
         </h6>
-        <form id="phone-form" action="{{route('admin.update', $user->id)}}" method="POST">
+        <form id="phone-form" action="{{route('admin.settings.update', $user->id)}}" method="POST">
         @csrf
         @method('PUT')
         <div class="flex flex-wrap">
@@ -97,7 +97,7 @@
         <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
         Change Password
         </h6>
-        <form action="{{route('admin.pass', $user->id)}}" method="POST">
+        <form action="{{route('admin.settings.password', $user->id)}}" method="POST">
         @csrf
         @method('PUT')
         <div class="flex flex-wrap">
@@ -157,7 +157,7 @@
         </h6>
         <div class="flex flex-wrap">
         <div class="w-full lg:w-12/12 px-4">
-          <form action="{{route('admin.aboutme', $user->id)}}" method="post">
+          <form action="{{route('admin.settings.aboutme', $user->id)}}" method="post">
           @csrf
           @method('PUT')
           <div class="relative w-full mb-3">

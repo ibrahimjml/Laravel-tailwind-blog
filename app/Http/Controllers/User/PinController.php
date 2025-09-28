@@ -25,7 +25,8 @@ class PinController extends Controller
             'post_id' => $post->id
         ], 200);
     }
-      $pinnedCount = Post::where('user_id', auth()->id())
+      $pinnedCount = Post::published()
+            ->where('user_id', auth()->id())
             ->where('is_pinned', true)
             ->count();
 

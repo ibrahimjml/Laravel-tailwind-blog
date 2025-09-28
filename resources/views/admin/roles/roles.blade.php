@@ -5,7 +5,7 @@
 <div class="md:ml-64 ">
 @include('admin.partials.header', [
       'linktext'      => 'Manage Roles',
-      'route'        => 'roles.index', 
+      'route'        => 'admin.roles.index', 
       'value'         => request('search'),
       'searchColor'     => 'bg-blueGray-200',
       'borderColor'     => 'border-blueGray-200',
@@ -14,7 +14,7 @@
 
 @can('role.create')
 <div class="flex justify-end transform -translate-y-40">
-  <button id="openRoleModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6" href="{{route('roles.create')}}">create role</button>
+  <button id="openRoleModel" class="text-center ml-0 mr-2 sm:ml-auto w-36   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6" >create role</button>
 </div>
 @endcan
  <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl mx-4 transform -translate-y-40 ">
@@ -43,7 +43,7 @@
           <td  class=" text-white p-2">
             <div class="flex gap-2 justify-start">
               @can('role.delete')
-              <form class="rolesdelete" action="{{route('roles.destroy',$role->id)}}"  method="POST">
+              <form class="rolesdelete" action="{{route('admin.roles.destroy',$role->id)}}"  method="POST">
                 @csrf
                 @method('delete')
                 <button type="submit" class="text-red-500 rounded-lg p-2 cursor-pointer hover:text-red-300">

@@ -5,7 +5,7 @@ use App\Enums\PermissionModule;
 
   <div class="ml-6">
     <p class="text-xl text-gray-100">Create New Permission.</p>
- <form id="addpermission" action="{{route('permissions.store')}}" method="POST">
+ <form id="addpermission" action="{{route('admin.permissions.store')}}" method="POST">
  @csrf
  @method("POST")
  <label for="name" class="mt-2 block text-slate-200 text-sm mb-1 font-bold  ">

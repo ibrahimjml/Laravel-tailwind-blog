@@ -6,18 +6,6 @@ use App\Http\Controllers\User\{
   ProfileController,
   QrcodeController,
 };
-use App\Http\Controllers\Admin\{
-    AdminController,
-    CategoriesController,
-    CommentReportController,
-    NotificationsController,
-    TagsController,
-    PermissionsController,
-    PostReportController,
-    ProfileReportController,
-    RolesController,
-    SettingController
-};
 use App\Http\Controllers\{
     CategoryController,
     CommentController,
@@ -47,8 +35,6 @@ use App\Http\Controllers\{
 // HOME
 Route::get('/',HomeController::class)->name('home');
 
-// auth routes
-require __DIR__."/auth.php";
 
 // Blog Page
 Route::get('/blog',[PostController::class,'blogpost'])->name('blog')->middleware('auth');
@@ -74,16 +60,16 @@ Route::post('/image-delete', [TinyMCEController::class, 'deleteImage'])->name('t
 
 // profile
 Route::controller(ProfileController::class)
-->prefix('/@{user:username}')
-->middleware('can:view,user')
-->group(function(){
-// User Profile 
+    ->prefix('/@{user:username}')
+    ->middleware('can:view,user')
+    ->group(function(){
+
  Route::get('/','Home')->name('profile');
  Route::get('activity','activity')->name('profile.activity');
  Route::get('/about','aboutme')->name('profile.aboutme');
  
 });
-// profile settings
+// settings
 Route::prefix('profile')
 ->controller(ProfileSettingsController::class)
 ->middleware('password.confirm')
@@ -129,80 +115,3 @@ Route::get('/notifications/read/all', [NotificationController::class, 'markallas
 Route::delete('/notifications/{id}/delete', [NotificationController::class, 'delete'])->name('notifications.delete');
 Route::delete('/notifications/deleteAll', [NotificationController::class, 'deleteAll'])->name('notifications.deleteAll');
 
-// admin panel
-Route::prefix('admin')
-    ->middleware('can:makeAdminActions')
-    ->group(function () {
-    Route::controller(AdminController::class)->group(function(){
-      Route::get('/panel', 'admin')->name("admin-page");
-      Route::get('/users', 'users')->name('admin.users');
-      Route::get('/posts', 'posts')->name('admin.posts');
-      // create feature post
-      Route::get('/featured', 'featuredpage')->name('featuredpage');
-      Route::post('/featured', 'create_feature')->name('admin.featured');
-      //toggle featured posts
-      Route::put('/toggle/feature/{post}','toggle_feature')->name('toggle.feature');
-      // edit status post
-      Route::put('/edit/post/{post}','edit_status')->name('edit.status');
-      // create user
-      Route::post('/create/user','createuser')->name('create.user');
-      Route::put('/edit/{user}','updateuser')->name('update.user');
-      // update user role
-      Route::put('/role-update/{user}', 'role')->name('role.update');
-      //toggle blocked user status
-      Route::put('/toggle/block/{user}', 'toggle_block')->name('toggle.block');
-    });
-      // post reports
-      Route::controller(PostReportController::class)
-            ->prefix('postreports')->group(function(){
-        Route::get('/', 'post_reports')->name('admin.postreports');
-        Route::delete('/delete/{report}', 'report_delete')->name('delete.report');
-        Route::patch('/toggle/{report}/status','toggle_status')->name('toggle.status');
-      });
-      // profile reports
-         Route::controller(ProfileReportController::class)
-              ->prefix('profilereports')->group(function(){
-        Route::get('/', 'profile_reports')->name('admin.profilereports');
-        Route::delete('/delete/{report}', 'profile_report_delete')->name('delete.profile.report');
-        Route::patch('/toggle/{report}/status','toggle_status')->name('toggle.profile.status');
-      });
-      // comment reports
-         Route::controller(CommentReportController::class)
-             ->prefix('commentreports')->group(function(){
-        Route::get('/', 'comment_reports')->name('admin.commentreports');
-        Route::delete('/delete/{report}', 'comment_report_delete')->name('delete.comment.report');
-        Route::patch('/toggle/{report}/status','toggle_status')->name('toggle.comment.status');
-      });
-    // manage Tags
-    Route::controller(TagsController::class)->group(function(){
-    Route::get('/hashtags', 'hashtagpage')->name('hashtagpage');
-    Route::post('/create/tag', 'create_tag')->name('create.hashtag');
-    Route::put('/edit/tag/{hashtag}', 'edit_tag')->name('edit.hashtag');
-    Route::delete('/delete/{hashtag}', 'delete_tag')->name('delete.hashtag');
-    // toggle feature tag
-    Route::put('feature/tag/{hashtag}','toggle_feature_tag')->name('feature.tag');
-    });
-    // manage Categories 
-    Route::controller(CategoriesController::class)->group(function(){
-    Route::get('Categories','categorypage')->name('categorypage');
-    Route::post('/create/category', 'create_category')->name('create.category');
-    Route::put('/edit/category/{category}', 'edit_category')->name('edit.category');
-    Route::delete('/delete/category/{category}', 'delete_category')->name('delete.category');
-    // toggle feature category
-    Route::put('feature/category/{category}','toggle_feature_category')->name('feature.category');
-  });
-  Route::controller(NotificationsController::class)->group(function(){
-    Route::get('/notifications', 'notifications')->name('admin.notify');
-    Route::get('/notifications/{id}/read',  'markasread')->name('admin.notifications.read');
-  });
-    Route::resource('roles',RolesController::class);
-    Route::resource('permissions',PermissionsController::class);
-    Route::delete('/admin/delete/{user}', [AdminController::class, 'destroy'])->name('delete.user');
-  
-  Route::controller(SettingController::class)->group(function(){
-  Route::get('/settings', 'settings')->name('admin.settings');
-  Route::put('/settings/{user}', 'update_settings')->name('admin.update');
-  Route::put('/settings-pass/{user}', 'update_pass')->name('admin.pass');
-  Route::put('/settings-aboutme/{user}', 'update_aboutme')->name('admin.aboutme');
-    });
-});

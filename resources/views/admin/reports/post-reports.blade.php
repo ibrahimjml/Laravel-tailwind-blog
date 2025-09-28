@@ -5,7 +5,7 @@
 <div class="md:ml-64 ">
 @include('admin.partials.header', [
         'linktext'       => 'manage Post Reports',
-         'route'         => 'admin.posts', 
+         'route'         => 'admin.reports.posts.index', 
          'value'         => request('search'),
          'searchColor'     => 'bg-blueGray-200',
          'borderColor'     => 'border-blueGray-200',
@@ -65,7 +65,7 @@
       <td>
         <div class="flex items-center justify-center gap-2">
       @can('postreport.delete')
-          <form action='{{route('delete.report',$report->id)}}' method="POST"
+          <form action='{{route('admin.reports.posts.delete',$report->id)}}' method="POST"
          onsubmit="return confirm('Are you sure you want to delete this report?');">
          @csrf
          @method('delete')
