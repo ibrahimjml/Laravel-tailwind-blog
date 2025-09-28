@@ -20,7 +20,11 @@ class CommentObserver
             ->increment('replies_count');
             return;
       }
-      event(new CommentCreatedEvent($comment));
+       // dont fire event if running in seeder
+      if (!app()->runningInConsole()) {
+          event(new CommentCreatedEvent($comment));
+         }
+
     }
    
     public function deleting(Comment $comment){
