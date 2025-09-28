@@ -44,10 +44,11 @@ class AdminSeeder extends Seeder
                $perm->slug = Str::slug($perm->name);
                $perm->save();
         });
-
-        Role::firstOrCreate(['name' => 'Moderator']);
-        Role::firstOrCreate(['name' => 'User']);
-        $adminrole = Role::firstOrCreate(['name' => 'Admin']);
+        
+        foreach (\App\Enums\UserRole::cases() as $role) {
+            Role::firstOrCreate(['name' => $role->value]);
+        }
+        $adminrole = Role::where('name',\App\Enums\UserRole::ADMIN->value)->first() ;
         $permissions = Permission::pluck('id');
         $adminrole->permissions()->sync($permissions);
 
@@ -60,6 +61,7 @@ class AdminSeeder extends Seeder
           'avatar' => 'default.jpg',
           'cover_photo' => 'sunset.jpg',
           'created_at' => Carbon::now(),
+          'email_verified_at' => now()
         ]);
       $admin->roles()->syncWithoutDetaching([$adminrole->id]);
     }

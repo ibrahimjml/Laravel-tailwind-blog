@@ -19,9 +19,11 @@ class UserFactory extends Factory
             'username' => fake()->unique()->userName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => bcrypt('password'), // password
+            'password' => bcrypt('password'), 
             'remember_token' => Str::random(10),
-            'avatar'=>'default.jpg',
+            'avatar'=> 'default.jpg',
+            'cover_photo'=> 'sunset.jpg',
+            'age'=> fake()->numberBetween(20, 65),
         ];
     }
 
