@@ -17,7 +17,7 @@
 ![Notification menu](https://i.postimg.cc/kMjCrJdM/Screenshot-2025-09-22-125701.png)
 ![Reportpost](https://i.postimg.cc/V6v8qzR3/Screenshot-2025-09-18-235631.png)
 ![Commentsmodel](https://i.postimg.cc/qBxC0ZBV/Screenshot-2025-04-22-202005.png)
-![Profile home](https://i.postimg.cc/D0PmWtV8/Screenshot-2025-09-24-185546.png)
+![Profile home](https://i.postimg.cc/KjndgWSX/127-0-0-1-8000-ibrahim123-5.png)
 ![Profile activity](https://i.postimg.cc/q7g38kpV/Screenshot-2025-09-20-233621.png)
 ![Profile report](https://i.postimg.cc/L6y6rkmK/Screenshot-2025-09-24-185620.png)
 ![Qrcode](https://i.postimg.cc/4NZHWvX1/Screenshot-2025-09-20-232729.png)
@@ -53,6 +53,7 @@
 - **Profile Aboutme:** User description or talikng about his works.
 - **Share Profile:** User can share his profile via whatsapp / facebook / linkedin / twitter / or copy link.
 - **Qrcode Profile:** User qrcode profile he can download it to share it.
+- **Pin Posts:** User can pin up to 3 posts by sorting order.
 - **Profile Info Settings:** User profile info update profile image / cover image / name / phone number / profile bio / add socail links / add custom links.
 - **Profile Account Settings:** User profile account for updating username 'user can change username only once '/ email / change password / delete account.
 
