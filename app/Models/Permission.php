@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Builders\PermissionBuilder;
 use App\Enums\PermissionModule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,10 @@ class Permission extends Model
      protected $casts =[
        'module' => PermissionModule::class
      ];
+      public function newEloquentBuilder($query)
+      {
+          return new PermissionBuilder($query);
+      }
       protected static function booted()
     {
         static::creating(function ($permission) {

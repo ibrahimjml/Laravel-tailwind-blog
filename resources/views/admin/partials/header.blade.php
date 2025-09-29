@@ -16,9 +16,9 @@
     </a>
 
     {{-- Search Form --}}
-    <form action="{{ route($route) }}" method="GET" class="relative w-full md:w-64">
+    <x-forms.filter-form exclude="search" :action="route($route)" class="relative w-full md:w-64">
       <input 
-        type="search" 
+        type="search"
         name="{{ $name }}" 
         id="{{ $name }}" 
         value="{{ old($name, $value) }}"
@@ -28,6 +28,6 @@
       <button type="submit" class="absolute right-0 top-0 h-full px-4 {{ $searchColor }} text-white rounded-r">
         <i class="fas fa-search"></i>
       </button>
-    </form>
+    </x-forms.filter-form>
   </nav>
 </div>

@@ -1,4 +1,5 @@
 <div class="flex items-center flex-wrap gap-4 ml-3">
+  <!-- Sort -->
 <x-forms.filter-form exclude="sort">
   <div class=" w-fit z-30">
     <select id="sort" name="sort"
@@ -6,10 +7,6 @@
       onchange="this.form.submit()">
       <option value="latest" {{ request('sort') === 'latest' ? 'selected' : '' }}>Latest</option>
       <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest</option>
-      @foreach (\App\Enums\TagStatus::cases() as $status)
-        <option value="{{$status->value}}" {{ request('sort') === $status->value ? 'selected' : '' }}>{{$status->name}}
-        </option>
-      @endforeach
     </select>
     <!-- Custom white arrow -->
     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">

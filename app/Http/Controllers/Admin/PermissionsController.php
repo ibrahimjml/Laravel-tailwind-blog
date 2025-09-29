@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Fluent;
 
 class PermissionsController extends Controller
 {
@@ -18,10 +19,11 @@ class PermissionsController extends Controller
     public function index()
     {
       return view('admin.permissions.permissions', [
-               'permissions' => Permission::orderBy('module')
-                          ->orderBy('slug')
+            'permissions' => Permission::orderBy('module')
+                          ->filter(new Fluent(request()->only('search','sort','module')))
                           ->get()
-                          ->groupBy('module'), 
+                          ->groupBy('module'),
+              'modules' => Permission::distinct()->pluck('module')          
                ]);
     }
 

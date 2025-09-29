@@ -12,16 +12,10 @@
          'backgroundColor'  => 'bg-gray-400'
       ])
 
-    {{-- Filter + Button --}}
-  <div class="flex justify-between items-center mb-5 transform -translate-y-40 px-4">
-    <div class="bg-blueGray-200 rounded-md p-2 h-10 flex items-center">
-      <form action="{{ url()->current() }}" method="GET" class="flex items-center gap-2">
-        <input type="checkbox" name="blocked" value="1"
-          {{ request('blocked') ? 'checked' : '' }}
-          onchange="this.form.submit()" class="rounded w-4 h-4">
-        <label class="text-blueGray-500 font-semibold" for="blocked">Blocked</label>
-      </form>
-    </div>
+  
+<div class="flex justify-between gap-3 items-center mb-5 transform -translate-y-40 px-4">
+  {{-- filters --}}
+    @include('admin.users.partials.filter')
 
     @can('user.create')
       <button id="openUserModel"
@@ -29,7 +23,7 @@
         Create User
       </button>
     @endcan
-  </div>
+</div>
  <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl lg:max-w-max mx-4 transform -translate-y-40 ">
     <x-tables.table id='' :headers="['#','Avatar','User','Role','Permissions','Submitted Reports','Reports Recieved','Verified','Phone','Age','Blocked','Username ChangedAt','CreatedAt','Actions']" title="Users Table" >
       @forelse ($users as $user)

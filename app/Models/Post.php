@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use App\Builders\PostBuilder;
 use App\Enums\PostStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

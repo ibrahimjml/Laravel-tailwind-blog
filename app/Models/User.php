@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Builders\UserBuilder;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -35,7 +36,10 @@ class User extends Authenticatable implements MustVerifyEmail
       'username_changed_at'
   ];
 
-
+    public function newEloquentBuilder($query): UserBuilder
+    {
+        return new UserBuilder($query);
+    }
   public function post(){
     return $this->hasMany(Post::class)->published();
   }
@@ -76,13 +80,7 @@ class User extends Authenticatable implements MustVerifyEmail
   {
     return $this->hasMany(SocialLink::class);
   }
-public function scopeSearch($query,$search)
-{
-  if(isset($search['search'])){
-    $query->where('name','like','%'.$search['search'].'%')
-          ->orWhere('email','like','%'.$search['search'].'%');
-  }
-}
+
 public function getAvatarUrlAttribute()
 {
     return $this->avatar !== "default.jpg" 

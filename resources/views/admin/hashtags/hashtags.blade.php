@@ -5,7 +5,7 @@
 <div class="md:ml-64 ">
 @include('admin.partials.header', [
         'linktext'     => 'Manage Tags', 
-        'route'        => 'admin.users.page',
+        'route'        => 'admin.tags.index',
         'value'         => request('search'),
        'searchColor'      => 'bg-blueGray-200',
        'borderColor'      => 'border-blueGray-200',
@@ -13,7 +13,7 @@
    ])
 {{-- sort by status --}}
 <div class="flex justify-between transform -translate-y-40 px-4">
-  <div class="w-fit">
+  <div class="flex gap-3 w-fit">
     @include('admin.hashtags.partials.filter')
   </div>
   @can('tag.create')
@@ -31,7 +31,7 @@
               {{$hashtag->name}}
             </span>
             </td>
-          <td class="p-2">  {{$hashtag->allPosts->count()}}</td>
+          <td class="p-2"> {{$hashtag->allPosts->count()}}</td>
           
           <td>
             <i @class([

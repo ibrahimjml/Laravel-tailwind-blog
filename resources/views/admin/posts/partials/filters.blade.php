@@ -1,12 +1,12 @@
 <div class="flex items-center flex-wrap gap-4 ml-3">
-  <!-- Sort & Featured -->
+
   <div class="flex gap-2 items-center">
     <!-- Sort Form -->
-    <form action="{{ url()->current() }}" method="GET">
+    <x-forms.filter-form exclude="sort">
       <div class="relative w-full">
         <select id="sort" name="sort"
           class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-blueGray-200 text-blueGray-500 border-0 text-sm rounded-lg p-2.5"
-          onchange="this.form.submit()" onchange="this.form.submit()">
+          onchange="this.form.submit()">
           <option value="latest" {{ request('sort') === 'latest' ? 'selected' : '' }}>Latest</option>
           <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest</option>
           @foreach (\App\Enums\PostStatus::cases() as $status)
@@ -20,24 +20,33 @@
           </svg>
         </div>
       </div>
-    </form>
+    </x-forms.filter-form>
 
     <!-- Featured Checkbox -->
     <div class="bg-blueGray-200 rounded-md p-2 h-10 flex items-center">
-      <form action="{{ url()->current() }}" method="GET" class="flex items-center gap-1">
+    <x-forms.filter-form exclude="featured" class="flex items-center gap-1">
         <input type="checkbox" name="featured" value="1" {{ request('featured') ? 'checked' : '' }}
           onchange="this.form.submit()" class="rounded-full w-4 h-4">
         <label class="text-blueGray-500 font-semibold" for="featured">Featured</label>
-      </form>
+    </x-forms.filter-form>
     </div>
     <!-- Reported Checkbox -->
     <div class="bg-blueGray-200 rounded-md p-2 h-10 flex items-center">
-      <form action="{{ url()->current() }}" method="GET" class="flex items-center gap-1">
+      <x-forms.filter-form exclude="reported" class="flex items-center gap-1">
         <input type="checkbox" name="reported" value="1" {{ request('reported') ? 'checked' : '' }}
           onchange="this.form.submit()" class="rounded-full w-4 h-4">
         <label class="text-blueGray-500 font-semibold" for="reported">Reported</label>
-      </form>
+      </x-forms.filter-form>
     </div>
   </div>
-
+    <!-- Clear Filters  -->
+    @if(request()->anyFilled(['search', 'sort', 'featured', 'reported']))
+      <a href="{{ url()->current() }}" 
+         class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg text-sm transition duration-200 flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        Clear Filters
+      </a>
+    @endif
 </div>

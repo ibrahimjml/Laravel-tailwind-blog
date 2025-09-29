@@ -11,14 +11,17 @@
        'borderColor'       => 'border-blueGray-200',
        'backgroundColor'   => 'bg-gray-400'
     ])
-
-    @can('permission.create')
-      <div class="flex justify-end transform -translate-y-40">
-        <button id="openPermissionModel"
-          class="text-center ml-0 mr-2 sm:ml-auto w-fit   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6">create permission</button>
-      </div>
-    @endcan
-
+<div class="flex justify-between transform -translate-y-40 px-4">
+  <div class="flex gap-3 w-fit">
+    @include('admin.permissions.partials.filter')
+  </div>
+@can('permission.create')
+  <button id="openPermissionModel"
+        class="text-center ml-0 mr-2 sm:ml-auto w-fit   bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6">
+        create permission
+  </button>
+@endcan
+</div>
    <div class="bg-white shadow rounded-xl overflow-hidden w-7xl mx-4 transform -translate-y-40 ">
       @foreach ($permissions as $module => $group)
         <x-tables.table id="tablepermissions" :headers="['#', 'Permission', 'Module', 'Description', 'CreatedAt', 'Actions']"

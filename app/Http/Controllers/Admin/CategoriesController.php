@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Fluent;
 
 class CategoriesController extends Controller
 {
@@ -18,8 +19,11 @@ class CategoriesController extends Controller
   }
     public function categories()
     {
+      $categories = Category::filterCategory(new Fluent(request()->only('sort','search','featured')))
+                    ->paginate(7)
+                    ->withQueryString();
       return view('admin.categories.categories',[
-        'categories' => Category::paginate(7)
+        'categories' => $categories
       ]);
     }
     public function create(Request $request)

@@ -33,7 +33,7 @@ class PublicController extends Controller
              ->whereIn('id',$postsid)
              ->withCount(['likes', 'comments'])
              ->with(['user','hashtags'])
-             ->sortby($dto->sort)
+             ->blogSort($dto->sort)
              ->paginate(5)
              ->withQueryString();
 

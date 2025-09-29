@@ -1,8 +1,12 @@
 <?php
 
 namespace App\Builders;
+
+use App\Enums\PostStatus;
 use App\Models\Hashtag;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Fluent;
+
 class PostBuilder extends Builder
 {
     public function search(?string $search): Builder
@@ -14,10 +18,15 @@ class PostBuilder extends Builder
                   ->orWhere('description', 'like', "%$search%")
                   ->orWhereHas('hashtags', function ($query) use ($search) {
                       $query->where('name', 'like', "%$search%");
+                  })
+                    ->orWhereHas('user', function ($query) use ($search) {
+                      $query->where('name', 'like', "%$search%")
+                            ->orWhere('username', 'like', "%$search%");
                   });
         });
     }
-    public function sortBy(string $sort): self
+    // blog sort
+    public function blogSort(string $sort): self
     {
        match ($sort) {
             'latest' => $this->latest(),
@@ -53,4 +62,41 @@ class PostBuilder extends Builder
 
         return $this->whereRaw('0 = 1');
     }
+    // admin sort
+     public function adminSort(string $sort): self
+    {
+       match ($sort) {
+            'latest' => $this->latest(),
+            'oldest' => $this->oldest(),
+            'published' => $this->filterByStatus(PostStatus::PUBLISHED),
+            'banned' => $this->filterByStatus(PostStatus::BANNED),
+            'trashed' => $this->filterByStatus(PostStatus::TRASHED),
+            default => $this->latest(),
+        };
+
+        return $this;
+    }
+      public function filterByStatus(PostStatus $status): self
+    {
+        return $this->where('status', $status->value);
+        
+    }
+    public function featured(bool $featured = true): self
+    {
+        return $this->when($featured, fn($q) => $q->where('is_featured', 1));
+    }
+    public function reported(bool $reported = true): self
+    {
+        return $this->when($reported, fn($q) => $q->where('is_reported', 1));
+    }
+
+    public function adminFilter(Fluent $filter): self
+    {
+        return $this
+            ->when($filter->search, fn(PostBuilder $q, $search) => $q->search($search))
+            ->when($filter->sort, fn(PostBuilder $q, $sort) => $q->adminSort($sort))
+            ->when($filter->featured, fn(PostBuilder $q) => $q->featured())
+            ->when($filter->reported, fn(PostBuilder $q) => $q->reported());
+    }
+
 }

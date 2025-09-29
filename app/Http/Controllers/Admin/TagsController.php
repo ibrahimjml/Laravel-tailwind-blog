@@ -6,6 +6,7 @@ use App\Enums\TagStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Hashtag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Fluent;
 use Illuminate\Validation\Rules\Enum;
 
 class TagsController extends Controller
@@ -31,10 +32,11 @@ class TagsController extends Controller
 }
 
   public function hashtags(Request $request){
-    $sort = $request->get('sort','all');
+
     $hashtags = Hashtag::query()
-              ->status($sort)
-              ->paginate(6);
+              ->filterTag(new Fluent($request->only('sort','search','featured')))
+              ->paginate(6)
+              ->withQueryString();
     return view('admin.hashtags.hashtags',[
       'hashtags' => $hashtags
     ]);

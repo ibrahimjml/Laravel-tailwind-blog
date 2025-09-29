@@ -32,7 +32,7 @@ class PostController extends Controller
             ->published()
             ->with(['user:id,username,avatar', 'hashtags:id,name,is_featured','categories:id,name,is_featured'])
             ->withCount('likes','totalcomments')
-            ->sortby($sortoption)
+            ->blogSort($sortoption)
             ->paginate(5)
            ->withQueryString();
 
