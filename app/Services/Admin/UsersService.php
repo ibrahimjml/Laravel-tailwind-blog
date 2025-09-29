@@ -8,18 +8,18 @@ use App\Enums\UserRole;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Fluent;
 
 class UsersService
 {
     public function getUsers(array $filters)
     {
-        $blocked = (bool) ($filters['blocked'] ?? false);
+        $filter = new Fluent($filters);
 
   return User::with(['roles','roles.permissions','userPermissions']) 
                 ->withCount(['reportsSubmitted', 'reportsReceived'])
                ->latest()
-               ->search($filters['search'] ?? false)
-               ->when($blocked, fn($q) => $q->where('is_blocked', 1))
+               ->filter($filter)
                ->paginate(6)
                ->withQueryString();
     }

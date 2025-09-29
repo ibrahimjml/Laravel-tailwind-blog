@@ -8,31 +8,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\App\CreatePostRequest;
 use App\Models\{Category, Hashtag, Post};
 use App\Services\PostService;
+use App\Services\Admin\PostsService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Fluent;
 use Illuminate\Validation\Rules\Enum;
 
 class PostsController extends Controller
 {
-      public function __construct(){
+      public function __construct(private PostsService $getService)
+       {
           $this->middleware('permission:post.view')->only('posts');
           $this->middleware('permission:post.feature')->only('toggleFeature');
-      }
+       }
     public function posts(Request $request)
   {
-    $sort = $request->get('sort', 'latest'); 
-    $choose = $sort === 'oldest' ? 'ASC' : 'DESC';
-    $featured = (bool) $request->get('featured',false);
-    $reported = (bool) $request->get('reported',false);
-    $posts = Post::with(['user','allHashtags','categories'])
-          ->search($request->get('search'))
-          ->withCount('totalcomments')
-          ->when($sort && in_array($sort, array_map(fn($case) => $case->value, PostStatus::cases())), fn($q) => $q->status($sort))
-          ->when($featured, fn($q) => $q->where('is_featured', 1))
-          ->when($reported, fn($q) => $q->where('is_reported', 1))
-          ->orderBy('created_at', $choose)
-          ->paginate(7,['*'],'admin_posts')
-          ->withQuerystring();
-
+     $filter = new Fluent(request()->only('search','sort','featured','reported'));
+     $posts = $this->getService->getPosts($filter);
 
     return view('admin.posts.posts',[
       'posts'=>$posts,
@@ -59,19 +50,7 @@ return to_route('admin.posts');
       'status' => ['required',new Enum(PostStatus::class)]
     ]);
     $status = PostStatus::from($fields['status']);
-
-    $post->published_at = null;
-    $post->banned_at = null;
-    $post->trashed_at = null;
-
-     match ($status) {
-        PostStatus::PUBLISHED => $post->published_at = now(),
-        PostStatus::BANNED    => $post->banned_at = now(),
-        PostStatus::TRASHED   => $post->trashed_at = now(),
-        default               => null, 
-    };
-     $post->status = $status;
-     $post->save();
+    $this->getService->updateStatus($post,$status);
      
     return response()->json([
       'updated' => true,

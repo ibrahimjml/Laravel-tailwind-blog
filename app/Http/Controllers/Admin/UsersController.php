@@ -25,11 +25,11 @@ class UsersController extends Controller
      }
       public function users(Request $request)
   {
-    $users = $this->service->getUsers($request->only('search','blocked'));
+    $users = $this->service->getUsers($request->only('search','blocked','sort'));
     $roles = Role::all();
     return view('admin.users.users',[
       'users'=>$users,
-      'filter'=>$request->only(['search','blocked']),
+      'filter'=>$request->only(['search','blocked','sort']),
       'permissions' => Permission::all()->groupBy('module'),
       'roles'=>$roles
     ]);
