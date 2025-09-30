@@ -8,39 +8,52 @@ use App\Models\User;
 
 class PostPolicy
 {
-  public function before(User $user, string $ability): bool|null
-    {
-        if ($user->hasRole('Admin') ) {
+  public function before(User $user, string $ability,?Post $model): bool|null
+    {   
+        if ($user->hasRole(\App\Enums\UserRole::ADMIN->value) ) {
             return true; 
         }
-        $permission = "post.$ability";
-        if ($user->hasPermission($permission)) {
-        return true;
-    }
+      if ($model instanceof Post && $model->user->hasRole(\App\Enums\UserRole::ADMIN->value)) {
+           return false;
+         }
         return null; 
+    }
+    public function viewAny(User $user, Post $post): bool
+    {
+      return $user->hasPermission('post.viewAny');
     }
     public function view(User $user, Post $post): bool
     {
-      return  $user->id === $post->user_id;
+      return $user->hasPermission('post.viewAny') || $user->id === $post->user_id;
     }
-  
+    public function create(User $user, Post $post): bool
+    {
+      return $user->hasPermission('post.create');
+    }
+    
+    public function updateAny(User $user, Post $post): bool
+    {
+      return  $user->hasPermission('post.update');
+    }
     public function update(User $user, Post $post): bool
     {
-      return  $user->id === $post->user_id;
+      return $user->hasPermission('post.update') || $user->id === $post->user_id;
     }
-  public function make_feature(User $user, Post $post): bool
+  public function feature(User $user, Post $post): bool
     {
       return  $user->hasPermission('post.feature');
     }
   public function report(User $user, Post $post): bool
   {
-    if($post->user_id === $user->id) return false;
-    if($post->user && $post->user->hasRole('Admin')) return false;
-    return true;
+    return $user->id !== $post->user_id;
   }
+    public function deleteAny(User $user, Post $post): bool
+    {
+      return  $user->hasPermission('post.delete');
+    }
     public function delete(User $user, Post $post): bool
     {
-      return  $user->id === $post->user_id;
+      return $user->hasPermission('post.delete') || $user->id === $post->user_id;
     }
 
 }

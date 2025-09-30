@@ -95,6 +95,7 @@
         @endforeach
         <td class="p-2">{{$post->created_at->diffForHumans()}}</td>
         <td class=" text-white p-2 ">
+        {{-- actions --}}
         <div class="flex items-center justify-center">
         @include('admin.posts.partials.actions', ['post' => $post])
         </div>

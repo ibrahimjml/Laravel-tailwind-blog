@@ -18,10 +18,6 @@ class UsersController extends Controller
      public function __construct(private UsersService $service){
         $this->middleware('permission:user.view')->only('users');
         $this->middleware('permission:user.create')->only('createUser');
-        $this->middleware('permission:user.edit')->only('updateUser');
-        $this->middleware('permission:user.block')->only('toggle');
-        $this->middleware('permission:user.role')->only('role');
-        $this->middleware('permission:user.delete')->only('destroy');
      }
       public function users(Request $request)
   {
@@ -43,7 +39,7 @@ public function createUser(CreateUserRequest $request)
     return back();
 }
 public function updateUser(UpdateUserRequest $request, User $user)
-{
+{     $this->authorize('updateAny',$user);
       $dto = UpdateUserDTO::fromRequest($request);
       $this->service->updateUser($user,$dto);
 
@@ -64,7 +60,7 @@ public function updateUser(UpdateUserRequest $request, User $user)
 
   public function destroy(User $user){
 
-    $this->authorize('delete',$user);
+    $this->authorize('deleteAny',$user);
      $this->service->deleteUser($user);
 
     toastr()->success('user deleted',['timeOut'=>1000]);

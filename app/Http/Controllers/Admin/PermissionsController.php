@@ -36,7 +36,7 @@ class PermissionsController extends Controller
              ]);
         $permission = Permission::create($fields);
         return response()->json([
-           'added'=>true,
+            'added'=>true,
             'Permission' => $permission->name
            ]);
        }

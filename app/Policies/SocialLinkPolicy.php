@@ -10,19 +10,14 @@ class SocialLinkPolicy
 {
    public function before(User $user, string $ability): bool|null
     {
-        if ( $user->hasRole('Admin')) {
+        if ( $user->hasRole(\App\Enums\UserRole::ADMIN->value)) {
             return true; 
         }
-       $permission = "user.$ability";
-    
-    if ( $user->hasPermission($permission)) {
-        return true;
-    }
         return null; 
     }
 
     public function deleteSocial(User $user,SocialLink $link)
     {
-      return $user->id === $link->user_id;
+      return $user->hasPermission('user.deleteSocial') || $user->id === $link->user_id;
     }
 }

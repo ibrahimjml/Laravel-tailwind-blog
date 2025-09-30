@@ -17,8 +17,7 @@ class PostsController extends Controller
 {
       public function __construct(private PostsService $getService)
        {
-          $this->middleware('permission:post.view')->only('posts');
-          $this->middleware('permission:post.feature')->only('toggleFeature');
+          $this->middleware('permission:post.view')->only(['posts','featuredPage']);
        }
     public function posts(Request $request)
   {
@@ -42,10 +41,11 @@ public function featuredPage(){
  $dto = CreatePostDTO::fromAppRequest($request);
  $service->create($dto);  
 toastr()->success('post feature created',['timeOut'=>1000]);
-return to_route('admin.posts');
+return to_route('admin.posts.page');
   }
   public function editStatus(Post $post,Request $request)
   {
+    $this->authorize('updateAny',$post);
     $fields = $request->validate([
       'status' => ['required',new Enum(PostStatus::class)]
     ]);
@@ -60,7 +60,7 @@ return to_route('admin.posts');
 
    public function toggleFeature(Post $post)
  {
-  $this->authorize('make_feature',$post);
+  $this->authorize('feature',$post);
   $post->update(['is_featured'=>!$post->is_featured]);
   if($post->is_featured){
     toastr()->success('post featured success',['timeOut'=>1000]);

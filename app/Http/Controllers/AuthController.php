@@ -52,7 +52,7 @@ class AuthController extends Controller
       }
     toastr()->success('logged in successfuly',['timeOut'=>1000]);
 
-    if(auth()->user()->hasAnyRole(['Admin','Moderator']) || auth()->user()->hasPermission('Access')){
+    if(auth()->user()->is_admin){
         return redirect('/admin/panel');;
       }
       return redirect('/');

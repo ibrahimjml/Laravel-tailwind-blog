@@ -4,7 +4,7 @@
 </button>
 {{-- delete|edit model  --}}
 <div id="model" class="absolute top-10 right-3 z-10 w-36 h-20 rounded-lg bg-slate-50 px-2 py-4 space-y-2 hidden">
-  @can('view',$post)
+  @can('update',$post)
    <a href="{{route('edit.post',$post->slug)}}" class="block font-semibold w-full rounded-md pl-3 hover:bg-gray-400 hover:text-white transition-all duration-150">Edit</a>
    @endcan
    @can('delete',$post)
@@ -16,7 +16,6 @@
    @endcan
 </div>
 @push('scripts')
-    @can('view',$post)
 <script>
   const OpenModel = document.getElementById('openmodel');
   const Model = document.getElementById('model');
@@ -28,5 +27,4 @@
     }
   })
 </script>
-@endcan
 @endpush

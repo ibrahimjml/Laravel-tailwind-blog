@@ -7,6 +7,7 @@
         <select id="sort" name="sort"
           class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-blueGray-200 text-blueGray-500 border-0 text-sm rounded-lg p-2.5"
           onchange="this.form.submit()">
+          <option value="">All</option>
           <option value="latest" {{ request('sort') === 'latest' ? 'selected' : '' }}>Latest</option>
           <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest</option>
           @foreach (\App\Enums\PostStatus::cases() as $status)

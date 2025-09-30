@@ -89,7 +89,7 @@
         <td colspan="2" class=" bg-white text-white p-2">
         <div class="flex justify-center gap-2">
         <div>
-        @can('delete',$user)
+        @can('deleteAny',$user)
         <form action="{{ route('admin.users.delete', $user) }}" method="POST"
         onsubmit="return confirm('Are you sure you want to delete this user?');">
         @csrf
@@ -112,7 +112,7 @@
         </form>
         @endcan
         </div>
-        @can('user.edit')
+        @can('updateAny',$user)
         <button data-user-id="{{ $user->id }}" class="editusers text-gray-500 rounded-lg p-2 cursor-pointer hover:text-gray-300" ><i class="fas fa-edit"></i></button>
         @endcan
       </div>
