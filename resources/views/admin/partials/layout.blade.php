@@ -108,7 +108,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
  
-  @if(Route::is('featuredpage'))
+  @if(Route::is('admin.posts.featured.page'))
     <script src="{{asset('js/hashtagsUI.js')}}" defer></script>
   @endif
   <script>

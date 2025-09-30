@@ -27,16 +27,20 @@ class UserActivityService
                  ->select('id','created_at','parent_id','post_id')
                  ->get()
                  ->map(function($comment){
+                 if (!$comment->post || !$comment->post->slug) {
+                         return null; 
+                     }
                      return [
                          'type' => $comment->parent_id ? 'Replied' : 'Commented',
                          'comment_id' => $comment->id,
-                         'slug' => $comment->post->slug,
+                         'slug' => $comment?->post->slug,
                          'post_title' =>$comment->post->title,
                          'date' => $comment->created_at,
                      ];
-                 });
+                 })->filter();
        
-    return $posts->merge($comments)->sortByDesc('date')
-            ->groupBy(fn($activity) => Carbon::parse($activity['date'])->format('M j Y'));
+    return $posts->merge($comments)
+                 ->sortByDesc('date')
+                ->groupBy(fn($activity) => Carbon::parse($activity['date'])->format('M j Y'));
     }
 }
