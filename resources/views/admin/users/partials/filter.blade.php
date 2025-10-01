@@ -7,8 +7,9 @@
       onchange="this.form.submit()">
       <option value="latest" {{ request('sort') === 'latest' ? 'selected' : '' }}>Latest</option>
       <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest</option>
-      @foreach (\App\Enums\UserRole::cases() as $status)
-        <option value="{{$status->value}}" {{request('sort') === $status->value ? 'selected' : ''}}>{{$status->name}}
+      @foreach ($roles as $role)
+        <option value="{{$role->name}}" {{request('sort') === $role->name ? 'selected' : ''}}>
+          {{ucfirst($role->name)}}
         </option>
       @endforeach
     </select>

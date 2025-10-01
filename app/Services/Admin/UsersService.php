@@ -66,15 +66,15 @@ class UsersService
       return $user->update(['is_blocked' => !$user->is_blocked]);
     }
 
-    public function changeRole(User $user,UserRole $roleName)
+    public function changeRole(User $user,string $roleName)
     {
-       $role = Role::where('name', $roleName->value)->firstOrFail();
+       $role = Role::where('name', $roleName)->firstOrFail();
         $user->roles()->sync([$role->id]);
         
-
-        if ($role->name !== 'User') {
+        if ($role->name !== UserRole::USER) {
             $user->userPermissions()->detach();
         }
+        
     }
 
     public function deleteUser(User $user): bool|null

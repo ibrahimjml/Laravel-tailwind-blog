@@ -77,13 +77,17 @@
 @enderror
 <div class="flex flex-col ">
   <label for="roles" class="mt-2 block text-slate-200 text-sm mb-1 font-bold">Roles:</label>
-  @foreach (\App\Enums\UserRole::cases() as $role)  
+  @foreach ($roles as $role)  
+  @php
+$selectedRole = $user->roles->first()?->name;
+@endphp
     <label class="mr-4 text-white">
-      <input type="radio" name="roles" value="{{ $role->value }}" class="mr-1" {{$role->value === $user->roles->first()?->name ? 'checked' : ''}}>
-      {{ $role->value }}
+      <input type="radio" name="roles" value="{{ $role->name }}" class="mr-1" {{$selectedRole === $role->name ? 'checked' : ''}}>
+      {{ ucfirst($role->name) }}
     </label>
   @endforeach
 </div>
+@if($selectedRole === \App\Enums\UserRole::USER->value)
 <label for="permissions" class="text-white">Permissions:</label>
 <div class="flex flex-col h-52 overflow-y-auto">
 @foreach ($permissions as $module => $modulePermissions)
@@ -101,6 +105,7 @@
     </div>
 @endforeach
 </div>
+@endif
 <button type="submit" class="w-42 bg-green-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center cursor-pointer">Update</button>
 </form> 
 <button id="closeEditModel-{{ $user->id }}" class=" bg-transparent border-2 text-slate-200 py-2 px-5 rounded-lg font-bold capitalize hover:border-gray-500 transition duration-300 mt-2">Cancel</button>

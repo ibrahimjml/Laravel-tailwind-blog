@@ -2,7 +2,7 @@
 
 namespace App\Builders;
 
-use App\Enums\UserRole;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Fluent;
 
@@ -17,22 +17,22 @@ class UserBuilder extends Builder
 }
     public function sortBy(string $sort): self
     {
+       $roleNames = \App\Models\Role::pluck('name')->toArray();
        match ($sort) {
             'latest' => $this->latest(),
             'oldest' => $this->oldest(),
-            'Admin' => $this->filterByRole(UserRole::ADMIN),
-            'Moderator' => $this->filterByRole(UserRole::MODERATOR),
-            'User' => $this->filterByRole(UserRole::USER),
-            default => $this->latest(),
+             default => in_array($sort, $roleNames) 
+            ? $this->filterByRole($sort)
+            : $this->latest()
         };
 
         return $this;
     }
 
-    public function filterByRole(UserRole $role): self
+    public function filterByRole(string $role): self
     {
         return $this->whereHas('roles', fn ($query) =>
-            $query->where('name', $role->value)
+            $query->where('name', $role)
         );
     }
     public function blocked(bool $onlyBlocked = true): self

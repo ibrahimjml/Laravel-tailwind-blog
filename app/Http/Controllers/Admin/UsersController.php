@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\DTOs\Admin\CreateUserDTO;
 use App\DTOs\Admin\UpdateUserDTO;
-use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\App\Admin\{CreateUserRequest, UpdateUserRequest};
 use App\Models\{Permission, Role, User};
 use App\Services\Admin\UsersService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Enum;
+
 
 class UsersController extends Controller
 {
@@ -71,10 +69,10 @@ public function updateUser(UpdateUserRequest $request, User $user)
     $this->authorize('role',$user);
 
     $fields= $request->validate([
-      'role'=>['required', new Enum(UserRole::class)]
+      'role'=>['required','exists:roles,name']
     ]);
     
-    $this->service->changeRole($user, UserRole::from($fields['role']));
+    $this->service->changeRole($user, $fields['role']);
     
     toastr()->success("user role '{$fields['role']}' updated",['timeOut'=>1000]);
     return back();

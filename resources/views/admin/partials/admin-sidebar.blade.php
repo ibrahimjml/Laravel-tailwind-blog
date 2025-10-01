@@ -73,6 +73,13 @@
       Featured
     </a>
   </li>
+  <li class="items-center">
+    <a href="{{route('admin.slides.index')}}"
+      class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('admin.slides.index') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-image mr-2 text-sm opacity-75"></i>
+      Slides
+    </a>
+  </li>
 
   <li class="items-center">
     <a href="{{route('admin.panel')}}"
