@@ -10,7 +10,7 @@
 ## About Laravel
 # Laravel Blog Application
 ## Screanshots
- ![Homepage](https://i.postimg.cc/wTzCLcrg/127-0-0-1-8000-7.png)
+ ![Homepage](https://i.postimg.cc/52QLnsxf/127-0-0-1-8000-2.png)
 ![Blogpage](https://i.postimg.cc/Y0dRMJDD/Screenshot-2025-09-20-223552.png)
 ![Recentposts categorypage](https://i.postimg.cc/j5gn5tKf/Screenshot-2025-09-20-223429.png)
 ![Postpage](https://i.postimg.cc/qRP5NrZc/Screenshot-2025-09-18-233005.png)
@@ -30,6 +30,7 @@
 ![Admin posts](https://i.postimg.cc/fbN4gVD3/Screenshot-2025-09-25-204318.png)
 ![Admin tags](https://i.postimg.cc/WbFHNTB5/Screenshot-2025-09-27-023607.png)
 ![Admin categories](https://i.postimg.cc/66Smm8h9/Screenshot-2025-09-25-204413.png)
+![Admin slides](https://i.postimg.cc/g0Z0C75Z/Screenshot-2025-10-01-215235.png)
 ![Admin roles](https://i.postimg.cc/N0pN7FMv/Screenshot-2025-09-25-204428.png)
 ![Admin permissions](https://i.postimg.cc/wxypM8fj/Screenshot-2025-09-25-204618.png)
 ![Admin reports](https://i.postimg.cc/gkFf0wLg/Screenshot-2025-09-25-204732.png)
@@ -65,6 +66,7 @@
 - **Adminpanel Categories:** Categories management Ajax  create new category / edit category / delete category / make feature category 'hot'.
 - **Adminpanel Roles:** Roles management Ajax  create new role + assign permissions to this role / edit role + edit permissions assigned for role / delete role.
 - **Adminpanel Permissions:** Permissions management Ajax  create new permission / edit permission / delete permission.
+- **Adminpanel Slides:** Dynamic homepage slides   Ajax  create new slide / edit / delete / change order.
 - **Adminpanel Post/Comment Reports:** Post Report management filter by status / change status + sending notification to reporter according to the status / delete post  if he broke community roles / delete report.
 - **Adminpanel Notifications:** Admin notifications sort by read / unread / notification types by post created / registered new users / commented / replies / likes / follows / profile views / post report.
 - **Adminpanel Settings:** Admin settings change  bio  / password change / phone number / username / Aboutme.
