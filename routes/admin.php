@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\{
     ProfileReportController,
     RolesController,
     SettingController,
+    SlidesController,
     UsersController
 };
 
@@ -105,7 +106,8 @@ Route::prefix('admin')
   // roles and permissions
     Route::resource('roles',RolesController::class);
     Route::resource('permissions',PermissionsController::class);
-    
+    //slides
+    Route::resource('slides',SlidesController::class)->except(['create','edit']);
   // settings
   Route::controller(SettingController::class)
             ->prefix('settings')

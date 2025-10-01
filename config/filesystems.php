@@ -43,6 +43,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'slides' => [
+            'driver' => 'local',
+            'root' => public_path('slides'),
+            'url' => env('APP_URL').'/slides',
+            'visibility' => 'public',
+        ],
+        
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

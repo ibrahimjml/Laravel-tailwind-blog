@@ -154,3 +154,48 @@ body.no-scroll {
   background-color: #fffbcc;
   transition: background-color 2s ease;
 }
+
+/* =========================================================
+===   Custom navigation arrows for home page slides
+=========================================================== */
+.custom-swiper-btn {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 10%;
+    background-color: rgba(255, 255, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 20;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.custom-swiper-btn:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+    transform: scale(1.1);
+}
+
+.swiper-button-prev.custom-swiper-btn::after,
+.swiper-button-next.custom-swiper-btn::after {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.5rem;
+    padding: 20px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.swiper-button-prev.custom-swiper-btn::after {
+    content: '‹‹'; 
+}
+
+.swiper-button-next.custom-swiper-btn::after {
+    content: '››'; 
+}
+
+.swiper-button-next.custom-swiper-btn {
+    margin-right: 10px;
+}

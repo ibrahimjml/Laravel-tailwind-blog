@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\MetaHelpers;
+
 use App\Models\Hashtag;
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Models\Slide;
 use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
@@ -40,6 +40,10 @@ if ($trendingHashtag) {
 }
 
   return view('index', [
+      'slides' => Slide::published()
+                  ->latest()
+                  ->get()
+                  ->take(4),
       'featuredPosts' => $featuredPosts,
       'oldestPosts' => $oldestPosts,
       'trendingHashtag' => $trendingHashtag

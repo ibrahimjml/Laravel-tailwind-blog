@@ -29,6 +29,7 @@ class AdminSeeder extends Seeder
         'Comment Reports' => ['commentreport.view','commentreport.delete','commentreport.status'],
         'Roles'           => ['role.create','role.view','role.update','role.delete'],
         'Permissions'     => ['permission.create',  'permission.view',  'permission.update','permission.delete'],
+        'Slides'          => ['slide.create',  'slide.view',  'slide.update','slide.delete'],
         'Notifications'   => ['notifications.view']
         ];
 
