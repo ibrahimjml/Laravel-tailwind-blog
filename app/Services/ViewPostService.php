@@ -24,6 +24,7 @@ class ViewPostService
  $post->latestblogs = Post::published()
           ->latest()
           ->with(['user:id,name,username,avatar'])
+          ->withCount('totalcomments')
           ->where('id','!=',$post->id)
           ->get()
           ->take(8);          

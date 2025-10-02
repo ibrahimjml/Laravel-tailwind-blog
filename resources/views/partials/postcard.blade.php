@@ -1,4 +1,4 @@
-<article class="container mx-auto max-h-[20%] max-w-4xl border rounded-2xl my-4 border-gray-200 bg-white py-6 px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 gap-8">
+<article class="container mx-auto max-h-[20%] max-w-4xl border rounded-2xl my-4 border-gray-200 bg-white py-6 px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 gap-8 group">
 
   <!-- Left Section: User Info + Image + Buttons -->
   <section class="flex flex-col gap-5 h-full">
@@ -32,7 +32,11 @@
     <!-- Post Image -->
     <div class="relative h-64 sm:h-56 w-full rounded-lg overflow-hidden">
       <a href="{{route('single.post',$post->slug)}}">
-        <img loading="lazy" src="{{ $post->image_url }}" alt="{{ $post->title }}" class="w-full h-full object-fill shadow-md">
+        <img loading="lazy" 
+             src="{{ $post->image_url }}" 
+             alt="{{ $post->title }}" 
+             class=" w-full h-full object-fill blur-md bg-gray-200 shadow-md transition-all duration-700 ease-out group-hover:scale-110"
+             onload="this.classList.remove('blur-md', 'bg-gray-200')">
       </a>
       @if($post->is_featured)
       <span class="absolute top-4 left-4 bg-amber-400 bg-opacity-80 text-white text-sm font-medium px-3 py-1 rounded-md">

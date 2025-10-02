@@ -199,3 +199,61 @@ body.no-scroll {
 .swiper-button-next.custom-swiper-btn {
     margin-right: 10px;
 }
+
+
+/* =========================================================
+===   Arrows buttons for carousel posts
+=========================================================== */
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
+}
+
+.carousel::-webkit-scrollbar { display: none; }
+
+.carousel-item {
+  flex: 0 0 30rem;
+}
+
+
+.arrow-group {
+  position: absolute;
+  top: -2rem;
+  right: 7rem;
+  display: flex;
+  gap: 0.5rem; 
+  z-index: 10;
+}
+.scroll-btn {
+  width: 40px;
+  height: 40px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-btn:disabled {
+  opacity: 0.5;
+  cursor: auto;
+}
+
+@media screen and ( 400px <= width <= 600px) {
+  .arrow-group {
+    right: 1rem; 
+  }
+}

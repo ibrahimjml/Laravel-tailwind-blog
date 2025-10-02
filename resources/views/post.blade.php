@@ -1,63 +1,6 @@
 <x-layout>
 @push('styles')
 <style>
-  /*******************
-   carousel latest blogs
-  *******************/
-.carousel-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.carousel {
-  display: flex;
-  overflow-x: auto;
-  gap: 1rem;
-  scroll-behavior: smooth;
-  padding: 1rem 0;
-}
-
-.carousel::-webkit-scrollbar { display: none; }
-
-.carousel-item {
-  flex: 0 0 30rem;
-}
-
-
-.arrow-group {
-  position: absolute;
-  top: -2rem;
-  right: 7rem;
-  display: flex;
-  gap: 0.5rem; 
-  z-index: 10;
-}
-@media screen and ( 400px <= width <= 600px) {
-  .arrow-group {
-    right: 1rem; 
-  }
-}
-
-
-.scroll-btn {
-  width: 40px;
-  height: 40px;
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  font-size: 20px;
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.scroll-btn:disabled {
-  opacity: 0.5;
-  cursor: auto;
-}
   /************************
    Sticky bar nav on scroll
   *************************/
@@ -155,7 +98,7 @@
 </div>
 {{-- 3- post Image --}}
   <div class="relative mx-auto w-full max-w-6xl mt-2 h-[300px] md:h-[450px]">
-      <img class="absolute top-0 left-0 w-full h-full object-cover rounded-none  shadow-lg hover:shadow-md" src="{{$post->image_url}}"  alt="{{$post->title}}">
+      <img class="absolute top-0 left-0 w-full h-full object-cover rounded-none shadow-lg hover:shadow-md" src="{{$post->image_url}}"  alt="{{$post->title}}">
     {{-- delete|edit model  --}}
       @can('update',$post)
       @include('partials.delete-edit-post-model')
@@ -250,7 +193,7 @@
                alt="{{$blogs->title}}"
                class="w-full h-[270px] object-cover mt-2">
                <div class="flex justify-between text-sm text-gray-400 my-3">
-                <p>{{$blogs->comments()->count()}} comments</p>
+                <p>{{$blogs->totalcomments->count()}} comments</p>
                 <p>{{$blogs->created_at->format('F d, Y')}}</p>
                </div>
           <p class="text-xl font-bold mt-1">{{ $blogs->title }}</p>

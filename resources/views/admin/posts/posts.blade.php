@@ -15,7 +15,7 @@
 <div class="transform -translate-y-52">
   @include('admin.posts.partials.filters')
 </div>
- <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl mx-4 transform -translate-y-40 ">
+ <div class="bg-white shadow rounded-xl overflow-hidden w-7xl mx-4 transform -translate-y-40 ">
 {{-- post table --}}
 <x-tables.table id='' :headers="['#','Username','Image','Title','Body','Status','Hashtags','Categories','Reported','Reports Count','Featured','Likes','Comments','publishedAt','bannedAt','trashedAt','CreatedAt','Actions']" title="Posts Table" >
       @forelse ($posts as $post)
@@ -56,11 +56,11 @@
         </td>
         <td class="p-2">
            @if($post->categories->isNotEmpty())
-              <span class="bg-blueGray-200 text-sm text-blueGray-500 font-semibold px-2 py-1 rounded">
-             {{$post->categories->pluck('name')->implode(' | ')}}
-              </span>
-           @else
-            <b>--</b>
+           @foreach ($post->categories as $category)
+           <span class="bg-blueGray-200 text-sm text-blueGray-500 font-semibold px-2 py-1 mr-1 rounded">
+          {{$category->name}}
+           </span>
+           @endforeach
            @endif
         </td>
         <td class="p-2">

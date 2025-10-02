@@ -20,7 +20,7 @@
   @endcan
 </div>
 
-<div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl mx-4 transform -translate-y-40">
+<div class="bg-white shadow rounded-xl overflow-hidden w-7xl mx-4 transform -translate-y-40">
     <x-tables.table id="tableslides" :headers="['#','Image','Title','Description','Link','Status','Published By','Published At','Disabled By','Disabled At','Actions']" title="Slides Table">
        @forelse($slides as $slide)
          <tr>

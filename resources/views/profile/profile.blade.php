@@ -2,10 +2,11 @@
 
   <main class="profile-page">
     <section class="relative block h-500-px">
-      <div class="absolute top-0 w-full h-full bg-center bg-cover" style="
-            background-image: url('{{$user->cover}}');
-          ">
-        <span id="blackOverlay" class="w-full h-full absolute opacity-50 bg-black"></span>
+      <div class="absolute top-0 w-full h-full bg-gray-200 bg-center bg-cover">
+             <img src="{{ $user->cover }}" 
+             alt="Cover image"
+             class="w-full h-full object-cover blur-md transition-all duration-700 ease-out"
+             onload="this.classList.remove('blur-md'); this.parentElement.classList.remove('bg-gray-200')">
       </div>
       <div class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-70-px"
         style="transform: translateZ(0px)">
@@ -28,7 +29,8 @@
               <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                 <div class="relative mb-5 ">
                   <img src="{{ $user->avatar_url }}" alt=""
-                    class="shadow-xl rounded-full border-2 border-gray-700 h-auto align-middle  absolute -m-16   max-w-150-px">
+                    class="shadow-xl rounded-full border-2 border-gray-700 h-auto align-middle absolute -m-16 max-w-150-px blur-md transition-all duration-700 ease-out"
+                    onload="this.classList.remove('blur-md')">
             {{-- edit avatar  --}}
             @if($user->is(auth()->user()))
             <span

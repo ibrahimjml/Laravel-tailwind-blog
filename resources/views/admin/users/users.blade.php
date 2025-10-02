@@ -24,7 +24,7 @@
       </button>
     @endcan
 </div>
- <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl lg:max-w-max mx-4 transform -translate-y-40 ">
+ <div class="bg-white shadow rounded-xl overflow-hidden w-7xl lg:max-w-max mx-4 transform -translate-y-40 ">
     <x-tables.table id='' :headers="['#','Avatar','User','Role','Permissions','Submitted Reports','Reports Recieved','Verified','Phone','Age','Blocked','Username ChangedAt','CreatedAt','Actions']" title="Users Table" >
       @forelse ($users as $user)
   
@@ -60,6 +60,12 @@
               @empty
               <i class="fas fa-times text-red-600"></i>
           @endforelse
+           @if($user->getAllPermissions() && $user->getAllPermissions()->count() > 3)
+            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded border border-blue-200 cursor-pointer"
+                  title="+{{ $user->getAllPermissions()->count() - 3 }} more permissions">
+                +{{ $user->getAllPermissions()->count() - 3 }}
+            </span>
+        @endif
           </div>
         </td>
         <td>{{ $user->reports_submitted_count ?: '--' }}</td>

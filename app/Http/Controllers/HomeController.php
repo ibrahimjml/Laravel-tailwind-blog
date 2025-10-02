@@ -13,7 +13,7 @@ class HomeController extends Controller
   public function __invoke()
   {
     $featuredPosts = Cache::remember('featuredPosts', now()->addSeconds(20), function () {
-      return Post::published()->featured()->latest()->take(3)->get();
+      return Post::published()->featured()->latest()->take(7)->get();
     
   });
 

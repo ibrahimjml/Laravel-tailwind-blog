@@ -3,7 +3,11 @@
   <div id="post-{{ $post->id }}" class="flex flex-wrap items-center justify-center ">
     <div class="relative group">
     <a  href="{{route('single.post', $post->slug)}}">
-        <img src="{{$post->image_url}}" alt="{{$post->title}}" class="ml-auto w-80 h-40 mr-auto  rounded-lg mb-5">
+        <img 
+        src="{{$post->image_url}}" 
+        alt="{{$post->title}}" 
+        class="ml-auto w-80 h-40 mr-auto blur-md bg-gray-200 transition-all duration-700 ease-out group-hover:scale-105 rounded-lg mb-5"
+        onload="this.classList.remove('bg-gray-200','blur-md')">
         @if($post->user->isNot(auth()->user()) && $post->is_pinned)
         <span class="absolute top-2 left-2 p-2 w-fit rounded-xl text-white bg-red-500 ">
         pinned
