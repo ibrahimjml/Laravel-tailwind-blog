@@ -2,7 +2,7 @@
 
 namespace App\Builders;
 
-
+use App\Models\Permission;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Fluent;
 
@@ -18,11 +18,13 @@ class PermissionBuilder extends Builder
 }
     public function sortBy(string $sort): self
     {
+      $moduleName = Permission::distinct()->pluck('module');
        match ($sort) {
             'latest' => $this->latest(),
             'oldest' => $this->oldest(),
-            'module' => $this->orderBy('name'),
-            default => $this->latest(),
+             default => in_array($sort, $moduleName) 
+            ? $this->filterByModule($sort)
+            : $this->latest()
         };
 
         return $this;

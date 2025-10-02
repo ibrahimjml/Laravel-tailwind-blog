@@ -23,14 +23,17 @@ class PermissionsController extends Controller
                           ->filter(new Fluent(request()->only('search','sort','module')))
                           ->get()
                           ->groupBy('module'),
-              'modules' => Permission::distinct()->pluck('module')          
+              'modules' => Permission::distinct()
+                            ->whereNotNull('module')
+                            ->pluck('module')
+                            ->toArray()          
                ]);
     }
 
     public function store(Request $request)
     {
         $fields = $request->validate([
-          'name' =>'required|string',
+          'name' =>'required|string|unique:permissions,name',
           'module' => 'required|string',
           'description' => 'sometimes|nullable|string'
              ]);
@@ -44,14 +47,13 @@ class PermissionsController extends Controller
   
     public function update(Request $request, string $id)
     {
-      $permission = Permission::find($id);
+      $permission = Permission::findOrFail($id);
       $fields = $request->validate([
-           'name' =>'required|string',
+           'name' =>'required|string|unique:permissions,name,'. $id,
            'module' => 'required|string',
            'description' => 'sometimes|nullable|string'
     ]);
     $permission->update($fields);
-    $permission->save();
     return response()->json([
       'edited'=>true,
       'message' => "Permission {$permission->name} updated",

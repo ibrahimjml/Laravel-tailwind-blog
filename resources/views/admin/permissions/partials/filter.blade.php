@@ -7,7 +7,9 @@
         onchange="this.form.submit()">
         <option value="latest" {{ request('sort') === 'latest' ? 'selected' : '' }}>Latest</option>
         <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest</option>
-        <option value="module" {{ request('sort') === 'module' ? 'selected' : '' }}>Module A-Z</option>
+        @foreach ($modules as $module)
+        <option value="{{$module}} {{ request('sort') === $module ? 'selected' : '' }}">{{ucfirst($module)}}</option>
+        @endforeach
       </select>
       <!-- Custom white arrow -->
       <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -24,9 +26,9 @@
         class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-blueGray-200 text-blueGray-500 border-0 text-sm rounded-lg p-2.5"
         onchange="this.form.submit()">
          <option value="">All Modules</option>
-        @foreach (\App\Enums\PermissionModule::cases() as $module)
-          <option value="{{$module->value}}" {{request('module') === $module->value ? 'selected' : ''}}>
-            {{$module->name}}
+        @foreach ($modules as $module)
+          <option value="{{$module}}" {{request('module') === $module ? 'selected' : ''}}>
+            {{ucfirst($module)}}
           </option>
         @endforeach
       </select>

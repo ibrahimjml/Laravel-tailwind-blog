@@ -20,7 +20,7 @@
  <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl mx-4 transform -translate-y-40 ">
     <x-tables.table id="tableroles" :headers="['#','Roles','Permissions','CreatedAt','Actions']" title="Roles Table" >
         @foreach ( $roles as $role )
-         <tr>
+         <tr class="border border-b-blueGray-200 last:border-0">
           <td class="p-2">{{ ($roles->currentPage() - 1) * $roles->perPage() + $loop->iteration }}</td>
     <td class="p-2 ">
     <div class="flex justify-start  h-full">
@@ -36,6 +36,12 @@
                {{ $permission->name }}
              </span>
            @endforeach
+           @if($role->permissions->count() > 10)
+            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded border border-blue-200 cursor-pointer"
+                  title="+{{ $role->permissions->count() - 10 }} more permissions">
+                +{{ $role->permissions->count() - 10 }}
+            </span>
+        @endif
          </div>
        </td>
           

@@ -34,7 +34,7 @@
                   {{ $permission->name }}
                 </span>
               </td>
-              <td>{{ $permission->module?->value ?? '--' }}</td>
+              <td>{{ $permission->module ?? '--' }}</td>
               <td>{{ $permission->description ?? '--' }}</td>
               <td class="p-2">{{ $permission->created_at->format('Y-m-d') }}</td>
               <td class="text-white p-2">
@@ -49,8 +49,10 @@
                     </form>
                   @endcan
                   @can('permission.update')
-                    <button data-name="{{ $permission->name }}" data-id="{{ $permission->id }}"
-                      data-module="{{$permission->module}}" data-description="{{$permission->description}}"
+                    <button data-name="{{ $permission->name }}"
+                            data-id="{{ $permission->id }}"
+                            data-module="{{$permission->module}}"
+                            data-description="{{$permission->description}}"
                       class="permissionedit text-gray-500 rounded-lg p-2 cursor-pointer hover:text-gray-300">
                       <i class="fas fa-edit"></i>
                     </button>
@@ -64,8 +66,9 @@
 
   </div>
 </div>
+<!-- create/edit models -->
   @include('admin.permissions.partials.create-permission-model')
-  @include('admin.permissions.partials.edit-permission-model', ['permission' => $permission])
+  @include('admin.permissions.partials.edit-permission-model')
 @endsection
 @push('scripts')
   <script>
@@ -86,48 +89,78 @@
         }
       });
     }
+  </script>
+  <!-- fetch create -->
+  <script>  
     const addpermission = document.getElementById('addpermission');
 
-    addpermission.addEventListener('submit', (eo) => {
+    addpermission.addEventListener('submit', async (eo) => {
       eo.preventDefault();
 
       const input = addpermission.querySelector('input[name="name"]');
-      const moduleSelect = addpermission.querySelector('[name="module"]');
+      const moduleNew = addpermission.querySelector('[name="module"]');
+      const moduleSelect = addpermission.querySelector('#moduleOptions');
       const descriptionInput = addpermission.querySelector('[name="description"]');
+      const submitButton = addpermission.querySelector('button[type="submit"]');
+      const originalText = submitButton.textContent;
       const content = input.value.trim();
       const menu = document.getElementById("Model");
+
       if (!content) return;
 
+       const formData = {
+            name: content,
+            module: moduleNew.value || moduleSelect.value,
+            description: descriptionInput.value
+        };
       let options = {
         method: 'POST',
         headers: {
           'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name: content, module: moduleSelect.value, description: descriptionInput.value })
+        body: JSON.stringify(formData)
       };
+    try{
+       // load button
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
-      fetch(addpermission.action, options)
-        .then(response => response.json())
-        .then(data => {
+    const response = await  fetch(addpermission.action, options)
+    const data = await response.json();
+
           if (data.added === true) {
             menu.classList.add('hidden');
             toastr.success(`Permission  Added`);
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
+            addpermission.reset();
+            window.location.reload();
+          } else {
+            toastr.error( 'create failed');
+        }
+    }catch (error) {
+        console.error('Error:', error);
+        toastr.error('Error creating permission');
+    }finally{
+       // Restore button state
+        submitButton.disabled = false;
+        submitButton.textContent = originalText;
+    }
     });
-
+</script>
+  <!-- fetch edit -->
+<script>
     const editButtons = document.querySelectorAll('.permissionedit');
     const editModal = document.getElementById('editModel');
+    const route = "{{ route('admin.permissions.update', ':id') }}";
     const closeEditBtn = document.getElementById('closeEditModel');
     const editForm = document.getElementById('edittag');
     if (editModal && closeEditBtn && editForm) {
       const nameInput = editForm.querySelector('input[name="name"]');
-      const moduleSelect = editForm.querySelector('[name="module"]');
+      const moduleInput = editForm.querySelector('input[name="module"]');
+      const moduleSelect = editForm.querySelector('select[name="module"]');
       const descriptionInput = editForm.querySelector('[name="description"]');
+      const submitButton = editForm.querySelector('button[type=submit]');
+      const originalText = submitButton.textContent;
       const token = editForm.querySelector('input[name="_token"]').value;
 
       editButtons.forEach(button => {
@@ -137,17 +170,29 @@
           const permissionModule = button.dataset.module;
           const permissionDescription = button.dataset.description;
 
-          editForm.action = `/admin/permissions/${permissionID}`;
+          editForm.action = route.replace(':id',permissionID);
           nameInput.value = permissionName;
-          moduleSelect.value = permissionModule;
+          moduleInput.value = permissionModule;
           descriptionInput.value = permissionDescription;
 
+          if ([...moduleSelect.options].some(opt => opt.value === permissionModule)) {
+           moduleSelect.value = permissionModule;
+            }
+          
           editModal.classList.remove('hidden');
         });
       });
 
-      editForm.addEventListener('submit', (e) => {
+      editForm.addEventListener('submit', async(e) => {
         e.preventDefault();
+
+       const newModule = moduleInput.value || moduleSelect.value;
+       const formData = {
+              name : nameInput.value,
+              module : newModule,
+             description : descriptionInput.value
+
+          };
 
         let options = {
           method: 'PUT',
@@ -156,31 +201,42 @@
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           },
-          body: JSON.stringify({
-            name: nameInput.value,
-            module: moduleSelect.value,
-            description: descriptionInput?.value || null
-          })
+          body: JSON.stringify(formData)
         };
+    try{
+       // loading state
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
-        fetch(editForm.action, options)
-          .then(response => response.json())
-          .then(data => {
+      const response = await  fetch(editForm.action, options)
+      const data = await response.json();
+      
             if (data.edited === true) {
               toastr.success(data.message);
               editModal.classList.add('hidden');
+              window.location.reload();
+            } else {
+            toastr.error( 'Update failed');
+            window.location.reload();
+             }
+            }catch(error){
+             console.error('Error:', error);
+             toastr.error('Error updating permission');
+            }finally{
+             // Restore button state
+             submitButton.disabled = false;
+             submitButton.textContent = originalText;
             }
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
+          
       });
 
       closeEditBtn.addEventListener('click', () => {
         editModal.classList.add('hidden');
       });
     }
-
+</script>
+  <!-- fetch delete -->
+<script>
     const permissions = document.querySelectorAll('.permissiondelete');
     permissions.forEach(permission => {
       permission.addEventListener('submit', (eo) => {
@@ -199,7 +255,9 @@
             if (data.deleted === true) {
               toastr.success(data.message);
               permission.closest('tr').remove();
-            }
+            } else {
+            toastr.error( 'delete failed');
+        }
           })
           .catch(error => {
             console.error('Error:', error);

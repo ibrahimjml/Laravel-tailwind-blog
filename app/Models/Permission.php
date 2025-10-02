@@ -12,9 +12,7 @@ class Permission extends Model
 {
     use HasFactory;
      protected $fillable = ['name','slug','module','description'];
-     protected $casts =[
-       'module' => PermissionModule::class
-     ];
+
       public function newEloquentBuilder($query)
       {
           return new PermissionBuilder($query);
