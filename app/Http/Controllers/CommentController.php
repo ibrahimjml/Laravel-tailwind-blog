@@ -6,6 +6,7 @@ use App\Events\ReplyCommentEvent;
 use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Services\ViewPostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -15,8 +16,24 @@ class CommentController extends Controller
   {
     $this->middleware(['auth','verified',CheckIfBlocked::class]);
   }
-
-    public function comment(Post $post,Request $request){
+   public function loadMore(Post $post, ViewPostService $viewPostService)
+{
+    $page = request()->get('page', 1);
+    $comments = $viewPostService->getPaginatedComments($post, $page, 5);
+    
+    if (request()->ajax()) {
+        $html = view('comments.comments', ['comments' => $comments])->render();
+        
+        return response()->json([
+            'html' => $html,
+            'hasMore' => $comments->hasMorePages(),
+            'nextPage' => $comments->currentPage() + 1
+        ]);
+    }
+    
+    abort(404);
+}
+    public function createComment(Post $post,Request $request){
       $fields = $request->validate([
         'content'=>'required|string|max:255',
         'parent_id'=>'nullable|exists:comments,id'
@@ -87,7 +104,7 @@ public function reply(Comment $comment, Request $request){
         Log::error('error applying reply :'.$e->getMessage());
     }
 }
-    public function editcomment(Request $request,Comment $comment){
+    public function editComment(Request $request,Comment $comment){
       
       $this->authorize('edit',$comment);
       
@@ -107,7 +124,7 @@ public function reply(Comment $comment, Request $request){
 
     }
 
-    public function deletecomment(Comment $comment){
+    public function deleteComment(Comment $comment){
       $this->authorize('delete',$comment);
       $comment->delete();
       return response()->json([

@@ -17,7 +17,7 @@
   <span title="write a comment" id="openModel" class="cursor-pointer flex items-center justify-center  w-8 h-8 rounded-full   hover:bg-gray-200 transition-bg duration-150">
     <i class="far fa-comment"></i>
   </span>
-  <span  class="text-sm">{{ $totalcomments }}</span>
+  <span  class="text-sm">{{ $post->totalcomments_count }}</span>
 </div>
 @endif
 @if(auth()->user()->is($post->user))

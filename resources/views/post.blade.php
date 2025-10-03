@@ -151,7 +151,7 @@
 <a href="{{route('single.post',$article->slug)}}">
 <img src="{{$article->image_url}}"  alt="" class="w-full h-[270px] object-cover mt-2">
 <div class="flex justify-between text-sm text-gray-400 my-3">
-                <p>{{$article->comments()->count()}} comments</p>
+                <p>{{$article->total_comments_count}} comments</p>
                 <p>{{$article->created_at->format('F d, Y')}}</p>
                </div>
 <div class="flex flex-col">
@@ -193,7 +193,7 @@
                alt="{{$blogs->title}}"
                class="w-full h-[270px] object-cover mt-2">
                <div class="flex justify-between text-sm text-gray-400 my-3">
-                <p>{{$blogs->totalcomments->count()}} comments</p>
+                <p>{{$blogs->total_comments_count}} comments</p>
                 <p>{{$blogs->created_at->format('F d, Y')}}</p>
                </div>
           <p class="text-xl font-bold mt-1">{{ $blogs->title }}</p>

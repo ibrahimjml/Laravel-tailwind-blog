@@ -8,7 +8,6 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckIfBlocked;
-use App\Models\Comment;
 use App\Models\Hashtag;
 use App\Services\FollowService;
 use App\Services\PostViewsService;
@@ -62,11 +61,14 @@ return response()->json(['attached'=>$attached]);
   public function viewpost(Post $post)
   {
     $post = $this->singlepost->getPost($post);
+    // generate post view
     $this->views->getViews($post);
- 
+    $comments = $this->singlepost->getPaginatedComments($post, 1, 5);
+
+    
     return view('post', [
        'post' => $post,
-       'totalcomments'=> Comment::where('post_id', $post->id)->count(),
+       'comments' => $comments,
        'latestblogs' => $post->latestblogs,
        'morearticles' => $post->morearticles,
        'viewwholiked' => $post->viewwholiked,

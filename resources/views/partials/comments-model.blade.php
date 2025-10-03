@@ -4,16 +4,38 @@
 
   <div id="commentModel" class="relative h-[100vh] w-screen md:w-[50%] bg-white overflow-y-auto shadow-xl translate-x-[-110vw] transition-all duration-300 ease-in-out">
   <span id="closeModel" title="close" class="cursor-pointer absolute top-4 right-4 text-xl"><i class="fas fa-times"></i></span>
-    {{-- Comment Form --}}
+    <!-- Comment Form -->
     <p class="w-fit md:text-xl text-md mb-3 p-2 font-semibold">
-      Comments <span id="comment-count-number">{{'('. $totalcomments .')' }}</span>
+      Comments <span id="comment-count-number">{{'('. $post->totalcomments_count .')' }}</span>
     </p>
     <div class="w-fit mb-4 border-2 p-1 rounded-lg px-5 mx-auto">
       @include('comments.partials.comment_form', ['post' => $post])
     </div>
 
-    {{-- display comments | replies UI --}}
-    @include('comments.comments',['comments'=>$post->comments])
+    <!-- display comments | replies UI -->
+     <div id="comments-container">
+      @include('comments.comments',['comments'=>$comments])
+    </div>
+      <!-- Load More comments -->
+    @if($comments->hasMorePages())
+      <div id="load-more-container" class="text-center mt-4">
+        <button id="load-more-comments" 
+                data-post-id="{{ $post->id }}" 
+                data-next-page="{{ $comments->currentPage() + 1 }}"
+                class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+          Load More
+        </button>
+      </div>
+    @endif
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="hidden text-center mt-4">
+      <div class="inline-flex items-center">
+        <i class="fas fa-spinner fa-spin text-blue-500 mr-2"></i>
+        <span>Loading more...</span>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -56,7 +78,7 @@
   });
   </script>
 @endif
-{{-- trigger and Scroll to comment/reply if anchor is present in user activities --}}
+<!-- trigger and Scroll to comment/reply if anchor is present in user activities -->
 <script>
 
 window.addEventListener('open-comment-modal', function () {
@@ -102,6 +124,7 @@ window.addEventListener('open-comment-modal', function () {
 
 
 </script>
+<!-- dispatch event when comments opened from user activity-->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -109,6 +132,52 @@ document.addEventListener('DOMContentLoaded', () => {
     window.dispatchEvent(new CustomEvent('open-comment-modal'));
     sessionStorage.removeItem('showCommentModal'); 
   }
+});
+</script>
+<!-- Ajax load more comments -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const loadMoreBtn = document.getElementById('load-more-comments');
+    const commentsContainer = document.getElementById('comments-container');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const loadMoreContainer = document.getElementById('load-more-container');
+
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function() {
+            const postId = this.dataset.postId;
+            const nextPage = this.dataset.nextPage;
+
+            loadingSpinner.classList.remove('hidden');
+            loadMoreContainer.classList.add('hidden');
+
+            fetch(`/posts/${postId}/comments?page=${nextPage}`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+
+                commentsContainer.insertAdjacentHTML('beforeend', data.html);
+                
+                if (data.hasMore) {
+                    loadMoreBtn.dataset.nextPage = data.nextPage;
+                    loadMoreContainer.classList.remove('hidden');
+                } else {
+                    loadMoreContainer.remove();
+                }
+            })
+            .catch(error => {
+                console.error('Error loading more comments:', error);
+                loadMoreContainer.classList.remove('hidden');
+            })
+            .finally(() => {
+                loadingSpinner.classList.add('hidden');
+            });
+        });
+    }
 });
 </script>
 @endpush
