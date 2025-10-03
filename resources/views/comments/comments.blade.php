@@ -1,7 +1,7 @@
 <div id="wrapper" class="sm:max-w-2xl  max-w-xl ml-2">
 @foreach($comments as $comment)
   @if($comment->parent_id == null)
-  <div class="comment relative bg-white shadow-md rounded-lg p-4 mb-4 z sm:w-[700px]">
+  <div class="comment relative bg-white shadow-md rounded-lg p-4 mb-4 z w-full">
       {{-- Comment user info --}}
       @include('comments.partials.comment_info',['comment' => $comment])
       <div>

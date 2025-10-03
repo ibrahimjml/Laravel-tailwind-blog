@@ -34,12 +34,9 @@ use App\Http\Controllers\{
 
 // HOME
 Route::get('/',HomeController::class)->name('home');
-
-
-// Blog Page
+// Blog
 Route::get('/blog',[PostController::class,'blogpost'])->name('blog')->middleware('auth');
-
-// Post Page
+// Post
 Route::get('/post/{post:slug}',[PublicController::class,'viewpost'])->name('single.post')->middleware('auth');
 
 //recent posts page by hashtag 
@@ -95,10 +92,11 @@ Route::post('/user/{user}/togglefollow',[PublicController::class,'togglefollow']
 // Search
 Route::get('/search',[PublicController::class,'search'])->name('blog.search');
 // Comments
-Route::post('/comment/{post}',[CommentController::class,'comment']);
-Route::post('/reply/{comment}',[CommentController::class,'reply']);
-Route::put('/comment/edit/{comment}',[CommentController::class,'editcomment'])->name('edit.comment');
-Route::delete('/comment/{comment}',[CommentController::class,'deletecomment'])->name('delete.comment');
+Route::get('/posts/{post}/comments', [CommentController::class, 'loadMore'])->name('posts.comments.load');
+Route::post('/comment/{post}',[CommentController::class,'createComment']);
+Route::post('/reply/{comment}',[CommentController::class,'reply'])->name('comment.reply');
+Route::put('/comment/edit/{comment}',[CommentController::class,'editComment'])->name('edit.comment');
+Route::delete('/comment/{comment}',[CommentController::class,'deleteComment'])->name('delete.comment');
 // reports
 Route::prefix('/reports')->group(function(){
   Route::post('/post/{post}',[ReportPostController::class,'report_post'])->name('post.report');

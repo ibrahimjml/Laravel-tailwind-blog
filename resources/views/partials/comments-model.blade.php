@@ -2,23 +2,26 @@
   
   <div class="absolute inset-0 bg-gray-900 opacity-60"></div>
 
-  <div id="commentModel" class="relative h-[100vh] w-screen md:w-[50%] bg-white overflow-y-auto shadow-xl translate-x-[-110vw] transition-all duration-300 ease-in-out">
+  <div id="commentModel" class="relative h-[100vh] w-screen md:w-[40%] overflow-x-hidden bg-white overflow-y-auto shadow-xl translate-x-[-110vw] transition-all duration-300 ease-in-out">
   <span id="closeModel" title="close" class="cursor-pointer absolute top-4 right-4 text-xl"><i class="fas fa-times"></i></span>
     <!-- Comment Form -->
     <p class="w-fit md:text-xl text-md mb-3 p-2 font-semibold">
-      Comments <span id="comment-count-number">{{'('. $post->totalcomments_count .')' }}</span>
+      Comments 
+      <span id="comment-count-number" data-count={{$post->totalcomments_count}}>
+        {{'('. $post->totalcomments_count .')'}}
+      </span>
     </p>
-    <div class="w-fit mb-4 border-2 p-1 rounded-lg px-5 mx-auto">
+    <div class="w-full mb-4 p-1 px-5 border-b border-b-gray-200">
       @include('comments.partials.comment_form', ['post' => $post])
     </div>
 
     <!-- display comments | replies UI -->
-     <div id="comments-container">
+     <div id="comments-container" class="w-full">
       @include('comments.comments',['comments'=>$comments])
     </div>
       <!-- Load More comments -->
     @if($comments->hasMorePages())
-      <div id="load-more-container" class="text-center mt-4">
+      <div id="load-more-container" class="text-center my-4">
         <button id="load-more-comments" 
                 data-post-id="{{ $post->id }}" 
                 data-next-page="{{ $comments->currentPage() + 1 }}"

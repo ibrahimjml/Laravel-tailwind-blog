@@ -80,13 +80,15 @@ document.body.addEventListener('click', (eo)=> {
       }
     }
   });
-
-// function update Toatal number comments
-function updateCount() {
-  const commentCountSpan = document.getElementById('comment-count-number');
-  const allVisibleComments = document.querySelectorAll('#wrapper .comment, #wrapper .reply');
-  commentCountSpan.textContent = allVisibleComments.length;
-} 
+// update count based on addcomment/reply/delete
+function updateCount(increment = 0) {
+    const commentCountSpan = document.getElementById('comment-count-number');
+    let currentCount = parseInt(commentCountSpan.dataset.count) || 0;
+    currentCount += increment;
+    
+    commentCountSpan.dataset.count = currentCount;
+    commentCountSpan.textContent = `(${currentCount})`;
+}
 
 // Ajax Add comment
 const AddComment = document.querySelector('form[comment-form]');
@@ -94,6 +96,8 @@ AddComment.addEventListener('submit',async (eo)=>{
   eo.preventDefault();
   const postid = AddComment.getAttribute('comment-form');
   const textarea = AddComment.querySelector('textarea[name="content"]');
+  const buttonSubmit = AddComment.querySelector('button[type=submit]');
+  const originalText = buttonSubmit.textContent;
   const content = textarea.value.trim();
   const Wrapper = document.getElementById('wrapper');
 
@@ -112,23 +116,25 @@ AddComment.addEventListener('submit',async (eo)=>{
     body: JSON.stringify({ content })
   };
   try {
+        // show spinner
+        buttonSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        buttonSubmit.disabled = true;
     const response = await fetch(`/comment/${postid}`, options);
     if (response.ok) {
       const result = await response.json();
       if(result.commented){
-        toastr.options = {
-          "closeButton": true,
-          "progressBar": true,
-          "positionClass": "toast-top-right",
-          "timeOut": 2000
-        };
+
         toastr.success("Comment Added ");
-      
         textarea.value = '';
         Wrapper.insertAdjacentHTML('afterbegin', result.html);
-        updateCount();
+        updateCount(1);
+        // remove spinner
+        buttonSubmit.textContent = originalText;
+        buttonSubmit.disabled = false;
       }
 
+    }else{
+      throw new error('error something happened')
     }
   } catch (error) {
     console.error('Delete error:', error);
@@ -142,6 +148,8 @@ document.body.addEventListener('submit', async (eo) => {
   const form = eo.target;
   const commentID = form.getAttribute('comment-id');
   const textarea = form.querySelector('textarea[name="content"]');
+  const buttonSubmit = form.querySelector('button[type=submit]');
+  const originalText = buttonSubmit.textContent;
   const content = textarea.value.trim();
   const parentInput = form.querySelector('input[name="parent_id"]');
   const parent_id = parentInput.value;
@@ -170,8 +178,12 @@ if(!content){
 
 
   try {
-    const response = await fetch(`/reply/${commentID}`, options);
-    const result = await response.json();
+      // add spinner
+      buttonSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      buttonSubmit.disabled = true;
+
+      const response = await fetch(`/reply/${commentID}`, options);
+      const result = await response.json();
 
     if (result.error) {
       toastr.error(result.error);
@@ -181,19 +193,17 @@ if(!content){
     }
 
     if (result.replied) {
-      toastr.options = {
-        "closeButton": true,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "timeOut": 2000
-      };
+    
       toastr.success("Reply added successfully");
 
       textarea.value = '';
       form.classList.add('hidden');
       wrapper.classList.remove('hidden');
       wrapper.insertAdjacentHTML('afterbegin', result.html);
-      updateCount();
+      updateCount(1);
+      // remove spinner
+      buttonSubmit.textContent = originalText;
+      buttonSubmit.disabled = false;
     }
   } catch (error) {
     console.error('Reply error:', error);
@@ -208,6 +218,8 @@ document.body.addEventListener('submit', async function(eo) {
     eo.preventDefault();
     const commentId = form.getAttribute('edit-comment');
     const textarea = form.querySelector('textarea[name="content"]');
+    const buttonSubmit = form.querySelector('button[type=submit]');
+    const originalText = buttonSubmit.textContent;
     const content = textarea.value.trim();
     const oldContent = form.closest('.comment, .reply').querySelector('.comment-content');
 
@@ -226,17 +238,17 @@ document.body.addEventListener('submit', async function(eo) {
     };
 
     try {
+        // add spinner
+        buttonSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        buttonSubmit.disabled = true;
       const response = await fetch(`/comment/edit/${commentId}`, options);
       if (response.ok) {
         const result = await response.json();
         if(result.Edited){
-          toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "timeOut": 2000
-          };
           toastr.success("Comment updated successfully");
+          // remove spinner
+          buttonSubmit.textContent = originalText;
+          buttonSubmit.disabled = true;
         
           if (oldContent) {
             oldContent.textContent = content;
@@ -289,7 +301,7 @@ document.body.addEventListener('submit', async function(eo) {
       parentComment.remove();
       
     }
-    updateCount();
+    updateCount(-1);
      }
   }
   }catch(error){
