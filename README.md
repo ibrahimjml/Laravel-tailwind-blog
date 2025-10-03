@@ -16,7 +16,7 @@
 ![Postpage](https://i.postimg.cc/qRP5NrZc/Screenshot-2025-09-18-233005.png)
 ![Notification menu](https://i.postimg.cc/kMjCrJdM/Screenshot-2025-09-22-125701.png)
 ![Reportpost](https://i.postimg.cc/V6v8qzR3/Screenshot-2025-09-18-235631.png)
-![Comments model](https://i.postimg.cc/K8bXVcNz/Screenshot-2025-09-28-231356.png)
+![Comments model](https://i.postimg.cc/ZKtzkLQ3/Screenshot-2025-10-03-135906.png)
 ![Profile home](https://i.postimg.cc/KjndgWSX/127-0-0-1-8000-ibrahim123-5.png)
 ![Profile activity](https://i.postimg.cc/q7g38kpV/Screenshot-2025-09-20-233621.png)
 ![Profile report](https://i.postimg.cc/L6y6rkmK/Screenshot-2025-09-24-185620.png)
