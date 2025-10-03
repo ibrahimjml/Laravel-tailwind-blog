@@ -1,15 +1,15 @@
-<article class="container mx-auto max-h-[20%] max-w-4xl border rounded-2xl my-4 border-gray-200 bg-white py-6 px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 gap-8 group">
+<article class="container mx-auto  max-w-3xl border rounded-xl my-4 border-gray-200 bg-white grid grid-cols-1 sm:grid-cols-2 ">
 
   <!-- Left Section: User Info + Image + Buttons -->
-  <section class="flex flex-col gap-5 h-full">
+  <section class="flex flex-col gap-3 p-4 lg:w-90">
     <!-- User Info -->
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-4 w-full">
       <a href="{{ route('profile', $post->user->username) }}">
-        <img src="{{ $post->user->avatar_url }}" class="w-10 h-10 rounded-full object-cover border" alt="avatar">
+        <img src="{{ $post->user->avatar_url }}" class="w-8 h-8 rounded-full object-cover border" alt="avatar">
       </a>
       <div>
           <div class="flex items-center justify-center gap-3">
-          <a href="{{ route('profile', $post->user->username) }}" class="text-lg font-semibold hover:underline">
+          <a href="{{ route('profile', $post->user->username) }}" class="text-base font-semibold hover:underline truncate">
             {{ $post->user->username }}
           </a>
           @php
@@ -18,19 +18,19 @@
           @if(auth()->user()->id !== $post->user_id)
           <strong>·</strong>
   
-        <button class="follow px-3 py-1 {{$isFollowing ? 'bg-gray-200' : 'bg-gray-600'}} text-white rounded-lg text-center text-sm font-bold"
+        <button class="follow px-3 py-1 {{$isFollowing ? 'bg-gray-200' : 'bg-gray-600'}} text-white rounded-lg text-center text-xs font-bold whitespace-nowrap"
          onclick="fetchfollow(this)"
           data-id="{{$post->user_id}}">
           {{$isFollowing ? 'Following' : 'Follow'}}
         </button>
         @endif
          </div>
-        <p class="text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
+        <p class="text-xs text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
       </div>
     </div>
 
     <!-- Post Image -->
-    <div class="relative h-64 sm:h-56 w-full rounded-lg overflow-hidden">
+    <div class="relative lg:aspect-[4/2] aspect-[4/2] lg:w-full rounded-lg overflow-hidden  group">
       <a href="{{route('single.post',$post->slug)}}">
         <img loading="lazy" 
              src="{{ $post->image_url }}" 
@@ -39,7 +39,7 @@
              onload="this.classList.remove('blur-md', 'bg-gray-200')">
       </a>
       @if($post->is_featured)
-      <span class="absolute top-4 left-4 bg-amber-400 bg-opacity-80 text-white text-sm font-medium px-3 py-1 rounded-md">
+      <span class="absolute top-2 left-2 bg-amber-400 bg-opacity-80 text-white text-xs font-medium px-3 py-1 rounded-md">
         Featured
       </span>
       @endif
@@ -47,15 +47,15 @@
 
     <!-- Interactions -->
     @if($post->categories->isNotEmpty())
-    <div class="flex items-center gap-2 text-md text-gray-600">
-      <b>in :</b>
+    <div class="flex items-center gap-2 text-sm text-gray-600">
+      <b class="text-sm">in:</b>
       @foreach($post->categories as $category)
       @php
       $isActive = isset($currentCategory) && $currentCategory->name == $category->name;
       @endphp
        <a href="{{route('viewcategory',$category->name)}}"
           @class([
-            'px-2 py-1 text-sm rounded-md',
+            'px-2 py-1 text-xs rounded-md',
             'bg-[#f5b576] text-gray-700 font-semibold' => $category->is_featured,
             'bg-gray-600 text-white' => !$category->is_featured,
             'bg-yellow-500' => $isActive
@@ -66,46 +66,49 @@
     </div>
     @endif
     <div class="flex justify-between items-center ">
-        <div class="flex gap-2 text-md text-gray-600">
+        <div class="flex gap-2 text-xs text-gray-600">
           @if($post->likes_count)
-          <span>{{ $post->likes_count }} {{ Str::plural('like',$post->likes_count) }}</span>
+          <span class="whitespace-nowrap">{{ $post->likes_count }} {{ Str::plural('like',$post->likes_count) }}</span>
           <b>·</b>
           @endif
           @if($post->totalcomments_count)
-          <span>{{$post->totalcomments_count}} {{ Str::plural('comment',$post->totalcomments_count) }}</span>
+          <span class="whitespace-nowrap">{{$post->totalcomments_count}} {{ Str::plural('comment',$post->totalcomments_count) }}</span>
           <b>·</b>
           @endif
-          <span>{{$post->views}} {{ Str::plural('view',$post->views)}}</span>
+          <span class="whitespace-nowrap">{{$post->views}} {{ Str::plural('view',$post->views)}}</span>
         </div>
       <div class="flex items-center">
         @if (!empty($showSaveButton))
-        <button onclick="unsavedposts({{ $post->id }})" class="border-2 border-red-600 text-red-600 font-semibold px-4 py-1 rounded-md hover:bg-red-50 transition">
+        <button onclick="unsavedposts({{ $post->id }})" class="border-2 border-red-600 text-red-600 font-semibold px-4 py-1 text-sm rounded-md hover:bg-red-50 transition">
           Remove
         </button>
         @endif
-        <b class="text-gray-500">&plus;</b><i class="far fa-bookmark text-gray-500"></i>
+       <span class="text-gray-400 mx-1">+</span>
+        <i class="far fa-bookmark text-gray-400 text-sm"></i>
       </div>
     </div>
   </section>
   <!-- Right Section: Title + Description + Hashtags -->
-  <section class="flex flex-col gap-4 md:mt-12 mt-0 h-full">
+  <section class="flex flex-col gap-3 lg:mt-12 p-2">
     <a href="{{route('single.post',$post->slug)}}">
-    <h2 class="text-2xl font-bold text-gray-800 mt-2">{{ $post->title }}</h2>
-    <div class="text-gray-600 leading-relaxed">
-      {!! Str::words(strip_tags($post->description), 20) !!}
+  <h2 class="text-xl font-bold text-gray-800 line-clamp-2">
+    {{ $post->title }}
+  </h2>
+    <div class="text-gray-600 leading-relaxed text-sm line-clamp-3 mt-2">
+      {!! Str::words(strip_tags($post->description), 15) !!}
     </div>
     </a>
     @if($post->hashtags->isNotEmpty())
-    <div class="flex flex-wrap gap-2 mt-4">
+    <div class="flex flex-wrap gap-2 mt-1">
       @foreach($post->hashtags as $hashtag)
         @php
         $isActive = isset($currentHashtag) && $currentHashtag->name == $hashtag->name;
         @endphp
       <a href="{{ route('viewhashtag', $hashtag->name) }}" 
          @class([
-          'px-2 py-1 text-sm rounded-md font-semibold', 
+          'px-2 py-1 text-xs rounded-md font-semibold', 
           'bg-[#f5b576] text-gray-700' => $hashtag->is_featured,
-          'bg-gray-600 text-white' => !$hashtag->is_featured,
+          'bg-blueGray-200 text-blueGray-500' => !$hashtag->is_featured,
           'bg-yellow-400' => $isActive
            ])>
         @if($hashtag->is_featured) &#x1F525; @else &#x23; @endif {{ $hashtag->name }}

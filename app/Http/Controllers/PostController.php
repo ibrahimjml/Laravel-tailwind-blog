@@ -11,6 +11,7 @@ use App\Http\Requests\App\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Hashtag;
 use App\Models\Post;
+use App\Models\User;
 use App\Services\PostService;
 use Illuminate\Http\Request;
 
@@ -40,10 +41,15 @@ class PostController extends Controller
                      ->withCount('posts')
                      ->get();
     $categories = Category::withCount('posts')->get();
-
-    return view('blog', [
+    $whoToFollow = User::where('id','!=',auth()->id())
+                    ->whereNotIn('id',auth()->user()->followings()->pluck('user_id'))
+                    ->inRandomOrder()
+                    ->take(5)
+                    ->get();
+    return view('blog.blog', [
       'tags' => $hashtags,
       'categories' => $categories,
+      'users' => $whoToFollow,
       'posts' => $posts,
       'sorts' => $sortoption,
     ]);
