@@ -82,9 +82,14 @@
         <button onclick="unsavedposts({{ $post->id }})" class="border-2 border-red-600 text-red-600 font-semibold px-4 py-1 text-sm rounded-md hover:bg-red-50 transition">
           Remove
         </button>
+        @else
+          <div onclick="save(this,{{$post->id}})" class="relative inline-flex items-center justify-center text-md cursor-pointer">
+      <i class="text-gray-600 {{ in_array($post->id, session('saved-to', [])) ? 'fas fa-bookmark' : 'far fa-bookmark' }}"></i>
+      <span class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[12px] pb-1 {{ in_array($post->id, session('saved-to', [])) ? 'text-white' : 'text-gray-600' }}">
+        {{ in_array($post->id, session('saved-to', [])) ? '✓' : '+' }}
+      </span>
+      </div>
         @endif
-       <span class="text-gray-400 mx-1">+</span>
-        <i class="far fa-bookmark text-gray-400 text-sm"></i>
       </div>
     </div>
   </section>
@@ -118,3 +123,7 @@
     @endif
   </section>
 </article>
+
+@push('scripts')
+<script src="{{asset('js/savepost.js')}}"></script>
+@endpush

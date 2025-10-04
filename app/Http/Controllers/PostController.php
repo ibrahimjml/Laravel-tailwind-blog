@@ -27,15 +27,17 @@ class PostController extends Controller
 
   public function blogpost(Request $request)
   {
-
+    $page = request()->get('page', 1);
+    $perPage = request('perpage',5);
     $sortoption = $request->get('sort', 'latest');
-    $posts = Post::query()
-            ->published()
-            ->with(['user:id,username,avatar', 'hashtags:id,name,is_featured','categories:id,name,is_featured'])
-            ->withCount('likes','totalcomments')
-            ->blogSort($sortoption)
-            ->paginate(5)
-           ->withQueryString();
+
+      $posts = Post::query()
+              ->published()
+              ->with(['user:id,username,avatar', 'hashtags:id,name,is_featured','categories:id,name,is_featured'])
+              ->withCount('likes','totalcomments')
+              ->blogSort($sortoption)
+              ->paginate($perPage, ['*'], 'blog', $page)
+             ->withQueryString();
 
     $hashtags = Hashtag::active()
                      ->withCount('posts')
@@ -46,6 +48,14 @@ class PostController extends Controller
                     ->inRandomOrder()
                     ->take(5)
                     ->get();
+        if(request()->ajax()){
+      $html = view('blog.partials.posts',['posts' => $posts])->render();
+        return response()->json([
+            'html' => $html,
+            'hasMore' => $posts->hasMorePages(),
+            'nextPage' => $posts->currentPage() + 1
+        ]);
+    }
     return view('blog.blog', [
       'tags' => $hashtags,
       'categories' => $categories,

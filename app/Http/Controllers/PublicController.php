@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckIfBlocked;
+use App\Models\Category;
 use App\Models\Hashtag;
 use App\Services\FollowService;
 use App\Services\PostViewsService;
@@ -27,22 +28,31 @@ class PublicController extends Controller
   {
     $dto = PostFilterDTO::fromRequest($request);
     $postsid = Post::search($dto->search)->get()->pluck('id');
-     
+    $page = request()->get('page', 1);
+    $perPage = request('perpage',5);
+
     $posts = Post::published()
              ->whereIn('id',$postsid)
              ->withCount(['likes', 'comments'])
              ->with(['user','hashtags'])
              ->blogSort($dto->sort)
-             ->paginate(5)
+             ->paginate($perPage,['*'],'search',$page)
              ->withQueryString();
 
-    $hashtags = Hashtag::withCount('posts')->get();
-    
-    return view('blog', [
+    if(request()->ajax()){
+      $html = view('blog.partials.posts',['posts' => $posts])->render();
+      return response()->json([
+        'html' => $html,
+        'searchquery'=>$dto->search,
+        'hasMore' => $posts->hasMorePages(),
+        'nextPage' => $posts->currentPage() + 1
+      ]);
+    }  
+
+    return view('search', [
       'posts' => $posts,
       'sorts' => $dto->sort,
       'searchquery'=>$dto->search,
-      'tags' => $hashtags,
       'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
     ]);
   }
