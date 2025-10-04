@@ -40,6 +40,9 @@
           @role('Moderator')
           Moderator Dashboard
           @endrole
+          @role('Editor')
+          Moderator Dashboard
+          @endrole
         </a>
         <ul class="md:hidden items-center flex flex-wrap list-none">
         

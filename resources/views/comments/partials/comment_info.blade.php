@@ -8,11 +8,17 @@
         <strong>{{ $comment->user->name }}</strong>
       </a>
       <div class="items-center">
-        @if($comment->user->hasRole('Admin'))
+         @php
+              $userRoles = $comment->user->roles->pluck('name')->toArray();
+              $isAdmin = in_array('Admin', $userRoles);
+              $isModerator = in_array('Moderator', $userRoles);
+              $isAuthor = $comment->user_id === $comment->post_user_id;
+          @endphp
+        @if($isAdmin)
        <small class=" px-1 rounded-full bg-green-500 text-white font-semibold">Admin</small>
-       @elseif($comment->user->hasRole('Moderator'))
+       @elseif($isModerator)
        <small class=" px-1 rounded-full bg-green-500 text-white font-semibold">Moderator</small>
-       @elseif($comment->user_id === $comment->post_user_id)
+       @elseif($isAuthor)
        <small class=" px-1 rounded-full bg-green-500 text-white font-semibold">Author</small>
        @endif
       </div>

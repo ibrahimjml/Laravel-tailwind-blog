@@ -113,17 +113,8 @@ class Post extends Model
 }
   public function comments(){
     return $this->hasMany(Comment::class)
-    ->whereNull('parent_id')
-    ->with([
-        'user',
-        'replies.user',
-        'replies.parent.user', 
-        'replies.replies.user',
-        'replies.replies.parent.user',
-        'replies.replies.replies.user',
-        'replies.replies.replies.parent.user',
-    ])
-    ->orderBy('created_at','DESC');
+                ->whereNull('parent_id')
+                ->orderBy('created_at','DESC');
   }
   
   public function totalcomments(){

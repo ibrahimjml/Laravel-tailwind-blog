@@ -27,13 +27,11 @@ class ViewPostService
   }
      public function getPaginatedComments(Post $post, int $page = 1, int $perPage = 1)
     {
-       return Comment::with(['user.roles', 'replies.user.roles','replies.parent.user'])
-                      ->withCount('replies')
-                      ->addSelect([
-                          'post_user_id' => Post::select('user_id')
-                              ->whereColumn('id', 'comments.post_id')
-                              ->limit(1)
-                      ])
+       return Comment::withNestedReplies(3)
+                        ->addSelect(['post_user_id' => Post::select('user_id')
+                        ->whereColumn('id', 'comments.post_id')
+                        ->limit(1)
+                              ])
                       ->where('post_id', $post->id)
                       ->whereNull('parent_id') 
                       ->latest()

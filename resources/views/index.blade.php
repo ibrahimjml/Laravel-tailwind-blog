@@ -62,7 +62,7 @@
                alt="{{$post->title}}"
                class="w-full h-[270px] object-cover mt-2">
                <div class="flex justify-between text-sm text-gray-400 my-3">
-                <p>{{$post->totalcomments->count()}} {{Str::plural('comment',$post->totalcomments)}}</p>
+                <p>{{$post->totalcomments_count}} {{Str::plural('comment',$post->totalcomments_count)}}</p>
                 <p>{{$post->created_at->format('F d, Y')}}</p>
                </div>
           <p class="text-sm font-bold mt-1">{{ $post->title }}</p>
@@ -95,7 +95,7 @@
             <img src="{{$oldest->image_url}}" alt="" class="w-full h-[270px] object-cover mt-2">
           </div>
           <div class="flex justify-between text-sm text-gray-400 my-3">
-                <p>{{$post->totalcomments->count()}} comments</p>
+                <p>{{$post->totalcomments_count}} comments</p>
                 <p>{{$post->created_at->format('F d, Y')}}</p>
                </div>
           <div class="flex flex-col">
