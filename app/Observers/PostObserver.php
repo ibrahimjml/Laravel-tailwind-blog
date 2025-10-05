@@ -5,6 +5,7 @@ namespace App\Observers;
 
 use App\Models\Post;
 use App\Notifications\FollowingPostCreatedNotification;
+use App\Services\ClearCacheService;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -19,6 +20,11 @@ class PostObserver
             $slug = Str::slug($post->title);
             $post->slug = $this->create($slug);
     }
+    public function created(Post $post)
+    {
+      // clear all post cache and comment   
+       app(ClearCacheService::class)->clearPostCaches($post);
+    }
     public function updating(Post $post)
     {
       if($post->isDirty('title')){
@@ -26,7 +32,11 @@ class PostObserver
         $post->slug = $this->create($slug);
       }
     }
-
+    public function updated(Post $post)
+    {
+        // clear all post cache and comment   
+       app(ClearCacheService::class)->clearPostCaches($post);
+    }
     public function deleting(Post $post)
     {
         // Delete old image when post deleted
@@ -74,6 +84,12 @@ class PostObserver
     
         libxml_clear_errors();
       }
-}
+   }
+
+   public function deleted(Post $post)
+   {
+      // clear all post cache and comment   
+       app(ClearCacheService::class)->clearPostCaches($post);
+   }
     
 }

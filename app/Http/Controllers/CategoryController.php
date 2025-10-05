@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Category;
+use App\Repositories\Interfaces\CategoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 class CategoryController extends Controller
 {
-    public function __construct()
+    public function __construct(private CategoryInterface $repo)
   {
     $this->middleware(['auth','verified',CheckIfBlocked::class]);
   }
@@ -16,11 +17,7 @@ class CategoryController extends Controller
     public function viewcategory(Category $category):View
     {
 
-    $posts = $category->posts()
-             ->with(['user:id,username,avatar','categories:id,name'])
-             ->withCount(['comments','likes'])
-             ->orderBy('created_at','desc')
-             ->simplepaginate(5);
+    $posts = $this->repo->getPostsByCategory($category);
 
       return view('categories.show', [
         'posts' => $posts,

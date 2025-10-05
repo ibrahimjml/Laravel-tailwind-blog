@@ -3,69 +3,48 @@
 namespace App\Http\Controllers;
 
 
-use App\DTOs\CreatePostDTO;
-use App\DTOs\UpdatePostDTO;
+use App\DTOs\{CreatePostDTO, UpdatePostDTO};
 use App\Http\Middleware\CheckIfBlocked;
-use App\Http\Requests\App\CreatePostRequest;
-use App\Http\Requests\App\UpdatePostRequest;
-use App\Models\Category;
-use App\Models\Hashtag;
-use App\Models\Post;
-use App\Models\User;
-use App\Services\PostService;
+use App\Http\Requests\App\{CreatePostRequest, UpdatePostRequest};
+use App\Models\{Category, Hashtag, Post};
+use App\Services\{PostService, PostViewsService, ViewPostService};
 use Illuminate\Http\Request;
-
 
 
 class PostController extends Controller
 {
-  public function __construct()
+  public function __construct(
+    private PostService $service,
+    private ViewPostService $postservice,
+    )
   {
+    $this->postservice = $postservice;
+    $this->service = $service;
     $this->middleware(['auth', 'verified', CheckIfBlocked::class]);
     $this->middleware('password.confirm')->only('editpost');
   }
 
   public function blogpost(Request $request)
   {
-    $page = request()->get('page', 1);
-    $perPage = request('perpage',5);
-    $sortoption = $request->get('sort', 'latest');
-
-      $posts = Post::query()
-              ->published()
-              ->with(['user:id,username,avatar', 'hashtags:id,name,is_featured','categories:id,name,is_featured'])
-              ->withCount('likes','totalcomments')
-              ->blogSort($sortoption)
-              ->paginate($perPage, ['*'], 'blog', $page)
-             ->withQueryString();
-
-    $hashtags = Hashtag::active()
-                     ->withCount('posts')
-                     ->get();
-    $categories = Category::withCount('posts')->get();
-    $whoToFollow = User::where('id','!=',auth()->id())
-                    ->whereNotIn('id',auth()->user()->followings()->pluck('user_id'))
-                    ->inRandomOrder()
-                    ->take(5)
-                    ->get();
-        if(request()->ajax()){
-      $html = view('blog.partials.posts',['posts' => $posts])->render();
-        return response()->json([
-            'html' => $html,
-            'hasMore' => $posts->hasMorePages(),
-            'nextPage' => $posts->currentPage() + 1
-        ]);
-    }
-    return view('blog.blog', [
-      'tags' => $hashtags,
-      'categories' => $categories,
-      'users' => $whoToFollow,
-      'posts' => $posts,
-      'sorts' => $sortoption,
-    ]);
-
+     return $this->service->handleBlogPage($request);
   }
+  
+  public function viewPost(Post $post,PostViewsService $views)
+  {
+    $post = $this->postservice->getPost($post);
+    // generate post view
+    $views->getViews($post);
 
+    
+    return view('post', [
+       'post' => $post,
+       'comments' => $post->comments,
+       'latestblogs' => $post->latestblogs,
+       'morearticles' => $post->morearticles,
+       'viewwholiked' => $post->viewwholiked,
+       'reasons' => $post->reasons,
+    ]);
+  }
   public function createpage()
   {
     $allhashtags = Hashtag::active()->pluck('name');
@@ -77,11 +56,14 @@ class PostController extends Controller
     ]);
   }
 
-
-  public function create(CreatePostRequest $request,PostService $service)
+  public function search(Request $request)
+  {
+     return $this->service->handleSearch($request);
+  }
+  public function create(CreatePostRequest $request)
   {
     $dto = CreatePostDTO::fromAppRequest($request);
-    $service->create($dto);
+     $this->service->create($dto);
     toastr()->success('posted successfuly',['timeOut'=>1000]);
 
     return redirect('/blog');
@@ -89,11 +71,11 @@ class PostController extends Controller
 
   public function delete($slug)
   {
-
+    
     $post = Post::published()->whereSlug( $slug)->firstOrFail();
     $this->authorize('delete', $post);
     $post->delete();
-    
+
       toastr()->success('Post deleted successfully',['timeOut'=>1000]);
       return redirect('/blog');
     
@@ -115,68 +97,16 @@ class PostController extends Controller
     ]);
   }
 
-  public function update($slug, UpdatePostRequest $request,PostService $service)
+  public function update($slug, UpdatePostRequest $request)
   {
     $post = Post::published()->whereSlug( $slug)->firstOrFail();
     $this->authorize('update', $post);
+
     $dto = UpdatePostDTO::fromAppRequest($request);
-    $service->update($post,$dto);
+    $this->service->update($post,$dto);
 
     toastr()->success('Post updated successfully',['timeOut'=>1000]);
     return redirect('/blog');
   }
-
-  public function like(Post $post)
-  {
-
-    if ($post->is_liked()) {
-    $like =  $post->likes()->where('user_id', auth()->user()->id)->first();
-    if($like){
-      $like->delete();
-      $post->decrement('likes_count');
-    }
   
-      return response()->json(['liked' => false]);
-    }
-    $post->likes()->create(['user_id' => auth()->user()->id]);
-    $post->increment('likes_count');
-
-    return response()->json([
-      'liked' => true,
-      'likes_count' => $post->likes_count
-    ]);
-  }
-
-  public function save(Request $request)
-  {
-    $fields = $request->validate([
-      'post_id' => 'required|int'
-    ]);
-    $postId = $fields['post_id'];
-    $savedposts = session('saved-to', []);
-    if (in_array($postId, $savedposts)) {
-      $savedposts = array_diff($savedposts, [$postId]);
-      session(['saved-to' => $savedposts]);
-      return response()->json(['status' => 'removed']);
-    } else {
-      $savedposts[] = $postId;
-      session(['saved-to' => $savedposts]);
-      return response()->json(['status' => 'added']);
-    }
-  }
-
-  public function getsavedposts()
-  {
-
-    $getposts = session('saved-to', []);
-    $posts = Post::published()
-      ->whereIn('id', $getposts)
-      ->withCount(['likes', 'comments'])
-      ->with(['user', 'hashtags'])
-      ->paginate(5);
-
-    return view('getsavedposts',[
-      'posts' => $posts,
-    ]);
-  }
 }

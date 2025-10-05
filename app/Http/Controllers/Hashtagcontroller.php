@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\MetaHelpers;
 use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Hashtag;
+use App\Repositories\Interfaces\TagInterface;
 use Illuminate\View\View;
 
 
@@ -16,16 +17,12 @@ class Hashtagcontroller extends Controller
     $this->middleware(['auth','verified',CheckIfBlocked::class]);
   }
 
-    public function viewhashtag(Hashtag $hashtag):View
+    public function viewhashtag(Hashtag $hashtag,TagInterface $repo):View
     {
       if ($hashtag->status !== \App\Enums\TagStatus::ACTIVE) {
           abort(404); 
         }
-    $posts = $hashtag->posts()
-             ->with(['user:id,username,avatar','hashtags:id,name,is_featured','categories:id,name,is_featured'])
-             ->withCount(['comments','likes'])
-             ->orderBy('created_at','desc')
-             ->simplepaginate(5);
+    $posts = $repo->getPostsByTag($hashtag);
 
       return view('hashtags.show', [
         'posts' => $posts,

@@ -2,16 +2,17 @@
 
 namespace App\Providers;
 
-use App\Models\Comment;
-use App\Models\Like;
-use App\Models\Post;
-use App\Models\PostReport;
-use App\Models\User;
-use App\Observers\CommentObserver;
-use App\Observers\LikeObserver;
-use App\Observers\PostObserver;
-use App\Observers\PostReportObserver;
-use App\Observers\UserObserver;
+use App\Models\{Category, Comment, Hashtag, Like, Post, PostReport, User};
+use App\Observers\{CommentObserver, LikeObserver, PostObserver, PostReportObserver, TagObserver, CategoryObserver, UserObserver};
+use App\Repositories\Caches\CategoryCacheDecorator;
+use App\Repositories\Eloquent\PostRepository;
+use App\Repositories\Caches\PostCacheDecorator;
+use App\Repositories\Caches\TagCacheDecorator;
+use App\Repositories\Eloquent\CategoryRepository;
+use App\Repositories\Eloquent\TagRepository;
+use App\Repositories\Interfaces\CategoryInterface;
+use App\Repositories\Interfaces\PostInterface;
+use App\Repositories\Interfaces\TagInterface;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,7 +23,26 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(PostInterface::class, function ($app) {
+        if (config('cache.enabled')) {
+            return new PostCacheDecorator($app->make(PostRepository::class));
+        }
+        return $app->make(PostRepository::class);
+           });
+
+        $this->app->bind(TagInterface::class, function ($app) {
+        if (config('cache.enabled')) {
+            return new TagCacheDecorator($app->make(TagRepository::class));
+        }
+        return $app->make(TagRepository::class);
+           });
+
+        $this->app->bind(CategoryInterface::class, function ($app) {
+        if (config('cache.enabled')) {
+            return new CategoryCacheDecorator($app->make(CategoryRepository::class));
+        }
+        return $app->make(CategoryRepository::class);
+           });
     }
 
     /**
@@ -35,6 +55,8 @@ class AppServiceProvider extends ServiceProvider
       Like::observe(LikeObserver::class);
       PostReport::observe(PostReportObserver::class);
       User::observe(UserObserver::class);
+      Hashtag::observe(TagObserver::class);
+      Category::observe(CategoryObserver::class);
       
       Blade::component('partials.postcard', 'postcard');
     }

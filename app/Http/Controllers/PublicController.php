@@ -3,61 +3,22 @@
 namespace App\Http\Controllers;
 
 
-use App\DTOs\PostFilterDTO;
+
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Middleware\CheckIfBlocked;
-use App\Models\Category;
-use App\Models\Hashtag;
 use App\Services\FollowService;
-use App\Services\PostViewsService;
-use App\Services\ViewPostService;
+use App\Services\PostService;
+use Illuminate\Http\Request;
 
 class PublicController extends Controller
 {
-  public function __construct(
-    protected ViewPostService $singlepost,
-    protected PostViewsService $views)
+  public function __construct(protected PostService $service)
   {
     $this->middleware(['auth','verified',CheckIfBlocked::class]);
   }
 
-
-  public function search(Request $request)
-  {
-    $dto = PostFilterDTO::fromRequest($request);
-    $postsid = Post::search($dto->search)->get()->pluck('id');
-    $page = request()->get('page', 1);
-    $perPage = request('perpage',5);
-
-    $posts = Post::published()
-             ->whereIn('id',$postsid)
-             ->withCount(['likes', 'comments'])
-             ->with(['user','hashtags'])
-             ->blogSort($dto->sort)
-             ->paginate($perPage,['*'],'search',$page)
-             ->withQueryString();
-
-    if(request()->ajax()){
-      $html = view('blog.partials.posts',['posts' => $posts])->render();
-      return response()->json([
-        'html' => $html,
-        'searchquery'=>$dto->search,
-        'hasMore' => $posts->hasMorePages(),
-        'nextPage' => $posts->currentPage() + 1
-      ]);
-    }  
-
-    return view('search', [
-      'posts' => $posts,
-      'sorts' => $dto->sort,
-      'searchquery'=>$dto->search,
-      'authFollowings' => auth()->user()->load('followings')->followings->pluck('id')->toArray()
-    ]);
-  }
-
-public function togglefollow(User $user,FollowService $service){
+public function toggleFollow(User $user,FollowService $service){
   $follower = auth()->user();
   if ($follower->id === $user->id) {
     return response()->json(['error' => 'You cannot follow yourself.'], 400);
@@ -68,23 +29,51 @@ $attached = $service->toggle($follower,$user);
 return response()->json(['attached'=>$attached]);
 }
 
-  public function viewpost(Post $post)
+  public function like(Post $post)
   {
-    $post = $this->singlepost->getPost($post);
-    // generate post view
-    $this->views->getViews($post);
-    $comments = $this->singlepost->getPaginatedComments($post, 1, 5);
 
-    
-    return view('post', [
-       'post' => $post,
-       'comments' => $comments,
-       'latestblogs' => $post->latestblogs,
-       'morearticles' => $post->morearticles,
-       'viewwholiked' => $post->viewwholiked,
-       'reasons' => $post->reasons,
+    if ($post->is_liked()) {
+    $like =  $post->likes()->where('user_id', auth()->user()->id)->first();
+    if($like){
+      $like->delete();
+      $post->decrement('likes_count');
+    }
+  
+      return response()->json(['liked' => false]);
+    }
+    $post->likes()->create(['user_id' => auth()->user()->id]);
+    $post->increment('likes_count');
+
+    return response()->json([
+      'liked' => true,
+      'likes_count' => $post->likes_count
     ]);
   }
+
+  public function save(Request $request)
+  {
+    $fields = $request->validate([
+      'post_id' => 'required|int'
+    ]);
+    $postId = $fields['post_id'];
+    $savedposts = session('saved-to', []);
+    if (in_array($postId, $savedposts)) {
+      $savedposts = array_diff($savedposts, [$postId]);
+      session(['saved-to' => $savedposts]);
+      return response()->json(['status' => 'removed']);
+    } else {
+      $savedposts[] = $postId;
+      session(['saved-to' => $savedposts]);
+      return response()->json(['status' => 'added']);
+    }
+  }
+
+  public function getsavedposts()
+  {
+    return $this->service->handleSaved();
+  }
+
+  
 
 
 }

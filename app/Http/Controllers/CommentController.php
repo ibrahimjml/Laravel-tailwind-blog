@@ -6,8 +6,9 @@ use App\Events\ReplyCommentEvent;
 use App\Http\Middleware\CheckIfBlocked;
 use App\Models\Comment;
 use App\Models\Post;
-use App\Services\ViewPostService;
+use App\Repositories\Interfaces\PostInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class CommentController extends Controller
@@ -16,10 +17,10 @@ class CommentController extends Controller
   {
     $this->middleware(['auth','verified',CheckIfBlocked::class]);
   }
-   public function loadMore(Post $post, ViewPostService $viewPostService)
+   public function loadMore(Post $post, PostInterface $repo)
 {
     $page = request()->get('page', 1);
-    $comments = $viewPostService->getPaginatedComments($post, $page, 5);
+    $comments = $repo->getPaginatedComments($post, $page, 5);
     
     if (request()->ajax()) {
         $html = view('comments.comments', ['comments' => $comments])->render();
@@ -93,7 +94,9 @@ public function reply(Comment $comment, Request $request){
       $fields['post_id']=$comment->post_id;
       
      $reply = Comment::create($fields);
-
+     //clear comments cache 
+     Cache::tags(["post:{$comment->post_id}:comments"])->flush();
+     
      event(new ReplyCommentEvent($comment, $reply,auth()->user()));
 
       return response()->json([
@@ -118,6 +121,7 @@ public function reply(Comment $comment, Request $request){
       $fields['content']=strip_tags($fields['content']);
 
       $comment->update($fields);
+
       return response()->json([
         'Edited'=>true
       ]);
@@ -126,6 +130,7 @@ public function reply(Comment $comment, Request $request){
 
     public function deleteComment(Comment $comment){
       $this->authorize('delete',$comment);
+
       $comment->delete();
       return response()->json([
         'deleted'=>true

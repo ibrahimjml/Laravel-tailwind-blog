@@ -6,6 +6,7 @@ use App\Events\CommentCreatedEvent;
 use App\Models\Comment;
 use App\Notifications\CommentNotification;
 use App\Notifications\RepliedCommentNotification;
+use App\Services\ClearCacheService;
 use Illuminate\Notifications\DatabaseNotification;
 
 class CommentObserver
@@ -24,9 +25,14 @@ class CommentObserver
       if (!app()->runningInConsole()) {
           event(new CommentCreatedEvent($comment));
          }
-
+      // clear all post cache and comment   
+       app(ClearCacheService::class)->clearPostCaches($comment->post);
     }
-   
+   public function updated(Comment $comment)
+   {
+    // clear all post cache and comment   
+       app(ClearCacheService::class)->clearPostCaches($comment->post);
+   }
     public function deleting(Comment $comment){
       // auto delete comment when get deleted
       DatabaseNotification::where('type', CommentNotification::class)
@@ -45,7 +51,9 @@ class CommentObserver
       if ($comment->parent_id) {
         Comment::where('id', $comment->parent_id)
             ->decrement('replies_count');
-    }
+      }
+      // clear all post cache and comment   
+       app(ClearCacheService::class)->clearPostCaches($comment->post);
     }
 
 }
