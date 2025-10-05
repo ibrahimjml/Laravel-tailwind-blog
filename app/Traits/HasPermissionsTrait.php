@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\Permission;
 use App\Models\Role;
+use Illuminate\Support\Facades\Cache;
 
 trait HasPermissionsTrait
 {
@@ -17,31 +18,33 @@ trait HasPermissionsTrait
   }
   public function hasAnyRole(array $roles)
   {
-    return $this->roles->pluck('name')->intersect($roles)->isNotEmpty();
+          Cache::tags(['has_any_role',"user_role:{$this->id}"])->remember("user:{$this->id}:has_any_role",3600, function() use($roles){
+          return $this->roles->pluck('name')->intersect($roles)->isNotEmpty();
+        });
   }
   public function userPermissions()
-  {
+  { 
     return $this->belongsToMany(Permission::class, 'permission_user');
   }
   public function hasPermission($permission)
   {
-    $rolePermissions = $this->roles->flatMap->permissions->pluck('name');
-    $userPermissions = $this->userPermissions->pluck('name');
-
-    return $rolePermissions->merge($userPermissions)->contains($permission);
+    return $this->getAllPermissions()->contains($permission);
   }
 
   public function hasAnyPermission(array $permissions): bool
-{
-    $rolePermissions = $this->roles->flatMap->permissions->pluck('name');
-    $userPermissions = $this->userPermissions->pluck('name');
-    return $rolePermissions->merge($userPermissions)->intersect($permissions)->isNotEmpty();
+{  
+     return $this->getAllPermissions()->intersect($permissions)->isNotEmpty();
 }
 public function getAllPermissions()
 {
-    $rolePermissions = $this->roles->flatMap->permissions->pluck('name');
-    $userPermissions = $this->userPermissions->pluck('name');
+    return Cache::tags(['user_permissions',"user:{$this->id}"])->remember("user:{$this->id}:permissions",3600,function () {
 
-    return $rolePermissions->merge($userPermissions)->unique();
+            $rolePermissions = $this->roles->flatMap->permissions->pluck('name');
+            $userPermissions = $this->userPermissions->pluck('name');
+
+            return $rolePermissions->merge($userPermissions)->unique();
+        }
+    );
 }
+
 }

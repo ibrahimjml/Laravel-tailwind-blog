@@ -21,6 +21,7 @@ class ProfileController extends Controller
     $this->view->createView($user,$viewer);
     
     $posts = $user->post()
+             ->with('user.roles.permissions')
              ->orderByDesc('is_pinned')
              ->orderByDesc('pinned_at')
              ->orderByDesc('created_at')

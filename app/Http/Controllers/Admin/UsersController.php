@@ -9,7 +9,7 @@ use App\Http\Requests\App\Admin\{CreateUserRequest, UpdateUserRequest};
 use App\Models\{Permission, Role, User};
 use App\Services\Admin\UsersService;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Cache;
 
 class UsersController extends Controller
 {
@@ -32,7 +32,8 @@ public function createUser(CreateUserRequest $request)
 {
     $dto = CreateUserDTO::fromRequest($request);
     $this->service->createUser($dto);
-
+    // clear cached roles and permissions
+    Cache::tags(['user_permissions','has_any_role'])->flush();
     toastr()->success('user created',['timeOut'=>1000]);
     return back();
 }
@@ -41,6 +42,7 @@ public function updateUser(UpdateUserRequest $request, User $user)
       $dto = UpdateUserDTO::fromRequest($request);
       $this->service->updateUser($user,$dto);
 
+      Cache::tags(['user_permissions','has_any_role'])->flush();
       toastr()->success('user updated',['timeOut'=>1000]);
       return back();
 }
@@ -60,7 +62,7 @@ public function updateUser(UpdateUserRequest $request, User $user)
 
     $this->authorize('deleteAny',$user);
      $this->service->deleteUser($user);
-
+    Cache::tags(['user_permissions','has_any_role'])->flush();
     toastr()->success('user deleted',['timeOut'=>1000]);
     return back();
   }
@@ -73,7 +75,7 @@ public function updateUser(UpdateUserRequest $request, User $user)
     ]);
     
     $this->service->changeRole($user, $fields['role']);
-    
+    Cache::tags(['user_permissions','has_any_role'])->flush();
     toastr()->success("user role '{$fields['role']}' updated",['timeOut'=>1000]);
     return back();
   }

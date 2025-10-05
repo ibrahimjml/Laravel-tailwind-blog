@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\{Category, Comment, Hashtag, Like, Post, PostReport, User};
-use App\Observers\{CommentObserver, LikeObserver, PostObserver, PostReportObserver, TagObserver, CategoryObserver, UserObserver};
+use App\Models\{Category, Comment, Hashtag, Like, Permission, Post, PostReport, Role, User};
+use App\Observers\{CommentObserver, LikeObserver, PostObserver, PostReportObserver, TagObserver, CategoryObserver, PermissionObserver, RoleObserver, UserObserver};
 use App\Repositories\Caches\CategoryCacheDecorator;
 use App\Repositories\Eloquent\PostRepository;
 use App\Repositories\Caches\PostCacheDecorator;
@@ -57,6 +57,8 @@ class AppServiceProvider extends ServiceProvider
       User::observe(UserObserver::class);
       Hashtag::observe(TagObserver::class);
       Category::observe(CategoryObserver::class);
+      Permission::observe(PermissionObserver::class);
+      Role::observe(RoleObserver::class);
       
       Blade::component('partials.postcard', 'postcard');
     }
