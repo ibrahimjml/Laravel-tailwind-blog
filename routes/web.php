@@ -37,7 +37,7 @@ Route::get('/',HomeController::class)->name('home');
 // Blog
 Route::get('/blog',[PostController::class,'blogpost'])->name('blog')->middleware('auth');
 // Post
-Route::get('/post/{post:slug}',[PublicController::class,'viewpost'])->name('single.post')->middleware('auth');
+Route::get('/post/{post:slug}',[PostController::class,'viewPost'])->name('single.post')->middleware('auth');
 
 //recent posts page by hashtag 
 Route::get('/hashtag/{hashtag:name}',[Hashtagcontroller::class,'viewhashtag'])->name('viewhashtag');
@@ -86,11 +86,11 @@ Route::get('/qr-code', QrcodeController::class)->name('qr-code.image');
 // toggle pin/unpin
 Route::post('/toggle/{post}/pin',[PinController::class,'togglePin'])->name('toggle.pin');
 // Like
-Route::post('/post/{post}/like',[PostController::class,'like']);
+Route::post('/post/{post}/like',[PublicController::class,'like']);
 // Follow
-Route::post('/user/{user}/togglefollow',[PublicController::class,'togglefollow'])->name('toggle.follow');
+Route::post('/user/{user}/togglefollow',[PublicController::class,'toggleFollow'])->name('toggle.follow');
 // Search
-Route::get('/search',[PublicController::class,'search'])->name('blog.search');
+Route::get('/search',[PostController::class,'search'])->name('blog.search');
 // Comments
 Route::get('/posts/{post}/comments', [CommentController::class, 'loadMore'])->name('posts.comments.load');
 Route::post('/comment/{post}',[CommentController::class,'createComment']);
@@ -104,9 +104,9 @@ Route::prefix('/reports')->group(function(){
   Route::post('/comment/{comment}',[ReportCommentController::class,'report_comment'])->name('comment.report');
 });
 // Save Post
-Route::post('/saved-post',[PostController::class,'save']);
+Route::post('/saved-post',[PublicController::class,'save']);
 // Saved Posts Page
-Route::get('/getsavedposts',[PostController::class,'getsavedposts'])->name('bookmarks');
+Route::get('/getsavedposts',[PublicController::class,'getsavedposts'])->name('bookmarks');
 // notifications
 Route::get('/notifications/{id}/read', [NotificationController::class, 'markasread'])->name('notifications.read');
 Route::get('/notifications/read/all', [NotificationController::class, 'markallasread'])->name('notifications.readall');
