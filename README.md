@@ -54,7 +54,7 @@
 - **Table Of Content.**
 - **Ajax user interactions Likes/Save/Follow/Share and post views.**
 - **Multiple reports on post/comment/profile.**
-- **Service layer, DTOs for clean code and better validation input**
+- **Service layer, Repositories, DTOs for clean code,logic and better validation input**
 - **Redis for better performance**
 
 
@@ -104,6 +104,11 @@ php artisan db:seed --AdminSeeder
 9.💻 Run the application
 ```
 php artisan serve
+```
+9.🚀 For better performance configure Redis and enable Cache to true
+```
+CACHE_ENABLED=true
+REDIS_CLIENT=predis
 ```
 
 ## Test the Application
