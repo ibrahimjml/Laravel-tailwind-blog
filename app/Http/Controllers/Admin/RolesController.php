@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 class RolesController extends Controller
@@ -38,6 +39,8 @@ class RolesController extends Controller
         if (!empty($fields['permissions'])) {
         $role->permissions()->sync($fields['permissions']);
     }
+      // clear cached roles and permissions
+    Cache::tags(['user_permissions','has_any_role'])->flush();
   return response()->json([
     'added'=>true,
     'hashtag' => $role->name
@@ -65,7 +68,8 @@ class RolesController extends Controller
 
   
       $role->permissions()->sync($data['permissions'] ?? []);
-
+  // clear cached roles and permissions
+    Cache::tags(['user_permissions','has_any_role'])->flush();
         return response()->json([
           'edited' => true,
            'message' => 'Role updated successfully'
@@ -80,6 +84,8 @@ class RolesController extends Controller
       $role = Role::find( $id );
       $role->permissions()->detach();
       $role->delete();
+        // clear cached roles and permissions
+    Cache::tags(['user_permissions','has_any_role'])->flush();
     return response()->json([
       'deleted' => true,
       'message' => "role {$role->name} deleted"

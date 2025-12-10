@@ -3,17 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DTOs\Admin\SlideDTO;
-use App\Enums\SlidesStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\App\Admin\CreateSlideRequest;
 use App\Http\Requests\App\Admin\UpdateSlideRequest;
 use App\Models\Slide;
 use App\Services\Admin\SlidesService;
-use Illuminate\Http\Request;
 use App\Traits\ImageUploadTrait;
-use GuzzleHttp\Promise\Create;
-use Illuminate\Validation\Rules\Enum;
-use Illuminate\Support\Facades\Storage;
+
 
 class SlidesController extends Controller
 {

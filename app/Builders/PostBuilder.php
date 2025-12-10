@@ -69,6 +69,7 @@ class PostBuilder extends Builder
             'latest' => $this->latest(),
             'oldest' => $this->oldest(),
             'published' => $this->filterByStatus(PostStatus::PUBLISHED),
+            'under review' => $this->filterByStatus(PostStatus::UNDER_REVIEW),
             'banned' => $this->filterByStatus(PostStatus::BANNED),
             'trashed' => $this->filterByStatus(PostStatus::TRASHED),
             default => $this->latest(),

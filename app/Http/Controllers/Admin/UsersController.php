@@ -10,6 +10,7 @@ use App\Models\{Permission, Role, User};
 use App\Services\Admin\UsersService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class UsersController extends Controller
 {
@@ -30,12 +31,23 @@ class UsersController extends Controller
   }
 public function createUser(CreateUserRequest $request)
 {
+    try{
+
     $dto = CreateUserDTO::fromRequest($request);
     $this->service->createUser($dto);
     // clear cached roles and permissions
     Cache::tags(['user_permissions','has_any_role'])->flush();
     toastr()->success('user created',['timeOut'=>1000]);
     return back();
+    }catch (\Exception $e) {
+        Log::error('User creation failed', [
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
+        ]);
+
+        toastr()->error('Failed to create user', ['timeOut' => 3000]);
+        return back()->withInput();
+    }
 }
 public function updateUser(UpdateUserRequest $request, User $user)
 {     $this->authorize('updateAny',$user);
