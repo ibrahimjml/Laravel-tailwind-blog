@@ -42,9 +42,25 @@ html,body{
  min-width: 140px;
  z-index: 70;
  margin-top: 28px;
-
-
 }
+.burger-menu{
+ position: absolute;
+ top: 35px;
+ right: 0px;
+ box-shadow: 0 5px 25px 0 rgb(0 0 0 / 60%);
+ padding: 1rem;
+ border-radius: 0.5rem;
+ color: #3d4a59;
+ background-color: #fff;
+ transform: translateX(-8px);
+ cursor: pointer;
+ line-height: 30px;
+ text-align: center;
+ min-width: 140px;
+ z-index: 70;
+ margin-top: 28px;
+}
+
 #hidden-notification {
   display: block;
   position: absolute;
@@ -206,6 +222,9 @@ body.no-scroll {
 =========================================================== */
 .carousel-wrapper {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
 }
 
@@ -252,7 +271,7 @@ body.no-scroll {
   cursor: auto;
 }
 
-@media screen and ( 400px <= width <= 600px) {
+@media screen and ( 350px <= width <= 600px) {
   .arrow-group {
     right: 1rem; 
   }

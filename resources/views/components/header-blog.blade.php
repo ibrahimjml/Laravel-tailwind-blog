@@ -3,7 +3,7 @@
 <head>
 @include('components.head')
 </head>
-<body  class="min-h-screen flex  flex-col m-0 ">
+<body  class="min-h-screen m-0 ">
   <nav @class([
       'w-screen px-6 py-5 h-20',
       'bg-opacity-0 absolute z-50' => Route::is(['profile','home']),
@@ -11,7 +11,7 @@
       'bg-white shadow-[0_2px_5px_rgba(0,0,0,0.1)] fixed top-0 z-50' => Route::is(['blog']),
       ])>
     <div class="flex justify-between items-center ">
-      <div class=" text-2xl font-bold">
+      <div class=" text-2xl font-bold flex">
       <span class="bg-white text-black pr-1 pl-1 rounded-l-md border border-t-3 border-b-3">Blog</span>
       <span class="text-white bg-black pl-1 pr-1 rounded-r-md ">Post</span> 
       </div>

@@ -1,114 +1,117 @@
-<div id="editModel-{{ $user->id }}" class="hidden fixed w-2/6 z-[20] max-h-[80%] overflow-y-auto py-8 left-[50%]  top-[50%] transform translate-x-[-50%] translate-y-[-50%] items-center space-y-2 font-bold bg-gray-700 rounded-lg drop-shadow-lg border border-gray-300 transition-all duration-300">
+<div id="editModel-{{ $user->id }}" class="hidden fixed inset-0 z-30 bg-black bg-opacity-50 flex items-center justify-center p-4">
 
-  <div class="ml-6">
-    <p class="text-xl text-gray-100">Edit User {{$user->name}}</p>
- <form  action="{{route('admin.users.update',$user->id)}}" method="POST">
+    <!-- Modal Content -->
+  <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[60vh] flex flex-col">
+    <!-- Modal Header -->
+    <div class="flex justify-between items-center p-4 border-b border-gray-200">
+      <h2 class="text-xl font-bold text-gray-800">Edit {{ $user->name }}</h2>
+      <button id="closeEditModel-{{ $user->id }}" class="text-gray-400 hover:text-gray-600 transition-colors">
+        <i class="fas fa-times fa-lg"></i>
+      </button>
+    </div>
+
+     <!-- Modal Body -->
+    <div class="p-6 overflow-y-auto">
+        @if($errors->any())
+        <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded text-sm text-red-700">
+          <ul class="list-disc ml-5">
+            @foreach($errors->all() as $err)
+              <li>{{ $err }}</li>
+            @endforeach
+          </ul>
+        </div>
+      @endif
+
+ <form  action="{{route('admin.users.update',$user->id)}}" method="POST" class="space-y-6">
  @csrf
  @method("PUT")
- <label for="name" class="mt-2 block text-slate-200 text-sm mb-1 font-bold  ">Name:</label>
- <input  type="text" 
-         value="{{ old('name', $user->name) }}" 
-         class="block  w-full rounded-lg p-2 border-2 text-white  bg-transparent @error('name') border-red-500 @enderror"
-         name="name" >
-@error('name')
-<p class="text-red-500 text-xs italic mt-4">
-  {{ $message }}
-</p>
-@enderror
-<label for="username" class="mt-2 block text-slate-200 text-sm mb-1 font-bold ">Username:</label>
- <input  type="text"
-         value="{{ old('username') ?: $user->username }}" 
-         class="block  w-full rounded-lg p-2 border-2 text-white  bg-transparent @error('username') border-red-500 @enderror"
-         name="username" >
-@error('username')
-<p class="text-red-500 text-xs italic mt-4">
-  {{ $message }}
-</p>
-@enderror
-<label for="email" class="mt-2 block text-slate-200 text-sm mb-1 font-bold ">Email:</label>
- <input  type="text" 
-         value="{{ old('email') ?: $user->email }}" 
-         class="block  w-full rounded-lg p-2 border-2 text-white  bg-transparent @error('email') border-red-500 @enderror"
-         name="email" >
-@error('email')
-<p class="text-red-500 text-xs italic mt-4">
-  {{ $message }}
-</p>
-@enderror
-
-<label for="age" class="mt-2 block text-slate-200 text-sm mb-1 font-bold ">Age:</label>
-<input  type="number" 
-        value="{{ old('age', $user->age) }}" 
-        class="block  w-full rounded-lg p-2 border-2 text-white  bg-transparent @error('age') border-red-500 @enderror"
-        name="age" >
-@error('age')
-<p class="text-red-500 text-xs italic mt-4">
-  {{ $message }}
-</p>
-@enderror
-<label for="phone" class="mt-2 block text-slate-200 text-sm mb-1 font-bold  ">phone:</label>
-<input 
-       name="phone"
-       type="tel"
-       value="{{ old('username', $user->phone) }}"
-       class=" block  w-full rounded-lg p-2 border-2 text-white  bg-transparent @error('phone') border-red-500 @enderror">
- @error('phone')
-     <p class="text-red-500 text-xs italic mt-4">
-         {{ $message }}
-     </p>
-     @enderror
-<label for="password" class="mt-2 block text-slate-200 text-sm mb-1 font-bold ">Password:</label>
- <input  type="password" 
-         class="block  w-full rounded-lg p-2 border-2 text-white  bg-transparent @error('password') border-red-500 @enderror"
-         name="password" >
-  @error('password')
-      <p class="text-red-500 text-xs italic mt-4">
-          {{ $message }}
-      </p>
-      @enderror
-<label for="password_confirmation" class="mt-2 block text-slate-200 text-sm mb-1 font-bold ">Confirm password:</label>
- <input  type="password" 
-         class="block  w-full rounded-lg p-2 border-2 text-white  bg-transparent @error('password_confirmation') border-red-500 @enderror"
-         name="password_confirmation" >
-@error('password_confirmation')
-<p class="text-red-500 text-xs italic mt-4">
-  {{ $message }}
-</p>
-@enderror
-<div class="flex flex-col ">
-  <label for="roles" class="mt-2 block text-slate-200 text-sm mb-1 font-bold">Roles:</label>
-  @foreach ($roles as $role)  
-  @php
-$selectedRole = $user->roles->first()?->name;
-@endphp
-    <label class="mr-4 text-white">
-      <input type="radio" name="roles" value="{{ $role->name }}" class="mr-1" {{$selectedRole === $role->name ? 'checked' : ''}}>
-      {{ ucfirst($role->name) }}
-    </label>
-  @endforeach
-</div>
-@if($selectedRole === \App\Enums\UserRole::USER->value)
-<label for="permissions" class="text-white">Permissions:</label>
-<div class="flex flex-col h-52 overflow-y-auto">
-@foreach ($permissions as $module => $modulePermissions)
-    <div class="mb-4">
-        <h3 class="text-white font-bold mb-2">{{ $module }}</h3>
-        <div class="flex flex-wrap gap-2">
-            @foreach ($modulePermissions as $permission)
-                <label class="text-white mr-4">
-                    <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                        {{ $user->hasPermission($permission->name) ? 'checked' : '' }}>
-                    {{ $permission->name }}
-                </label>
-            @endforeach
+   <!-- Form Fields -->
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name:</label>
+          <input type="text" name="name" value="{{ old('name', $user->name) }}"  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('name') border-red-500 @enderror">
+          @error('name')<p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>@enderror
         </div>
-    </div>
-@endforeach
-</div>
-@endif
-<button type="submit" class="w-42 bg-green-700  text-slate-200 py-2 px-5 rounded-lg font-bold capitalize mb-6 mt-6 text-center cursor-pointer">Update</button>
-</form> 
-<button id="closeEditModel-{{ $user->id }}" class=" bg-transparent border-2 text-slate-200 py-2 px-5 rounded-lg font-bold capitalize hover:border-gray-500 transition duration-300 mt-2">Cancel</button>
-</div>
-</div>
 
+        <div>
+          <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username:</label>
+          <input type="text" name="username" value="{{ old('username', $user->username) }}"  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('username') border-red-500 @enderror">
+          @error('username')<p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>@enderror
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email:</label>
+          <input type="text" name="email" value="{{ old('email', $user->email) }}"  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('email') border-red-500 @enderror">
+          @error('email')<p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>@enderror
+        </div>
+
+        <div>
+          <label for="age" class="block text-sm font-medium text-gray-700 mb-1">Age:</label>
+          <input type="number" name="age" value="{{ old('age', $user->age) }}"  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('age') border-red-500 @enderror">
+          @error('age')<p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>@enderror
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Phone:</label>
+          <input type="tel" name="phone" value="{{ old('phone', $user->phone) }}"  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('phone') border-red-500 @enderror">
+          @error('phone')<p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>@enderror
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password:</label>
+          <input type="password" name="password"   class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('password') border-red-500 @enderror">
+          @error('password')<p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>@enderror
+        </div>
+
+        <div>
+          <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirm password:</label>
+          <input type="password" name="password_confirmation"   class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('password_confirmation') border-red-500 @enderror">
+          @error('password_confirmation')<p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>@enderror
+        </div>
+
+        <!-- Roles -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Roles:</label>
+          <div class="mt-2 space-x-4">
+            @foreach ($roles as $role)
+              @php
+              $selectedRole = $user->roles->first()?->name;
+              @endphp
+              <label class="inline-flex items-center text-gray-600">
+                <input type="radio" name="roles" value="{{ $role->name }}" {{$selectedRole === $role->name ? 'checked' : ''}} class="mr-1 text-indigo-600 focus:ring-indigo-500">
+                {{ ucfirst($role->name) }}
+              </label>
+            @endforeach
+          </div>
+        </div>
+
+        <!-- Permissions -->
+        @if($selectedRole === \App\Enums\UserRole::USER->value)
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Permissions:</label>
+          <div class="mt-2 p-3 border border-gray-200 rounded-md max-h-52 overflow-y-auto space-y-4">
+            @foreach ($permissions as $module => $modulePermissions)
+              <div>
+                <h3 class="text-sm font-semibold text-gray-800 mb-2">{{ $module }}</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  @foreach ($modulePermissions as $permission)
+                    <label class="flex items-center text-sm text-gray-600 font-normal">
+                      <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" {{ $user->hasPermission($permission->name) ? 'checked' : '' }} class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2">
+                      {{ $permission->name }}
+                    </label>
+                  @endforeach
+                </div>
+              </div>
+            @endforeach
+          </div>
+        </div>
+       @endif
+      <!-- Modal Footer -->
+        <div class="flex justify-end items-center pt-4">
+            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Edit User
+            </button>
+        </div>
+</form> 
+</div>
+</div>
+</div>

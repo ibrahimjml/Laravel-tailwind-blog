@@ -1,6 +1,6 @@
-<div class="flex p-4 w-40 border-2 bg-white rounded-lg">
-  <div class="flex flex-wrap">
-    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+<div class="flex-1 min-w-[170px] min-h-[85px] p-4 border-2 bg-white rounded-lg">
+  <div class="flex items-center h-full">
+    <div class="relative pr-4 flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
       Users
       </h5>
@@ -17,9 +17,9 @@
   </div>
 </div>
 
-<div class="flex p-4 w-48 border-2 bg-white rounded-lg">
-  <div class="flex flex-wrap">
-    <div class="relative w-full pr-4 max-w-full  flex-1">
+<div class="flex-1 min-w-[170px] min-h-[85px] p-4 border-2 bg-white rounded-lg">
+  <div class="flex items-center h-full">
+    <div class="relative pr-4 flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
         Blocked
       </h5>

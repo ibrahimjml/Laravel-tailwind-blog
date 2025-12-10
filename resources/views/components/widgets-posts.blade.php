@@ -1,7 +1,7 @@
 <!-- posts -->
-<div class="flex-auto h-[85px] p-4 w-40 border-2 bg-white rounded-lg">
-  <div class="flex flex-wrap">
-    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+<div class="flex-1 min-w-[170px] min-h-[85px] p-4 border-2 bg-white rounded-lg">
+  <div class="flex items-center h-full">
+    <div class="relative pr-4 flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
         Posts
       </h5>
@@ -19,9 +19,9 @@
   </div>
 </div>
 <!-- likes -->
-<div class="flex-auto h-fit p-4 w-40 border-2 bg-white rounded-lg">
-  <div class="flex flex-wrap">
-    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+<div class="flex-1 min-w-[170px] min-h-[85px] p-4 border-2 bg-white rounded-lg">
+  <div class="flex items-center h-full">
+    <div class="relative pr-4 flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
         Likes
       </h5>
@@ -39,9 +39,9 @@
 
 </div>
 <!-- comments -->
-<div class="flex-auto h-fit p-4 w-44 border-2 bg-white rounded-lg">
-  <div class="flex flex-wrap">
-    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+<div class="flex-1 min-w-[170px] min-h-[85px] p-4 border-2 bg-white rounded-lg">
+  <div class="flex items-center h-full">
+    <div class="relative pr-4 flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
         Comments
       </h5>
@@ -59,9 +59,9 @@
 
 </div>
 <!-- tags -->
-<div class="flex-auto h-fit p-4 w-40 border-2 bg-white rounded-lg">
-  <div class="flex flex-wrap">
-    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+<div class="flex-1 min-w-[170px] min-h-[85px] p-4 border-2 bg-white rounded-lg">
+  <div class="flex items-center h-full">
+    <div class="relative pr-4 flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
         Tags
       </h5>
@@ -78,9 +78,9 @@
   </div>
 </div>
 <!-- categories -->
-<div class="flex-auto h-[85px] p-4 w-44 border-2 bg-white rounded-lg">
-  <div class="flex flex-wrap">
-    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+<div class="flex-1 min-w-[170px] min-h-[85px] p-4 border-2 bg-white rounded-lg">
+  <div class="flex items-center h-full">
+    <div class="relative pr-4 flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
         Categories
       </h5>
@@ -97,9 +97,9 @@
   </div>
 </div>
 <!-- post reports -->
-<div class="flex-auto h-fit p-4 w-46 border-2 bg-white rounded-lg">
-  <div class="flex flex-wrap">
-    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+<div class="flex-1 min-w-[170px] min-h-[85px] p-4 border-2 bg-white rounded-lg">
+  <div class="flex items-center h-full">
+    <div class="relative pr-4 flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
        Post Reports
       </h5>
@@ -116,9 +116,9 @@
   </div>
 </div>
 <!-- comment reports -->
-<div class="flex h-fit p-4 w-fit border-2 bg-white rounded-lg">
-  <div class="flex flex-wrap">
-    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+<div class="flex-1 min-w-[170px] min-h-[85px] p-4 border-2 bg-white rounded-lg">
+  <div class="flex items-center h-full">
+    <div class="relative pr-4 flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
         Comment Reports
       </h5>
@@ -135,9 +135,9 @@
   </div>
 </div>
 <!-- comment reports -->
-<div class="flex h-fit p-4 w-fit border-2 bg-white rounded-lg">
-  <div class="flex flex-wrap">
-    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+<div class="flex-1 min-w-[170px] min-h-[85px] p-4 border-2 bg-white rounded-lg">
+  <div class="flex items-center h-full">
+    <div class="relative pr-4 flex-grow flex-1">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs">
         Profile Reports
       </h5>

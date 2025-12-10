@@ -70,32 +70,58 @@
 </div>
 
 {{-- 2- Post Title & user information --}}
-<div class="flex flex-col items-center justify-center container   pb-2 sm:pb-6 mt-7">
-  <span class="block w-full font-bold md:text-4xl text-2xl text-center capitalize">{{$post->title}}</span>
+<div class="flex flex-col items-center justify-center container   pb-2 sm:pb-6 mt-7"><!-- start container -->
+  <span class="block w-full font-bold md:text-4xl text-2xl text-center capitalize">
+    {{$post->title}}
+  </span>
 
-    <div class="ml-5 mt-4 flex justify-center items-center md:text-sm text-xs">
-      <span class="flex justify-center items-center  font-semibold gap-2">
+    
+    <div class="mt-6 mx-auto max-w-4xl px-4 md:px-0"><!-- start User Info Section -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4  lg:rounded-none rounded-lg lg:border-0 border border-gray-200 hover:border-gray-300 transition-colors">
         
-  <a href='{{route('profile',$post->user->username)}}'>
-    <img src="{{$post->user->avatar_url}}"  class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
-    </a>
-        <a href="{{route('profile',$post->user->username)}}" class="hover:underline">{{$post->user->username}}</a>
-      </span>
-      
-      &nbsp;&nbsp;
-      <span class="md:text-lg text-xs flex items-center gap-2 ">
-        <b>·</b>
-        <span class="follow-status {{ !in_array($post->user->id, $authFollowings) ? 'hidden' : '' }}">
-          <small>Following</small>
-          <b>·</b>
-        </span>
-        <small>published on {{$post->created_at->format('F d, Y')}}</small>
-        <b>·</b>
-        <small>Last Updated on {{$post->updated_at->format('F d, Y')}}</small>
-         
-      </span>
-    </div>
-</div>
+        
+        <div class="flex items-center gap-3"><!-- start User Profile -->
+          <a href='{{route('profile',$post->user->username)}}' class="flex-shrink-0">
+            <img src="{{$post->user->avatar_url}}" 
+                 alt="{{$post->user->username}}"
+                 class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm hover:shadow-md transition-shadow">
+          </a>
+          
+          <div class="flex flex-col">
+            <a href="{{route('profile',$post->user->username)}}" 
+               class="font-semibold text-gray-900 hover:text-blue-600 transition-colors text-sm md:text-base">
+              {{$post->user->username}}
+            </a>
+            
+            <span class="follow-status {{ !in_array($post->user->id, $authFollowings) ? 'hidden' : '' }}">
+              <small class="text-gray-500 text-xs">Following</small>
+            </span>
+          </div>
+        </div><!--  end User Profile -->
+
+        <span class="hidden lg:block text-gray-300">•</span>
+
+        
+        <div class="flex flex-wrap items-center gap-2 text-gray-600 text-xs md:text-sm"><!-- user timestamps -->
+          <div class="flex items-center gap-1">
+            <i class="fas fa-calendar-alt text-gray-400"></i>
+            <span title="Published on {{$post->created_at->format('F d, Y h:i A')}}">
+              {{$post->created_at->format('M d, Y')}}
+            </span>
+          </div>
+          
+          <span class="text-gray-300">•</span>
+          
+          <div class="flex items-center gap-1">
+            <i class="fas fa-sync text-gray-400"></i>
+            <span title="Updated on {{$post->updated_at->format('F d, Y h:i A')}}">
+              {{$post->updated_at->format('M d, Y')}}
+            </span>
+          </div>
+        </div><!-- end user timestamps -->
+      </div>
+    </div><!-- end User Info Section -->
+</div><!-- end container -->
 {{-- 3- post Image --}}
   <div class="relative mx-auto w-full max-w-6xl mt-2 h-[300px] md:h-[450px]">
       <img class="absolute top-0 left-0 w-full h-full object-cover rounded-none shadow-lg hover:shadow-md" src="{{$post->image_url}}"  alt="{{$post->title}}">

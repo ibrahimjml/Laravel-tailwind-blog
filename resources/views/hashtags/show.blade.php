@@ -6,8 +6,12 @@
   <h1 class=" text-4xl p-36 font-semibold text-center w-54">No Posts Yet with # {{$currentHashtag->name}}</h1>
 
 @else
-<div class="w-full p-5 mt-1 bg-black">
-  <h1 class=" text-4xl  p-5 font-semibold text-center text-white ">Showing recent posts with <span class="text-white bg-yellow-500 p-3 rounded-lg">#{{$currentHashtag->name}}</span></h1>
+<div class="w-full p-5 mt-1 bg-black flex justify-between items-center">
+  <h1 class=" lg:text-4xl text-sm p-5 font-semibold text-center text-white ">Showing recent posts with </h1>
+    <span class="text-white bg-yellow-500 p-3 rounded-lg w-fit h-fit">
+      #{{$currentHashtag->name}}
+      </span>
+    
 </div>
 @foreach ($posts as $post)
     

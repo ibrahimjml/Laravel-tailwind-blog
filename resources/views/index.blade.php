@@ -42,21 +42,10 @@
     </div>
   </div>
   {{-- Featured Posts --}}
-  <p class="text-gray-500 text-xl text-center font-semibold mt-10 uppercase ">Featured Blogs</p>
-{{-- arrows --}}
-<div class="carousel-wrapper lg:px-0 px-4">
-  <div class="arrow-group">
-    <button id="prevBtn" class="scroll-btn" onclick="scrollCarousel(-1)">
-      <i class="fas fa-arrow-left"></i>
-    </button>
-    <button id="nextBtn" class="scroll-btn" onclick="scrollCarousel(1)">
-      <i class="fas fa-arrow-right"></i>
-    </button>
-  </div>
-
-  <div class="carousel" id="carousel">
+  <p class="text-gray-500 lg:text-xl text-md text-center font-semibold mt-10 uppercase ">Featured Posts</p>
+  <div class="flex flex-col md:flex-row  md:justify-center md:items-center md:gap-2 gap-4 mt-4 mb-3">
     @foreach($featuredPosts as $post)
-      <div class="carousel-item relative p-3 flex-shrink-0">
+      <div class=" p-3 mx-auto md:mx-0 w-[400px] md:w-[500px] h-fit flex flex-col ">
         <a href="{{ route('single.post',$post->slug) }}">
           <img src="{{ $post->image_url }}"
                alt="{{$post->title}}"
@@ -71,10 +60,10 @@
       </div>
     @endforeach
   </div>
-</div>
+
   <hr class="w-[80%] ml-auto mr-auto my-10 bg-slate-200">
   {{-- oldest Posts --}}
-  <p class="text-gray-700 text-lg md:text-2xl text-center font-semibold mt-5 capitalize">Oldest Posts</p>
+  <p class="text-gray-500 lg:text-xl text-md text-center font-semibold mt-10 uppercase ">Trending</p>
   <div class="flex flex-col md:flex-row  md:justify-center md:items-center md:gap-2 gap-4 mt-4 mb-3">
     @foreach($oldestPosts as $oldest)
       <div class=" p-3 mx-auto md:mx-0 w-[400px] md:w-[500px] h-fit flex flex-col ">
