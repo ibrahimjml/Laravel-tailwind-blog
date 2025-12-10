@@ -10,7 +10,8 @@ class CategoryCacheDecorator implements CategoryInterface
     public function __construct(private CategoryInterface $repo){}
     public function getPostsByCategory(\App\Models\Category $category)
     {
-      $key = "category:{$category->name}:published";
+      $page = request('page',1);
+      $key = "category:{$category->name}:published:page:{$page}";
       return Cache::tags("category:published")->remember($key, 900 ,fn() => $this->repo->getPostsByCategory($category));
     }
 }
