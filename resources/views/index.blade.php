@@ -62,33 +62,33 @@
   </div>
 
   <hr class="w-[80%] ml-auto mr-auto my-10 bg-slate-200">
-  {{-- oldest Posts --}}
-  <p class="text-gray-500 lg:text-xl text-md text-center font-semibold mt-10 uppercase ">Trending</p>
+  {{-- latest trend tag Posts --}}
+  <p class="text-gray-500 lg:text-xl text-md text-center font-semibold mt-10 uppercase ">Latest Trend to <b class="text-amber-300">{{ '# '.$trendingHashtag->name }}</b></p>
   <div class="flex flex-col md:flex-row  md:justify-center md:items-center md:gap-2 gap-4 mt-4 mb-3">
-    @foreach($oldestPosts as $oldest)
+    @foreach($latestTrend as $latest)
       <div class=" p-3 mx-auto md:mx-0 w-[400px] md:w-[500px] h-fit flex flex-col ">
         <div class="flex gap-2 items-center">
-          <a href='{{route('profile', $oldest->user->username)}}'>
-            <img loading="lazy" src="{{$oldest->user->avatar_url}}"
+          <a href='{{route('profile', $latest->user->username)}}'>
+            <img loading="lazy" src="{{$latest->user->avatar_url}}"
               class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
           </a>
-          <a href='{{route('profile', $oldest->user->username)}}' class="hover:underline">
-            {{$oldest->user->username}}
+          <a href='{{route('profile', $latest->user->username)}}' class="hover:underline">
+            {{$latest->user->username}}
           </a>
         </div>
-        <a href="{{route('single.post', $oldest->slug)}}">
+        <a href="{{route('single.post', $latest->slug)}}">
           <div class="relative rounded-md">
             <span
               class="absolute top-4 left-4 px-2 py-1 text-white text-sm rounded-md bg-amber-300 font-semibold bg-opacity-70">#
               {{$trendingHashtag->name}}</span>
-            <img src="{{$oldest->image_url}}" alt="" class="w-full h-[270px] object-cover mt-2">
+            <img src="{{$latest->image_url}}" alt="" class="w-full h-[270px] object-cover mt-2">
           </div>
           <div class="flex justify-between text-sm text-gray-400 my-3">
-                <p>{{$post->totalcomments_count}} comments</p>
-                <p>{{$post->created_at->format('F d, Y')}}</p>
+                <p>{{$latest->totalcomments_count}} {{ Str::plural('comment', $latest->totalcomments_count) }}</p>
+                <p>{{$latest->created_at->format('F d, Y')}}</p>
                </div>
           <div class="flex flex-col">
-            <p class="text-sm font-bold mt-1">{{$oldest->title}}</p>
+            <p class="text-sm font-bold mt-1">{{$latest->title}}</p>
           </div>
         </a>
       </div>

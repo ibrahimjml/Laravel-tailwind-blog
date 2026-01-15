@@ -1,7 +1,7 @@
-<div class="flex items-center flex-wrap gap-4 ml-3">
+<div class="flex flex-col md:flex-row md:items-center flex-wrap gap-4 ml-3">
 <!-- Sort Form -->
 <x-forms.filter-form exclude="sort">
-  <div class="relative w-full">
+  <div class="relative w-fit">
     <select id="sort" name="sort"
       class="pl-3 pr-8 appearance-none font-bold cursor-pointer bg-blueGray-200 text-blueGray-500 border-0 text-sm rounded-lg p-2.5"
       onchange="this.form.submit()">

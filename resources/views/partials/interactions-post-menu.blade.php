@@ -1,6 +1,6 @@
 {{-- start trigger observer Interactions menu --}}
 <div id="action-bar-trigger" class="h-[1px] w-full"></div>
-<div id="action-bar" class=" container  mx-auto mb-5 w-fit h-14 space-x-2 flex justify-center items-center gap-2 border-2 rounded-full px-6 py-3 text-2xl bg-white transition-all duration-300 z-50">
+<div id="action-bar" class=" container mx-auto mb-5 w-full sm:w-fit h-14 space-x-2 flex justify-center items-center gap-2 border-2 border-blueGray-200 rounded-full px-2 sm:px-6 py-3 text-md lg:text-2xl bg-white transition-all duration-300 z-50">
 <div class="flex items-center justify-center">
     <span onclick="fetchLike(this)" class="cursor-pointer w-8 h-8 rounded-full flex justify-center items-center  hover:bg-gray-200 transition-bg duration-150 ">
       <i class="fa-heart like-icon {{ $post->is_liked() ? 'fas text-red-500' : 'far' }}" data-id="{{ $post->id }}"></i>

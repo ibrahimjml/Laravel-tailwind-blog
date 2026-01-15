@@ -1,8 +1,8 @@
-<form comment-id="{{$comment->id}}" class=" reply-form hidden relative w-fit mb-4 p-1 rounded-lg px-5" action="/reply/{{ $comment->id }}" method="POST">
+<form comment-id="{{$comment->id}}" class=" reply-form hidden relative lg:w-fit {{ $comment->parent_id ? 'w-[200px]' : 'w-[270px]' }} mb-4 p-1 rounded-lg px-5" action="/reply/{{ $comment->id }}" method="POST">
   @csrf
   @method('POST')
   <input type="hidden" name="parent_id" value="{{ $reply->id ?? $comment->id }}">
-  <textarea class="border-2 bg-gray-100 rounded-l-lg placeholder-gray-400 pl-2  placeholder-opacity-100 @error('content') border-red-500 @enderror" placeholder="{{ isset($reply->user->username) ? 'Reply To ' . $reply->user->username : 'Reply with Comment' }}" name="content" id="content" cols="40"></textarea>
+  <textarea class="border-2 bg-gray-100 rounded-l-lg placeholder-gray-400 pl-2 w-full  placeholder-opacity-100 @error('content') border-red-500 @enderror" placeholder="{{ isset($reply->user->username) ? 'Reply To ' . $reply->user->username : 'Reply with Comment' }}" name="content" id="content" cols="40"></textarea>
   @error('content')
   <p class="text-red-500 text-xs italic mt-4">
       {{ $message }}

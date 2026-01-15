@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\TagStatus;
-use App\Http\Controllers\Controller;
+use Exception;
 use App\Models\Hashtag;
+use App\Enums\TagStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Fluent;
+use App\Services\ClearCacheService;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Enum;
 
 class TagsController extends Controller
@@ -43,7 +47,8 @@ class TagsController extends Controller
   }
 
 public function edit(Hashtag $hashtag, Request $request){
-  $fields = $request->validate([
+  try{
+      $fields = $request->validate([
     'name' =>'nullable|string',
     'status' => ['required', new Enum(TagStatus::class)]
     ]);
@@ -51,11 +56,21 @@ public function edit(Hashtag $hashtag, Request $request){
               'name' => $fields['name'],
               'status' => $fields['status']
             ]);
+  $hashtag->posts->each(function ($post) {
+    app(ClearCacheService::class)->clearPostCaches($post);
+});
     return response()->json([
       'edited'=>true,
       'message' => "Hashtag {$hashtag->name} updated",
       'hashtag' => $hashtag->name
     ]);
+  }catch(Exception $e){
+    Log::error('update tag failed',[
+      'error' => $e->getMessage(),
+    ]);
+    return;
+  }
+
 }
 
   public function delete(Hashtag $hashtag){

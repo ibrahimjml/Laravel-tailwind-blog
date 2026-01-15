@@ -104,10 +104,10 @@
       @empty
       <h4 class="text-center font-bold">Sorry, column not found</h4>
       @endforelse
-</x-tables.table>
- <div class="relative ">
-    {!! $posts->links() !!}
-  </div>
+    </x-tables.table>
+    <div class="w-full overflow-auto">
+       {!! $posts->links() !!}
+     </div>
   </div>
 </div>
   {{-- edit post model --}}

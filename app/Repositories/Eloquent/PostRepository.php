@@ -112,10 +112,10 @@ class PostRepository implements PostInterface
         ->orderByDesc('posts_count')
         ->first();
 
-    $oldestPosts = collect();
+    $latesttrend = collect();
 
     if ($trendingHashtag) {
-        $oldestPosts = Post::published()
+        $latesttrend = Post::published()
             ->with(['user', 'hashtags', 'comments'])
             ->withCount('totalcomments')
             ->whereHas('hashtags', function ($query) use ($trendingHashtag) {
@@ -128,7 +128,7 @@ class PostRepository implements PostInterface
 
     return [
         'trendingHashtag' => $trendingHashtag,
-        'oldestPosts' => $oldestPosts,
+        'latestTrend' => $latesttrend,
     ];
     }
      public function getPaginatedComments(Post $post, int $page, int $perPage): LengthAwarePaginator

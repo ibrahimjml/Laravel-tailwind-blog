@@ -74,6 +74,13 @@
             </section>
         </div>
     </div>
+        @if(env('IS_DEMO', false))
+    <div class="p-3 border-2 border-blueGray-200 rounded-sm w-fit mt-2">
+      <p class="mt-6 text-sm text-gray-600">Demo Credentials: <br>
+        Email: <span class="font-mono">{{ env('ADMIN_EMAIL') }}</span><br>
+        Pass: <span class="font-mono">{{ env('ADMIN_PASS') }}</span>
+    </div>
+    @endif
 </main>
 @push('scripts')
 <script>

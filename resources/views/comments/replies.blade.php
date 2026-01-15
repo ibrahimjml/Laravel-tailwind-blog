@@ -1,6 +1,6 @@
 
 @foreach($comments as $reply)
-  <div  class="reply relative bg-gray-50  shadow-sm rounded-lg p-4 mb-2">
+  <div  class="reply relative bg-gray-50  shadow-sm rounded-lg p-4 mb-2 w-full">
     {{-- reply user information --}}
     @include('comments.partials.reply_info',['reply' => $reply])
     {{-- relpy content --}}

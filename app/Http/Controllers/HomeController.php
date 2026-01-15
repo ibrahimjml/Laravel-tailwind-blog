@@ -27,7 +27,7 @@ class HomeController extends Controller
                   ->get()
                   ->take(4),
       'featuredPosts' => $featuredPosts,
-      'oldestPosts' => $result['oldestPosts'],
+      'latestTrend' => $result['latestTrend'],
       'trendingHashtag' => $result['trendingHashtag']
        ]);
 

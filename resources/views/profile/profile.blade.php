@@ -24,7 +24,7 @@
           {{-- edit cover photo --}}
           @if($user->is(auth()->user()))
          <a href="{{route('profile.info')}}" class="absolute -top-10 right-0 lg:text-md text-xs text-black py-1 px-3 rounded-full bg-white">
-          <i class="fas fa-camera"></i> edit cover</a>
+          <i class="fas fa-camera"></i> cover</a>
           @endif
           <div class="flex flex-wrap justify-center">
               <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">

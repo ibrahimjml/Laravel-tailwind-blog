@@ -18,7 +18,7 @@
   </div>
 @can('category.create')
   <button id="openCatModel"
-        class="text-center ml-0 mr-2 sm:ml-auto w-48 bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6">create
+        class="text-center ml-0 mr-2 sm:ml-auto w-30 h-10 text-sm lg:text-lg bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6">create
     category
   </button>
 </div>

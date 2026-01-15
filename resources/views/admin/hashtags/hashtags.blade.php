@@ -17,7 +17,7 @@
     @include('admin.hashtags.partials.filter')
   </div>
   @can('tag.create')
-  <button id="openTagModel" class="text-center bg-gray-600  text-white py-2 px-5 rounded-lg font-bold capitalize mb-6">create tag</button>
+  <button id="openTagModel" class="text-center bg-gray-600  text-white w-40 h-10 rounded-lg font-bold capitalize ml-3 mb-6">create tag</button>
   @endcan
 </div>
  <div class="bg-white shadow rounded-xl overflow-hidden max-w-7xl mx-4 transform -translate-y-40 ">
@@ -80,7 +80,7 @@
           <h4 class="text-center font-bold">Sorry, column not found</h4>
         @endforelse
       </x-tables.table>
-        <div class="relative">
+        <div class="w-full overflow-auto">
         {!! $hashtags->links() !!}
        </div>
     </div>
