@@ -12,18 +12,16 @@
           <a href="{{ route('profile', $post->user->username) }}" class="text-base font-semibold hover:underline truncate">
             {{ $post->user->username }}
           </a>
-          @php
-           $isFollowing = in_array($post->user_id, $authFollowings);
-           @endphp
           @if(auth()->user()->id !== $post->user_id)
           <strong>·</strong>
-  
-        <button class="follow px-3 py-1 {{$isFollowing ? 'bg-gray-200' : 'bg-gray-600'}} text-white rounded-lg text-center text-xs font-bold whitespace-nowrap"
-         onclick="fetchfollow(this)"
-          data-id="{{$post->user_id}}">
-          {{$isFollowing ? 'Following' : 'Follow'}}
-        </button>
-        @endif
+          <x-follow-button
+               :status="$authFollowings[$post->user_id] ?? null"
+               :user-id="$post->user_id"
+               type="label"
+               onclick="fetchfollow(this)"
+               class="follow px-3 py-1 rounded-lg text-xs font-bold"
+           /> 
+         @endif
          </div>
         <p class="text-xs text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
       </div>

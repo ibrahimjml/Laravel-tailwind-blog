@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\FollowerStatus;
 use App\Models\{Category, Comment, Hashtag, Like, Permission, Post, PostReport, Role, User};
 use App\Observers\{CommentObserver, LikeObserver, PostObserver, PostReportObserver, TagObserver, CategoryObserver, PermissionObserver, RoleObserver, UserObserver};
 use App\Repositories\Caches\CategoryCacheDecorator;
@@ -61,5 +62,9 @@ class AppServiceProvider extends ServiceProvider
       Role::observe(RoleObserver::class);
       
       Blade::component('partials.postcard', 'postcard');
+      Blade::if('following', function ($status) {
+           return $status instanceof \App\Enums\FollowerStatus
+                && $status === \App\Enums\FollowerStatus::ACCEPTED;
+            });
     }
 }

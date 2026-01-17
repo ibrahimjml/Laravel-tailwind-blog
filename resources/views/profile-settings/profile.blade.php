@@ -3,7 +3,7 @@
 <style>
   html,body{
     overflow-y: hidden !important;
-  };
+  }
 
 </style>
 @endpush
@@ -14,11 +14,15 @@
       <div class="flex flex-col w-fit  gap-2">
         <a href="{{route('profile.info')}}" class="py-2 px-4 text-gray-500  rounded-xl flex items-center gap-4 {{request()->routeIs('profile.info') ? 'bg-gray-200':''}}">
           <i class="fas fa-user"></i>
-          Profile
+          Profile Details
         </a>
         <a href="{{route('profile.account')}}" class="py-2 px-4 text-gray-500  rounded-xl flex items-center gap-4 {{request()->routeIs('profile.account') ? 'bg-gray-200':''}}">
           <i class="fas fa-cog"></i>
           Account Management
+        </a>
+        <a href="{{route('account.privacy')}}" class="py-2 px-4 text-gray-500  rounded-xl flex items-center gap-4 {{request()->routeIs('account.privacy') ? 'bg-gray-200':''}}">
+          <i class="fas fa-lock"></i>
+          Account Privacy
         </a>
       </div>
       <div class="mt-auto py-4 border-t border-gray-300 w-full">
@@ -48,6 +52,9 @@
 
   @case('profile-account')
     @include('profile-settings.account-management')
+    @break
+  @case('profile-privacy')
+    @include('profile-settings.account-privacy')
     @break
     @endswitch
     </section>

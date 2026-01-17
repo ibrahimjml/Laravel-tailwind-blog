@@ -73,8 +73,10 @@ Route::prefix('profile')
 ->group(function(){
 
   Route::get('/settings/info','profile_info')->name('profile.info');
-  Route::put('/settings/info','update_info')->name('update.info');
   Route::get('/settings/account','profile_account')->name('profile.account');
+  Route::get('/settings/privacy','account_privacy')->name('account.privacy');
+  Route::post('/settings/privacy','profile_visibility')->name('profile.visibility');
+  Route::put('/settings/info','update_info')->name('update.info');
   Route::put('/settings/account','update_account')->name('update.account');
   Route::delete('/account-delete','deleteaccount')->name('account.delete');
   Route::delete('/settings/delete/avatar','delete_avatar')->name('avatar.destroy');
@@ -89,6 +91,8 @@ Route::post('/toggle/{post}/pin',[PinController::class,'togglePin'])->name('togg
 Route::post('/post/{post}/like',[PublicController::class,'like']);
 // Follow
 Route::post('/user/{user}/togglefollow',[PublicController::class,'toggleFollow'])->name('toggle.follow');
+Route::post('/follow/accept/{follower}', [PublicController::class, 'accept'])->name('follow.accept');
+
 // Search
 Route::get('/search',[PostController::class,'search'])->name('blog.search');
 // Comments

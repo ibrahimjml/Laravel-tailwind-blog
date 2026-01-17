@@ -16,6 +16,13 @@ class UserObserver
     /**
      * Handle the User "deleting" event.
      */
+    public function created(User $user)
+    {
+      $user->profile()->create([
+        'is_public' => true,
+        'user_id' => $user->id
+      ]);
+    }
     public function deleting(User $user): void
     {
          DB::transaction(function () use ($user) {

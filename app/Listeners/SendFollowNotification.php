@@ -25,10 +25,12 @@ class SendFollowNotification
     {
       $follower = $event->follower;
       $user = $event->user;
-         $user->notify(new FollowersNotification($user,$follower));
+      $status = $event->status;
+      
+         $user->notify(new FollowersNotification($user,$follower, $status));
   // Notify  admins
-  User::where('is_admin', true)->get()->each(function ($admin) use ($user, $follower) {
-    $admin->notify(new FollowersNotification($user, $follower));
+  User::where('is_admin', true)->get()->each(function ($admin) use ($user, $follower, $status) {
+    $admin->notify(new FollowersNotification($user, $follower, $status));
      });
     }
 }

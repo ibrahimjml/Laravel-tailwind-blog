@@ -97,6 +97,27 @@ class ProfileSettingsController extends Controller
        $this->data( 'profile-account'));
     }
     /**
+      * account privacy page 
+      **/
+    public function account_privacy()
+    {
+      return view('profile-settings.profile',
+       $this->data( 'profile-privacy'));
+    }
+    public function profile_visibility()
+    {
+      
+      $visibility = request()->boolean('visibility',true);
+      $user = request()->user();
+      $user->profile()->update(['is_public' => $visibility]);
+       if($user->profile->is_public === false){
+      toastr()->info('profile is now private',['timeOut'=>1000]);
+     }else{
+       toastr()->success('profile is now public',['timeOut'=>1000]);
+     }
+      return back();
+    }
+    /**
       * update User Account management
       **/
     public function update_account(UpdateAccountRequest $request)

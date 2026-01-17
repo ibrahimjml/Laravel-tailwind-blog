@@ -84,9 +84,13 @@
                {{-- report profile model  --}}
                @include('profile.partials.report-profile')
                  <!-- follow/unfollow -->
-                  <button data-id="{{$user->id}}" onclick="follow(this)" class="px-3 py-1 w-fit rounded-lg text-center text-sm font-bold {{auth()->user()?->isFollowing($user) ? 'text-gray-600 border border-gray-600 ' : 'bg-gray-600 text-white' }}">
-                    {{auth()->user()?->isFollowing($user) ? 'Following' : 'Follow' }}
-                  </button>
+                    <x-follow-button
+               :status="$authFollowings[$user->id] ?? null"
+               :user-id="$user->id"
+               type="label"
+               onclick="follow(this)"
+               class="follow px-3 py-1 rounded-lg text-xs font-bold"
+           /> 
                   @endif
                 </div>
               </div>
@@ -184,19 +188,31 @@
       const data = await res.json();
   
   
-      eo.textContent = data.attached ? "Following" : "Follow";
+     eo.textContent = data.status === 1
+            ? "Following"
+            : (data.status === 0 ? "Requested" : "Follow");
       const followerscount = document.querySelector('#followers-count');
-      let countfollowers = parseInt(followerscount.textContent);
+      let count = parseInt(followerscount.textContent);
+       if (data.status === 1) {
+                followerscount.textContent = count + 1;
+            } else if (data.status === null) {
+                followerscount.textContent = Math.max(0, count - 1);
+            }
+     eo.classList.remove(
+          "bg-gray-200",
+          "bg-gray-600",
+          "bg-yellow-500",
+          "text-black",
+          "text-white"
+        );
   
-      eo.classList.remove('text-gray-600', 'border', 'border-gray-600', 'bg-gray-600', 'text-white');
-  
-      if (data.attached) {
-        eo.classList.add('text-gray-600', 'border', 'border-gray-600');
-        followerscount.textContent = countfollowers +1;
-      } else {
-        eo.classList.add('bg-gray-600', 'text-white');
-        followerscount.textContent = countfollowers -1;
-      }
+     if (data.status === 1) {
+          eo.classList.add("bg-gray-200", "text-black");
+        } else if (data.status === 0) {
+          eo.classList.add("bg-yellow-500", "text-white");
+        } else {
+          eo.classList.add("bg-gray-600", "text-white");
+        }
   
     } catch (error) {
       console.error(error);

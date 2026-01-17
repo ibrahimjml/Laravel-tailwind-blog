@@ -17,10 +17,12 @@ class FollowUserEvent
 
   public $follower;
   public $user;
-    public function __construct(User $follower, User $user)
+  public $status;
+    public function __construct(User $follower, User $user,string $status)
     {
         $this->follower = $follower;
         $this->user = $user;
+        $this->status = $status;
     }
 
     /**

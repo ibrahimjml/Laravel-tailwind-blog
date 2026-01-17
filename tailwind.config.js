@@ -5,11 +5,19 @@ export default {
     "./resources/**/*.blade.php",
     "./resources/**/*.js",
     "./resources/**/*.vue",
+    "./node_modules/flowbite/**/*.js",
     
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+         brand: '#1d4ed8',       
+        'brand-soft': '#93c5fd',
+      }
+    },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 }
 

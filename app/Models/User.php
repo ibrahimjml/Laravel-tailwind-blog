@@ -10,6 +10,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\HasPermissionsTrait;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, HasPermissionsTrait;
@@ -48,6 +50,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(IdentityVerification::class);
     }
+    public function profile(): HasOne
+    {
+      return $this->hasOne(Profile::class);
+    }
   public function likes(){
     return $this->hasMany(Like::class);
   }
@@ -59,10 +65,12 @@ class User extends Authenticatable implements MustVerifyEmail
     return $this->comments()->whereNotNull('parent_id');
   }
   public function followings(){
-    return $this->belongsToMany(User::class,'followers','follower_id','user_id');
+    return $this->belongsToMany(User::class,'followers','follower_id','user_id')
+                ->withPivot('status');
   }
   public function followers(){
-    return $this->belongsToMany(User::class,'followers','user_id','follower_id');
+    return $this->belongsToMany(User::class,'followers','user_id','follower_id')
+                ->withPivot('status');
   }
   public function isFollowing(User $user)
   {

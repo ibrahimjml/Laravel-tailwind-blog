@@ -92,10 +92,17 @@
                class="font-semibold text-gray-900 hover:text-blue-600 transition-colors text-sm md:text-base">
               {{$post->user->username}}
             </a>
-            
-            <span class="follow-status {{ !in_array($post->user->id, $authFollowings) ? 'hidden' : '' }}">
-              <small class="text-gray-500 text-xs">Following</small>
-            </span>
+              @php
+           $followStatus = $authFollowings[$post->user_id] ?? null;
+           $status = isset($followStatus)
+                   ? \App\Enums\FollowerStatus::tryFrom((int) $followStatus)
+                   : null;
+           @endphp
+            @following($status)
+               <span class="follow-status">
+               <small class="text-gray-500 text-xs">Following</small>
+               </span>
+            @endfollowing
           </div>
         </div><!--  end User Profile -->
 
@@ -141,7 +148,7 @@
 
 {{-- 4- post description --}}
 
-<div id="description" class="published-content max-w-4xl  md:mx-auto mx-4">
+<div id="description" class="prose prose-lg published-content max-w-4xl  md:mx-auto mx-4">
    {!! $post->description !!}
 </div>
 
@@ -263,13 +270,20 @@
     try {
       const res = await fetch(`/user/${userId}/togglefollow`, options);
       const data = await res.json();
-  
-     eo.textContent = data.attached ? "unfollow" : "follow";
-    eo.classList.toggle("text-red-500", data.attached);
-    eo.classList.toggle("text-blue-500", !data.attached);
-
-    if (followStatus) {
-      followStatus.classList.toggle("hidden", !data.attached);
+  eo.classList.remove('text-blue-500', 'text-red-500', 'text-yellow-500');
+      if (data.status === 1) {
+      eo.textContent = 'Unfollow';
+      eo.classList.add('text-red-500');
+    } 
+    else if (data.status === 0) {
+      eo.textContent = 'Requested';
+      eo.classList.add('text-yellow-500');
+    
+    } 
+    else {
+      eo.textContent = 'Follow';
+      eo.classList.add('text-blue-500');
+    
     }
   
     } catch (error) {

@@ -1,13 +1,19 @@
 @php
     $canReport = auth()->user()->can('report', $post);
     $canFollow = auth()->user()->isNot($post->user);
+       $followStatus = $authFollowings[$post->user_id] ?? null;
+           $status = isset($followStatus)
+                   ? \App\Enums\FollowerStatus::tryFrom((int) $followStatus)
+                   : null;
 @endphp
 <div id="moremodel" class="absolute top-[-100px] -right-12 z-10 w-36 h-fit rounded-lg bg-slate-50 px-2 py-4 space-y-2 hidden">
     @if($canFollow)
-    <button 
-    data-id="{{$post->user->id}}" onclick="follows(this)"
-    class="block text-left text-sm {{in_array($post->user->id, $authFollowings) ? 'text-red-500':'text-blue-500'}} font-semibold capitalize w-full rounded-md pl-3 hover:bg-gray-200  transition-all duration-150">
-    {{in_array($post->user->id, $authFollowings) ? 'unfollow' :'follow'}}
+     <button
+        data-id="{{ $post->user->id }}"
+        onclick="follows(this)"
+        class="block text-left text-sm font-semibold capitalize w-full rounded-md pl-3 hover:bg-gray-200 transition-all duration-150
+            {{ is_null($status) ? 'text-blue-500' : ($status === \App\Enums\FollowerStatus::PENDING ? 'text-yellow-500' : 'text-red-500') }}">
+        {{ is_null($status) ? 'Follow' : ($status === \App\Enums\FollowerStatus::PENDING ? 'Requested' : 'Unfollow') }}
     </button>
     @endif
     @if($canReport)

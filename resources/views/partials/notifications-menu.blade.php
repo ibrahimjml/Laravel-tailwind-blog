@@ -63,6 +63,15 @@
                             @method('DELETE')
                             <button type="submit" class="text-sm text-white hover:underline px-2 rounded-full bg-red-500">x</button>
                         </form>
+                        {{-- accept  follow status if notification type = follow --}}
+                        @if(  $notification->data['type'] === NotificationType::FOLLOW->value  && $notification->data['status']  === 'private')
+                        <div class="flex gap-2 mt-2">
+                        <form action="{{ route('follow.accept', $notification->data['follower_id']) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="px-2 py-1 bg-blue-500 rounded-md text-white">Accept</button>
+                        </form>
+                         </div>
+                         @endif
                       </div>
                   </div>
                   

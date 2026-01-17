@@ -56,6 +56,11 @@ export function initTinyMCE() {
     },
 
     setup(editor) {
+      editor.on('ExecCommand', function (e) {
+        if (e.command === 'mceCodeSample') {
+          editor.focus();
+        }
+      });
 
       editor.on("keydown", function (e) {
         if ((e.keyCode === 8 || e.keyCode === 46) && tinymce.activeEditor.selection) {
@@ -91,7 +96,7 @@ export function initTinyMCE() {
       });
     },
 
-    content_css: '/tinymce.css',
+    content_css: ['/tinymce.css', 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css'],
     document_base_url: '/',
     relative_urls: false,
     remove_script_host: false,

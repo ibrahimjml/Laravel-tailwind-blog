@@ -14,13 +14,13 @@
           </div>
         </a>
         @if(auth()->user()->isNot($user))
-          @php
-            $isFollowing = in_array($user->id, $authFollowings);
-           @endphp
-          <button data-id="{{$user->id}}" onclick="follow(this)"
-            class="w-5 h-5 text-xs ml-auto text-white {{$isFollowing ? 'bg-green-500' : 'bg-gray-500'}} rounded-full">
-            <i class="fas fa-{{$isFollowing ? 'check' : 'plus'}}"></i>
-          </button>
+        <x-follow-button
+    :status="$authFollowings[$user->id] ?? null"
+    :user-id="$user->id"
+    type="icon"
+    onclick="follow(this)"
+    class="follow w-5 h-5 text-xs ml-auto text-white rounded-full flex items-center justify-center"
+/>
         @endif
       </div>
     @endforeach
@@ -28,33 +28,47 @@
 </div>
 
 @push('scripts')
-<script>
-  async function follow(eo) {
-    const icon = eo.querySelector('i');
-    const userId = eo.dataset.id;
-  
-    let options = {
-      method: "POST",
-      headers: {
-        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-        "Accept": "application/json"
-      },
-    };
-  
-    try {
-      const res = await fetch(`/user/${userId}/togglefollow`, options);
-      const data = await res.json();
-  
-      icon.classList.toggle('fa-check', data.attached);
-      icon.classList.toggle('fa-plus', !data.attached);
-      
-      eo.classList.toggle("bg-green-500", data.attached);
-      eo.classList.toggle("bg-gray-500", !data.attached);
+  <script>
+    async function follow(eo) {
+      const userId = eo.dataset.id;
 
-  
-    } catch (error) {
-      console.error(error);
+      let options = {
+        method: "POST",
+        headers: {
+          "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+          "Accept": "application/json"
+        },
+      };
+
+      try {
+        const res = await fetch(`/user/${userId}/togglefollow`, options);
+        const data = await res.json();
+        document.querySelectorAll(`button.follow[data-id="${userId}"]`).forEach(btn => {
+          const icon = btn.querySelector('i');
+          if (!icon) return;
+          btn.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-gray-500');
+          icon.classList.remove('fa-check', 'fa-hourglass-half', 'fa-plus');
+
+
+          if (data.status === 1) {
+            btn.classList.add('bg-green-500');
+            icon.classList.add('fa-check');
+          }
+          else if (data.status === 0) {
+            btn.classList.add('bg-yellow-500');
+            icon.classList.add('fa-hourglass-half');
+          }
+          else {
+            btn.classList.add('bg-gray-500');
+            icon.classList.add('fa-plus');
+          }
+
+        });
+
+
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }
-</script>
+  </script>
 @endpush

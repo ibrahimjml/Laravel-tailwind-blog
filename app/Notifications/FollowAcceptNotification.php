@@ -8,19 +8,18 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Log;
 
-class FollowersNotification extends Notification
+class FollowAcceptNotification extends Notification
 {
     use Queueable;
 
-    protected $user;
+    protected $auth;
     protected $follower;
     protected $status;
 
-    public function __construct(User $user,User $follower,string $status)
+    public function __construct(User $auth,User $follower,string $status)
     {
-        $this->user = $user;
+        $this->auth = $auth;
         $this->follower = $follower;
         $this->status = $status;
     
@@ -52,23 +51,16 @@ class FollowersNotification extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toDatabase( $notifiable): array
+    public function toDatabase(object $notifiable): array
     {
-  
-      $message = $notifiable->is_admin
-         ? "{$this->follower->name} has followed {$this->user->name}"
-         : ( $this->status === 'public' 
-         ? "{$this->follower->name} has followed you"
-         :"{$this->follower->name} requested to follow you!" );
-
       return [
-        'user_name' => $this->user->name,
-        'follower_id' => $this->follower->id,
-        'follower_name' => $this->follower->name,
-        'follower_username' => $this->follower->username,
+        'user_name' => $this->follower->name,
+        'follower_id' => $this->auth->id,
+        'follower_name' => $this->auth->name,
+        'follower_username' => $this->auth->username,
         'type'=> NotificationType::FOLLOW->value,
         'status' => $this->status,
-        'message' => $message,
+        'message' => "{$this->auth->name} has accepted your follow request.",
         
     ];
     }

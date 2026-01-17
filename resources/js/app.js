@@ -3,6 +3,7 @@ import 'flowbite';
 import { initTinyMCE } from './tinymce';
 import mediumZoom from 'medium-zoom';
 import Prism from 'prismjs';
+import 'prismjs/themes/prism-tomorrow.css';
 import 'prismjs/plugins/toolbar/prism-toolbar';
 import 'prismjs/plugins/toolbar/prism-toolbar.css';
 import 'prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard';
@@ -20,5 +21,10 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   const posts = document.querySelectorAll('.published-content');
-  posts.forEach(post => Prism.highlightAllUnder(post));
+  posts.forEach(post => {
+    if (post.querySelector('.tox-tinymce')) {
+      return;
+    }
+    Prism.highlightAllUnder(post)
+  });
 });

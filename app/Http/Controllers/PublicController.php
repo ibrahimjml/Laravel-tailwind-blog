@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-
-
+use App\Enums\FollowerStatus;
 use App\Models\Post;
 use App\Models\User;
 use App\Http\Middleware\CheckIfBlocked;
+use App\Notifications\FollowAcceptNotification;
+use App\Notifications\FollowersNotification;
 use App\Services\FollowService;
 use App\Services\PostService;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 
 class PublicController extends Controller
 {
@@ -24,9 +26,26 @@ public function toggleFollow(User $user,FollowService $service){
     return response()->json(['error' => 'You cannot follow yourself.'], 400);
 }
 
-$attached = $service->toggle($follower,$user);
+$status = $service->toggle($follower,$user);
 
-return response()->json(['attached'=>$attached]);
+return response()->json(['status'=>$status]);
+}
+public function accept(User $follower)
+{
+    $auth = auth()->user();
+
+    $auth->followers()->updateExistingPivot($follower->id, ['status' => FollowerStatus::ACCEPTED->value]);
+
+    DatabaseNotification::where('type', FollowersNotification::class)
+         ->where('notifiable_id', $auth->id)
+         ->whereJsonContains('data->follower_id', $follower->id)
+         ->whereJsonContains('data->status', 'private')
+         ->delete();
+
+    $follower->notify(new FollowAcceptNotification($auth, $follower, 'accepted'));
+  
+    toastr()->success('Follow request accepted');
+    return back();
 }
 
   public function like(Post $post)
