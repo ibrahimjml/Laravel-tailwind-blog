@@ -114,6 +114,11 @@ Route::prefix('admin')
             ->name('settings.')
             ->group(function(){
   Route::get('/', 'settings')->name('index');
+  Route::get('/smtpmails','smtp')->name('smtp');
+  Route::get('/notification-controls','notification_view')->name('notification.view');
+  Route::patch('/notification-controls','toggle_notification')->name('notification.toggle');
+  Route::post('/smtpmails','smtp_config')->name('smtp.config');
+  Route::post('/testmail','testmail')->name('smtp.test');
   Route::put('/{user}/edit', 'updateSettings')->name('update');
   Route::put('/{user}/password', 'updatePassword')->name('password');
   Route::put('/{user}/aboutme', 'updateAboutme')->name('aboutme');

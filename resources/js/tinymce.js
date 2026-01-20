@@ -96,7 +96,7 @@ export function initTinyMCE() {
       });
     },
 
-    content_css: ['/tinymce.css', 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css'],
+    content_css: ['/tinymce.css'],
     document_base_url: '/',
     relative_urls: false,
     remove_script_host: false,

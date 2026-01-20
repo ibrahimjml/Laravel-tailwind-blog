@@ -5,7 +5,7 @@
       <div class="swiper-wrapper h-full">
         @foreach($slides as $slide)
           <div class="swiper-slide relative flex flex-col items-center justify-center h-full bg-cover bg-center"
-            style="background-image: url('{{ asset('slides/' . $slide->image_path) }}');">
+            style="background-image: url('{{$slide->image}}');">
 
             <!-- Dark overlay -->
             <div class="absolute inset-0 bg-black/60"></div>

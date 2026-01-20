@@ -2,14 +2,17 @@
 
 namespace App\Listeners;
 
+use App\Enums\NotificationType;
 use App\Events\ReplyCommentEvent;
 use App\Models\User;
 use App\Notifications\RepliedCommentNotification;
+use App\Traits\AdminNotificationGate;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
 class SendReplyNotification
 {
+    use AdminNotificationGate;
     /**
      * Create the event listener.
      */
@@ -33,7 +36,9 @@ class SendReplyNotification
 
 // Notify  admins
 User::where('is_admin', true)->get()->each(function ($admin) use ($comment,$reply, $replier,$post) {
-  $admin->notify(new RepliedCommentNotification($comment, $reply, $replier,$post));
-   });
+  if($admin && $this->allow($admin,NotificationType::COMMENTS)){
+$admin->notify(new RepliedCommentNotification($comment, $reply, $replier,$post));
+  }
+});
     }
 }

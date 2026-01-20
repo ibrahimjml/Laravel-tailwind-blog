@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Enums\FollowerStatus;
-use App\Models\{Category, Comment, Hashtag, Like, Permission, Post, PostReport, Role, User};
+use App\Models\{Category, Comment, Hashtag, Like, Permission, Post, PostReport, Role, SmtpSetting, User};
 use App\Observers\{CommentObserver, LikeObserver, PostObserver, PostReportObserver, TagObserver, CategoryObserver, PermissionObserver, RoleObserver, UserObserver};
 use App\Repositories\Caches\CategoryCacheDecorator;
 use App\Repositories\Eloquent\PostRepository;
@@ -15,6 +15,8 @@ use App\Repositories\Interfaces\CategoryInterface;
 use App\Repositories\Interfaces\PostInterface;
 use App\Repositories\Interfaces\TagInterface;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -66,5 +68,36 @@ class AppServiceProvider extends ServiceProvider
            return $status instanceof \App\Enums\FollowerStatus
                 && $status === \App\Enums\FollowerStatus::ACCEPTED;
             });
+            
+  if ( app()->runningInConsole() || ! Schema::hasTable('smtpsettings'))
+     {
+        return;
+      }
+        $smtp = SmtpSetting::first();
+       if ($smtp) {
+        $data = [
+            'default' => $smtp->mail_transport, 
+            'mailers' => [
+                $smtp->mail_transport => [
+                    'transport' => $smtp->mail_transport,
+                    'host' => $smtp->mail_host,
+                    'port' => $smtp->mail_port,
+                    'username' => $smtp->mail_username,
+                    'password' => $smtp->mail_password,
+                    'encryption' => $smtp->mail_encryption,
+                    'timeout' => null,
+                    'auth_mode' => null,
+                ],
+            ],
+            'from' => [
+                'address' => $smtp->mail_from,
+                'name' => config('app.name'),
+            ],
+        ];
+
+        Config::set('mail.mailers', $data['mailers']);
+        Config::set('mail.default', $data['default']);
+        Config::set('mail.from', $data['from']);
+    }
     }
 }

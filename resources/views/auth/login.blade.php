@@ -74,11 +74,11 @@
             </section>
         </div>
     </div>
-        @if(env('IS_DEMO', false))
-    <div class="p-3 border-2 border-blueGray-200 rounded-sm w-fit mt-2">
-      <p class="mt-6 text-sm text-gray-600">Demo Credentials: <br>
-        Email: <span class="font-mono">{{ env('ADMIN_EMAIL') }}</span><br>
-        Pass: <span class="font-mono">{{ env('ADMIN_PASS') }}</span>
+    @if(env('IS_DEMO', false))
+    <div class="mt-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+        <p class="font-bold">Demo Credentials</p>
+        <p>Email: <span class="font-mono">{{ env('ADMIN_EMAIL') }}</span></p>
+        <p>Pass: <span class="font-mono">{{ env('ADMIN_PASS') }}</span></p>
     </div>
     @endif
 </main>

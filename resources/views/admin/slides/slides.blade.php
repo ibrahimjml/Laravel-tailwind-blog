@@ -29,7 +29,7 @@
           <!-- Image Column -->
           <td class="p-2">
             <img class="object-cover w-16 h-16 rounded" 
-                 src="{{asset('slides/'.$slide->image_path)}}" 
+                 src="{{$slide->image}}" 
                  alt="{{$slide->title}}">
           </td>
           
@@ -103,7 +103,14 @@
                 @can('slide.update')
               <button 
                   class="slideEdit text-gray-500 rounded-lg p-2 cursor-pointer hover:text-gray-300"
-                  data-slide='@json($slide)'>
+                  data-slide="{{ json_encode([
+                           'id' => $slide->id,
+                           'image' => $slide->image,
+                           'title' => $slide->title,
+                           'description' => $slide->description,
+                           'link' => $slide->link,
+                           'status' => $slide->status,
+                       ]) }}">
                   <i class="fas fa-edit"></i>
                 </button>
             @endcan
@@ -181,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
             link.value = slide.link ?? '';
             status.value = slide.status ?? '';
 
-            showCurrentImageInfo(slide.image_path);
+            showCurrentImageInfo(slide.image);
     
             editModal.classList.remove('hidden');
 
@@ -238,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
             div.innerHTML = `
                 <p class="text-white text-sm mb-1">Current image:</p>
                 <div class="flex items-center gap-2">
-                    <img src="/slides/${imagePath}" class="w-16 h-16 object-cover rounded">
+                    <img src="${imagePath}" class="w-16 h-16 object-cover rounded">
                     <span class="text-white text-xs">${imagePath}</span>
                 </div>
             `;

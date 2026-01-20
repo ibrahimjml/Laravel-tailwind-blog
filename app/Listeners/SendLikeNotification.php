@@ -2,14 +2,17 @@
 
 namespace App\Listeners;
 
+use App\Enums\NotificationType;
 use App\Events\PostLikedEvent;
 use App\Models\User;
 use App\Notifications\LikesNotification;
+use App\Traits\AdminNotificationGate;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
 class SendLikeNotification
 {
+    use AdminNotificationGate;
     /**
      * Create the event listener.
      */
@@ -34,7 +37,9 @@ class SendLikeNotification
       // Notify  admins
       $liker = auth()->user();
       User::where('is_admin', true)->get()->each(function ($admin) use ($liker, $post) {
-        $admin->notify(new LikesNotification($liker,$post));
+      if($admin && $this->allow($admin,NotificationType::LIKE)){
+      $admin->notify(new LikesNotification($liker,$post));
+      }
          });
     }
 }

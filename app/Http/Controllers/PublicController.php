@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\FollowerStatus;
+use App\Enums\NotificationType;
 use App\Models\Post;
 use App\Models\User;
 use App\Http\Middleware\CheckIfBlocked;
@@ -10,11 +11,13 @@ use App\Notifications\FollowAcceptNotification;
 use App\Notifications\FollowersNotification;
 use App\Services\FollowService;
 use App\Services\PostService;
+use App\Traits\AdminNotificationGate;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
 
 class PublicController extends Controller
 {
+  use AdminNotificationGate;
   public function __construct(protected PostService $service)
   {
     $this->middleware(['auth','verified',CheckIfBlocked::class]);
@@ -43,7 +46,11 @@ public function accept(User $follower)
          ->delete();
 
     $follower->notify(new FollowAcceptNotification($auth, $follower, 'accepted'));
-  
+    User::where('is_admin', true)->get()->each(function ($admin) use ($auth, $follower) {
+if($admin && $this->allow($admin,NotificationType::FOLLOWACCEPT)){
+  $admin->notify(new FollowAcceptNotification($auth, $follower, 'accepted'));
+}
+});
     toastr()->success('Follow request accepted');
     return back();
 }

@@ -2,14 +2,17 @@
 
 namespace App\Listeners;
 
+use App\Enums\NotificationType;
 use App\Events\FollowUserEvent;
 use App\Models\User;
 use App\Notifications\FollowersNotification;
+use App\Traits\AdminNotificationGate;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
 class SendFollowNotification
 {
+    use AdminNotificationGate;
     /**
      * Create the event listener.
      */
@@ -27,10 +30,12 @@ class SendFollowNotification
       $user = $event->user;
       $status = $event->status;
       
-         $user->notify(new FollowersNotification($user,$follower, $status));
-  // Notify  admins
-  User::where('is_admin', true)->get()->each(function ($admin) use ($user, $follower, $status) {
-    $admin->notify(new FollowersNotification($user, $follower, $status));
+      $user->notify(new FollowersNotification($user,$follower, $status));
+      // Notify  admins
+      User::where('is_admin', true)->get()->each(function ($admin) use ($user, $follower, $status) {
+      if($admin && $this->allow($admin,NotificationType::FOLLOW)){
+      $admin->notify(new FollowersNotification($user, $follower, $status));
+      }
      });
     }
 }

@@ -58,7 +58,7 @@ class FollowAcceptNotification extends Notification
         'follower_id' => $this->auth->id,
         'follower_name' => $this->auth->name,
         'follower_username' => $this->auth->username,
-        'type'=> NotificationType::FOLLOW->value,
+        'type'=> NotificationType::FOLLOWACCEPT->value,
         'status' => $this->status,
         'message' => "{$this->auth->name} has accepted your follow request.",
         

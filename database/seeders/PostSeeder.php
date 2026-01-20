@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Event;
 
@@ -13,6 +14,7 @@ class PostSeeder extends Seeder
      */
     public function run(): void
     {
+       Model::withoutEvents(function () {
         $userRole =  \App\Models\Role::where('name', \App\Enums\UserRole::USER->value)->first();
 
       $users = \App\Models\User::factory(20)->create()->each(function ($user) use ($userRole) {
@@ -61,6 +63,6 @@ class PostSeeder extends Seeder
              });
          });
       });
-
+       });
   }
 }

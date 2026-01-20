@@ -2,14 +2,17 @@
 
 namespace App\Listeners;
 
+use App\Enums\NotificationType;
 use App\Events\PostCreatedEvent;
 use App\Models\User;
 use App\Notifications\FollowingPostCreatedNotification;
+use App\Traits\AdminNotificationGate;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
 class SendPostNotification
 {
+    use AdminNotificationGate;
     /**
      * Create the event listener.
      */
@@ -32,7 +35,9 @@ class SendPostNotification
       }
         // Notify  admins
      User::where('is_admin', true)->get()->each(function ($admin) use ($creator, $post) {
-      $admin->notify(new FollowingPostCreatedNotification( $creator, $post));
+    if($admin && $this->allow($admin,NotificationType::POSTCREATED)){
+     $admin->notify(new FollowingPostCreatedNotification( $creator, $post));
+    }
        });
     }
 }

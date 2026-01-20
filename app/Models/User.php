@@ -88,7 +88,10 @@ class User extends Authenticatable implements MustVerifyEmail
   {
     return $this->hasMany(SocialLink::class);
   }
-
+public function adminNotificationSettings()
+{
+    return $this->hasMany(AdminNotificationSetting::class);
+}
 public function getAvatarUrlAttribute()
 {
     return $this->avatar !== "default.jpg" 

@@ -38,4 +38,12 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+    public function configure()
+    {
+      return $this->afterCreating(function (User $user) {
+        $user->profile()->create([
+          'is_public' => $this->faker->boolean(),
+        ]);
+      });
+    }
 }

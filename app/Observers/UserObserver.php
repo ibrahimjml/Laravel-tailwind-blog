@@ -18,6 +18,9 @@ class UserObserver
      */
     public function created(User $user)
     {
+      if(app()->runningInConsole()){
+        return;
+      }
       $user->profile()->create([
         'is_public' => true,
         'user_id' => $user->id

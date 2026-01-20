@@ -11,7 +11,9 @@ class UserActivityService
 {
     public function getUserActivities(User $user)
     {
-
+       if (! $user instanceof User) {
+        throw new \InvalidArgumentException('UserActivityService expects a User model.');
+    }
         $posts = Post::where('user_id', $user->getKey())
                     ->select('title', 'created_at', 'slug')
                     ->get()

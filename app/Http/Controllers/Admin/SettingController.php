@@ -6,10 +6,21 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Models\AdminNotificationSetting;
+use App\Models\SmtpSetting;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class SettingController extends Controller
 {
+        public function __construct()
+{
+    $this->middleware('permission:notifications.view')->only('notification_view');
+    $this->middleware('permission:notifications.update')->only('toggle_notification');
+    $this->middleware('permission:smtp.view')->only('smtp');
+    $this->middleware('permission:smtp.update')->only(['smtp_config','testmail']);
+
+}
     public function settings(User $user)
     {
         $user = auth()->user();
@@ -85,6 +96,69 @@ class SettingController extends Controller
    $user->save();
    toastr()->success('aboutme updated',['timeOut'=>1000]);
    return redirect()->back();
+   }
+   public function smtp()
+   {
+    return view('admin.settings.smtp-settings',[
+      'smtp'=>SmtpSetting::first()
+    ]);
+   }
+   public function smtp_config(Request $request)
+   {
+      $fields = $request->validate([
+        'mail_transport' => ['sometimes'],
+        'mail_host' => ['sometimes'],
+        'mail_port' => ['sometimes'],
+        'mail_username' => ['sometimes'],
+        'mail_password' => ['sometimes'],
+        'mail_encryption' => ['sometimes'],
+        'mail_from' => ['sometimes'],
+
+      ]);
+      $smtp = SmtpSetting::firstOrNew();
+      $smtp->fill($fields);
+      $smtp->save();
+      toastr()->success('smtp fields saved',['timeOut'=>1000]);
+      return redirect()->back();
+   }
+   public function testmail(Request $request)
+   {
+      $admin = User::where('is_admin',1)->value('email');
+      $message = 'this is a test mail';
+      Mail::raw($message,function($test) use ($admin){
+        $test->to($admin)->subject('Testing mail');
+      });
+      toastr()->success('mail sent',['timeOut'=>1000]);
+      return redirect()->back();
+   }
+   public function notification_view()
+   {
+    $setting = AdminNotificationSetting::where('user_id',auth()->id())->pluck('is_enabled','type')->toArray();
+    return view('admin.settings.notification-control',[
+      'setting' => $setting,
+    ]);
+   }
+   public function toggle_notification(Request $request)
+   {
+    $request->validate([
+        'notifications' => ['nullable', 'array'],
+    ]);
+
+    $notifications = $request->input('notifications', []);
+    
+
+    foreach (\App\Enums\NotificationType::cases() as $type) {
+      $setting = AdminNotificationSetting::where('user_id', auth()->id())->where('type', $type->value)->first();
+      $enabled = isset($notifications[$type->value]) ? 1 : 0;
+      $setting->update(
+        [
+                'is_enabled' => $enabled,
+            ]
+        );
+    }
+
+    toastr()->success('Notification settings updated', ['timeOut' => 1000]);
+    return redirect()->back();
    }
 }
 
