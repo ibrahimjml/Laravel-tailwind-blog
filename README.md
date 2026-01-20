@@ -35,6 +35,8 @@
 ![Admin permissions](https://i.postimg.cc/L6yx8fjH/Screenshot-2025-10-02-165838.png)
 ![Admin reports](https://i.postimg.cc/gkFf0wLg/Screenshot-2025-09-25-204732.png)
 ![Admin notifications](https://i.postimg.cc/gJcCrwX8/Screenshot-2025-06-03-132110.png)
+![Admin notifications setting](https://i.postimg.cc/9fYTWT0W/Screenshot-2026-01-20-121152.png)
+![custom smtp](https://i.postimg.cc/0Q9Ymn33/Screenshot-2026-01-20-121119.png)
 
 
 
@@ -47,8 +49,11 @@
 - **RESTful API using Sanctum.**
 - **Powerfull Permission System: Manage user by permissions, manage permissions , manage rules.**
 - **Powerfull profile user management Home/Activities/About pin and unpin posts/ social links update and multiple custom links provided / manage profile views/ share or download Qrcode profile.**
+- **Public and Private profiles let users manage privacy setting by toggling profile visibility.**
+- **Accessing private profiles only for accepted followers.**
+- **Accepting follow option with Accept notification.**
 - **Secure Account info profile and Account management.**
-- **Identity check via verfication code on changing password and reset pass.**
+- **Identity check via verfication code email while changing old password.**
 - **Ajax comments/replies and load more pagination.**
 - **TinyMce editor with codeblocks and image upload/update/delete with image zoom effect.**
 - **Table Of Content.**
@@ -110,6 +115,9 @@ php artisan serve
 CACHE_ENABLED=true
 REDIS_CLIENT=predis
 ```
+## Testing Notifications
+- **Configure new smtp in adminpanel->settings->smtp settings**
+- **Test it by sending test mail**
 
 ## Test the Application
 - **Copy .env.testing.example to .env.testing**
