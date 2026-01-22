@@ -89,6 +89,116 @@ function updateCount(increment = 0) {
     commentCountSpan.dataset.count = currentCount;
     commentCountSpan.textContent = `(${currentCount})`;
 }
+document.body.addEventListener('input', handleMentionInput);
+let mentionController = null;
+
+async function handleMentionInput(eo) {
+  const textarea = eo.target;
+
+  if (!textarea.matches('textarea[name="content"]')) return;
+
+  const cursor = textarea.selectionStart;
+  const textBefore = textarea.value.slice(0, cursor);
+
+  const match = textBefore.match(/@([\w]{2,})$/);
+
+  if (!match) {
+    hideMentionDropdown();
+    return;
+  }
+
+  const query = match[1];
+
+  if (mentionController) {
+    mentionController.abort();
+  }
+
+  mentionController = new AbortController();
+
+  try {
+    const res = await fetch(`/users/search?q=${query}`, {
+      signal: mentionController.signal
+    });
+
+    if (!res.ok) return;
+
+    const users = await res.json();
+
+    showMentionDropdown(users, textarea);
+  } catch (err) {
+      console.error(err);
+  }
+}
+function showMentionDropdown(users, textarea) {
+  const dropdown = document.getElementById('mention-dropdown');
+
+  if (!users.length) {
+    dropdown.classList.add('hidden');
+    return;
+  }
+
+dropdown.innerHTML = users.map(user => `
+  <div class="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 cursor-pointer mention-item"
+       data-id="${user.id}"
+       data-username="${user.username}">
+
+    <img
+      src="${user.avatar}"
+      alt="${user.username}"
+      class="w-8 h-8 rounded-full object-cover"
+    />
+
+    <div class="flex flex-col leading-tight">
+      <span class="text-sm font-semibold text-gray-800">
+        ${user.name ?? user.username}
+      </span>
+      <span class="text-xs text-gray-500">
+        @${user.username}
+      </span>
+    </div>
+  </div>
+`).join('');
+
+  const rect = textarea.getBoundingClientRect();
+
+  dropdown.style.top = `${window.scrollY + rect.bottom - 60}px`;
+  dropdown.style.left = `${window.scrollX + rect.left}px`;
+  dropdown.classList.remove('hidden');
+
+  dropdown.currentTextarea = textarea;
+}
+document.body.addEventListener('click', (eo) => {
+  const item = eo.target.closest('.mention-item');
+  if (!item) return;
+
+  const textarea = document.getElementById('mention-dropdown').currentTextarea;
+  if (!textarea) return;
+
+  const username = item.dataset.username;
+
+  const cursor = textarea.selectionStart;
+  const value = textarea.value;
+
+  textarea.value =
+    value.slice(0, cursor).replace(/@[\w]*$/, '') +
+    `@[${username}]` +
+    value.slice(cursor);
+
+  textarea.focus();
+  hideMentionDropdown();
+});
+function hideMentionDropdown() {
+  const dropdown = document.getElementById('mention-dropdown');
+  dropdown.classList.add('hidden');
+  dropdown.innerHTML = '';
+}
+
+document.addEventListener('click', (eo) => {
+  if (!eo.target.closest('#mention-dropdown') &&
+      !eo.target.matches('textarea[name="content"]')) {
+    hideMentionDropdown();
+  }
+});
 
 // Ajax Add comment
 const AddComment = document.querySelector('form[comment-form]');

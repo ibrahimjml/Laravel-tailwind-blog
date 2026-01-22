@@ -26,83 +26,14 @@
               <div class="flex flex-col">
                 <div class="w-full px-4">
                   <div class="relative w-full mb-3">
+                    @foreach (\App\Enums\NotificationType::cases() as $type)
                     <x-toggle 
-                       name="notifications[{{ \App\Enums\NotificationType::LIKE->value }}]"
+                       name="notifications[{{ $type->value }}]"
                        :disabled="! auth()->user()->can('notifications.update')"
-                      :checked="$setting[\App\Enums\NotificationType::LIKE->value] ?? false"
-                      label="{{\App\Enums\NotificationType::LIKE->label()}}" />
-                    <p class="mt-1 text-xs text-blueGray-400"> get notified when someone likes on post.</p>
-                  </div>
-                </div>
-                <div class="w-full px-4">
-                  <div class="relative w-full mb-3">
-                    <x-toggle 
-                      name="notifications[{{ \App\Enums\NotificationType::POSTCREATED->value }}]"
-                      :disabled="! auth()->user()->can('notifications.update')"
-                      :checked="$setting[\App\Enums\NotificationType::POSTCREATED->value] ?? false"
-                      label="{{\App\Enums\NotificationType::POSTCREATED->label()}}" />
-                    <p class="mt-1 text-xs text-blueGray-400"> get notified when someone likes on post.</p>
-                  </div>
-                </div>
-                <div class="w-full px-4">
-                  <div class="relative w-full mb-3">
-                    <x-toggle 
-                      name="notifications[{{ \App\Enums\NotificationType::COMMENTS->value }}]"
-                      :disabled="! auth()->user()->can('notifications.update')"
-                      :checked="$setting[\App\Enums\NotificationType::COMMENTS->value] ?? false"
-                      label="{{\App\Enums\NotificationType::COMMENTS->label()}}" />
-                    <p class="mt-1 text-xs text-blueGray-400"> get notified when someone commented or replied on post.</p>
-                  </div>
-                </div>
-                <div class="w-full px-4">
-                  <div class="relative w-full mb-3">
-                    <x-toggle 
-                      name="notifications[{{ \App\Enums\NotificationType::REPORT->value }}]"
-                      :disabled="! auth()->user()->can('notifications.update')"
-                      :checked="$setting[\App\Enums\NotificationType::REPORT->value] ?? false"
-                      label="{{\App\Enums\NotificationType::REPORT->label()}}" />
-                    <p class="mt-1 text-xs text-blueGray-400"> get notified when report has been made in post, profile or
-                      comment.</p>
-                  </div>
-                </div>
-                <div class="w-full px-4">
-                  <div class="relative w-full mb-3">
-                    <x-toggle
-                      name="notifications[{{ \App\Enums\NotificationType::FOLLOW->value }}]"
-                      :disabled="! auth()->user()->can('notifications.update')"
-                      :checked="$setting[\App\Enums\NotificationType::FOLLOW->value] ?? false"
-                      label="{{\App\Enums\NotificationType::FOLLOW->label()}}" />
-                    <p class="mt-1 text-xs text-blueGray-400"> get notified when someone requested to follow.</p>
-                  </div>
-                </div>
-                <div class="w-full px-4">
-                  <div class="relative w-full mb-3">
-                    <x-toggle 
-                      name="notifications[{{ \App\Enums\NotificationType::FOLLOWACCEPT->value }}]"
-                      :disabled="! auth()->user()->can('notifications.update')"
-                      :checked="$setting[\App\Enums\NotificationType::FOLLOWACCEPT->value] ?? false"
-                      label="{{\App\Enums\NotificationType::FOLLOWACCEPT->label()}}" />
-                    <p class="mt-1 text-xs text-blueGray-400"> get notified when someone accept follows requests.</p>
-                  </div>
-                </div>
-                <div class="w-full px-4">
-                  <div class="relative w-full mb-3">
-                    <x-toggle 
-                      name="notifications[{{ \App\Enums\NotificationType::VIEWEDPROFILE->value }}]"
-                      :disabled="! auth()->user()->can('notifications.update')"
-                      :checked="$setting[\App\Enums\NotificationType::VIEWEDPROFILE->value] ?? false"
-                      label="{{\App\Enums\NotificationType::VIEWEDPROFILE->label()}}" />
-                    <p class="mt-1 text-xs text-blueGray-400"> get notified when someone viewed user profile.</p>
-                  </div>
-                </div>
-                <div class="w-full px-4">
-                  <div class="relative w-full mb-3">
-                    <x-toggle 
-                      name="notifications[{{ \App\Enums\NotificationType::NEWUSER->value }}]"
-                      :disabled="! auth()->user()->can('notifications.update')"
-                      :checked="$setting[\App\Enums\NotificationType::NEWUSER->value] ?? false"
-                      label="{{\App\Enums\NotificationType::NEWUSER->label()}}" />
-                    <p class="mt-1 text-xs text-blueGray-400"> get notified when a new user join platform.</p>
+                       :checked="$setting[$type->value] ?? false"
+                       label="{{$type->label()}}" />
+                       <p class="mt-1 text-xs text-blueGray-400 my-2">{{ $type->description() }}</p>
+                    @endforeach
                   </div>
                 </div>
               </div>

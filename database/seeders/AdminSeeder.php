@@ -32,7 +32,8 @@ class AdminSeeder extends Seeder
       'Permissions'     => ['permission.create',  'permission.view',  'permission.update', 'permission.delete'],
       'Slides'          => ['slide.create',  'slide.view',  'slide.update', 'slide.delete'],
       'Notifications'   => ['notifications.view', 'notifications.update'],
-      'SMTP'            => ['smtp.view', 'smtp.update']
+      'SMTP'            => ['smtp.view', 'smtp.update'],
+      'Backups'         => ['backup.view', 'backup.download', 'backup.delete'],
     ];
 
     foreach ($modules as $name => $permssions) {

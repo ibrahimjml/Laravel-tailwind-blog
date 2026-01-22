@@ -4,6 +4,7 @@
 /public/slides/*
 /public/storage
 /storage/*.key
+/storage/app/private/*
 /storage/app/public/images/*
 /storage/app/public/uploads/*
 /storage/app/public/avatars/*
@@ -20,6 +21,7 @@
 !/storage/app/public/covers/sunset.jpg
 
 /storage/posts.index
+/storage/users.index
 /storage/posts.index-shm
 /storage/posts.index-wal
 /vendor

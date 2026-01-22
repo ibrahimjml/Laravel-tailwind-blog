@@ -116,6 +116,9 @@ Route::prefix('admin')
   Route::get('/', 'settings')->name('index');
   Route::get('/smtpmails','smtp')->name('smtp');
   Route::get('/notification-controls','notification_view')->name('notification.view');
+  Route::get('db-backup','backup_view')->name('backup.view');
+  Route::get('backup-download/{file}','backup_download')->name('backup.download');
+  Route::delete('/backup-delete/{file}','backup_destroy')->name('backup.destroy');
   Route::patch('/notification-controls','toggle_notification')->name('notification.toggle');
   Route::post('/smtpmails','smtp_config')->name('smtp.config');
   Route::post('/testmail','testmail')->name('smtp.test');

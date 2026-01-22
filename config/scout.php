@@ -134,11 +134,12 @@ return [
     'storage' => storage_path(), 
     'fuzziness' => env('TNTSEARCH_FUZZINESS', true),
     'fuzzy' => [
-        'prefix_length' => 2,
+        'prefix_length' => 1,
         'max_expansions' => 50,
         'distance' => 2,
     ],
     'asYouType' => env('TNTSEARCH_AS_YOU_TYPE',false),
+    'min_word_length' => 2, 
     'searchBoolean' => env('TNTSEARCH_BOOLEAN', false),
     'maxDocs' => env('TNTSEARCH_MAX_DOCS', 500),
 ],

@@ -6,8 +6,6 @@
     'onchange' => null,
     'wrapperClass' => 'inline-flex items-center cursor-pointer',
     'toggleClass' => 'relative w-9 h-5 rounded-full transition-colors',
-    'activeBg' => 'bg-black',
-    'inactiveBg' => 'bg-blueGray-200',
 ])
 
 <label {{ $attributes->merge(['class' => $wrapperClass]) }}>
@@ -20,7 +18,7 @@
         @if($onchange) onchange="{{ $onchange }}" @endif
     >
 
-    <div  class="{{ $toggleClass }} {{ $inactiveBg }} peer-checked:{{ $activeBg }} peer-focus:outline-none peer-focus:ring-4
+    <div  class="{{ $toggleClass }} bg-blueGray-200 peer-checked:bg-black peer-focus:outline-none peer-focus:ring-4
             peer-focus:ring-brand-soft after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white
             after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full  rtl:peer-checked:after:-translate-x-full">
   </div>

@@ -158,6 +158,12 @@
             Notification settings
           </a>
         </li>
+        <li>
+          <a href="{{ route('admin.settings.backup.view') }}" class="text-xs py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('admin.settings.backup.view') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+          <i class="fas fa-database mr-2 text-xs opacity-75"></i>
+            Backups
+          </a>
+        </li>
       </ul>
     </div>
   </li>

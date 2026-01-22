@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\ReplyCommentEvent;
-use App\Http\Middleware\CheckIfBlocked;
-use App\Models\Comment;
 use App\Models\Post;
-use App\Repositories\Interfaces\PostInterface;
+use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use App\Events\ReplyCommentEvent;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use App\Http\Middleware\CheckIfBlocked;
+use Illuminate\Database\Eloquent\Builder;
+use App\Repositories\Interfaces\PostInterface;
 
 class CommentController extends Controller
 {
@@ -34,6 +36,29 @@ class CommentController extends Controller
     
     abort(404);
 }
+public function search_mentioned(Request $request)
+{
+   $q = trim($request->get('q'));
+
+    if ($q === '') {
+        return response()->json([]);
+    }
+
+    return User::where('id','!=',auth()->id())
+    ->where(function(Builder $query) use($q){
+      $query->whereAny(['name', 'username'],'like',"%{$q}%");
+    })
+        ->take(8)
+        ->get()
+        ->map(fn ($user) => [
+            'id'       => $user->id,
+            'name'     => $user->name,
+            'username' => $user->username,
+            'avatar'   => $user->avatar_url,
+        ])
+        ->values();
+}
+
     public function createComment(Post $post,Request $request){
       $fields = $request->validate([
         'content'=>'required|string|max:255',

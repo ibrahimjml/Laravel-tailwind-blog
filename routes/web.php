@@ -101,6 +101,8 @@ Route::post('/comment/{post}',[CommentController::class,'createComment']);
 Route::post('/reply/{comment}',[CommentController::class,'reply'])->name('comment.reply');
 Route::put('/comment/edit/{comment}',[CommentController::class,'editComment'])->name('edit.comment');
 Route::delete('/comment/{comment}',[CommentController::class,'deleteComment'])->name('delete.comment');
+// mention suer
+Route::get('/users/search', [CommentController::class, 'search_mentioned']);
 // reports
 Route::prefix('/reports')->group(function(){
   Route::post('/post/{post}',[ReportPostController::class,'report_post'])->name('post.report');

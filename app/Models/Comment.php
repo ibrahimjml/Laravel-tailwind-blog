@@ -30,6 +30,10 @@ class Comment extends Model
                   ->with(['user.roles', 'parent.user'])
                   ->orderBy('created_at','desc');
     }
+    public function mentions()
+{
+    return $this->belongsToMany(User::class, 'comment_mentions');
+}
   public function scopeWithNestedReplies($query, $depth = 3)
 {
     if ($depth <= 0) return $query;

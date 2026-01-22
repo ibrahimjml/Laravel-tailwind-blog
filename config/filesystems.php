@@ -49,6 +49,11 @@ return [
             'url' => env('APP_URL').'/slides',
             'visibility' => 'public',
         ],
+        'backups' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/backups'),
+            'visibility' => 'private',
+        ],
         
         's3' => [
             'driver' => 's3',

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\CommentCreatedEvent;
 use App\Events\FollowUserEvent;
+use App\Events\MentionedUserEvent;
 use App\Events\NewRegistered;
 use App\Events\PostCreatedEvent;
 use App\Events\PostLikedEvent;
@@ -15,6 +16,7 @@ use App\Listeners\NotifyAdminNewUser;
 use App\Listeners\SendCommentNotification;
 use App\Listeners\SendFollowNotification;
 use App\Listeners\SendLikeNotification;
+use App\Listeners\SendMentionedNotification;
 use App\Listeners\SendPostNotification;
 use App\Listeners\SendPostReportNotification;
 use App\Listeners\SendProfileViewNotification;
@@ -62,7 +64,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         ReportStatusUpdateEvent::class => [
           SendReportStatusNotification::class,
-        ]
+        ],
+        MentionedUserEvent::class => [
+          SendMentionedNotification::class,
+        ],
     ];
 
     /**
