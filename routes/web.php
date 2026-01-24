@@ -19,7 +19,7 @@ use App\Http\Controllers\{
     ReportProfileController,
     TinyMCEController,
 };
-
+use App\Http\Controllers\Auth\TwoFactorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,13 +31,12 @@ use App\Http\Controllers\{
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 // HOME
 Route::get('/',HomeController::class)->name('home');
 // Blog
-Route::get('/blog',[PostController::class,'blogpost'])->name('blog')->middleware('auth');
+Route::get('/blog',[PostController::class,'blogpost'])->name('blog');
 // Post
-Route::get('/post/{post:slug}',[PostController::class,'viewPost'])->name('single.post')->middleware('auth');
+Route::get('/post/{post:slug}',[PostController::class,'viewPost'])->name('single.post');
 
 //recent posts page by hashtag 
 Route::get('/hashtag/{hashtag:name}',[Hashtagcontroller::class,'viewhashtag'])->name('viewhashtag');
@@ -45,8 +44,8 @@ Route::get('/hashtag/{hashtag:name}',[Hashtagcontroller::class,'viewhashtag'])->
 Route::get('/category/{category:name}',[CategoryController::class,'viewcategory'])->name('viewcategory');
 
 // Create Post
-Route::get('/createpage',[PostController::class,'createpage'])->name('createpage')->middleware('auth');
-Route::post('/create',[PostController::class,'create'])->name('create')->middleware('auth');
+Route::get('/createpage',[PostController::class,'createpage'])->name('createpage');
+Route::post('/create',[PostController::class,'create'])->name('create');
 Route::get('/post/edit/{slug}',[PostController::class,'editpost'])->name('edit.post');
 Route::delete('/post/{slug}',[PostController::class,'delete'])->name('delete.post');
 Route::put('/post/update/{slug}',[PostController::class,'update'])->name('update.post');
@@ -75,6 +74,7 @@ Route::prefix('profile')
   Route::get('/settings/info','profile_info')->name('profile.info');
   Route::get('/settings/account','profile_account')->name('profile.account');
   Route::get('/settings/privacy','account_privacy')->name('account.privacy');
+  Route::get('/settings/security','two_factor_view')->name('two.factor.view');
   Route::post('/settings/privacy','profile_visibility')->name('profile.visibility');
   Route::put('/settings/info','update_info')->name('update.info');
   Route::put('/settings/account','update_account')->name('update.account');
@@ -82,6 +82,14 @@ Route::prefix('profile')
   Route::delete('/settings/delete/avatar','delete_avatar')->name('avatar.destroy');
   Route::delete('/settings/delete/cover','delete_cover')->name('cover.destroy');
   Route::delete('/delete/custom-link/{id}',  'destroy_link')->name('destroy.customlink');
+  // two factor management
+  Route::controller(TwoFactorController::class)->group(function(){
+    Route::post('/enable-2fa','enable2fa')->name('enable.2fa');
+    Route::post('/confirm-2fa','confirmTwofactor')->name('confirm.2fa');
+    Route::put('/disable-2fa', 'disable2fa')->name('disable.2fa');
+    Route::get('/download-recovery-codes',  'downloadRecoveryCodes')->name('download.recovery.codes');
+    Route::put('/regenerate-recovery-codes',  'regenerate')->name('regenerate.recovery.codes');
+  });
 });
 // qrcode generator
 Route::get('/qr-code', QrcodeController::class)->name('qr-code.image');

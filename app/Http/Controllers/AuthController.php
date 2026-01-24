@@ -11,6 +11,7 @@ use App\Mail\ForgotPassword;
 use App\Services\User\RegisterUserService;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -43,23 +44,35 @@ class AuthController extends Controller
     $fields = $request->validate([
       "email" => 'required|email',
       "password" => 'required',
-      "g-recaptcha-response" => [new Recaptcha]
+      // "g-recaptcha-response" => [new Recaptcha]
     ]);  
 
-    if (auth()->attempt(["email" => $fields['email'], "password" => $fields['password']])) {
-      if(auth()->user()->is_blocked){
-        return back();
-      }
-    toastr()->success('logged in successfuly',['timeOut'=>1000]);
-
-    if(auth()->user()->is_admin){
-        return redirect('/admin/panel');;
-      }
-      return redirect('/');
-    } else {
-      toastr()->error('wrong credentials',['timeOut'=>1000]);
-      return redirect('/login');
+    if (! auth()->validate([
+        'email' => $fields['email'],
+        'password' => $fields['password'],
+    ])) {
+        toastr()->error('Wrong credentials', ['timeOut' => 1000]);
+        return redirect('/login');
     }
+
+    $user = User::where('email', $fields['email'])->first();
+
+    if ($user->is_blocked) {
+        return back();
+    }
+
+    if ($user->has_two_factor_enabled) {
+        auth()->login($user);
+        session(['2fa:user:id' => $user->id,'2fa:passed'=>false]);
+        return redirect()->route('2fa.confirmation');
+    }
+    session(['2fa:passed' => true]);
+    auth()->login($user);
+
+    toastr()->success('Logged in successfully', ['timeOut' => 1000]);
+    return $user->is_admin
+        ? redirect('/admin/panel')
+        : redirect('/');
   }
 
   public function forgot()
@@ -140,6 +153,12 @@ class AuthController extends Controller
   public function logout()
   {
     auth()->logout();
+    session()->forget([
+        '2fa:user:id',
+        '2fa:passed',
+    ]);
+    session()->invalidate();
+    session()->regenerateToken();
     toastr()->success('Logged out ',['timeOut'=>1000]);
     return redirect('/');
   }

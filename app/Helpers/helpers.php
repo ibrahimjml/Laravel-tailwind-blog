@@ -12,3 +12,10 @@ if (!function_exists('render_mentions')) {
     );
   }
 }
+
+if(! function_exists('hasCompleted2FA')){
+   function hasCompleted2FA() {
+    return auth()->check() && session()->get('2fa:passed', true);
+}
+
+}

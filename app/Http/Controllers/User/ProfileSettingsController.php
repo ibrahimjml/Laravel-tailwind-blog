@@ -117,6 +117,11 @@ class ProfileSettingsController extends Controller
      }
       return back();
     }
+    public function two_factor_view()
+    {
+      return view('profile-settings.profile',$this->data('security'));
+    
+    }
     /**
       * update User Account management
       **/

@@ -147,7 +147,7 @@
         });
 
 
-fetch('https://get.geojs.io/v1/ip/geo.json')
+fetch('https://get.geojs.io/v1/ip/country.json')
         .then(response => response.json())
         .then(data => {
             const country = data.country_code;  // Country code like "US", "IN", etc.

@@ -38,6 +38,8 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\CheckIfBlocked::class,
             \App\Http\Middleware\EnsureIdentityVerified::class,
+            \App\Http\Middleware\EnsureTwoFactorMiddleware::class,
+
         ],
 
         'api' => [

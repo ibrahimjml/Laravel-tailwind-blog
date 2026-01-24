@@ -19,8 +19,9 @@
     <i class="fas fa-cog"></i>
     <a href="{{route('profile.account')}}" class="ml-2">Account settings</a>
   </li>
+  <form id="logoutForm" action="{{ route('logout') }}" method="POST">@csrf</form>
   <li class="border-b-2 hover:border-b-red-500 text-gray-500 hover:text-black hover:font-semibold transition duration-300 flex justify-between items-center gap-8">
     <i class="fas fa-sign-out-alt"></i>
-  <a href="{{route('logout')}}" >Logout</a>
+  <button form="logoutForm" type="submit">Logout</button>
   </li>
 </ul>

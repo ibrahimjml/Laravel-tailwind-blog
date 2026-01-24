@@ -24,6 +24,10 @@
           <i class="fas fa-lock"></i>
           Account Privacy
         </a>
+        <a href="{{route('two.factor.view')}}" class="py-2 px-4 text-gray-500  rounded-xl flex items-center gap-4 {{request()->routeIs('two.factor.view') ? 'bg-gray-200':''}}">
+          <i class="fas fa-shield-alt"></i>
+          Two-Factor Auth
+        </a>
       </div>
       <div class="mt-auto py-4 border-t border-gray-300 w-full">
         <button 
@@ -46,17 +50,23 @@
         <p class="text-2xl font-bold text-gray-900">User Settings</p>
       </div>
       @switch($section)
-    @case('profile-info')
-    @include('profile-settings.profile-info')
-    @break
 
-  @case('profile-account')
-    @include('profile-settings.account-management')
-    @break
-  @case('profile-privacy')
-    @include('profile-settings.account-privacy')
-    @break
-    @endswitch
+      @case('profile-info')
+      @include('profile-settings.profile-info')
+      @break
+
+     @case('profile-account')
+       @include('profile-settings.account-management')
+       @break
+
+     @case('profile-privacy')
+       @include('profile-settings.account-privacy')
+       @break
+
+     @case('security')
+       @include('profile-settings.security2fa',['user'=>$user])
+       @break
+       @endswitch
     </section>
 
   </main>

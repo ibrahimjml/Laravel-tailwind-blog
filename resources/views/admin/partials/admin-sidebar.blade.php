@@ -168,10 +168,11 @@
     </div>
   </li>
   <li class="items-center">
-    <a href="{{route('logout')}}"
+    <form id="logoutAdmin" action="{{ route('logout') }}" method="post">@csrf</form>
+    <button form="logoutAdmin" type="submit"
       class="text-sm uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 {{ Route::is('logout') ? 'text-blue-500 hover:text-blue-600' : ''}}">
       <i class="fas fa-sign-out-alt mr-2 text-sm opacity-75"></i>
       Log out
-    </a>
+    </button>
   </li>
 </ul>

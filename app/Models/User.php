@@ -26,6 +26,10 @@ class User extends Authenticatable implements MustVerifyEmail
       'username',
       'email',
       'password',
+      'has_two_factor_enabled',
+      'two_factor_secret',
+      'two_factor_recovery_codes',
+      'recovery_codes_downloaded',
       'phone',
       'age',
       'avatar',
@@ -111,11 +115,17 @@ public function getCoverAttribute()
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'username_changed_at' => 'datetime'
+        'username_changed_at' => 'datetime',
+        'has_two_factor_enabled' => 'boolean',
+        'is_blocked' => 'boolean',
+        'recovery_codes_downloaded' => 'boolean',
+        'age' => 'integer',
     ];
 }
