@@ -9,62 +9,103 @@
 
 ## About Laravel
 # Laravel Blog Application
-## Screanshots
- ![Homepage](https://i.postimg.cc/52QLnsxf/127-0-0-1-8000-2.png)
-![Blogpage](https://i.postimg.cc/28p16t6V/127-0-0-1-8000-blog-sort-featured-1.png)
-![Recentposts tagpage](https://i.postimg.cc/zGb2jVNn/127-0-0-1-8000-hashtag-laravel.png)
-![Postpage](https://i.postimg.cc/qRP5NrZc/Screenshot-2025-09-18-233005.png)
-![Notification menu](https://i.postimg.cc/kMjCrJdM/Screenshot-2025-09-22-125701.png)
-![Reportpost](https://i.postimg.cc/V6v8qzR3/Screenshot-2025-09-18-235631.png)
-![Comments model](https://i.postimg.cc/ZKtzkLQ3/Screenshot-2025-10-03-135906.png)
-![Profile home](https://i.postimg.cc/KjndgWSX/127-0-0-1-8000-ibrahim123-5.png)
-![Profile activity](https://i.postimg.cc/q7g38kpV/Screenshot-2025-09-20-233621.png)
-![Profile report](https://i.postimg.cc/L6y6rkmK/Screenshot-2025-09-24-185620.png)
-![Qrcode](https://i.postimg.cc/4NZHWvX1/Screenshot-2025-09-20-232729.png)
-![Profileinfo setting](https://i.postimg.cc/LXGFkwFJ/Screenshot-2025-06-27-223320.png)
-![Profileinfo setting](https://i.postimg.cc/qMwSk0kk/Screenshot-2025-09-21-110503.png)
-![{rofileaccount setting](https://i.postimg.cc/RV5zNkT8/Screenshot-2025-06-27-223348.png)
-![Create page](https://i.postimg.cc/J4t6yk1w/127-0-0-1-8000-create-5.png)
-![Admin home](https://i.postimg.cc/j2ZNBwpR/Screenshot-2025-09-25-210913.png)
-![Admin users](https://i.postimg.cc/VsKqqwvj/Screenshot-2025-10-02-170219.png)
-![Admin posts](https://i.postimg.cc/7YLNd6d9/Screenshot-2025-10-02-165700.png)
-![Admin tags](https://i.postimg.cc/WbFHNTB5/Screenshot-2025-09-27-023607.png)
-![Admin categories](https://i.postimg.cc/66Smm8h9/Screenshot-2025-09-25-204413.png)
-![Admin slides](https://i.postimg.cc/g0Z0C75Z/Screenshot-2025-10-01-215235.png)
-![Admin roles](https://i.postimg.cc/cLbkXYJB/Screenshot-2025-10-02-164920.png)
-![Admin permissions](https://i.postimg.cc/L6yx8fjH/Screenshot-2025-10-02-165838.png)
-![Admin reports](https://i.postimg.cc/gkFf0wLg/Screenshot-2025-09-25-204732.png)
-![Admin notifications](https://i.postimg.cc/gJcCrwX8/Screenshot-2025-06-03-132110.png)
-![Admin notifications setting](https://i.postimg.cc/9fYTWT0W/Screenshot-2026-01-20-121152.png)
-![custom smtp](https://i.postimg.cc/0Q9Ymn33/Screenshot-2026-01-20-121119.png)
+## 📸 Screenshots
+
+👉 [View Screenshots](SCREENSHOTS.md)
+
+---
+
+## 🚀 Features
+
+### 📝 Content & Blog System
+- 📰 Social Blog system with fully cached pages and **infinite scroll pagination**
+- 🎯 Multi-blog sorting options
+- 🧠 Full-text search powered by **TNTSearch**
+- 🧭 Dynamic **Table of Contents (ToC)** generated from post headings
+- 🧾 Dynamic SEO management for posts and pages
+- 🖊️ **TinyMCE rich text editor** with:
+  - Code blocks
+  - Image upload / update / delete
+  - Image zoom & preview effect
+
+### 🏠 Homepage & User Interface
+- 🎞️ Dynamic homepage slider
+- 📱 Fully responsive UI built with **Tailwind CSS**
+- ⚡ Smooth **AJAX-powered navigation and interactions**
+
+### 💬 Social Interaction
+- 💬 **AJAX comments & nested replies** with load-more pagination
+- 🔔 **@Mentions in comments** with user notifications
+- ❤️ User interactions (AJAX):
+  - Like / Unlike
+  - Save / Unsave
+  - Follow / Unfollow
+  - Share posts
+  - Track post views
+  - Follow request system with accept-follow notifications
+- 🚩 Report system for **posts, comments, and profiles**
+
+### 👤 User Profiles & Social Features
+- 👥 Advanced profile system including:
+  - Profile Home / Activities / About sections
+  - Activities : track user profile history (commented, relpied, liked, posted)
+  - Pin & unpin posts
+  - Social links + custom links
+  - Profile view tracking
+  - Share or download **profile QR code**
+- 🔐 Public & private profile visibility settings
+- 🔒 Private profiles accessible only to **accepted followers**
+
+### 🔐 Security & Authentication
+- 🎯 Recaptcha v2 
+- 🛡️ **Custom Two-Factor Authentication (2FA)**
+- 🔑 Secure account and profile management with confirm password
+- ✉️ Reset password option via Email verification code
+- 🔑 Identity check via Email verification code required on changing password action
+- 🔐 RESTful API authentication using **Laravel Sanctum**
+
+### 🧑‍💼 Admin Dashboard & Management
+- 📊 Responsive admin dashboard
+- ⚡ Full **AJAX CRUD** across admin pages
+- ✉️ Custom mail setting for configuring SMTP
+- ✉️ Notifications control setting
+- 💾 DB backup management
+- 📈 Analytics, filters, and reports
+
+### 🛂 Authorization & Permissions
+- 🧠 Powerful custom permission system (ACL):
+  - Fully cahched Role and permission access control
+  - Manage users, roles, permissions, and rules
+  - Fine-grained authorization logic
+
+### ⏱️ Scheduler Tasks
+- 💾 **Generate daily secure encrypted database backups**
+- 🧹 **Weekly backup cleanup** to remove old backups
+
+### 🔔 In-App Notifications
+- 🔔 **Emails and in-app notification system** with multiple notification types:
+  - Likes, comments, replies
+  - @Mentions, profile-views
+  - Follow requests & accept notifications
+  - Reports and system alerts
+
+### 🧱 Architecture & Performance
+- 🧩 Clean architecture using:
+  - Service Layer
+  - Observers
+  - Builders
+  - Repositories
+  - Decorators
+  - DTOs (Data Transfer Objects)
+- 🧪 Improved validation and separation of concerns
+- 🚀 **Redis caching** for better performance and scalability
 
 
 
-## Features
-- **Blog: category, tag, content, web page with infinite scroll pagination.**
-- **Home page Slider, multiple sort options blog page.**
-- **Full text search using TNTSearch**
-- **Responsive admin dashboard  pages with full Ajax CRUD, and multiple analytics and filters.**
-- **Dynamic SEO pages.**
-- **RESTful API using Sanctum.**
-- **Powerfull Permission System: Manage user by permissions, manage permissions , manage rules.**
-- **Powerfull profile user management Home/Activities/About pin and unpin posts/ social links update and multiple custom links provided / manage profile views/ share or download Qrcode profile.**
-- **Public and Private profiles let users manage privacy setting by toggling profile visibility.**
-- **Accessing private profiles only for accepted followers.**
-- **Accepting follow option with Accept notification.**
-- **Secure Account info profile and Account management.**
-- **Identity check via verfication code email while changing old password.**
-- **Ajax comments/replies and load more pagination.**
-- **TinyMce editor with codeblocks and image upload/update/delete with image zoom effect.**
-- **Table Of Content.**
-- **Ajax user interactions Likes/Save/Follow/Share and post views.**
-- **Multiple reports on post/comment/profile.**
-- **Service layer, Repositories, DTOs for clean code,logic and better validation input**
-- **Redis for better performance**
-
-
-## 🚀 All Pages Styled With TailwindCss ,more experience ,more responsive.
+## 🚀 All Pages Styled With TailwindCss ,more responsive.
 🔥🔥 Upcomig: winning badges by completing competitions |  AI for recommended posts.
+
+---
 
 ## INSTALLATION
 - **Requirements extensions:**
@@ -106,11 +147,15 @@ php artisan storage:link
 ```
 php artisan db:seed --AdminSeeder
 ```
-9.💻 Run the application
+9.🗄️ Seed the SMTP configuration important 
+```
+php artisan db:seed --SmtpSeeder
+```
+10.💻 Run the application
 ```
 php artisan serve
 ```
-9.🚀 For better performance configure Redis and enable Cache to true
+11.🚀 For better performance configure Redis and enable Cache to true
 ```
 CACHE_ENABLED=true
 REDIS_CLIENT=predis
