@@ -18,19 +18,19 @@
           </div>
         </div><!-- end sidebar button and search bar-->
         
-        <div class="px-0 flex items-center gap-3"><!-- start sort & tags -->
+        <div class="px-0 flex items-center gap-3"><!-- start sort & news -->
           @include('blog.partials.filter')
 
-          @if($tags->count() > 0)
+          @if($news->isNotEmpty())
             <div class="lg:hidden  mt-5">
-              <button id="showtags"
+              <button id="show-news"
                 class=" sm:flex  w-fit  py-2 px-5 rounded-lg font-bold capitalize mb-6 text-gray-800 border border-gray-300 text-sm  focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent  pr-10 transition-all duration-200">
-                <i class="fas fa-tag mr-2 text-sm text-yellow-400"></i>
-                <span class="label">Tags</span>
+                <i class="fas fa-rss mr-2 text-sm text-yellow-400"></i>
+                <span class="label">All News</span>
               </button>
             </div>
           @endif
-        </div><!-- end sort & tags -->
+        </div><!-- end sort & news -->
 
       </div><!-- end mobile layout -->
 
@@ -50,18 +50,17 @@
     </div>
   </div><!-- end container filters -->
 
-  <div id="tagcontainer" class="flex flex-wrap justify-center mt-5 gap-2 px-3 mb-3 w-full max-w-full transition-all duration-500 ease-in-out h-0 overflow-hidden"><!-- start tags container-->
-    @foreach ($tags as $tag)
-      <a href="{{ route('viewhashtag', $tag->name) }}" class="px-2 py-1 text-sm text-white rounded-lg flex items-center justify-center whitespace-nowrap
-         {{$tag->is_featured ?
-      'bg-black border-2 border-yellow-400' :
-      'bg-gray-600 border-none'}}
-         ">
-        @if($tag->is_featured) 🔥 @else &#x23; @endif
-        {{ $tag->name }} ({{ $tag->posts_count }})
-      </a>
+  <div id="news-container" class="flex flex-wrap justify-center mt-5 gap-2 px-3 mb-3 w-full max-w-full transition-all duration-500 ease-in-out h-0 overflow-hidden"><!-- start news container-->
+    @foreach($news as $new)
+      <a href="{{ route('news') }}?source={{ $new->name }}"
+        class="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-2 lg:text-sm text-xs font-medium text-slate-700 transition duration-200 hover:border-slate-900">
+          <img src="{{ $new->favicon_url }}" alt="{{ $new->name }}" width="26" height="26" class="rounded-full">
+          <b>{{ $new->name }}</b>
+          <b>{{ '(' . $new->posts_count . ')' }}</b>
+
+  </a>
     @endforeach
-  </div><!-- end tags container-->
+  </div><!-- end news container-->
 
   <hr>
   <!-- Posts feed -->
@@ -72,7 +71,7 @@
         <h1 class=" text-4xl p p-36 font-semibold text-center w-54">No Posts Yet</h1>
       @else
         <div id="posts-container" class="lg:col-span-2">
-          @include('blog.partials.posts', ['posts' => $posts])
+          @include('blog.partials.posts-ajax', ['posts' => $posts])
         </div>
       @endif
       <!-- Sidebar content - Recent Tags & Posts -->
@@ -81,108 +80,40 @@
         @include('blog.popular-tags')
         <!-- Categories Section -->
         @include('blog.categories')
+        <!-- latest news -->
+        @include('blog.latest-news')
         <!-- Who To Follow Section -->
         @include('blog.whotofollow')
       </div>
     </div>
   </div>
 
-  <!-- pagination infinite scroll-->
-  <div id="loading-spinner" class="hidden text-center mt-4">
-    <div class="inline-flex items-center">
-      <i class="fas fa-spinner fa-spin text-gray-600 text-lg mr-2"></i>
-    </div>
-  </div>
-  <p id="reach-end" class="hidden container w-fit mx-auto">You've reached the end! 👋</p>
-  <!-- observe loading spinner -->
-  <div id="scroll-loading" class="h-10"></div>
+  <!-- infinte scroll pagination -->
+<x-infinte-scroll container="posts-container" 
+                  :route="route('blog')" 
+                  page-name="blog_page"
+                  :current-page="$posts->currentPage()"
+                  :has-more="$posts->hasMorePages()"/>
 
   @push('scripts')
     <script>
-      const tagContainer = document.getElementById('tagcontainer');
-      const showTags = document.getElementById('showtags');
-      const label = showTags.querySelector('.label');
+      const newsContainer = document.getElementById('news-container');
+      const showNews = document.getElementById('show-news');
+      const label = showNews.querySelector('.label');
       let expanded = false;
 
-      showTags.addEventListener('click', () => {
+      showNews.addEventListener('click', () => {
         if (!expanded) {
-          tagContainer.style.height = `${tagContainer.scrollHeight}px`;
+          newsContainer.style.height = `${newsContainer.scrollHeight}px`;
           expanded = true;
-          label.textContent = 'Hide Tags';
+          label.textContent = 'Hide News';
         } else {
-          tagContainer.style.height = '0';
+          newsContainer.style.height = '0';
           expanded = false;
-          label.textContent = 'Tags';
+          label.textContent = 'All News';
         }
       });
 
-    </script>
-    <!-- Ajax infinite scroll posts -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const postsContainer = document.getElementById('posts-container');
-        const loadingSpinner = document.getElementById('loading-spinner');
-        const reachEnd = document.getElementById('reach-end');
-        let currentPage = 1;
-        let isLoading = false;
-        let hasMore = true;
-
-        const action = document.getElementById('scroll-loading');
-        // Intersection
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting && !isLoading && hasMore) {
-              loadMorePosts();
-            }
-          });
-        }, {
-          rootMargin: '100px',
-          threshold: 0.1
-        });
-
-        observer.observe(action);
-
-        async function loadMorePosts() {
-          if (isLoading || !hasMore) return;
-
-          isLoading = true;
-          loadingSpinner.classList.remove('hidden');
-          reachEnd.classList.add('hidden');
-
-          try {
-            const urlParams = new URLSearchParams(window.location.search);
-            const sortOption = urlParams.get('sort') || 'latest';
-
-            const response = await fetch(`/blog?blog_page=${currentPage + 1}&sort=${sortOption}`, {
-              method: 'GET',
-              headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json',
-              }
-            });
-
-            const data = await response.json();
-            if (!response.ok) throw new Error('Network response was not ok');
-            // Append posts
-            postsContainer.insertAdjacentHTML('beforeend', data.html);
-            // Update pagination state
-            currentPage = data.nextPage - 1;
-            hasMore = data.hasMore;
-
-            if (!hasMore) {
-              observer.disconnect();
-              reachEnd.classList.remove('hidden');
-            }
-
-          } catch (error) {
-            console.error('Error loading more posts:', error);
-          } finally {
-            isLoading = false;
-            loadingSpinner.classList.add('hidden');
-
-          }
-        }
-      });
     </script>
   @endpush
 </x-layout>

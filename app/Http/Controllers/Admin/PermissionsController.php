@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Fluent;
 
 class PermissionsController extends Controller
@@ -68,6 +69,7 @@ class PermissionsController extends Controller
       $permission = Permission::find( $id );
       $permission->roles()->detach();
       $permission->delete();
+    Cache::tags(['user_permissions', 'user_roles', 'has_any_role'])->flush();
     return response()->json([
       'deleted' => true,
       'message' => "permission {$permission->name} deleted"

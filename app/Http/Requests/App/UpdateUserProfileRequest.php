@@ -3,6 +3,7 @@
 namespace App\Http\Requests\App;
 
 use App\Models\User;
+use App\Rules\MaxImageUpload;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 class UpdateUserProfileRequest extends FormRequest
@@ -24,7 +25,7 @@ class UpdateUserProfileRequest extends FormRequest
     {
       /** @var \App\Models\User $user */
       $user = $this->user();
-      $imageRule = 'sometimes|nullable|image|mimes:png,jpeg,jpg|max:5048';
+      $imageRule = ['sometimes','nullable','image','mimes:png,jpeg,jpg,webp', new MaxImageUpload()];
 
         return [
             'avatar'   => $imageRule,
@@ -47,11 +48,9 @@ class UpdateUserProfileRequest extends FormRequest
         return [
             'phone.regex' => 'The phone number must include a valid country code.',
             'avatar.image' => 'The avatar must be an image file.',
-            'avatar.max' => 'The avatar image must be 5MB.',
-            'avatar.mimes' => 'The avatar must be a PNG, JPG, or JPEG.',
+            'avatar.mimes' => 'The avatar must be a PNG, JPG, JPEG, or WEBP.',
             'cover.image' => 'The cover must be an image file.',
-            'cover.max' => 'The cover image must be 5MB.',
-            'cover.mimes' => 'The cover must be a PNG, JPG, or JPEG.',
+            'cover.mimes' => 'The cover must be a PNG, JPG, JPEG, or WEBP.',
         ];
     }
 }

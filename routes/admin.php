@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\Admin\{ AdminController, CategoriesController, CommentReportController, CustomPageController, NotificationsController, TagsController, PermissionsController, PostReportController, PostsController, ProfileReportController, RolesController, SlidesController, UsersController };
+use App\Http\Controllers\Admin\{ AdminController, CategoriesController, CommentReportController, CustomPageController, NotificationsController,  TagsController, PermissionsController, PostReportController, PostsController, ProfileReportController, RolesController, Scraping\ScrapSettingController, SlidesController, UsersController };
 use App\Http\Controllers\Admin\Ads\AdController;
 use App\Http\Controllers\Admin\Analytics\AnalyticsController;
 use App\Http\Controllers\Admin\ApiRateLimit\ApiRateLimitController;
 use App\Http\Controllers\Admin\MediaSettingController;
-use App\Http\Controllers\Admin\Optimization\MaintenanceController;
-use App\Http\Controllers\Admin\Optimization\SeoController;
+use App\Http\Controllers\Admin\Optimization\{ ImageOptimizationController, MaintenanceController ,SeoController};
+use App\Http\Controllers\Admin\Scraping\{ScrapingController, ScrapingSourceController };
 use App\Http\Controllers\Admin\PostModeration\PostModerationController;
 use App\Http\Controllers\Admin\Settings\{ AuthSecurityController, BackupsController, ManageNotificationController, SmtpController };
 use Illuminate\Support\Facades\Route;
+
 Route::prefix('admin')
     ->middleware(['can:makeAdminActions','demo'])
     ->name('admin.')
@@ -175,13 +176,43 @@ Route::put('/{category}/feature','toggle')->name('feature');
     Route::delete('/{limit}/delete', 'destroy')->name('destroy');
   });
   // optimization
-  Route::prefix('optimize')->controller(MaintenanceController::class)->name('optimize.')->group(function(){
+  Route::prefix('optimize')
+         ->name('optimize.')->group(function(){
+  // maintenance settings
+  Route::controller(MaintenanceController::class)->group(function(){
   Route::get('/maintenance','maintenance_page')->name('maintenance');
   Route::post('/run','run_artisans')->name('run');
+  });
+  // image optimization
+  Route::controller(ImageOptimizationController::class)->group(function(){
+    Route::get('/image-optimization','index')->name('image.optimization');
+    Route::put('/image-optimization','imageOptimizationUpdate')->name('image.optimization.update');
+  });
   });
   Route::prefix('seo')->controller(SeoController::class)->name('seo.')->group(function(){
     Route::get('/', 'index')->name('index');
     Route::put('/update', 'update')->name('update');
   });
-  
+  // web scraping
+  Route::prefix('scraping')->name('scraping.')->group(function(){
+    Route::controller(ScrapingController::class)->group(function(){
+      Route::get('/', 'index')->name('index');
+      Route::delete('/delete-scraped','destroyScrapedData')->name('delete.data');
+      Route::delete('/delete-logs','destroyScrapedLogs')->name('delete.logs');
+    });
+    Route::controller(ScrapingSourceController::class)->name('sources.')->group(function(){
+    Route::post('/create', 'store')->name('store');
+    Route::post('/crawl/{source}', 'run')->name('run');
+    Route::put('/{source}/update', 'update')->name('update');
+    Route::patch('/{source}/status', 'toggleStatus')->name('toggle.status');
+    Route::delete('/{source}/delete', 'destroy')->name('destroy');
+    });
+    Route::controller(ScrapSettingController::class)->name('setting.')->group(function(){
+      Route::get('/setting','index')->name('index');
+      Route::put('/Scrap-update','scrapUpdate')->name('update');
+      Route::post('/force-run-crawl','forceRunAll')->name('force.run');
+      Route::patch('/regenerate-cron-token','regenerateToken')->name('regenerate.token');
+
+    });
+  });
 });

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Helpers\MetaHelpers;
 use App\Models\SeoSetting;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -72,6 +73,9 @@ class SeoServiceProvider extends ServiceProvider
   }
   private function setCustomSeo()
   {
+     if (! Schema::hasTable('seo_settings')) {
+        return;
+    }
     $seoSettings = SeoSetting::first();
     View::composer('*', function ($view) use ($seoSettings){
 

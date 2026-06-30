@@ -25,7 +25,7 @@ class ProfileController extends Controller
     
     $posts = $user->post()
              ->published()
-             ->with('user.roles.permissions')
+             ->with('user')
              ->orderByDesc('is_pinned')
              ->orderByDesc('pinned_at')
              ->orderByDesc('created_at')

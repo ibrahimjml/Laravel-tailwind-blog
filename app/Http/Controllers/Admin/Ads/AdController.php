@@ -9,11 +9,13 @@ use App\Helpers\DeleteFile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\App\Admin\AdRequest;
 use App\Models\AdPlacement;
+use App\Traits\ImageUploadTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class AdController extends Controller
 {
+  use ImageUploadTrait;
   public function __construct()
   {
     $this->middleware('permission:ad.view')->only('index');
@@ -39,7 +41,13 @@ class AdController extends Controller
         $validated = $request->validated();
 
         if ($request->hasFile('image')) {
-          $uploadedImagePath = $request->file('image')->store('ads', media_driver());
+          [$width, $height] = array_map('intval', explode('x', $validated['ad_dimension'] ));
+
+          $uploadedImagePath = $this->uploadCustomBanner(
+               $request->file('image'),
+               $validated['ad_name'],
+               $width,
+               $height);
           $validated['image_path'] = $uploadedImagePath;
         }
 
@@ -49,7 +57,7 @@ class AdController extends Controller
       });
     } catch (\Throwable $exception) {
       if ($uploadedImagePath) {
-        DeleteFile::existImage($uploadedImagePath);
+        DeleteFile::existImage('ads/' . $uploadedImagePath);
       }
 
       throw $exception;
@@ -75,7 +83,12 @@ class AdController extends Controller
         $validated = $request->validated();
 
         if ($request->hasFile('image')) {
-          $uploadedImagePath = $request->file('image')->store('ads', media_driver());
+            [$width, $height] = array_map('intval', explode('x', $validated['ad_dimension'] ));
+            $uploadedImagePath = $this->uploadCustomBanner(
+               $request->file('image'),
+               $validated['ad_name'],
+               $width,
+               $height);
           $validated['image_path'] = $uploadedImagePath;
         } elseif ($request->boolean('remove_image')) {
           $validated['image_path'] = null;
@@ -88,14 +101,14 @@ class AdController extends Controller
       });
     } catch (\Throwable $exception) {
       if ($uploadedImagePath) {
-        DeleteFile::existImage($uploadedImagePath);
+        DeleteFile::existImage('ads/' . $uploadedImagePath);
       }
 
       throw $exception;
     }
 
     if (($uploadedImagePath || $request->boolean('remove_image')) && $oldImagePath) {
-      DeleteFile::existImage($oldImagePath);
+      DeleteFile::existImage('ads/' . $oldImagePath);
     }
 
     if ($request->expectsJson()) {
@@ -129,7 +142,7 @@ class AdController extends Controller
   public function destroy(AdPlacement $ad)
   {
     if ($ad->image_path) {
-      DeleteFile::existImage($ad->image_path);
+      DeleteFile::existImage('ads/' . $ad->image_path);
     }
 
     $ad->delete();

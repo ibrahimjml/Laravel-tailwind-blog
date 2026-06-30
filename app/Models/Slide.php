@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\SlidesStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class Slide extends Model
@@ -46,5 +47,14 @@ class Slide extends Model
     public function getImageAttribute()
     {
       return Storage::disk(media_driver())->url('slides/'.$this->image_path);
+    }
+
+    protected static function booted()
+    {
+        $clearCache = fn() => Cache::forget('slides_home_page');
+        
+        static::created($clearCache);
+        static::updated($clearCache);
+        static::deleted($clearCache);
     }
 }

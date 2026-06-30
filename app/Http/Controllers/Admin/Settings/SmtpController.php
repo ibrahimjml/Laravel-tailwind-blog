@@ -43,9 +43,13 @@ class SmtpController extends Controller
   {
     $admin = User::where('is_admin', 1)->value('email');
     $message = 'this is a test mail';
-    Mail::raw($message, function ($test) use ($admin) {
-      $test->to($admin)->subject('Testing mail');
+
+    dispatch(function () use ($admin, $message) {
+        Mail::raw($message, function ($mail) use ($admin) {
+            $mail->to($admin)->subject('Testing mail');
+        });
     });
+    
     toastr()->success('mail sent', ['timeOut' => 1000]);
     return redirect()->back();
   }

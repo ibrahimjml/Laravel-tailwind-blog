@@ -2,17 +2,21 @@
 
 namespace App\Services;
 
+use App\Actions\AttachPostTagsAction;
+use App\Actions\CreatePostAction;
+use App\Actions\ResolvePostStatusAction;
+use App\Actions\SyncPostTagsAction;
 use App\DTOs\CreatePostDTO;
 use App\DTOs\PostFilterDTO;
 use App\DTOs\UpdatePostDTO;
 use App\Enums\PostStatus;
 use App\Events\PostCreatedEvent;
 use App\Helpers\DeleteFile;
+use App\Jobs\SendPostModerationWhatsappJob;
 use App\Models\AdPlacement;
-use App\Models\PostModeration;
 use App\Models\Post;
+use App\Repositories\Interfaces\NewsInterface;
 use App\Repositories\Interfaces\PostInterface;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
@@ -23,8 +27,12 @@ class PostService
 {
   use ImageUploadTrait;
   public function __construct(
-    protected PostHashtagsService $tagservice,
     private PostInterface $repo,
+    private NewsInterface $news,
+    private AttachPostTagsAction $attachPostTagsAction,
+    private SyncPostTagsAction $syncPostTagsAction,
+    private CreatePostAction $createPostAction,
+    private ResolvePostStatusAction $resolveStatusAction,
   ) {
   }
   public function handleBlogPage(Request $request)
@@ -32,32 +40,25 @@ class PostService
     $page = $request->get('blog_page', 1);
     $perPage = $request->get('perpage', 5);
     $sort = $request->get('sort', 'latest');
-    /* 
-     * geust mode filter followings not allowed
-     */ 
-    if (in_array($sort, ['followings']) && !auth()->check()) {
-      return redirect()->route('login');
-    }
+
+    guest_not_allowed_filter_following($sort);
 
     $postList = $this->repo->getPaginatedPosts($perPage, $sort, $page);
     $tags = $this->repo->getPopularTags();
     $cats = $this->repo->getCategories();
     $whoToFollow = auth()->check() ? $this->repo->getWhoToFollow(auth()->id()) : collect();
+    $latestNews = $this->news->getLatestSources();
     $inner_ads = AdPlacement::active()->where('ad_position', \App\Enums\Adplacements\AdPosition::INNER_FEED)->get();
 
     if ($request->ajax()) {
-      $html = view('blog.partials.posts', [
+      $html = view('blog.partials.posts-ajax', [
         'posts' => $postList,
         'searchquery' => $request->get('search', null),
         'ads' => $inner_ads,
         'showAppliedFilter' => false
       ])->render();
 
-      return response()->json([
-        'html' => $html,
-        'hasMore' => $postList->hasMorePages(),
-        'nextPage' => $postList->currentPage() + 1
-      ]);
+      return infinite_scroll_response($html,$postList);
     }
 
     return view('blog.blog', [
@@ -65,6 +66,7 @@ class PostService
       'categories' => $cats,
       'users' => $whoToFollow,
       'posts' => $postList,
+      'news' => $latestNews,
       'sorts' => $sort,
       'ads' => $inner_ads,
       'searchquery' => null,
@@ -74,24 +76,20 @@ class PostService
   {
     $dto = PostFilterDTO::fromRequest($request);
 
-    $page = request()->get('page', 1);
+    $page = request()->get('search_page', 1);
     $perPage = request('perpage', 5);
     $posts = $this->repo->getBySearch($dto, $page, $perPage);
     $inner_ads = AdPlacement::active()->where('ad_position', \App\Enums\Adplacements\AdPosition::INNER_FEED)->get();
 
     if (request()->ajax()) {
-      $html = view('blog.partials.posts', [
+      $html = view('blog.partials.posts-ajax', [
         'posts' => $posts,
         'searchquery' => $dto->search,
         'ads' => $inner_ads,
         'showAppliedFilter' => false
       ])->render();
-      return response()->json([
-        'html' => $html,
-        'searchquery' => $dto->search,
-        'hasMore' => $posts->hasMorePages(),
-        'nextPage' => $posts->currentPage() + 1
-      ]);
+
+      return infinite_scroll_response($html,$posts,['searchquery' => $dto->search]);
     }
 
     return view('search', [
@@ -122,21 +120,16 @@ class PostService
       $post = DB::transaction(function () use ($dto, $imageslug, &$newimage) {
 
         $newimage = $this->uploadImage($dto->image, $imageslug);
-        $status = $this->statusForCreatedPost($dto->status);
+        $status = $this->resolveStatusAction->handle($dto->status);
 
-        $post = Post::create(
-          array_merge(
-            $dto->toArray(),
-            [
-              'image_path' => $newimage,
-              'status' => $status,
-              'published_at' => $status === PostStatus::PUBLISHED ? now() : null,
-            ]
-          )
-        );
+        $post = $this->createPostAction->execute($dto,$newimage,$status);
+
+        if(n8n_webhook_enabled() && $status === PostStatus::PENDING){
+          dispatch(new SendPostModerationWhatsappJob($post));
+        } 
 
         if ($dto->hashtags) {
-          $this->tagservice->attachhashtags($post, $dto->hashtags);
+          $this->attachPostTagsAction->attachTag($post, $dto->hashtags);
         }
         if ($dto->categories) {
           $post->categories()->sync($dto->categories);
@@ -162,19 +155,6 @@ class PostService
     }
   }
 
-  private function statusForCreatedPost($requestedStatus): PostStatus
-  {
-    return match ($requestedStatus) {
-      PostStatus::DRAFT => PostStatus::DRAFT,
-
-      PostStatus::PUBLISHED => (PostModeration::rules()->enable_auto_approve
-        || Gate::allows('bypassModeration', Post::class))
-      ? PostStatus::PUBLISHED
-      : PostStatus::PENDING,
-
-      default => PostStatus::PENDING,
-    };
-  }
 
   public function update(Post $post, UpdatePostDTO $dto): ?Post
   {
@@ -184,7 +164,7 @@ class PostService
     try {
 
       DB::transaction(function () use ($post, $dto, &$newImage) {
-        $status = $this->statusForCreatedPost($dto->status);
+        $status = $this->resolveStatusAction->handle($dto->status);
         $data = array_merge($dto->toArray(), ['status' => $status]);
         if ($dto->image) {
 
@@ -212,14 +192,9 @@ class PostService
 
         $post->update($data);
 
-        $this->tagservice->syncHashtags(
-          $post,
-          $dto->hashtags
-        );
+        $this->syncPostTagsAction->syncTag($post,$dto->hashtags);
 
-        $post->categories()->sync(
-          $dto->categories
-        );
+        $post->categories()->sync($dto->categories);
       });
 
       if ($newImage && $oldImage) {

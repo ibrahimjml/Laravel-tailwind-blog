@@ -1,0 +1,10 @@
+vendor/
+
+.env
+storage/logs/
+.git
+node_modules/
+*.md
+
+docker-compose.yml
+docker/apache/Dockerfile

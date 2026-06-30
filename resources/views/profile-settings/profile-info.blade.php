@@ -58,9 +58,14 @@
                Change avatar
               </label>
               <input id="avatar" name="avatar" type="file" class="hidden">
-                <p class="text-sm text-white">PNG, JPG, JPEG: 300 x 300 px</p>
+                <p class="text-sm text-white">PNG, JPG, JPEG, WEBP: 300 x 300 px</p>
                </div>
-             </div>
+              </div>
+              @error('avatar')
+        <p class="text-red-500 text-xs italic mt-4">
+        {{ $message }}
+        </p>
+         @enderror
              <!-- name -->
              <label for="name" class="mt-5">Name</label>
              <input type="text" name="name" value="{{ old('name', $user->name) }}" class="rounded-xl p-2 mt-2 font-bold border border-gray-300 @error("name") border-2 border-red-500 @enderror">

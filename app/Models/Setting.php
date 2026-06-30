@@ -17,6 +17,13 @@ class Setting extends Model
       ->value('value')
       ?? $default;
   }
+  public static function where(string $key, string $value)
+  {
+    return static::query()
+      ->where('key', $key)
+      ->where('value', $value)
+      ->exists();
+  }
   public static function booted()
   {
     $clearCache = fn() => Cache::forget('app.settings.cache');

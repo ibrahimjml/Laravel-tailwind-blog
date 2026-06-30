@@ -38,8 +38,10 @@
                   <label class="block text-sm font-bold text-gray-700 mb-2">
                     Short Excerpt <span class="text-red-500">*</span>
                   </label>
-                  <textarea name="short_excerpt" value="{{ old('short_excerpt') }}" rows="5" required
-                    class="w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 p-2"></textarea>
+                  <textarea name="short_excerpt"  
+                            rows="5"
+                            required
+                            class="w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 p-2">{{ old('short_excerpt') }}</textarea>
                   @error('short_excerpt')
                     <p class="text-red-500 text-xs italic mt-4">
                       {{ $message }}
@@ -62,7 +64,9 @@
                   Description
                 </label>
                 <textarea name="description" id="textarea" rows="5"
-                  class="w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 p-2"></textarea>
+                  class="w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 p-2">
+                {{ old('description') }}
+                </textarea>
                 @error('description')
                   <p class="text-red-500 text-xs italic mt-4">
                     {{ $message }}
@@ -265,7 +269,7 @@
           reader.onload = eo => {
             imagePreview.src = eo.target.result;
             imageContainer.classList.remove('hidden');
-            fileSize.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB / 5MB`;
+            fileSize.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB / {{ image_upload_size() }} MB`;
           }
           reader.readAsDataURL(file);
         } else {

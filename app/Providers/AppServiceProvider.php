@@ -2,15 +2,18 @@
 
 namespace App\Providers;
 
-use App\Models\{Category, Comment, Hashtag, Like, Permission, Post, PostReport, Role, Setting, SmtpSetting, User};
-use App\Observers\{CommentObserver, LikeObserver, PostObserver, PostReportObserver, TagObserver, CategoryObserver, PermissionObserver, RoleObserver, UserObserver};
+use App\Models\{Category, Like, Post, PostReport, Setting, SmtpSetting, User};
+use App\Observers\{ LikeObserver, PostObserver, PostReportObserver, CategoryObserver, UserObserver};
 use App\Repositories\Caches\CategoryCacheDecorator;
+use App\Repositories\Caches\NewsCacheDecorator;
+use App\Repositories\Eloquent\NewsRepository;
 use App\Repositories\Eloquent\PostRepository;
 use App\Repositories\Caches\PostCacheDecorator;
 use App\Repositories\Caches\TagCacheDecorator;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\TagRepository;
 use App\Repositories\Interfaces\CategoryInterface;
+use App\Repositories\Interfaces\NewsInterface;
 use App\Repositories\Interfaces\PostInterface;
 use App\Repositories\Interfaces\TagInterface;
 use App\Services\MediaDriverResolver;
@@ -47,6 +50,13 @@ class AppServiceProvider extends ServiceProvider
       }
       return $app->make(CategoryRepository::class);
     });
+    $this->app->bind(NewsInterface::class, function ($app) {
+      if (config('cache.enabled')) {
+        return new NewsCacheDecorator($app->make(NewsRepository::class));
+      }
+      return $app->make(NewsRepository::class);
+    });
+    
   }
 
   /**
@@ -66,14 +76,10 @@ class AppServiceProvider extends ServiceProvider
   public function bootEvents()
   {
     Post::observe(PostObserver::class);
-    Comment::observe(CommentObserver::class);
     Like::observe(LikeObserver::class);
     PostReport::observe(PostReportObserver::class);
     User::observe(UserObserver::class);
-    Hashtag::observe(TagObserver::class);
     Category::observe(CategoryObserver::class);
-    Permission::observe(PermissionObserver::class);
-    Role::observe(RoleObserver::class);
   }
   public function bootBladeDirectives()
   {
@@ -94,7 +100,7 @@ class AppServiceProvider extends ServiceProvider
   }
   public function bootDynamicConfigSmtp()
   {
-    if (app()->runningInConsole() || !Schema::hasTable('smtpsettings')) {
+    if ( !Schema::hasTable('smtpsettings')) {
       return;
     }
     $smtp = SmtpSetting::first();
@@ -126,7 +132,7 @@ class AppServiceProvider extends ServiceProvider
   }
   public function bootDynamicConfigRecaptcha()
   {
-    if (app()->runningInConsole() || !Schema::hasColumn('auth_security_rules', 'require_captcha')) {
+    if ( !Schema::hasColumn('auth_security_rules', 'require_captcha')) {
       return;
     }
     $authSecurityRule = \App\Models\AuthSecurityRule::first();

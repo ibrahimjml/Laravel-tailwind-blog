@@ -1,25 +1,49 @@
 <x-layout>
 
-{{--recent category posts --}}
-@if($posts->count() == 0)
+  <div class="container mx-auto w-[90%] my-4">
+      <button onclick="window.location.href='{{ route('blog') }}'" class="inline-flex items-center gap-3 rounded-full bg-black px-4 py-2 text-white transition hover:bg-slate-800">
+        <i class="fas fa-arrow-left"></i>
+        Back to blog
+      </button>
+  </div>
 
-  <h1 class=" text-4xl p-36 font-semibold text-center w-54">No Posts Yet with # {{$currentCategory->name}}</h1>
+<!-- sliders -->
+<x-sliders :model="$currentCategory" :sliders="$sliders" type="Category"/>
 
-@else
-<div class="w-full p-5 mt-1 bg-black flex justify-between items-center">
-  <h1 class=" lg:text-4xl text-sm  p-5 font-semibold text-center text-white ">
-    Recent posts with category 
-  </h1>
-    <span class="text-white bg-yellow-500 p-3 rounded-lg">{{$currentCategory->name}}</span>
-  
-</div>
-@foreach ($posts as $post)
+  <div class="container mx-auto w-[90%] flex justify-between items-center mb-6">
+      <p class="text-xl font-bold tracking-[.2rem]">Articles</p>
+      <div>
+        @include('blog.partials.filter')
+      </div>
+    </div>
+
+    @if($posts->count() == 0)
+      <div class="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-12 text-center text-slate-600">
+        @if($currentCategory->posts_count === 0)
+          <h2 class="text-2xl font-semibold">No posts yet in {{ $currentCategory->name }}</h2>
+          <p class="mt-3">Check back later for new articles in this category.</p>
+        @elseif(request()->has('sort') && request('sort') !== 'latest')
+          <h2 class="text-2xl font-semibold">No posts match your filter</h2>
+          <p class="mt-3">Try another filter or clear the selection to see all category posts.</p>
+          <div class="mt-6 inline-flex items-center justify-center gap-3">
+            <a href="{{ route('viewcategory', $currentCategory) }}" class="rounded-full bg-black px-5 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">Clear filter</a>
+            <span class="text-sm text-slate-500">or choose a different sort option.</span>
+          </div>
+        @else
+          <h2 class="text-2xl font-semibold">No posts available</h2>
+        @endif
+      </div>
+    @else
+      <div id="categories-container">
+        @include('categories.categories-ajax')
+      </div>
+    @endif
     
-<x-postcard :post="$post" :authFollowings="$authFollowings" :currentCategory="$currentCategory"/>
-
-@endforeach
-@endif
-<div class="container mx-auto flex justify-center gap-6 mt-2 mb-2">
-  {!! $posts->links() !!}
-</div>
+<!-- infinte scroll pagination -->
+<x-infinte-scroll container="categories-container" 
+                  :route="route('viewcategory', $currentCategory)" 
+                  page-name="categories_page"
+                  :current-page="$posts->currentPage()"
+                  :has-more="$posts->hasMorePages()"/>
+  
 </x-layout>

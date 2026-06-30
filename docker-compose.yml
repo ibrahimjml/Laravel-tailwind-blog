@@ -1,0 +1,116 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/apache/Dockerfile
+    image: laravel-blog-app
+
+    container_name: laravel-app
+
+    ports:
+      - "8080:80"
+
+    volumes:
+      - .:/var/www/html
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped  
+
+    networks:
+      - laravel
+
+  mysql:
+    image: mysql:8.4
+
+    container_name: laravel-mysql
+
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+
+    ports:
+      - "3307:3306"
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 20
+      timeout: 5s
+
+    networks:
+      - laravel
+
+  redis:
+    image: redis:7-alpine
+
+    container_name: laravel-redis
+
+    ports:
+      - "6379:6379"
+
+    networks:
+      - laravel
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+
+    container_name: laravel-phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    networks:
+      - laravel        
+  node:
+    image: node:22-alpine
+
+    container_name: laravel-node
+
+    working_dir: /var/www/html
+
+    volumes:
+      - ./:/var/www/html
+
+    command: sh -c "npm install && npm run dev"
+
+    ports:
+      - "5173:5173"
+
+    networks:
+      - laravel
+  queue-worker:
+    build:
+      context: .
+      dockerfile: docker/apache/Dockerfile
+    container_name: laravel-queue-worker
+    command: php artisan queue:work --tries=3 --sleep=3
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started  
+    restart: always
+    networks:
+      - laravel
+networks:
+  laravel:
+
+volumes:
+  mysql-data:

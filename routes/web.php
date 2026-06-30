@@ -1,4 +1,6 @@
 <?php
+use App\Http\Controllers\Admin\Scraping\ScrapSettingController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\{
@@ -11,7 +13,7 @@ use App\Http\Controllers\User\{
 use App\Http\Controllers\{
     CategoryController,
     CommentController,
-    Hashtagcontroller,
+    HashtagController,
     HomeController,
     NotificationController,
     PostController,
@@ -42,11 +44,14 @@ Route::get('/sitemap.xml',SitemapController::class)->name('sitemap');
 Route::get('/blog',[PostController::class,'blogpost'])->name('blog');
 // Post
 Route::get('/post/{post:slug}',[PostController::class,'viewPost'])->name('single.post');
-
 //recent posts page by hashtag 
-Route::get('/hashtag/{hashtag:name}',Hashtagcontroller::class)->name('viewhashtag');
+Route::get('/hashtag/{hashtag:name}',HashtagController::class)->name('viewhashtag');
 //recent posts page by category
 Route::get('/category/{category:name}',CategoryController::class)->name('viewcategory');
+// latest scraped news
+Route::get('/discover-news',NewsController::class)->name('news');
+// scrap cron run
+Route::get('/scraping/cron/{token}',[ScrapSettingController::class,'cronRun'])->name('cron.run');
 // custom pages
 Route::get('/c/{page:slug}', [CustomPageController::class, 'show'])->name('custom.page');
 // Create Post

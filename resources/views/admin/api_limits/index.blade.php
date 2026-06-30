@@ -26,20 +26,20 @@
       <td class="p-2">{{ ($limits->currentPage() - 1) * $limits->perPage() + $loop->iteration }}</td>
       <td class="p-2">
         <span class=" py-1 px-3 text-blueGray-500  text-sm rounded-md bg-blueGray-200 bg-opacity-70 font-semibold w-fit">
-       {{ $limit->route_name }}
+       {{ $limit?->route_name }}
         </span>
       </td>
       <td class="p-2">
         <span class=" px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 font-semibold w-fit">
-       {{ $limit->method->label() }}
+       {{ $limit?->method->label() }}
         </span>
       </td>
       <td class="p-2">
         <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-          {{ $limit->max_attempts }} attempts / {{ $limit->time_window }} minutes
+          {{ $limit?->max_attempts }} attempts / {{ $limit?->time_window }} minutes
         </span>
       </td>
-      <td class="p-2">{{ $limit->description }}</td>
+      <td class="p-2">{{ $limit?->description }}</td>
       <td>
         <i
         @class([

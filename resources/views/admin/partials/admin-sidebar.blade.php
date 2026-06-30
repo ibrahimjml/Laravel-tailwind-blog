@@ -161,6 +161,27 @@
     </a>
   </li>
 </ul>
+<!-- Automation -->
+<hr class="my-4 md:min-w-full" />
+<h6 class="md:min-w-full text-blueGray-500 text-sm capitalize font-bold block pt-1 pb-4 no-underline">
+  Automation
+</h6>
+<ul class="md:flex-col md:min-w-full flex flex-col list-none">
+  <li class="items-center">
+    <a href="{{ route('admin.scraping.index') }}"
+      class="text-sm capitalize py-3 font-bold block {{ Route::is('admin.scraping.index') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-spider mr-2 text-sm opacity-75"></i>
+      Web Scraping
+    </a>
+  </li>
+  <li class="items-center">
+    <a href="{{ route('admin.scraping.setting.index') }}"
+      class="text-sm capitalize py-3 font-bold block {{ Route::is('admin.scraping.setting.index') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+      <i class="fas fa-clock mr-2 text-sm opacity-75"></i>
+      Cron Scrap
+    </a>
+  </li>
+</ul>
 <!-- System Settings -->
 <hr class="my-4 md:min-w-full" />
 <h6 class="md:min-w-full text-blueGray-500 text-sm capitalize font-bold block pt-1 pb-4 no-underline">
@@ -224,8 +245,8 @@
 </h6>
 <ul class="md:flex-col md:min-w-full flex flex-col list-none">
 <li class="items-center">
-    <a href="javascript:void(0)"
-      class="text-sm capitalize py-3 font-bold block {{ Route::is('admin.settings.backup.view') ? 'text-blue-500 hover:text-blue-600' : ''}}">
+    <a href="{{ route('admin.optimize.image.optimization') }}"
+      class="text-sm capitalize py-3 font-bold block {{ Route::is('admin.optimize.image.optimization') ? 'text-blue-500 hover:text-blue-600' : ''}}">
       <i class="fas fa-image mr-2 text-sm opacity-75"></i>
       Image Optimization
     </a>

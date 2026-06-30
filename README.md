@@ -36,6 +36,12 @@
   - **Hashtags and Categories** Creators can write new up to 4 hashtags on article or select most popular if exists, and choose one category.
   - **Articles Submission:** Creators can create publish article to public, or save draft articles with private visibility. toggle visibility on comments thread.
 
+### 🤖 Web Scraping
+  
+  - **Scraping Sources:** Add unlimited sources with data type web/rss switch, automatically detects article links, detect old articles to delete, automating logs scraping detection,  and extracting OpenGraph data (Title, Image, description Category).
+  - **Background Cron:** Running Crawl in background with laravel queues with scraping frequency (15min, 2 hrs, 24 hrs ..etc ).
+  - **News Feed:** News Feed with cached data with redis and pagination ajax with multi sources filtering.
+
 ### 🧑‍💼 Admin Control Panel
 
   - **Dashboard Pages:** Realtime charts tracking new users, published posts, Google Analytics integration with fully responsive and AJAX based.
@@ -67,20 +73,21 @@
   - **Dynamic XML Sitemaps**
 
 
-## 🔥🔥 Upcoming Features.
+## Setup With Docker
+```
+git clone https://github.com/ibrahimjml/MyBlog4u.git
+cp .env.docker .env
+docker compose up --build -d
+```
 
-  - **AI multi providers management**
-  - **AI auto paste content**
-  - **Paywall system**
-
-## INSTALLATION
+## Normal Installation Requirements
 - **Requirements extensions:**
 - **PHP 8.3**
 - **Imagick**
 - **intl**
 - **tokenizer**
 
-- **Apache config requirements:**
+## Reverb Reverse Proxy Apache Requirements
 - **LoadModule proxy_module modules/mod_proxy.so**
 - **LoadModule proxy_http2_module modules/mod_proxy_http2.so**
 - **LoadModule proxy_wstunnel_module modules/mod_proxy_wstunnel.so**
@@ -118,7 +125,7 @@ php artisan storage:link
 ```
 8.🗄️ Seed Admin credantials with roles and permessions 
 ```
-php artisan db:seed --AdminSeeder
+php artisan db:seed --class=AdminSeeder
 ```
 9.🗄️ Seed the SMTP configuration important 
 ```
@@ -128,17 +135,83 @@ php artisan db:seed --SmtpSeeder
 ```
 php artisan serve
 ```
-11.Start Reverb
+11.Enable Reverb Broadcasting (optional)
 ```
-enable reverb .env 
+BROADCAST_ENABLED=true
+BROADCAST_DRIVER=reverb
+
+REVERB_APP_ID=
+REVERB_APP_KEY=
+REVERB_APP_SECRET=
+REVERB_HOST=127.0.0.1
+REVERB_PORT=8080
+REVERB_SCHEME=http
+
+
 VITE_REVERB_ENABLED=true
+VITE_REVERB_APP_KEY="${REVERB_APP_KEY}"
+VITE_REVERB_HOST="blogpost.test" 
+VITE_REVERB_PORT=443
+VITE_REVERB_SCHEME=https
+
+```
+then start reverb and queue
+```
+php artisan queue:work
 php artisan reverb:start
+
 ```
 12.🚀 For better performance configure Redis and enable Cache to true
 ```
 CACHE_ENABLED=true
 REDIS_CLIENT=predis
+
 ```
+13. TNTSearch Scout (optional)
+```
+SCOUT_DRIVER=tntsearch
+SCOUT_QUEUE=true
+
+TNTSEARCH_FUZZINESS=true
+TNTSEARCH_AS_YOU_TYPE=false
+TNTSEARCH_BOOLEAN=false
+TNTSEARCH_MAX_DOCS=500
+```
+Index your posts, run the following command:
+```
+php artisan scout:import App\\Models\\Post
+```
+
+14. N8N Whatsapp Notificcation (optional)
+
+Myblog4u will notify admins of pending approval articles through Whatsapp. You'll need to set up a Whatsapp Business API. Then, configure N8N workflow to send new pending article messages.
+
+download the laravel_to_whatsapp workflow [click here to download](https://gist.github.com/ibrahimjml/46a06b3c8b821513ed52c86cc8725b07)
+
+## Docker
+```
+docker pull n8nio/n8n:latest
+
+docker run -d \
+  --name n8n \
+  --restart unless-stopped \
+  -p 127.0.0.1:5678:5678 \
+  -e WEBHOOK_URL=https://yourdomain.com \
+  -e EXECUTIONS_DATA_PRUNE=true \
+  -e EXECUTIONS_DATA_MAX_AGE=72 \
+  -v n8n_data:/home/node/.n8n \
+  n8nio/n8n:latest
+```
+If using Nginx, or Apache try reverse proxy to access.
+
+Setup n8n environment config 
+
+```
+N8N_WEBHOOK_ENABLED=
+N8N_WEBHOOK_URL=
+N8N_WEBHOOK_PHONE=
+```
+
 ## Testing Notifications
 - **Configure new smtp in adminpanel->settings->smtp settings**
 - **Test it by sending test mail**
@@ -157,7 +230,6 @@ php artisan serve --env=testing
 ```
 ## Admin Login
 `Use these credentails to log in as admin`
-
 
 - Email: admin@mail.ru.
 - Pass : adminadmin123.
