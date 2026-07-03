@@ -20,7 +20,7 @@ class Role extends Model
     }
       protected static function booted()
     {
-        $clearCaches = fn() => Cache::tags(['user_permissions','has_any_role'])->flush();
+        $clearCaches = fn() => Cache::tags(['user_permissions', 'user_roles', 'has_any_role'])->flush();
   
         static::created($clearCaches);
         static::updated($clearCaches);

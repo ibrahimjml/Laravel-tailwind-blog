@@ -19,7 +19,7 @@ class Permission extends Model
       }
       protected static function booted()
     {
-        $clearCaches = fn() => Cache::tags(['user_permissions','has_any_role'])->flush();
+        $clearCaches = fn() => Cache::tags(['user_permissions', 'user_roles', 'has_any_role'])->flush();
         static::creating(function ($permission) {
             $permission->slug = Str::slug($permission->name);
         });
