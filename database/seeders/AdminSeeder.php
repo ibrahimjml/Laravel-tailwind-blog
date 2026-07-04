@@ -42,6 +42,7 @@ class AdminSeeder extends Seeder
       'Custom Pages'      => ['custompage.view', 'custompage.create', 'custompage.update', 'custompage.delete'],
       'Backups'           => ['backup.view', 'backup.download', 'backup.delete'],
       'Media Settings'    => ['media.view', 'media.update'],
+      'Image Optimization' => ['imageoptimization.view', 'imageoptimization.update'],
       'Google Analytics'  => ['analytics.view','analytics.update']
     ];
 
@@ -65,14 +66,14 @@ class AdminSeeder extends Seeder
     $adminrole->permissions()->sync($permissions);
 
     $admin =  User::create([
-      'name' => 'admin',
-      'username' => 'admin123',
-      'email' => env('ADMIN_EMAIL'),
-      'password' => Hash::make(env('ADMIN_PASS')),
-      'is_admin' => 1,
-      'avatar' => 'default.jpg',
-      'cover_photo' => 'sunset.jpg',
-      'created_at' => Carbon::now(),
+      'name'              => 'admin',
+      'username'          => config('demo.admin.username'),
+      'email'             => config('demo.admin.email'),
+      'password'          => Hash::make(config('demo.admin.password')),
+      'is_admin'          => 1,
+      'avatar'            => 'default.jpg',
+      'cover_photo'       => 'sunset.jpg',
+      'created_at'        => Carbon::now(),
       'email_verified_at' => now()
     ]);
     $admin->profile()->create([

@@ -3,6 +3,7 @@ return [
     'enabled' => env('IS_DEMO', false),
     'admin' => [
         'username' => env('ADMIN_USERNAME', false),
+        'email'    => env('ADMIN_EMAIL', false),
         'password' => env('ADMIN_PASS', false),
     ],
     'user' => [

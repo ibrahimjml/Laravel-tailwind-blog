@@ -43,3 +43,10 @@ if(! function_exists('media_driver')){
       return config('filesystems.default');
    }
 }
+if(! function_exists('image_upload_size')){
+   function image_upload_size(){
+      return (bool) \App\Models\Setting::get('enable_image_optimization')
+             ? (int) \App\Models\Setting::get('image_max_upload_size')
+             : 5;
+   }
+}

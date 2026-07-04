@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{ AdminController, CategoriesController, CommentReportController, CustomPageController, NotificationsController, TagsController, PermissionsController, PostReportController, PostsController, ProfileReportController, RolesController, SlidesController, UsersController };
+use App\Http\Controllers\Admin\{ AdminController, CategoriesController, CommentReportController, CustomPageController, NotificationsController, Optimization\ImageOptimizationController, TagsController, PermissionsController, PostReportController, PostsController, ProfileReportController, RolesController, SlidesController, UsersController };
 use App\Http\Controllers\Admin\Ads\AdController;
 use App\Http\Controllers\Admin\Analytics\AnalyticsController;
 use App\Http\Controllers\Admin\ApiRateLimit\ApiRateLimitController;
@@ -175,9 +175,18 @@ Route::put('/{category}/feature','toggle')->name('feature');
     Route::delete('/{limit}/delete', 'destroy')->name('destroy');
   });
   // optimization
-  Route::prefix('optimize')->controller(MaintenanceController::class)->name('optimize.')->group(function(){
+  Route::prefix('optimize')
+         ->name('optimize.')->group(function(){
+  // maintenance settings
+  Route::controller(MaintenanceController::class)->group(function(){
   Route::get('/maintenance','maintenance_page')->name('maintenance');
   Route::post('/run','run_artisans')->name('run');
+  });
+  // image optimization
+  Route::controller(ImageOptimizationController::class)->group(function(){
+    Route::get('/image-optimization','index')->name('image.optimization');
+    Route::put('/image-optimization','imageOptimizationUpdate')->name('image.optimization.update');
+  });
   });
   Route::prefix('seo')->controller(SeoController::class)->name('seo.')->group(function(){
     Route::get('/', 'index')->name('index');

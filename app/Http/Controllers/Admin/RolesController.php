@@ -67,7 +67,7 @@ class RolesController extends Controller
 
   
       $role->permissions()->sync($data['permissions'] ?? []);
-
+Cache::tags(['user_permissions', 'user_roles', 'has_any_role'])->flush();
         return response()->json([
           'edited' => true,
            'message' => 'Role updated successfully'
@@ -82,7 +82,7 @@ class RolesController extends Controller
       $role = Role::find( $id );
       $role->permissions()->detach();
       $role->delete();
-
+Cache::tags(['user_permissions', 'user_roles', 'has_any_role'])->flush();
     return response()->json([
       'deleted' => true,
       'message' => "role {$role->name} deleted"

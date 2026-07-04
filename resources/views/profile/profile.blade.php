@@ -28,15 +28,16 @@
           @endif
           <div class="flex flex-wrap justify-center">
               <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
-                <div class="relative mb-5 ">
-                  <img src="{{ $user->avatar_url }}" 
-                    alt="{{$user->name}} avatar"
-                    class="shadow-xl rounded-full border-2 border-gray-700 h-auto align-middle absolute -m-16 max-w-150-px blur-md transition-all duration-700 ease-out"
-                    onload="this.classList.remove('blur-md')">
+                <div class="relative h-[150px] w-[150px] mb-5 -m-16">
+                <img
+                   src="{{ $user->avatar_url }}"
+                   alt="{{ $user->name }} avatar"
+                   class=" absolute inset-0 w-full h-full rounded-full object-cover border-2 border-gray-700 shadow-xl blur-md transition-all duration-700 ease-out"
+                   onload="this.classList.remove('blur-md')">
             {{-- edit avatar  --}}
             @if(auth()->check() && $user->is(auth()->user()))
             <span
-            class="absolute lg:bottom-0 lg:left-10 bottom-12 left-10 flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white">
+            class="absolute right-0 bottom-5 flex justify-center items-center w-6 h-6 shrink-0 grow-0 rounded-full bg-gray-600 text-white">
             <a href="{{route('info')}}"><i class="fas fa-plus" aria-hidden="true"></i></a>
            </span>
           @endif
@@ -44,7 +45,7 @@
 
                 </div>
               </div>
-            <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center mt-14 lg:mt-0">
+            <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center ">
               <div class="py-6 px-3 flex justify-center items-center gap-x-2">
                 <div class="relative">
                     <!-- button share -->
