@@ -31,7 +31,7 @@
                     </label>
                     <input type="text" name="mail_transport"
                       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" 
-                      value="{{ $smtp->mail_transport }}"/>
+                      value="{{ $smtp?->mail_transport }}"/>
                       
                       @error('mail_transport')
                       <p class="text-red-500 text-xs italic mt-4">
@@ -47,7 +47,7 @@
                     </label>
                     <input type="text" name="mail_host"
                       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" 
-                      value="{{ $smtp->mail_host }}"/>
+                      value="{{ $smtp?->mail_host }}"/>
                     @error('mail_host')
                       <p class="text-red-500 text-xs italic mt-4">
                         {{ $message }}
@@ -62,7 +62,7 @@
                     </label>
                     <input type="text" name="mail_port"
                       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      value="{{ $smtp->mail_port }}"/>
+                      value="{{ $smtp?->mail_port }}"/>
                     @error('mail_port')
                       <p class="text-red-500 text-xs italic mt-4">
                         {{ $message }}
@@ -77,7 +77,7 @@
                     </label>
                     <input type="text" name="mail_username"
                       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 {{ $errors->has('phone') ? 'border-red-500' : '' }}"
-                      name="mail_username" value="{{ $smtp->mail_username }}"/>
+                      name="mail_username" value="{{ $smtp?->mail_username }}"/>
                     @error('mail_username')
                       <p class="text-red-500 text-xs italic mt-4">
                         {{ $message }}
@@ -92,7 +92,7 @@
                     </label>
                     <input type="text" name="mail_password"
                       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" 
-                      value="{{ $smtp->mail_password }}"/>
+                      value="{{ $smtp?->mail_password }}"/>
                     @error('mail_password')
                       <p class="text-red-500 text-xs italic mt-4">
                         {{ $message }}
@@ -107,7 +107,7 @@
                     </label>
                     <input type="text" name="mail_encryption"
                       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" 
-                      value="{{ $smtp->mail_encryption }}"/>
+                      value="{{ $smtp?->mail_encryption }}"/>
                     @error('mail_encryption')
                       <p class="text-red-500 text-xs italic mt-4">
                         {{ $message }}
@@ -122,7 +122,7 @@
                     </label>
                     <input type="text" name="mail_from"
                       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" 
-                      value="{{ $smtp->mail_from }}"/>
+                      value="{{ $smtp?->mail_from }}"/>
                     @error('mail_from')
                       <p class="text-red-500 text-xs italic mt-4">
                         {{ $message }}

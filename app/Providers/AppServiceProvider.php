@@ -90,7 +90,7 @@ class AppServiceProvider extends ServiceProvider
   }
   public function bootDynamicConfigSmtp()
   {
-    if (app()->runningInConsole() || !Schema::hasTable('smtpsettings')) {
+    if ( !Schema::hasTable('smtpsettings')) {
       return;
     }
     $smtp = SmtpSetting::first();
@@ -122,7 +122,7 @@ class AppServiceProvider extends ServiceProvider
   }
   public function bootDynamicConfigRecaptcha()
   {
-    if (app()->runningInConsole() || !Schema::hasColumn('auth_security_rules', 'require_captcha')) {
+    if ( !Schema::hasColumn('auth_security_rules', 'require_captcha')) {
       return;
     }
     $authSecurityRule = \App\Models\AuthSecurityRule::first();

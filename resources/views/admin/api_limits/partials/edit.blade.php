@@ -5,7 +5,7 @@
     <!-- Modal Header -->
     <div class="flex justify-between items-center p-4 border-b border-gray-200">
     <div class="flex-1 justify-start">
-        <h2 class="text-xl font-bold text-gray-800">Edit api Limit <b>{{ $limit->route_name }}</b></h2>
+        <h2 class="text-xl font-bold text-gray-800">Edit api Limit </h2>
         <p class="block text-sm text-gray-400 mt-2">Define how many times a user can hit a specific route. </p>
     </div>
       <button id="closeEditModel" class="text-gray-400 hover:text-gray-600 transition-colors">

@@ -67,20 +67,21 @@
   - **Dynamic XML Sitemaps**
 
 
-## 🔥🔥 Upcoming Features.
+## Setup With Docker
+```
+git clone https://github.com/ibrahimjml/MyBlog4u.git
+cp .env.docker .env
+docker compose up --build -d
+```
 
-  - **AI multi providers management**
-  - **AI auto paste content**
-  - **Paywall system**
-
-## INSTALLATION
+## Normal Installation Requirements
 - **Requirements extensions:**
 - **PHP 8.3**
 - **Imagick**
 - **intl**
 - **tokenizer**
 
-- **Apache config requirements:**
+## Reverb Reverse Proxy Apache Requirements
 - **LoadModule proxy_module modules/mod_proxy.so**
 - **LoadModule proxy_http2_module modules/mod_proxy_http2.so**
 - **LoadModule proxy_wstunnel_module modules/mod_proxy_wstunnel.so**
@@ -118,7 +119,7 @@ php artisan storage:link
 ```
 8.🗄️ Seed Admin credantials with roles and permessions 
 ```
-php artisan db:seed --AdminSeeder
+php artisan db:seed --class=AdminSeeder
 ```
 9.🗄️ Seed the SMTP configuration important 
 ```
@@ -192,7 +193,6 @@ php artisan serve --env=testing
 ```
 ## Admin Login
 `Use these credentails to log in as admin`
-
 
 - Email: admin@mail.ru.
 - Pass : adminadmin123.

@@ -40,8 +40,8 @@ class MetaHelpers
       'meta_title'       => $title ?? self::DEFAULT_TITLE,
       'meta_description' => $description ?? self::DEFAULT_DESCRIPTION,
       'meta_keywords'    => !empty($hashtags) ? implode(', ', $hashtags) : self::DEFAULT_KEYWORDS,
-      'og_image'         =>  $user?->avatar_url ?: url('img/logo2.png'),
-      'favicon_url'      => url($favicon) ?? url('img/icon.png'),
+      'og_image'         =>  $user?->avatar_url ?: asset('img/logo2.png'),
+      'favicon_url'      => $favicon ? url($favicon) : asset('img/icon.png'),
       'og_type'          => $user ? 'profile' : 'website',
     ];
   }
@@ -50,8 +50,8 @@ class MetaHelpers
   {
     return [
       'author'           => $author ?? config('app.name'),
-      'favicon_url'      => url($favicon) ?: url('img/icon.png'),
-      'og_image'         => url($ogImage) ?: url('img/logo2.png'),
+      'favicon_url'      =>  $favicon  ? url($favicon) : asset('img/icon.png'),
+      'og_image'         =>  $ogImage? url($ogImage) : asset('img/logo2.png'),
       'meta_title'       => $title ?? self::DEFAULT_TITLE,
       'meta_description' => $description ?? self::DEFAULT_DESCRIPTION,
       'meta_keywords'    => !empty($keywords) ? implode(', ', $keywords) : self::DEFAULT_KEYWORDS,

@@ -56,7 +56,9 @@
 
   <hr class="w-[80%] ml-auto mr-auto my-10 bg-slate-200">
   {{-- latest trend tag Posts --}}
+  @if($trendingHashtag)
   <p class="text-xl font-bold text-gray-800 mb-2 pb-1 border-b-2 border-b-black/70 w-fit mx-auto">Latest Trend to <b class="text-amber-300">{{ '# '.$trendingHashtag->name }}</b></p>
+  @endif
   <div class="flex flex-col md:flex-row  md:justify-center md:items-center md:gap-2 gap-4 mt-4 mb-3">
     @foreach($latestTrend as $latest)
       <div class=" p-3 mx-auto md:mx-0 w-[400px] md:w-[500px] h-fit flex flex-col ">
