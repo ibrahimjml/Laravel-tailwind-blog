@@ -12,6 +12,7 @@ use App\DTOs\UpdatePostDTO;
 use App\Enums\PostStatus;
 use App\Events\PostCreatedEvent;
 use App\Helpers\DeleteFile;
+use App\Jobs\SendPostModerationWhatsappJob;
 use App\Models\AdPlacement;
 use App\Models\Post;
 use App\Repositories\Interfaces\PostInterface;
@@ -130,6 +131,10 @@ class PostService
         $status = $this->resolveStatusAction->handle($dto->status);
 
         $post = $this->createPostAction->execute($dto,$newimage,$status);
+
+        if(n8n_webhook_enabled() && $status === PostStatus::PENDING){
+          dispatch(new SendPostModerationWhatsappJob($post));
+        } 
 
         if ($dto->hashtags) {
           $this->attachPostTagsAction->attachTag($post, $dto->hashtags);

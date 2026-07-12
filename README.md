@@ -175,6 +175,37 @@ Index your posts, run the following command:
 ```
 php artisan scout:import App\\Models\\Post
 ```
+
+14. N8N Whatsapp Notificcation (optional)
+
+Myblog4u will notify admins of pending approval articles through Whatsapp. You'll need to set up a Whatsapp Business API. Then, configure N8N workflow to send new pending article messages.
+
+download the laravel_to_whatsapp workflow [click here to download](https://gist.github.com/ibrahimjml/46a06b3c8b821513ed52c86cc8725b07)
+
+## Docker
+```
+docker pull n8nio/n8n:latest
+
+docker run -d \
+  --name n8n \
+  --restart unless-stopped \
+  -p 127.0.0.1:5678:5678 \
+  -e WEBHOOK_URL=https://yourdomain.com \
+  -e EXECUTIONS_DATA_PRUNE=true \
+  -e EXECUTIONS_DATA_MAX_AGE=72 \
+  -v n8n_data:/home/node/.n8n \
+  n8nio/n8n:latest
+```
+If using Nginx, or Apache try reverse proxy to access.
+
+Setup n8n environment config 
+
+```
+N8N_WEBHOOK_ENABLED=
+N8N_WEBHOOK_URL=
+N8N_WEBHOOK_PHONE=
+```
+
 ## Testing Notifications
 - **Configure new smtp in adminpanel->settings->smtp settings**
 - **Test it by sending test mail**

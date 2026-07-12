@@ -50,3 +50,9 @@ if(! function_exists('image_upload_size')){
              : 5;
    }
 }
+
+if(! function_exists('n8n_webhook_enabled')){
+   function n8n_webhook_enabled(){
+      return (bool) config('n8n.enabled');
+   }
+}
