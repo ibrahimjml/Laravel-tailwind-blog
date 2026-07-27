@@ -14,6 +14,7 @@
   {!! $header_scripts ?? '' !!} <!-- custom header scripts -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   <title>@yield('title', 'Dashboard | Admin')</title>
+  @stack('admin-styles')
   <style>
     .iti {
       width: 100% !important;
@@ -21,7 +22,7 @@
   </style>
 </head>
 
-<body class="text-blueGray-700 antialiased">
+<body class="text-blueGray-700 antialiased overflow-x-hidden">
 
   <div id="root">
     @if(config('demo.enabled'))

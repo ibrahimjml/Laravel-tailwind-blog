@@ -15,6 +15,7 @@ use App\Helpers\DeleteFile;
 use App\Jobs\SendPostModerationWhatsappJob;
 use App\Models\AdPlacement;
 use App\Models\Post;
+use App\Repositories\Interfaces\NewsInterface;
 use App\Repositories\Interfaces\PostInterface;
 use Illuminate\Support\Str;
 use App\Traits\ImageUploadTrait;
@@ -27,6 +28,7 @@ class PostService
   use ImageUploadTrait;
   public function __construct(
     private PostInterface $repo,
+    private NewsInterface $news,
     private AttachPostTagsAction $attachPostTagsAction,
     private SyncPostTagsAction $syncPostTagsAction,
     private CreatePostAction $createPostAction,
@@ -49,6 +51,7 @@ class PostService
     $tags = $this->repo->getPopularTags();
     $cats = $this->repo->getCategories();
     $whoToFollow = auth()->check() ? $this->repo->getWhoToFollow(auth()->id()) : collect();
+    $latestNews = $this->news->getLatestSources();
     $inner_ads = AdPlacement::active()->where('ad_position', \App\Enums\Adplacements\AdPosition::INNER_FEED)->get();
 
     if ($request->ajax()) {
@@ -71,6 +74,7 @@ class PostService
       'categories' => $cats,
       'users' => $whoToFollow,
       'posts' => $postList,
+      'news' => $latestNews,
       'sorts' => $sort,
       'ads' => $inner_ads,
       'searchquery' => null,

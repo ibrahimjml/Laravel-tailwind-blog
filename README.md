@@ -36,6 +36,12 @@
   - **Hashtags and Categories** Creators can write new up to 4 hashtags on article or select most popular if exists, and choose one category.
   - **Articles Submission:** Creators can create publish article to public, or save draft articles with private visibility. toggle visibility on comments thread.
 
+### 🤖 Web Scraping
+  
+  - **Scraping Sources:** Add unlimited sources with data type web/rss switch, automatically detects article links, detect old articles to delete, automating logs scraping detection,  and extracting OpenGraph data (Title, Image, description Category).
+  - **Background Cron:** Running Crawl in background with laravel queues with scraping frequency (15min, 2 hrs, 24 hrs ..etc ).
+  - **News Feed:** News Feed with cached data with redis and pagination ajax with multi sources filtering.
+
 ### 🧑‍💼 Admin Control Panel
 
   - **Dashboard Pages:** Realtime charts tracking new users, published posts, Google Analytics integration with fully responsive and AJAX based.

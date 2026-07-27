@@ -32,13 +32,14 @@
                 class="transition-colors hover:text-slate-900 dark:hover:text-white">Home</a></li>
             <li><a href="{{ route('blog') }}"
                 class="transition-colors hover:text-slate-900 dark:hover:text-white">Blog</a></li>
-            @auth
-              <li><a href="{{ route('profile.home', auth()->user()->username) }}"
-                  class="transition-colors hover:text-slate-900 dark:hover:text-white">Profile</a></li>
-            @else
-              <li><a href="{{ route('login') }}"
-                  class="transition-colors hover:text-slate-900 dark:hover:text-white">Profile</a></li>
-            @endauth
+                <li>
+                    <a  href="{{ route('news') }}" 
+                       class="transition-colors hover:text-slate-900 dark:hover:text-white">Latest News</a>
+                </li>
+            <li>
+                <a @auth href="{{ route('profile.home', auth()->user()->username) }}" @else href="{{ route('login') }}" @endauth
+                   class="transition-colors hover:text-slate-900 dark:hover:text-white">Profile</a>
+            </li>
             <li><a href="{{ route('bookmarks') }}"
                 class="transition-colors hover:text-slate-900 dark:hover:text-white">Bookmarks</a></li>
           </ul>

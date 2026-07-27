@@ -9,6 +9,8 @@
         @include('blog.popular-tags')
         <!-- Categories Section -->
         @include('blog.categories')
+        <!-- Latest News Section -->
+        @include('blog.latest-news')
         <!-- Who To Follow Section -->
         @include('blog.whotofollow')
       </div>

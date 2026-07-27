@@ -4,7 +4,7 @@
   <div class="flex flex-wrap gap-2">
     @foreach($tags as $tag)
       <a href="{{ route('viewhashtag', $tag->name) }}"
-        class="px-3 py-2 text-sm rounded-md font-semibold {{ $tag->is_featured ? 'bg-[#f5b576] text-gray-700' : 'bg-blueGray-200 text-blueGray-500' }}">
+        class="px-3 py-1 text-sm rounded-xl font-semibold {{ $tag->is_featured ? 'bg-[#f5b576] text-gray-700' : 'border-2 border-gray-300 bg-white text-blueGray-500' }}">
         @if($tag->is_featured) &#x1F525; @else &#x23; @endif {{ $tag->name }}
       </a>
     @endforeach

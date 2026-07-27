@@ -43,6 +43,8 @@ class AdminSeeder extends Seeder
       'Backups'           => ['backup.view', 'backup.download', 'backup.delete'],
       'Media Settings'    => ['media.view', 'media.update'],
       'Image Optimization' => ['imageoptimization.view', 'imageoptimization.update'],
+      'Web Scrpaing'      => ['scrap.view','scrap.source.create','scrap.source.update','scrap.source.delete','scrap.source.crawl','scrap.post.delete','scrap.log.delete'],
+      'Cron Scrap'        => ['cron.view','cron.update','cron.token.update','cron.crawl.all'],
       'Google Analytics'  => ['analytics.view','analytics.update']
     ];
 

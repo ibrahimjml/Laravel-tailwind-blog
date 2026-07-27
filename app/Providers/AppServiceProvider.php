@@ -5,12 +5,15 @@ namespace App\Providers;
 use App\Models\{Category, Like, Post, PostReport, Setting, SmtpSetting, User};
 use App\Observers\{ LikeObserver, PostObserver, PostReportObserver, CategoryObserver, UserObserver};
 use App\Repositories\Caches\CategoryCacheDecorator;
+use App\Repositories\Caches\NewsCacheDecorator;
+use App\Repositories\Eloquent\NewsRepository;
 use App\Repositories\Eloquent\PostRepository;
 use App\Repositories\Caches\PostCacheDecorator;
 use App\Repositories\Caches\TagCacheDecorator;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\TagRepository;
 use App\Repositories\Interfaces\CategoryInterface;
+use App\Repositories\Interfaces\NewsInterface;
 use App\Repositories\Interfaces\PostInterface;
 use App\Repositories\Interfaces\TagInterface;
 use App\Services\MediaDriverResolver;
@@ -47,6 +50,13 @@ class AppServiceProvider extends ServiceProvider
       }
       return $app->make(CategoryRepository::class);
     });
+    $this->app->bind(NewsInterface::class, function ($app) {
+      if (config('cache.enabled')) {
+        return new NewsCacheDecorator($app->make(NewsRepository::class));
+      }
+      return $app->make(NewsRepository::class);
+    });
+    
   }
 
   /**
