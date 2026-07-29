@@ -127,21 +127,27 @@
     <i class="fas fa-star text-yellow-400"></i>
     <p >Featured Articles</p>
 </span>  
-<div class="flex flex-col md:flex-row  md:justify-center md:items-center md:gap-2 gap-4 mt-4 mb-3">
-    @foreach($featuredPosts as $post)
-      <div class=" p-3 mx-auto md:mx-0 w-[400px] md:w-[500px] h-fit flex flex-col ">
-        <a href="{{ route('single.post',$post->slug) }}">
-          <img src="{{ $post->image_url }}"
-               alt="{{$post->title}}"
-               class="w-full h-[270px] object-cover mt-2">
-               <div class="flex justify-between text-sm text-gray-400 my-3">
-                <p>{{$post->totalcomments_count}} {{Str::plural('comment',$post->totalcomments_count)}}</p>
+  <div class="mx-auto max-w-7xl px-4 lg:px-8 mt-4 mb-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      @foreach($featuredPosts as $post)
+        <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+          <a href="{{ route('single.post',$post->slug) }}" class="block">
+            <div class="overflow-hidden">
+              <img src="{{ $post->image_url }}"
+                   alt="{{$post->title}}"
+                   class="h-[240px] w-full object-cover transition-transform duration-300 group-hover:scale-105">
+            </div>
+            <div class="p-4">
+              <div class="mb-3 flex items-center justify-between text-sm text-gray-500">
+                <p class="font-medium">{{$post->totalcomments_count}} {{Str::plural('comment',$post->totalcomments_count)}}</p>
                 <p>{{$post->created_at->format('F d, Y')}}</p>
-               </div>
-          <p class="text-sm font-bold mt-1">{{ $post->title }}</p>
-        </a>
-      </div>
-    @endforeach
+              </div>
+              <h3 class="text-base font-semibold text-slate-800 leading-snug">{{ $post->title }}</h3>
+            </div>
+          </a>
+        </article>
+      @endforeach
+    </div>
   </div>
   <div class="flex justify-center my-10">
 <button onclick="window.location.href='{{route('blog')}}'"
@@ -158,35 +164,37 @@ View all blogs <i class="fas fa-arrow-right ml-2"></i>
     <p >Trending <b class="text-amber-300">{{ '# '.$trendingHashtag->name }}</b></p>
 </span>  
   @endif
-  <div class="flex flex-col md:flex-row  md:justify-center md:items-center md:gap-2 gap-4 mt-4 mb-3">
-    @foreach($latestTrend as $latest)
-      <div class=" p-3 mx-auto md:mx-0 w-[400px] md:w-[500px] h-fit flex flex-col ">
-        <div class="flex gap-2 items-center">
-          <a href='{{route('profile.home', $latest->user->username)}}'>
-            <img loading="lazy" src="{{$latest->user->avatar_url}}"
-              class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
-          </a>
-          <a href='{{route('profile.home', $latest->user->username)}}' class="hover:underline">
-            {{$latest->user->username}}
-          </a>
-        </div>
-        <a href="{{route('single.post', $latest->slug)}}">
-          <div class="relative rounded-md">
-            <span
-              class="absolute top-4 left-4 px-2 py-1 text-white text-sm rounded-md bg-amber-300 font-semibold bg-opacity-70">#
-              {{$trendingHashtag->name}}</span>
-            <img src="{{$latest->image_url}}" alt="" class="w-full h-[270px] object-cover mt-2">
+  <div class="mx-auto max-w-7xl px-4 lg:px-8 mt-4 mb-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      @foreach($latestTrend as $latest)
+        <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+          <div class="flex items-center gap-3 p-4">
+            <a href='{{route('profile.home', $latest->user->username)}}'>
+              <img loading="lazy" src="{{$latest->user->avatar_url}}"
+                class="h-10 w-10 rounded-full object-cover">
+            </a>
+            <a href='{{route('profile.home', $latest->user->username)}}' class="text-sm font-semibold text-slate-700 hover:underline">
+              {{$latest->user->username}}
+            </a>
           </div>
-          <div class="flex justify-between text-sm text-gray-400 my-3">
+          <a href="{{route('single.post', $latest->slug)}}" class="block">
+            <div class="relative overflow-hidden">
+              <span class="absolute left-4 top-4 rounded-md bg-amber-400/90 px-2.5 py-1 text-sm font-semibold text-white">
+                # {{$trendingHashtag->name}}
+              </span>
+              <img src="{{$latest->image_url}}" alt="" class="h-[240px] w-full object-cover transition-transform duration-300 group-hover:scale-105">
+            </div>
+            <div class="p-4">
+              <div class="mb-3 flex items-center justify-between text-sm text-gray-500">
                 <p>{{$latest->totalcomments_count}} {{ Str::plural('comment', $latest->totalcomments_count) }}</p>
                 <p>{{$latest->created_at->format('F d, Y')}}</p>
-               </div>
-          <div class="flex flex-col">
-            <p class="text-sm font-bold mt-1">{{$latest->title}}</p>
-          </div>
-        </a>
-      </div>
-    @endforeach
+              </div>
+              <h3 class="text-base font-semibold text-slate-800 leading-snug">{{$latest->title}}</h3>
+            </div>
+          </a>
+        </article>
+      @endforeach
+    </div>
   </div>
   <div class="flex justify-center my-10">
   <button onclick="window.location.href='{{route('blog')}}'"

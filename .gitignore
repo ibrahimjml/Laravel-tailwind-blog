@@ -9,6 +9,7 @@
 /storage/app/public/uploads/*
 /storage/app/public/avatars/*
 /storage/app/public/covers/*
+/storage/app/public/ads/*
 
 
 !/storage/app/public/slides/.gitkeep
@@ -16,6 +17,7 @@
 !/storage/app/public/uploads/.gitkeep
 !/storage/app/public/avatars/.gitkeep
 !/storage/app/public/covers/.gitkeep
+!/storage/app/public/ads/.gitkeep
 
 !/storage/app/public/avatars/default.jpg
 !/storage/app/public/covers/sunset.jpg

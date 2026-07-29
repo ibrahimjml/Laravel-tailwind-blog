@@ -72,4 +72,15 @@ trait ImageUploadTrait
 
     return $newFavicon;
   }
+  // custom ad banner
+  public function uploadCustomBanner(UploadedFile $imageFile, string $adName, int $width, int $height)
+  {
+    $bannerId = str_replace(' ', '-', $adName) . '.' .  $this->resolveExtension($imageFile);
+    $banner = Image::read($imageFile)
+      ->scaleDown($width, $height);
+    $banner = $this->optimizeImage($banner, $imageFile);
+    Storage::disk(media_driver())->put("ads/{$bannerId}", $banner);
+
+    return $bannerId;
+  }
 }

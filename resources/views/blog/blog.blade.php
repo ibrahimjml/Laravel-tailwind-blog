@@ -18,19 +18,19 @@
           </div>
         </div><!-- end sidebar button and search bar-->
         
-        <div class="px-0 flex items-center gap-3"><!-- start sort & tags -->
+        <div class="px-0 flex items-center gap-3"><!-- start sort & news -->
           @include('blog.partials.filter')
 
-          @if($tags->count() > 0)
+          @if($news->isNotEmpty())
             <div class="lg:hidden  mt-5">
-              <button id="showtags"
+              <button id="show-news"
                 class=" sm:flex  w-fit  py-2 px-5 rounded-lg font-bold capitalize mb-6 text-gray-800 border border-gray-300 text-sm  focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent  pr-10 transition-all duration-200">
-                <i class="fas fa-tag mr-2 text-sm text-yellow-400"></i>
-                <span class="label">Tags</span>
+                <i class="fas fa-rss mr-2 text-sm text-yellow-400"></i>
+                <span class="label">All News</span>
               </button>
             </div>
           @endif
-        </div><!-- end sort & tags -->
+        </div><!-- end sort & news -->
 
       </div><!-- end mobile layout -->
 
@@ -50,18 +50,17 @@
     </div>
   </div><!-- end container filters -->
 
-  <div id="tagcontainer" class="flex flex-wrap justify-center mt-5 gap-2 px-3 mb-3 w-full max-w-full transition-all duration-500 ease-in-out h-0 overflow-hidden"><!-- start tags container-->
-    @foreach ($tags as $tag)
-      <a href="{{ route('viewhashtag', $tag->name) }}" class="px-2 py-1 text-sm text-white rounded-lg flex items-center justify-center whitespace-nowrap
-         {{$tag->is_featured ?
-      'bg-black border-2 border-yellow-400' :
-      'bg-gray-600 border-none'}}
-         ">
-        @if($tag->is_featured) 🔥 @else &#x23; @endif
-        {{ $tag->name }} ({{ $tag->posts_count }})
-      </a>
+  <div id="news-container" class="flex flex-wrap justify-center mt-5 gap-2 px-3 mb-3 w-full max-w-full transition-all duration-500 ease-in-out h-0 overflow-hidden"><!-- start news container-->
+    @foreach($news as $new)
+      <a href="{{ route('news') }}?source={{ $new->name }}"
+        class="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-2 lg:text-sm text-xs font-medium text-slate-700 transition duration-200 hover:border-slate-900">
+          <img src="{{ $new->favicon_url }}" alt="{{ $new->name }}" width="26" height="26" class="rounded-full">
+          <b>{{ $new->name }}</b>
+          <b>{{ '(' . $new->posts_count . ')' }}</b>
+
+  </a>
     @endforeach
-  </div><!-- end tags container-->
+  </div><!-- end news container-->
 
   <hr>
   <!-- Posts feed -->
@@ -98,20 +97,20 @@
 
   @push('scripts')
     <script>
-      const tagContainer = document.getElementById('tagcontainer');
-      const showTags = document.getElementById('showtags');
-      const label = showTags.querySelector('.label');
+      const newsContainer = document.getElementById('news-container');
+      const showNews = document.getElementById('show-news');
+      const label = showNews.querySelector('.label');
       let expanded = false;
 
-      showTags.addEventListener('click', () => {
+      showNews.addEventListener('click', () => {
         if (!expanded) {
-          tagContainer.style.height = `${tagContainer.scrollHeight}px`;
+          newsContainer.style.height = `${newsContainer.scrollHeight}px`;
           expanded = true;
-          label.textContent = 'Hide Tags';
+          label.textContent = 'Hide News';
         } else {
-          tagContainer.style.height = '0';
+          newsContainer.style.height = '0';
           expanded = false;
-          label.textContent = 'Tags';
+          label.textContent = 'All News';
         }
       });
 
