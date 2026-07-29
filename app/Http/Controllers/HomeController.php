@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Slide;
 use App\Repositories\Interfaces\NewsInterface;
 use App\Repositories\Interfaces\PostInterface;
+use Illuminate\Support\Facades\Cache;
 
 
 class HomeController extends Controller
@@ -18,15 +19,16 @@ class HomeController extends Controller
     
 
   return view('index', [
-      'slides' => Slide::published()
-                  ->latest()
-                  ->get()
-                  ->take(4),
-      'featuredPosts' => $featuredPosts,
-      'latestTrend' => $result['latestTrend'],
+      'slides' => Cache::rememberForever('slides_home_page', function () {
+                    return Slide::published()
+                             ->latest()
+                             ->get()
+                             ->take(4);}),
+      'featuredPosts'   => $featuredPosts,
+      'latestTrend'     => $result['latestTrend'],
       'trendingHashtag' => $result['trendingHashtag'],
-       'latestNews' => $news['latestNews'],
-       'moreNews' => $news['moreNews'],
+       'latestNews'     => $news['latestNews'],
+       'moreNews'       => $news['moreNews'],
        ]);
 
   }

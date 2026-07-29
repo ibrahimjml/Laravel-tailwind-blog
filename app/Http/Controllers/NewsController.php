@@ -13,30 +13,17 @@ class NewsController extends Controller
      */
     public function __invoke(Request $request, NewsInterface $repo)
     {
+        $perpage = $request->get('perpage', 12);
+        $page = $request->get('news_page', 1);
         $sourceName = $request->query('source');
-        $categoryName = $request->query('category');
+
         $sources = $repo->getLatestSources();
+        $news = $repo->getPaginatedNews($sourceName,$perpage,$page);
 
-        $news = ScrapedPost::query()
-            ->with('source')
-            ->latest()
-            ->when($sourceName, function ($query, $sourceName) {
-                return $query->whereHas('source', function ($sub) use ($sourceName) {
-                    $sub->where('name', $sourceName);
-                });
-            })
-            ->when($categoryName, function ($query, $categoryName) {
-                return $query->where('category', $categoryName);
-            })
-            ->paginate(9)
-            ->withQueryString();
 
-      
-
-        if ($request->expectsJson()) {
-            return response()->json([
-                'html' => view('latest-news.partials.news-ajax', compact('news'))->render(),
-            ]);
+        if ($request->ajax() || $request->expectsJson()) {
+               $html = view('latest-news.partials.news-ajax', compact('news'))->render();
+            return infinite_scroll_response($html,$news);
         }
         
         return view('latest-news.index', compact('sources', 'news', 'sourceName'));

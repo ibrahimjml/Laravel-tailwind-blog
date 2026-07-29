@@ -40,12 +40,8 @@ class PostService
     $page = $request->get('blog_page', 1);
     $perPage = $request->get('perpage', 5);
     $sort = $request->get('sort', 'latest');
-    /* 
-     * geust mode filter followings not allowed
-     */ 
-    if (in_array($sort, ['followings']) && !auth()->check()) {
-      return redirect()->route('login');
-    }
+
+    guest_not_allowed_filter_following($sort);
 
     $postList = $this->repo->getPaginatedPosts($perPage, $sort, $page);
     $tags = $this->repo->getPopularTags();
@@ -55,18 +51,14 @@ class PostService
     $inner_ads = AdPlacement::active()->where('ad_position', \App\Enums\Adplacements\AdPosition::INNER_FEED)->get();
 
     if ($request->ajax()) {
-      $html = view('blog.partials.posts', [
+      $html = view('blog.partials.posts-ajax', [
         'posts' => $postList,
         'searchquery' => $request->get('search', null),
         'ads' => $inner_ads,
         'showAppliedFilter' => false
       ])->render();
 
-      return response()->json([
-        'html' => $html,
-        'hasMore' => $postList->hasMorePages(),
-        'nextPage' => $postList->currentPage() + 1
-      ]);
+      return infinite_scroll_response($html,$postList);
     }
 
     return view('blog.blog', [
@@ -84,24 +76,20 @@ class PostService
   {
     $dto = PostFilterDTO::fromRequest($request);
 
-    $page = request()->get('page', 1);
+    $page = request()->get('search_page', 1);
     $perPage = request('perpage', 5);
     $posts = $this->repo->getBySearch($dto, $page, $perPage);
     $inner_ads = AdPlacement::active()->where('ad_position', \App\Enums\Adplacements\AdPosition::INNER_FEED)->get();
 
     if (request()->ajax()) {
-      $html = view('blog.partials.posts', [
+      $html = view('blog.partials.posts-ajax', [
         'posts' => $posts,
         'searchquery' => $dto->search,
         'ads' => $inner_ads,
         'showAppliedFilter' => false
       ])->render();
-      return response()->json([
-        'html' => $html,
-        'searchquery' => $dto->search,
-        'hasMore' => $posts->hasMorePages(),
-        'nextPage' => $posts->currentPage() + 1
-      ]);
+
+      return infinite_scroll_response($html,$posts,['searchquery' => $dto->search]);
     }
 
     return view('search', [

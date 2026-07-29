@@ -2,10 +2,10 @@
 
 namespace App\Models\Scraping;
 
+use App\Services\ClearCacheService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Cache;
 
 class ScrapedPost extends Model
 {
@@ -29,7 +29,7 @@ class ScrapedPost extends Model
     }
     protected static function booted()
     {
-      $clearCaches = fn() => Cache::forget('latest-news');
+      $clearCaches = fn() => app(ClearCacheService::class)->clearScrapedDataNews();
       static::created($clearCaches);
       static::updated($clearCaches);
       static::deleted($clearCaches);

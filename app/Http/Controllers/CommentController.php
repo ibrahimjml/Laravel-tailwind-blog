@@ -23,16 +23,13 @@ class CommentController extends Controller
    public function loadMore(Post $post, PostInterface $repo)
 {
     $page = request()->get('comments_page', 1);
-    $comments = $repo->getPaginatedComments($post, $page, 5);
+    $perpage = request()->get('perpage', 5);
+    $comments = $repo->getPaginatedComments($post, $page, $perpage);
     
     if (request()->ajax()) {
         $html = view('comments.comments', ['comments' => $comments])->render();
         
-        return response()->json([
-            'html' => $html,
-            'hasMore' => $comments->hasMorePages(),
-            'nextPage' => $comments->currentPage() + 1
-        ]);
+        return infinite_scroll_response($html,$comments);
     }
     
     abort(404);

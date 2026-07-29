@@ -3,10 +3,10 @@
 namespace App\Models\Scraping;
 
 use App\Enums\ScrapingType;
+use App\Services\ClearCacheService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Cache;
 
 class ScrapingSource extends Model
 {
@@ -51,7 +51,7 @@ class ScrapingSource extends Model
 
     protected static function booted()
     {
-      $clearCaches = fn() => Cache::forget('latest-sources');
+      $clearCaches = fn() => app(ClearCacheService::class)->clearScrapedDataNews();
       static::created($clearCaches);
       static::updated($clearCaches);
       static::deleted($clearCaches);

@@ -1,5 +1,6 @@
 <?php
 
+
 if (!function_exists('render_mentions')) {
   function  render_mentions(string $content): string
   {
@@ -55,4 +56,24 @@ if(! function_exists('n8n_webhook_enabled')){
    function n8n_webhook_enabled(){
       return (bool) config('n8n.enabled');
    }
+}
+
+if(! function_exists('guest_not_allowed_filter_following')){
+   function guest_not_allowed_filter_following($sort){
+    if (in_array($sort, ['followings']) && !auth()->check()) {
+      throw new \Illuminate\Auth\AuthenticationException();
+    }
+   }
+}
+
+if(! function_exists('infinite_scroll_response')){
+  function infinite_scroll_response(string $html, \Illuminate\Contracts\Pagination\LengthAwarePaginator $posts, ?array $extra = []): \Illuminate\Http\JsonResponse
+{
+    return response()->json(array_merge([
+        'html' => $html,
+        'currentPage' => $posts->currentPage(),
+        'hasMore' => $posts->hasMorePages(),
+        'nextPage' => $posts->hasMorePages() ? $posts->currentPage() + 1 : null
+    ], $extra));
+}
 }

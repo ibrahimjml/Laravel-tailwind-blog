@@ -22,13 +22,12 @@ class PostRepository implements PostInterface
     }
     public function getBySearch( $dto,int $page, int $perpage): LengthAwarePaginator
     {
-        $postsid = Post::search($dto->search)->get()->pluck('id');
-        return  Post::published()
-                    ->whereIn('id',$postsid)
+        return Post::published()
+                    ->search($dto->search)
                     ->withCount(['likes', 'comments'])
                     ->with(['user','hashtags'])
                     ->blogSort($dto->sort)
-                    ->paginate($perpage,['*'],'search',$page)
+                    ->paginate($perpage,['*'],'search_page',$page)
                     ->withQueryString();
     }
     public function getPopularTags(): \Illuminate\Support\Collection

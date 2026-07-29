@@ -72,7 +72,7 @@
         <h1 class=" text-4xl p p-36 font-semibold text-center w-54">No Posts Yet</h1>
       @else
         <div id="posts-container" class="lg:col-span-2">
-          @include('blog.partials.posts', ['posts' => $posts])
+          @include('blog.partials.posts-ajax', ['posts' => $posts])
         </div>
       @endif
       <!-- Sidebar content - Recent Tags & Posts -->
@@ -89,15 +89,12 @@
     </div>
   </div>
 
-  <!-- pagination infinite scroll-->
-  <div id="loading-spinner" class="hidden text-center mt-4">
-    <div class="inline-flex items-center">
-      <i class="fas fa-spinner fa-spin text-gray-600 text-lg mr-2"></i>
-    </div>
-  </div>
-  <p id="reach-end" class="hidden container w-fit mx-auto">You've reached the end! 👋</p>
-  <!-- observe loading spinner -->
-  <div id="scroll-loading" class="h-10"></div>
+  <!-- infinte scroll pagination -->
+<x-infinte-scroll container="posts-container" 
+                  :route="route('blog')" 
+                  page-name="blog_page"
+                  :current-page="$posts->currentPage()"
+                  :has-more="$posts->hasMorePages()"/>
 
   @push('scripts')
     <script>
@@ -118,73 +115,6 @@
         }
       });
 
-    </script>
-    <!-- Ajax infinite scroll posts -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const postsContainer = document.getElementById('posts-container');
-        const loadingSpinner = document.getElementById('loading-spinner');
-        const reachEnd = document.getElementById('reach-end');
-        let currentPage = 1;
-        let isLoading = false;
-        let hasMore = true;
-
-        const action = document.getElementById('scroll-loading');
-        // Intersection
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting && !isLoading && hasMore) {
-              loadMorePosts();
-            }
-          });
-        }, {
-          rootMargin: '100px',
-          threshold: 0.1
-        });
-
-        observer.observe(action);
-
-        async function loadMorePosts() {
-          if (isLoading || !hasMore) return;
-
-          isLoading = true;
-          loadingSpinner.classList.remove('hidden');
-          reachEnd.classList.add('hidden');
-
-          try {
-            const urlParams = new URLSearchParams(window.location.search);
-            const sortOption = urlParams.get('sort') || 'latest';
-
-            const response = await fetch(`/blog?blog_page=${currentPage + 1}&sort=${sortOption}`, {
-              method: 'GET',
-              headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json',
-              }
-            });
-
-            const data = await response.json();
-            if (!response.ok) throw new Error('Network response was not ok');
-            // Append posts
-            postsContainer.insertAdjacentHTML('beforeend', data.html);
-            // Update pagination state
-            currentPage = data.nextPage - 1;
-            hasMore = data.hasMore;
-
-            if (!hasMore) {
-              observer.disconnect();
-              reachEnd.classList.remove('hidden');
-            }
-
-          } catch (error) {
-            console.error('Error loading more posts:', error);
-          } finally {
-            isLoading = false;
-            loadingSpinner.classList.add('hidden');
-
-          }
-        }
-      });
     </script>
   @endpush
 </x-layout>

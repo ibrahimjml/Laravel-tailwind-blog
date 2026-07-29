@@ -1,4 +1,4 @@
-<div class="space-y-6">
+<div class="space-y-6 mt-2">
   <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
     @forelse($news as $item)
       <article class="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
@@ -36,7 +36,4 @@
     @endforelse
   </div>
 
-  <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
-    <div class="pagination inline-flex">{!! $news->links()->render() !!}</div>
-  </div>
 </div>

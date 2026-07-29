@@ -15,15 +15,19 @@
         </div>
 
         <div class="mt-6 flex flex-wrap gap-2">
-          <button type="button" data-source="" class="source-filter-btn rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition duration-200 hover:border-slate-900">
+          <button type="button" data-source=""
+            class="source-filter-btn rounded-full border border-slate-200 bg-white px-4 py-2 lg:text-sm text-xs font-medium text-slate-700 transition duration-200 hover:border-slate-900">
             All
           </button>
 
           @foreach($sources as $source)
-            <button type="button" data-source="{{ $source->name }}" class="source-filter-btn flex items-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition duration-200 hover:border-slate-900">
-              <img src="{{ $source->favicon_url }}" alt="{{ $source->title }}" width="26" height="26" class="rounded-full">
+            <button type="button" data-source="{{ $source->name }}"
+              class="source-filter-btn flex items-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-2 lg:text-sm text-xs font-medium text-slate-700 transition duration-200 hover:border-slate-900">
+              <img src="{{ $source->favicon_url }}" alt="{{ $source->title }}" width="26" height="26"
+                class="rounded-full">
               {{ $source->name }}
-              <span class="ml-2 inline-flex h-6 min-w-[2rem] items-center justify-center rounded-full bg-slate-100 px-2 text-xs text-slate-700">{{ $source->posts_count ?? 0 }}</span>
+              <span
+                class="ml-2 inline-flex h-6 min-w-[2rem] items-center justify-center rounded-full bg-slate-100 px-2 text-xs text-slate-700">{{ $source->posts_count ?? 0 }}</span>
             </button>
           @endforeach
         </div>
@@ -33,6 +37,14 @@
         @include('latest-news.partials.news-ajax', ['news' => $news])
       </div>
     </div>
+    <!-- load more ajax -->
+    <x-load-more button-id="load-more-news"
+                 container="news-grid-container" 
+                 :route="route('news')" 
+                  page-name="news_page"
+                 :current-page="$news->currentPage()" 
+                 :has-more="$news->hasMorePages()" 
+                 button-text="Load More News" />
   </div>
 
   @push('scripts')
@@ -40,7 +52,7 @@
       document.addEventListener('DOMContentLoaded', () => {
         const newsGridContainer = document.getElementById('news-grid-container');
         const sourceFilterButtons = document.querySelectorAll('.source-filter-btn');
-      
+
         const newsRoute = new URL('{{ route('news') }}', window.location.origin).toString();
         const currentSource = '{{ $sourceName ?? '' }}';
 
@@ -71,7 +83,7 @@
           } else {
             url.searchParams.delete('source');
           }
-          url.searchParams.delete('page');
+          url.searchParams.delete('news_page');
           return url.toString();
         }
 
@@ -90,35 +102,38 @@
               throw new Error('Unable to load news.');
             }
 
-            const json = await response.json();
-            newsGridContainer.innerHTML = json.html;
-            setActiveSourceButton(source ?? '');
-            const cleanUrl = new URL(url, window.location.origin);
-            history.replaceState(null, '', cleanUrl.toString());
+                const json = await response.json();
+                newsGridContainer.innerHTML = json.html;
+                setActiveSourceButton(source ?? '');
+
+                
+                const loadMoreButton = document.getElementById('load-more-news');
+                const loadMoreWrapper = document.getElementById('load-more-news-container');
+                const loadMoreSpinner = document.getElementById('load-more-news-spinner');
+                const reachEnd = document.getElementById('reach-end');
+
+                if (json.hasMore) {
+                  if (loadMoreButton) loadMoreButton.dataset.nextPage = json.nextPage;
+                  if (loadMoreWrapper) loadMoreWrapper.classList.remove('hidden');
+                  if (reachEnd) reachEnd.classList.add('hidden');
+                } else {
+                  if (loadMoreWrapper) loadMoreWrapper.classList.add('hidden');
+                  if (reachEnd) reachEnd.classList.remove('hidden');
+                }
+
+                const cleanUrl = new URL(url, window.location.origin);
+                history.replaceState(null, '', cleanUrl.toString());
           } catch (error) {
             console.error(error);
             newsGridContainer.innerHTML = `<div class="rounded-3xl border border-red-200 bg-red-50 p-6 text-red-700">Unable to load news. Please refresh the page.</div>`;
           }
         }
-
-        sourceFilterButtons.forEach((button) => {
+         sourceFilterButtons.forEach((button) => {
           button.addEventListener('click', () => {
             const source = button.dataset.source || '';
             const url = buildNewsUrl(source);
             loadNews(url, source);
           });
-        });
-
-        newsGridContainer.addEventListener('click', (event) => {
-          const link = event.target.closest('.pagination a');
-          if (!link) {
-            return;
-          }
-
-          event.preventDefault();
-          const url = buildNewsUrl('', link.href);
-          const source = new URL(link.href, window.location.origin).searchParams.get('source') || '';
-          loadNews(url, source);
         });
 
         setActiveSourceButton(currentSource);
