@@ -13,7 +13,7 @@ use App\Http\Controllers\User\{
 use App\Http\Controllers\{
     CategoryController,
     CommentController,
-    Hashtagcontroller,
+    HashtagController,
     HomeController,
     NotificationController,
     PostController,
@@ -45,7 +45,7 @@ Route::get('/blog',[PostController::class,'blogpost'])->name('blog');
 // Post
 Route::get('/post/{post:slug}',[PostController::class,'viewPost'])->name('single.post');
 //recent posts page by hashtag 
-Route::get('/hashtag/{hashtag:name}',Hashtagcontroller::class)->name('viewhashtag');
+Route::get('/hashtag/{hashtag:name}',HashtagController::class)->name('viewhashtag');
 //recent posts page by category
 Route::get('/category/{category:name}',CategoryController::class)->name('viewcategory');
 // latest scraped news

@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 
-class Hashtagcontroller extends Controller
+class HashtagController extends Controller
 {
   public function __construct()
   {
