@@ -8,7 +8,7 @@ use App\DTOs\{CreatePostDTO, UpdatePostDTO};
 use App\Http\Middleware\CheckIfBlocked;
 use App\Http\Requests\App\{CreatePostRequest, UpdatePostRequest};
 use App\Models\{AdPlacement, Category, Hashtag, Post};
-use App\Services\{PostService, ViewPostService};
+use App\Services\{PostService, SearchService, ViewPostService};
 use Illuminate\Http\Request;
 
 
@@ -16,6 +16,7 @@ class PostController extends Controller
 {
   public function __construct(
     private PostService $service,
+    private SearchService $searchService,
     private ViewPostService $postservice,
     )
   {
@@ -64,7 +65,7 @@ class PostController extends Controller
 
   public function search(Request $request)
   {
-     return $this->service->handleSearch($request);
+     return $this->searchService->getSearch($request);
   }
   public function create(CreatePostRequest $request)
   {

@@ -2,13 +2,24 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\DTOs\PostFilterDTO;
 use App\Models\Scraping\ScrapedPost;
 use App\Models\Scraping\ScrapingSource;
 use App\Repositories\Interfaces\NewsInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class NewsRepository implements NewsInterface
 {
+  public function getBySearch( $dto, int $limit): Collection
+  {
+    return ScrapedPost::query()
+      ->with('source')
+      ->search($dto->search)
+      ->latest()
+      ->limit($limit)
+      ->get();
+  }
   public function getPaginatedNews(string|null $sourceName, int $perpage, int $page): LengthAwarePaginator
   {
     return ScrapedPost::query()

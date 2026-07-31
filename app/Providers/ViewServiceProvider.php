@@ -75,7 +75,7 @@ class ViewServiceProvider extends ServiceProvider
 
   private function sendCustomPagesToFooter()
   {
-    view()->composer('components.footer', function ($view) {
+    view()->composer(['components.footer','components.search-list'], function ($view) {
       $footerPages = Cache::rememberForever('custom_pages', function () {
         return CustomPage::query()
           ->where('is_active', CustomPageStatus::ACTIVE->value)

@@ -60,4 +60,11 @@ class Hashtag extends Model
   {
     return $query->where('status', TagStatus::DISABLED->value);
   }
+  public function toSearchableArray(): array
+{
+    return [
+        'id' => $this->id,
+        'name' => $this->name,
+    ];
+}
 }

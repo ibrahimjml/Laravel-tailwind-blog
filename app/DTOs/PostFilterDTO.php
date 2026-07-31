@@ -2,13 +2,14 @@
 
 namespace App\DTOs;
 
-use Illuminate\Http\Request ;
+use App\Enums\SearchType;
+use Illuminate\Http\Request;
 
 class PostFilterDTO
 {
         public function __construct(
         public readonly string $search,
-        public readonly string $sort,
+        public readonly SearchType $type,
     ) {}
 
     public static function fromRequest(Request $request): self
@@ -19,7 +20,7 @@ class PostFilterDTO
 
         return new self(
             search: $validated['search'],
-            sort: $request->get('sort', 'latest'),
+            type: SearchType::tryFrom($request->input('type', 'all')) ?? SearchType::ALL
         );
     }
 }

@@ -37,8 +37,8 @@
                        class="transition-colors hover:text-slate-900 dark:hover:text-white">Latest News</a>
                 </li>
             <li>
-                <a @auth href="{{ route('profile.home', auth()->user()->username) }}" @else href="{{ route('login') }}" @endauth
-                   class="transition-colors hover:text-slate-900 dark:hover:text-white">Profile</a>
+                <a onclick="@redirectUrl(fn() => route('profile.home', auth()->user()->username))"
+                   class="transition-colors hover:text-slate-900 dark:hover:text-white cursor-pointer">Profile</a>
             </li>
             <li><a href="{{ route('bookmarks') }}"
                 class="transition-colors hover:text-slate-900 dark:hover:text-white">Bookmarks</a></li>

@@ -8,6 +8,8 @@ use App\Models\Post;
 use App\Models\User;
 use App\Repositories\Interfaces\PostInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
+
 
 class PostRepository implements PostInterface
 {
@@ -20,17 +22,16 @@ class PostRepository implements PostInterface
                   ->paginate($perPage, ['*'], 'blog_page', $page)
                   ->withQueryString();
     }
-    public function getBySearch( $dto,int $page, int $perpage): LengthAwarePaginator
+    public function getBySearch($dto, int $limit): Collection
     {
         return Post::published()
                     ->search($dto->search)
                     ->withCount(['likes', 'comments'])
-                    ->with(['user','hashtags'])
-                    ->blogSort($dto->sort)
-                    ->paginate($perpage,['*'],'search_page',$page)
-                    ->withQueryString();
+                    ->with(['user:id,name,username,avatar','hashtags'])
+                    ->limit($limit)
+                    ->get();
     }
-    public function getPopularTags(): \Illuminate\Support\Collection
+    public function getPopularTags(): Collection
     {
         return  Hashtag::active()
                      ->has('posts')
@@ -40,7 +41,7 @@ class PostRepository implements PostInterface
                      ->get();
     }
 
-    public function getCategories(): \Illuminate\Support\Collection
+    public function getCategories(): Collection
     {
       return  Category::has('posts')
                     ->withCount('posts')
@@ -49,7 +50,7 @@ class PostRepository implements PostInterface
                     ->get();
     }
 
-    public function getWhoToFollow(int $userId): \Illuminate\Support\Collection
+    public function getWhoToFollow(int $userId): Collection
     {
        return User::activated()
                    ->where('id', '!=', $userId)
@@ -68,7 +69,7 @@ class PostRepository implements PostInterface
                 ->paginate($perPage);
     }
 
-    public function getRelatedArticles(Post $post): \Illuminate\Support\Collection
+    public function getRelatedArticles(Post $post): Collection
     {
          return Post::query()
                   ->published()

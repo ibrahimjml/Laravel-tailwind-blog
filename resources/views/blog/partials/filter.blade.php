@@ -1,11 +1,11 @@
-<div class="flex-1  lg:w-auto">
-  <form action="{{url()->current()}}" method="GET" class="w-full">
+<div class="flex-1  lg:w-auto ">
+  <form action="{{url()->current()}}" method="GET" class="w-full ">
     @if(request()->has('search'))
       <input type="hidden" name="search" value="{{ request('search') }}">
     @endif
     <div class="relative w-full">
       <select id="sort" name="sort" onchange="this.form.submit()"
-        class="appearance-none cursor-pointer w-full lg:w-auto bg-white text-gray-800 border border-gray-300 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent px-4 py-2.5 pr-10 transition-all duration-200 font-medium">
+        class="appearance-none cursor-pointer w-full lg:w-auto bg-white text-gray-800 border border-slate-200 text-sm shadow-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent px-4 py-2.5 pr-10 transition-all duration-200 font-medium">
         <option value="latest" {{ $sorts == 'latest' ? 'selected' : '' }}>⏰ Latest</option>
         <option value="oldest" {{ $sorts == 'oldest' ? 'selected' : '' }}>📜 Oldest</option>
         <option value="mostliked" {{ $sorts == 'mostliked' ? 'selected' : '' }}>👍 Most Liked</option>

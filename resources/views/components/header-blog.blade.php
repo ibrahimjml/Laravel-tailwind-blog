@@ -6,7 +6,7 @@
 </head>
 
 <body class="min-h-screen m-0 ">
-  <nav @class([
+  <nav id="blog-navigation" @class([
     'w-screen px-6 py-5 h-20',
     'bg-opacity-0 absolute z-50' => Route::is(['profile.*', 'home']),
     'bg-white shadow-[0_2px_5px_rgba(0,0,0,0.1)]' => !Route::is(['profile.*', 'home']),

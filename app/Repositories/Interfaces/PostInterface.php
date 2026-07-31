@@ -10,7 +10,7 @@ interface PostInterface
 {
     public function getPaginatedPosts(int $perPage, string $sort, int $page): LengthAwarePaginator;
     
-    public function getBySearch( PostFilterDTO $dto,int $page, int $perpage) :LengthAwarePaginator;
+    public function getBySearch(PostFilterDTO $dto, int $limit): Collection;
     public function getPopularTags() : Collection;
     public function getCategories() :Collection;
     public function getWhoToFollow(int $userId) : Collection;

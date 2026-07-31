@@ -3,6 +3,7 @@
 namespace App\Repositories\Caches;
 
 use App\Repositories\Interfaces\PostInterface;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class PostCacheDecorator implements PostInterface
@@ -15,22 +16,22 @@ class PostCacheDecorator implements PostInterface
         return Cache::tags(["blog_posts_paginated"])->remember($key, 1800, fn() => $this->repo->getPaginatedPosts($perPage, $sort, $page));
    }
    
-   public function getBySearch(\App\DTOs\PostFilterDTO $dto, int $page, int $perpage): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+   public function getBySearch($dto, int $limit): Collection
    {
-    $key = "search:{$dto->search}:sort:{$dto->sort}:page:{$page}:perpage:{$perpage}";
-      return Cache::tags(["search:posts"])->remember($key,900, fn() => $this->repo->getBySearch($dto,$page,$perpage));
+      $key = sprintf('posts:search:%s:%d', md5(strtolower(trim($dto->search))), $limit);
+      return Cache::tags(["search_posts"])->remember($key,900, fn() => $this->repo->getBySearch($dto,$limit));
    }
-   public function getCategories(): \Illuminate\Support\Collection
+   public function getCategories(): Collection
    {
       return Cache::remember('categories', 3600, fn() => $this->repo->getCategories());
    }
 
-   public function getPopularTags(): \Illuminate\Support\Collection
+   public function getPopularTags(): Collection
    {
       return Cache::remember('active_hashtags', 3600, fn() => $this->repo->getPopularTags());
    }
 
-   public function getWhoToFollow(int $userId): \Illuminate\Support\Collection
+   public function getWhoToFollow(int $userId): Collection
    {
        $key = "who_to_follow:{$userId}";
         return Cache::tags(["Not-following:{$userId}"])->remember($key, 1800, fn() => $this->repo->getWhoToFollow($userId));

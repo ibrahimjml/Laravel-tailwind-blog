@@ -157,6 +157,14 @@ class User extends Authenticatable implements MustVerifyEmail
       ? Storage::url('covers/' . 'sunset.jpg')
       : Storage::url('covers/' . $this->cover_photo);
   }
+  public function toSearchableArray(): array
+{
+    return [
+        'id' => $this->id,
+        'name' => $this->name,
+        'username' => $this->username,
+    ];
+}
   protected $hidden = [
     'password',
     'remember_token',

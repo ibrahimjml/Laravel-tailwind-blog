@@ -72,33 +72,7 @@ class PostService
       'searchquery' => null,
     ]);
   }
-  public function handleSearch(Request $request)
-  {
-    $dto = PostFilterDTO::fromRequest($request);
-
-    $page = request()->get('search_page', 1);
-    $perPage = request('perpage', 5);
-    $posts = $this->repo->getBySearch($dto, $page, $perPage);
-    $inner_ads = AdPlacement::active()->where('ad_position', \App\Enums\Adplacements\AdPosition::INNER_FEED)->get();
-
-    if (request()->ajax()) {
-      $html = view('blog.partials.posts-ajax', [
-        'posts' => $posts,
-        'searchquery' => $dto->search,
-        'ads' => $inner_ads,
-        'showAppliedFilter' => false
-      ])->render();
-
-      return infinite_scroll_response($html,$posts,['searchquery' => $dto->search]);
-    }
-
-    return view('search', [
-      'posts' => $posts,
-      'sorts' => $dto->sort,
-      'ads' => $inner_ads,
-      'searchquery' => $dto->search,
-    ]);
-  }
+  
   public function handleSaved()
   {
     $getposts = session('saved-to', []);

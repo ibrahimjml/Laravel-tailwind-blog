@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Services\ClearCacheService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\CleanupNotifications;
@@ -25,6 +26,8 @@ class UserObserver
         'is_public' => true,
         'user_id' => $user->id
       ]);
+      // clear cache 
+      app(ClearCacheService::class)->clearUserCaches();
     }
     public function deleting(User $user): void
     {

@@ -8,13 +8,13 @@
         <div class="flex items-center gap-3"><!-- start sidebar button and search bar-->
 
             <button
-              class="lg:hidden flex items-center justify-center w-10 h-10 text-gray-800 border border-gray-300 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent px-4 py-2.5  transition-all duration-200"
+              class="lg:hidden flex items-center justify-center w-10 h-10 text-gray-800 rounded-xl border border-slate-200 text-sm shadow-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent px-4 py-2.5  transition-all duration-200"
               id="open-sidebar" aria-label="Toggle menu">
               <i class="fa fa-bars text-lg"></i>
             </button>
 
           <div class="flex-1">
-            @include('partials.search-bar', ['searchquery' => $searchquery ?? ''])
+            <x-search-button :searchquer=$searchquery/>
           </div>
         </div><!-- end sidebar button and search bar-->
         
@@ -22,9 +22,9 @@
           @include('blog.partials.filter')
 
           @if($news->isNotEmpty())
-            <div class="lg:hidden  mt-5">
+            <div class="lg:hidden  mt-5 ">
               <button id="show-news"
-                class=" sm:flex  w-fit  py-2 px-5 rounded-lg font-bold capitalize mb-6 text-gray-800 border border-gray-300 text-sm  focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent  pr-10 transition-all duration-200">
+                class=" sm:flex  w-fit  border border-slate-200 text-sm shadow-sm py-2 px-5 rounded-lg font-bold capitalize mb-6 text-gray-800  focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent  pr-10 transition-all duration-200">
                 <i class="fas fa-rss mr-2 text-sm text-yellow-400"></i>
                 <span class="label">All News</span>
               </button>
@@ -40,7 +40,7 @@
       <div class="hidden lg:flex items-center justify-between gap-6"><!-- start desktop layout -->
         <!-- Search Bar  -->
         <div class="flex-1 max-w-md">
-          @include('partials.search-bar', ['searchquery' => $searchquery ?? ''])
+          <x-search-button :searchquer=$searchquery/>
         </div>
         <!-- Sort -->
         <div class="flex-shrink-0">
@@ -50,7 +50,9 @@
     </div>
   </div><!-- end container filters -->
 
-  <div id="news-container" class="flex flex-wrap justify-center mt-5 gap-2 px-3 mb-3 w-full max-w-full transition-all duration-500 ease-in-out h-0 overflow-hidden"><!-- start news container-->
+  <x-search-list />
+
+  <div id="news-container" class="flex flex-wrap justify-center mt-5 gap-2 px-3 mb-3 w-full  max-w-full transition-all duration-500 ease-in-out h-0 overflow-hidden"><!-- start news container-->
     @foreach($news as $new)
       <a href="{{ route('news') }}?source={{ $new->name }}"
         class="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-2 lg:text-sm text-xs font-medium text-slate-700 transition duration-200 hover:border-slate-900">

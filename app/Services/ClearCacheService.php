@@ -26,24 +26,28 @@ class ClearCacheService
     Cache::forget("post:{$post->id}:more_articles");
     Cache::forget("latest_blogs:except:{$post->id}");
     
-    Cache::tags(["search:posts"])->flush();
+    Cache::tags(["search_posts"])->flush();
     
   }
   public function clearTagsCaches(Hashtag $hashtag)
   {
-    Cache::tags(["tag_posts_paginated","tag_posts_sliders"])->flush();
+    Cache::tags(["tag_posts_paginated",'tags_results',"tag_posts_sliders"])->flush();
     Cache::forget('active_hashtags');
   }
 
   public function clearCategoriesCaches(Category $category)
   {
-     Cache::tags(['category_posts_paginated','category_posts_sliders'])->flush();
+     Cache::tags(['category_posts_paginated','categories_type_results','category_posts_sliders'])->flush();
      Cache::forget('categories');
+  }
+  public function clearUserCaches()
+  {
+     Cache::tags(['users_results'])->flush();
   }
 
   public function clearScrapedDataNews()
   {
     collect(['latest-news','latest-sources'])->each(fn ($key) => Cache::forget($key));
-    Cache::tags(['news_paginated'])->flush();
+    Cache::tags(['news_paginated','news_type_results'])->flush();
   }
 }

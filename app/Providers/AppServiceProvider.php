@@ -6,16 +6,19 @@ use App\Models\{Category, Like, Post, PostReport, Setting, SmtpSetting, User};
 use App\Observers\{ LikeObserver, PostObserver, PostReportObserver, CategoryObserver, UserObserver};
 use App\Repositories\Caches\CategoryCacheDecorator;
 use App\Repositories\Caches\NewsCacheDecorator;
+use App\Repositories\Caches\UserCacheDecorator;
 use App\Repositories\Eloquent\NewsRepository;
 use App\Repositories\Eloquent\PostRepository;
 use App\Repositories\Caches\PostCacheDecorator;
 use App\Repositories\Caches\TagCacheDecorator;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\TagRepository;
+use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Interfaces\CategoryInterface;
 use App\Repositories\Interfaces\NewsInterface;
 use App\Repositories\Interfaces\PostInterface;
 use App\Repositories\Interfaces\TagInterface;
+use App\Repositories\Interfaces\UserInterface;
 use App\Services\MediaDriverResolver;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
@@ -49,6 +52,13 @@ class AppServiceProvider extends ServiceProvider
         return new CategoryCacheDecorator($app->make(CategoryRepository::class));
       }
       return $app->make(CategoryRepository::class);
+    });
+
+    $this->app->bind(UserInterface::class, function ($app) {
+      if (config('cache.enabled')) {
+        return new UserCacheDecorator($app->make(UserRepository::class));
+      }
+      return $app->make(UserRepository::class);
     });
     $this->app->bind(NewsInterface::class, function ($app) {
       if (config('cache.enabled')) {
@@ -96,6 +106,18 @@ class AppServiceProvider extends ServiceProvider
     Blade::if('recaptcha_enabled', function () {
       $authSecurityRule = \App\Models\AuthSecurityRule::first();
       return $authSecurityRule && $authSecurityRule->require_captcha;
+    });
+    Blade::directive('redirectUrl', function ($expression) {
+    return <<<PHP
+           <?php
+           
+           \$url = auth()->check()
+               ? ($expression)()
+               : route('login');
+           
+           echo "window.location.href='" . e(\$url) . "';";
+           ?>
+           PHP;
     });
   }
   public function bootDynamicConfigSmtp()

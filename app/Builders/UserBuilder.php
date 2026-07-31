@@ -12,7 +12,7 @@ class UserBuilder extends Builder
   {
     return $this->where(function ($query) use ($search) {
       $query->where('name', 'like', '%' . $search . '%')
-        ->orWhere('email', 'like', '%' . $search . '%');
+        ->orWhere('username', 'like', '%' . $search . '%');
     });
   }
   public function sortBy(string $sort): self

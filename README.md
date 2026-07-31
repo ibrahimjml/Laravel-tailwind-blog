@@ -171,15 +171,25 @@ REDIS_CLIENT=predis
 ```
 SCOUT_DRIVER=tntsearch
 SCOUT_QUEUE=true
+SCOUT_QUEUE_CONNECTION=redis
+SCOUT_QUEUE_NAME=scout
 
 TNTSEARCH_FUZZINESS=true
 TNTSEARCH_AS_YOU_TYPE=false
 TNTSEARCH_BOOLEAN=false
 TNTSEARCH_MAX_DOCS=500
 ```
-Index your posts, run the following command:
+Index your posts, tags, categories, user, news (optional) run the following command:
 ```
-php artisan scout:import App\\Models\\Post
+php artisan scout:import "App\Models\Post"
+php artisan scout:import "App\Models\Scraping\ScrapedPost"
+php artisan scout:import "App\Models\Category"
+php artisan scout:import "App\Models\Hashtag"
+php artisan scout:import "App\Models\User"
+```
+Then run queue for tntsearch:
+```
+php artisan queue:work --queue=scout 
 ```
 
 14. N8N Whatsapp Notificcation (optional)

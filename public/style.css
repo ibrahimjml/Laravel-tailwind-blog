@@ -154,9 +154,11 @@ main.admin.collapsed section {
 /* =========================================================
 ===   Add overflow-hidden on body when opening comment model
 =========================================================== */
+html.no-scroll,
 body.no-scroll {
   overflow: hidden !important;
   height: 100vh;
+  overscroll-behavior: none;
 }
 
 .nav-link {

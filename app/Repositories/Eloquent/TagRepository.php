@@ -5,9 +5,18 @@ namespace App\Repositories\Eloquent;
 use App\Models\Hashtag;
 use App\Repositories\Interfaces\TagInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class TagRepository implements TagInterface
 {
+    public function getBySearch($dto, int $limit): Collection
+    {
+        return Hashtag::query()
+            ->active()
+            ->search($dto->search)
+            ->limit($limit)
+            ->get();
+    }
     public function getPostsByTag(Hashtag $hashtag, $sorts, $perpage, $page): LengthAwarePaginator
     {
       return $hashtag->posts()

@@ -5,11 +5,18 @@ namespace App\Repositories\Caches;
 use App\Models\Scraping\ScrapingSource;
 use App\Repositories\Interfaces\NewsInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class NewsCacheDecorator implements NewsInterface
 {
     public function __construct(private NewsInterface $repo){}
+    public function getBySearch($dto, int $limit): Collection
+    {
+        $key = sprintf('news:search:%s:%d', md5(strtolower(trim($dto->search))), $limit);
+        return Cache::tags(['news_type_results'])->remember($key, now()->addMinutes(10),fn () => $this->repo->getBySearch($dto, $limit));
+
+    }
     public function getAllNewsWithSources()
     {
       $key = "latest-news";

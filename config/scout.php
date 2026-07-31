@@ -42,7 +42,10 @@ return [
     |
     */
 
-    'queue' => env('SCOUT_QUEUE', false),
+    'queue' => [
+    'connection' => env('SCOUT_QUEUE_CONNECTION', env('QUEUE_CONNECTION')),
+    'queue' => env('SCOUT_QUEUE_NAME', 'scout'),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -131,7 +134,7 @@ return [
     */
 
 'tntsearch' => [
-    'storage' => storage_path(), 
+    'storage' => storage_path('search'), 
     'fuzziness' => env('TNTSEARCH_FUZZINESS', true),
     'fuzzy' => [
         'prefix_length' => 1,

@@ -6,10 +6,11 @@ use App\Builders\CategoryBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Laravel\Scout\Searchable;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
     protected $fillable = ['name','is_featured'];
     protected $casts=[
         'is_featured'=>'boolean',
@@ -34,4 +35,11 @@ class Category extends Model
         static::updated($clearCache);
         static::deleted($clearCache);
     }
+    public function toSearchableArray(): array
+{
+    return [
+        'id' => $this->id,
+        'name' => $this->name,
+    ];
+}
 }

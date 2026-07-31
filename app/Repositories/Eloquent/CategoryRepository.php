@@ -5,9 +5,18 @@ namespace App\Repositories\Eloquent;
 use App\Models\Category;
 use App\Repositories\Interfaces\CategoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class CategoryRepository implements CategoryInterface
 {
+     public function getBySearch($dto, int $limit): Collection
+    {
+     return Category::query()
+               ->search($dto->search)
+               ->limit($limit)
+               ->get();
+    }
+
     public function getPostsByCategory(Category $category, $sorts, $perpage, $page): LengthAwarePaginator
     {
       return $category->posts()
