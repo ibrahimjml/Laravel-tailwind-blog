@@ -91,6 +91,13 @@
       results.innerHTML = '<div class="px-3 py-8 text-center text-sm text-slate-500"><i class="fas fa-spinner fa-spin mr-2" aria-hidden="true"></i>Searching...</div>';
     };
 
+    const closeSearch = () => {
+    modal.classList.add('hidden');
+    document.documentElement.classList.remove('no-scroll');
+    input.value = '';
+    showDefaultState();
+};
+
     const search = async () => {
       const query = input.value.trim();
        if (!query || query.length < 2) {
@@ -146,18 +153,21 @@
       search();
     });
 
-    modal.querySelector('[data-search-close]')?.addEventListener('click', () => {
-      modal.classList.add('hidden');
-      document.documentElement.classList.remove('no-scroll');
-      input.value = '';
-      showDefaultState();
-    });
+    // Close and empty search on Esc key
+    modal.querySelector('[data-search-close]')?.addEventListener('click', closeSearch);
 
+   // Close search modal when clicking outside the modal content or on result link
     modal.addEventListener('click', (event) => {
       const link = event.target.closest('[data-search-link]');
-      if (link) modal.classList.add('hidden');
-      input.value = '';
-      showDefaultState();
+
+      if (link) {
+          closeSearch();
+          return;
+      }
+  
+      if (event.target === modal) {
+          closeSearch();
+      }
     });
   });
 </script>
