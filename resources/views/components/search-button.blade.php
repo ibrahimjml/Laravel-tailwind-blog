@@ -8,23 +8,20 @@
         </span>
     </div>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 text-sm">
         <kbd class="rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-500">
             Ctrl
         </kbd>
+        <small>&plus;</small>
         <kbd class="rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-500">
             K
         </kbd>
     </div>
 </div>
 <!-- mobile -->
-<div class="search-button flex w-full max-w-sm cursor-pointer items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm shadow-sm transition hover:border-slate-300 hover:shadow-md lg:hidden">
-    <div class="flex min-w-0 flex-1 items-center gap-3 text-slate-400">
-        <i class="fas fa-search flex-none text-sm"></i>
-
-        <span class="min-w-0 truncate text-xs">
-            Search posts, tags, users, categories...
-        </span>
+<div class="search-button flex w-full max-w-sm cursor-pointer items-center justify-between rounded-xl border border-slate-200 bg-white px-2 py-2 text-sm shadow-sm transition hover:border-slate-300 hover:shadow-md lg:hidden">
+    <div class="flex min-w-0 flex-1 items-center gap-3 text-slate-600">
+        <i class="fas fa-search flex-none text-xs"></i>
     </div>
 </div>
 @once
@@ -33,7 +30,6 @@
     document.addEventListener('DOMContentLoaded', function () {
       const searchButtons = document.querySelectorAll('.search-button');
       const searchContainer = document.getElementById('search-list-container');
-      const headerBlog = document.getElementById('blog-navigation');
 
       if (!searchContainer) {
         return;
@@ -42,13 +38,11 @@
       const openSearch = () => {
         searchContainer.classList.remove('hidden');
         document.documentElement.classList.add('no-scroll');
-        headerBlog.classList.remove('fixed','top-0','z-50');
       };
 
       const closeSearch = () => {
         searchContainer.classList.add('hidden');
         document.documentElement.classList.remove('no-scroll');
-        headerBlog.classList.add('fixed','top-0','z-50');
       };
 
       searchButtons.forEach((button) => {

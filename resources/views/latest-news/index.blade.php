@@ -1,5 +1,5 @@
 <x-layout>
-  <div class="pt-4 pb-16 bg-slate-50">
+  <div class="lg:pt-0 pt-4 pb-16 ">
     <div class="container mx-auto px-4">
       <section class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm">
         <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">

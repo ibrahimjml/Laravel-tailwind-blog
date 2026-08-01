@@ -36,6 +36,7 @@
         <div role="group">
           <div class="search-list-item" role="option" data-value="Home feed" onclick="window.location.href='{{ route('home') }}'"><i class="fas fa-home" aria-hidden="true"></i>Home feed</div>
           <div class="search-list-item" role="option" data-value="Write a post" onclick="@redirectUrl(fn() => route('createpage'))"><i class="fas fa-pen" aria-hidden="true" ></i>Write a post</div>
+          <div class="search-list-item" role="option" data-value="Blog" onclick="window.location.href='{{ route('blog') }}'"><i class="fas fa-image" aria-hidden="true"></i>Blog</div>
           <div class="search-list-item" role="option" data-value="Bookmarks" onclick="@redirectUrl(fn() => route('bookmarks'))"><i class="far fa-bookmark" aria-hidden="true"></i>Bookmarks</div>
           <div class="search-list-item" role="option" data-value="Latest News" onclick="window.location.href='{{ route('news') }}'"><i class="fas fa-rss" aria-hidden="true"></i>Latest News</div>
           <div class="search-list-item" role="option" data-value="Profile" onclick="@redirectUrl(fn() => route('profile.home', auth()->user()->username))"><i class="far fa-user" aria-hidden="true" ></i>Profile</div>
@@ -60,53 +61,7 @@
   </div>
 </div>
 
-@push('styles')
-<style>
-  .search-list-item {
-    display: flex;
-    cursor: pointer;
-    align-items: center;
-    gap: 0.5rem;
-    border-radius: 0.375rem;
-    padding: 0.375rem 0.5rem;
-    font-size: 0.875rem;
-    color: #334155;
-  }
 
-  .search-list-item:hover {
-    background: #f1f5f9;
-  }
-
-  .search-list-item i {
-    width: 1rem;
-    color: #64748b;
-    text-align: center;
-  }
-
-  .search-result-row {
-    display: flex;
-    align-items: center;
-    gap: .75rem;
-    border-radius: .75rem;
-    padding: .625rem .75rem;
-    transition: background-color .15s ease;
-  }
-
-  .search-result-row:hover { background: #f8fafc; }
-
-  .search-result-icon {
-    display: flex;
-    height: 2.5rem;
-    width: 2.5rem;
-    flex: none;
-    align-items: center;
-    justify-content: center;
-    border-radius: .5rem;
-    background: #f1f5f9;
-    color: #475569;
-  }
-</style>
-@endpush
 
 @once
 @push('scripts')
@@ -194,12 +149,15 @@
     modal.querySelector('[data-search-close]')?.addEventListener('click', () => {
       modal.classList.add('hidden');
       document.documentElement.classList.remove('no-scroll');
-      document.getElementById('blog-navigation')?.classList.add('fixed', 'top-0', 'z-50');
+      input.value = '';
+      showDefaultState();
     });
 
     modal.addEventListener('click', (event) => {
       const link = event.target.closest('[data-search-link]');
       if (link) modal.classList.add('hidden');
+      input.value = '';
+      showDefaultState();
     });
   });
 </script>

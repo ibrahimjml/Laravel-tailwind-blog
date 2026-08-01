@@ -1,8 +1,11 @@
-<x-layout>
-
+@extends('layouts.guest')
+@section('content')
   <main class="mx-auto max-w-md sm:max-w-lg px-4 mt-5 mb-20 sm:mt-10">
     <div class="flex">
       <div class="w-full">
+      <div class="flex">
+         <x-logo class="mx-auto text-2xl my-4 cursor-pointer" />
+      </div>
         <section class="flex flex-col break-words bg-white border border-gray-200 rounded-2xl shadow-sm">
 
           <header class="font-bold text-center bg-gray-100 text-gray-700 py-5 px-6 sm:py-6 sm:px-8 rounded-t-2xl">
@@ -90,4 +93,5 @@
       }
     </script>
   @endpush
-</x-layout>
+@endsection
+

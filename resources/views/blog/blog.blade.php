@@ -1,24 +1,16 @@
 <x-layout>
   
-  <div class="pt-28 bg-white lg:border-0 border-b border-gray-200  lg:shadow-none shadow-sm"><!-- start container filters -->
+  <div><!-- start container filters -->
     <div class="container mx-auto px-4 ">
   
       <div class="flex flex-col gap-4 lg:hidden"><!-- start mobile layout -->
 
-        <div class="flex items-center gap-3"><!-- start sidebar button and search bar-->
-
+        <div class="px-0 flex items-center gap-3"><!-- start sidebar, sort & news -->
             <button
-              class="lg:hidden flex items-center justify-center w-10 h-10 text-gray-800 rounded-xl border border-slate-200 text-sm shadow-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent px-4 py-2.5  transition-all duration-200"
-              id="open-sidebar" aria-label="Toggle menu">
+                class="lg:hidden flex items-center justify-center w-10 h-10 text-gray-800 rounded-xl border border-slate-200 text-sm shadow-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent px-4 py-2.5  transition-all duration-200"
+                id="open-sidebar" aria-label="Toggle menu">
               <i class="fa fa-bars text-lg"></i>
             </button>
-
-          <div class="flex-1">
-            <x-search-button :searchquer=$searchquery/>
-          </div>
-        </div><!-- end sidebar button and search bar-->
-        
-        <div class="px-0 flex items-center gap-3"><!-- start sort & news -->
           @include('blog.partials.filter')
 
           @if($news->isNotEmpty())
@@ -30,7 +22,7 @@
               </button>
             </div>
           @endif
-        </div><!-- end sort & news -->
+        </div><!-- end sidebar,sort & news -->
 
       </div><!-- end mobile layout -->
 
@@ -38,10 +30,7 @@
       @include('blog.partials.__sidebar')
       
       <div class="hidden lg:flex items-center justify-between gap-6"><!-- start desktop layout -->
-        <!-- Search Bar  -->
-        <div class="flex-1 max-w-md">
-          <x-search-button :searchquer=$searchquery/>
-        </div>
+
         <!-- Sort -->
         <div class="flex-shrink-0">
           @include('blog.partials.filter')
@@ -49,8 +38,6 @@
       </div><!-- end desktop layout -->
     </div>
   </div><!-- end container filters -->
-
-  <x-search-list />
 
   <div id="news-container" class="flex flex-wrap justify-center mt-5 gap-2 px-3 mb-3 w-full  max-w-full transition-all duration-500 ease-in-out h-0 overflow-hidden"><!-- start news container-->
     @foreach($news as $new)

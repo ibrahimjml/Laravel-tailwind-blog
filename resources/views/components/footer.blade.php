@@ -114,10 +114,4 @@
     </div>
   </div>
 </footer>
-<x-scripts />
 
-{!! $footer_scripts ?? '' !!}
-
-</body>
-
-</html>
