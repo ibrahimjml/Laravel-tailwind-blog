@@ -5,7 +5,7 @@
   <x-head />
 </head>
 
-<body class="min-h-screen m-0 ">
+<body @auth data-user-id="{{ auth()->id() }}" @endauth class="min-h-screen m-0 ">
   <x-header-blog /> <!-- navbar --> 
 
   <main @class([

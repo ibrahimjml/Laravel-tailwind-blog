@@ -1,3 +1,6 @@
+  @push('vite')
+    @vite(['resources/js/tinymce.js'])
+  @endpush
 @push('styles')
 <style>
   .edit-group:hover .label-expand {

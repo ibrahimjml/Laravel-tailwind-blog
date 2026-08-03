@@ -1,4 +1,7 @@
 <x-layout>
+  @push('vite')
+    @vite(['resources/js/tinymce.js'])
+  @endpush
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
     <div class="bg-white shadow-xl rounded-lg overflow-hidden"><!--start page card-->
@@ -64,9 +67,7 @@
                   Description
                 </label>
                 <textarea name="description" id="textarea" rows="5"
-                  class="w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 p-2">
-                {{ old('description') }}
-                </textarea>
+                  class="w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 p-2">{{ old('description') }}</textarea>
                 @error('description')
                   <p class="text-red-500 text-xs italic mt-4">
                     {{ $message }}

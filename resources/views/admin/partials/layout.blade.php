@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   {!! $header_scripts ?? '' !!} <!-- custom header scripts -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @stack('vite') <!-- for additional vite scripts -->
   <title>@yield('title', 'Dashboard | Admin')</title>
   @stack('admin-styles')
   <style>

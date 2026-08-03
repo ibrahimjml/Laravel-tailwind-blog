@@ -1,4 +1,7 @@
 <x-layout>
+  @push('vite')
+    @vite(['resources/js/prism.js','resources/js/medium-zoom.js'])
+  @endpush
   @push('styles')
     <style>
       /************************

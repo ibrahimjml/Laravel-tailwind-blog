@@ -1,7 +1,8 @@
-import 'tinymce/tinymce';
+import './prism';
+import tinymce from 'tinymce';
+import prismCustomUrl from '../css/custom/prism.css?url';
 import 'tinymce/skins/ui/oxide/skin.min.css';
 import 'tinymce/skins/content/default/content.min.css';
-import 'tinymce/skins/content/default/content.css';
 import 'tinymce/icons/default/icons';
 import 'tinymce/themes/silver/theme';
 import 'tinymce/models/dom/model';
@@ -12,7 +13,7 @@ import 'tinymce/plugins/link';
 import 'tinymce/plugins/lists';
 import 'tinymce/plugins/media';
 
-export function initTinyMCE() {
+window.addEventListener('DOMContentLoaded', () => {
   tinymce.init({
     selector: '#textarea',
     plugins: 'code codesample image link lists media',
@@ -96,10 +97,10 @@ export function initTinyMCE() {
       });
     },
 
-    content_css: ['/tinymce.css'],
+    content_css: [prismCustomUrl],
     document_base_url: '/',
     relative_urls: false,
     remove_script_host: false,
     skin: false,
   });
-}
+});

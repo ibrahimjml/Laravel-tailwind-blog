@@ -34,12 +34,7 @@
 <link rel="stylesheet" href="{{asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css')}}" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-<link rel="stylesheet" href="{{asset('style.css')}}">
-<link rel="stylesheet" href="{{asset('tinymce.css')}}">
-@auth
-<script>
-     window.userId = {{ auth()->id() }};
-</script>
-@endauth
+
 @vite(['resources/css/app.css', 'resources/js/app.js'])
+@stack('vite') <!-- for additional vite scripts -->
 @stack('styles')

@@ -1,4 +1,7 @@
 @extends('admin.partials.layout')
+  @push('vite')
+    @vite(['resources/js/tinymce.js'])
+  @endpush
 @section('title', 'Featured | Dashboard')
 @section('content')
   <div class="relative md:ml-64 bg-blueGray-50">

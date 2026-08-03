@@ -1,5 +1,9 @@
 @import './custom/tailwind.css';
+@import './custom/prism.css';
+@import './custom/style.css';
+@import './custom/codeblock-style.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
