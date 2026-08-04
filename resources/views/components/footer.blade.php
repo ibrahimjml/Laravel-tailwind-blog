@@ -64,6 +64,8 @@
                 </a>
               </li>
             @endforeach
+            <li><a href="{{ route('public.sitemap.index',['key' => 'sitemap','extension' => 'rss']) }}"
+                class="transition-colors hover:text-slate-900 dark:hover:text-white">RSS</a></li>
           </ul>
         </div>
       </div>

@@ -2,16 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Events\SitemapRendering;
+use App\Services\Sitemap\SitemapManager;
+use Illuminate\Http\Response;
 
 class SitemapController extends Controller
 {
-    public function __invoke()
-    {
-        $posts = \App\Models\Post::query()->published()->latest()->get();
-        $categories = \App\Models\Category::query()->latest()->get();
-        $hashtags = \App\Models\Hashtag::active()->latest()->get();
 
-        return response()->view('sitemap', compact('posts', 'categories', 'hashtags'))->header('Content-Type', 'text/xml');
+    public function __invoke(SitemapManager $manager, string $key, string $extension): Response
+    {
+        // refer to sitemap.xml or sitemap.rss
+        $format = $key === 'sitemap' && in_array($extension, ['xml', 'rss'], true)
+            ? 'sitemapindex'
+            : $extension;
+
+        return $this->renderSitemap($manager, $key, $format, $extension);
+    }
+
+    private function renderSitemap(SitemapManager $manager, string $group, string $format, ?string $extension = null): Response
+    {
+        $manager->init($group . '.' . ($extension ?? $format));
+        SitemapRendering::dispatch($manager, $group, $format, $extension ?? $format);
+
+        return $manager->render($format);
     }
 }

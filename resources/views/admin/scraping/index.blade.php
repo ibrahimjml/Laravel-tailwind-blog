@@ -3,9 +3,9 @@
 @push('admin-styles')
   <style>
     .tab-btn.active {
-      color: #2563eb;
-      background-color: #eff6ff;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      color: #2563eb !important;
+      background-color: #eff6ff !important;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
     }
 
     .tab-panel.hidden {

@@ -12,6 +12,8 @@ use App\Events\PostReportEvent;
 use App\Events\ProfileViewedEvent;
 use App\Events\ReplyCommentEvent;
 use App\Events\ReportStatusUpdateEvent;
+use App\Events\SitemapRendering;
+use App\Listeners\BuildSitemap;
 use App\Listeners\NotifyAdminNewUser;
 use App\Listeners\SendCommentNotification;
 use App\Listeners\SendFollowNotification;
@@ -67,6 +69,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         MentionedUserEvent::class => [
           SendMentionedNotification::class,
+        ],
+        SitemapRendering::class => [
+          BuildSitemap::class,
         ],
     ];
 

@@ -29,6 +29,11 @@ class UserObserver
       // clear cache 
       app(ClearCacheService::class)->clearUserCaches();
     }
+    public function updated(User $user)
+    {
+      // clear cache 
+      app(ClearCacheService::class)->clearUserCaches();
+    }
     public function deleting(User $user): void
     {
          DB::transaction(function () use ($user) {
@@ -63,5 +68,9 @@ class UserObserver
          });
     }
 
-  
+  public function deleted(User $user): void
+  {
+    // clear cache 
+    app(ClearCacheService::class)->clearUserCaches();
+  }
 }

@@ -11,6 +11,7 @@ class UserRepository implements UserInterface
    public function getBySearch( $dto, int $limit): Collection 
     {
         return User::query()
+            ->activated()
             ->where('is_blocked',false)
             ->search($dto->search)
             ->limit($limit)

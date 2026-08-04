@@ -70,7 +70,7 @@
 ### 🧱 Architecture & Performance
 
   - **Clean architecture using:** Service Layer,Observers,Builders,Repositories and Decorators Caches, DTOs.
-  - **Dynamic XML Sitemaps**
+  - **Dynamic XML/RSS Sitemaps Generated**
 
 
 ## Setup With Docker

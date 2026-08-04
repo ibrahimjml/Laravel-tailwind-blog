@@ -20,6 +20,7 @@ use App\Repositories\Interfaces\PostInterface;
 use App\Repositories\Interfaces\TagInterface;
 use App\Repositories\Interfaces\UserInterface;
 use App\Services\MediaDriverResolver;
+use App\Services\Sitemap\Sitemap;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
@@ -32,6 +33,8 @@ class AppServiceProvider extends ServiceProvider
    */
   public function register(): void
   {
+    $this->app->singleton(Sitemap::class);
+    $this->app->alias(Sitemap::class, 'sitemap');
 
     $this->app->bind(PostInterface::class, function ($app) {
       if (config('cache.enabled')) {

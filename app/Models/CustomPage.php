@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CustomPageStatus;
+use App\Services\ClearCacheService;
 use Cache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,7 +26,10 @@ class CustomPage extends Model
     ];
     protected static function booted()
     {
-        $clearCache = fn() => Cache::forget('custom_pages');
+        $clearCache = function (): void {
+            Cache::forget('custom_pages');
+            app(ClearCacheService::class)->clearSitemapCaches();
+        };
         
         static::creating(function ($page) {
             $page->slug = Str::slug($page->title);

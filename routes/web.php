@@ -39,7 +39,10 @@ use App\Http\Controllers\Auth\TwoFactorController;
 // HOME
 Route::get('/',HomeController::class)->name('home');
 // sitemap
-Route::get('/sitemap.xml',SitemapController::class)->name('sitemap');
+Route::get('/{key}.{extension}', SitemapController::class)
+    ->where('key', '^'.collect(\App\Services\Sitemap\SitemapManager::getKeys())->map(fn (string $key) => '(?:'.preg_quote($key, '/').')')->implode('|').'$')
+    ->whereIn('extension', \App\Services\Sitemap\SitemapManager::allowedExtensions())
+    ->name('public.sitemap.index');
 // Blog
 Route::get('/blog',[PostController::class,'blogpost'])->name('blog');
 // Post
