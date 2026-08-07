@@ -27,13 +27,13 @@ class CreatePostRequest extends FormRequest
     {
         return [
 
-        'title' => 'required|string|regex:/^[A-Za-z0-9\s]+$/|max:50|min:6',
+        'title' => 'required|string|regex:/^[A-Za-z0-9\s]+$/|max:70|min:6',
         'short_excerpt' => 'required|string|max:200|min:10',
         'description' => 'required|string',
         'categories' => 'nullable|array|min:1|max:4', 
         'categories.*' => 'integer|exists:categories,id',
         'hashtag' => ['nullable', 'string',new ValidHashtag(5)],
-        'image' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', new MaxImageUpload()],
+        'image' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', new MaxImageUpload()],
         'status' => ['required', Rule::in(array_keys(PostStatus::forUserCreation()))],
         'enabled' => 'nullable|boolean',
         'featured' => 'nullable|boolean',

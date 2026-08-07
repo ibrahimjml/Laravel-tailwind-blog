@@ -43,6 +43,11 @@ Route::get('/{key}.{extension}', SitemapController::class)
     ->where('key', '^'.collect(\App\Services\Sitemap\SitemapManager::getKeys())->map(fn (string $key) => '(?:'.preg_quote($key, '/').')')->implode('|').'$')
     ->whereIn('extension', \App\Services\Sitemap\SitemapManager::allowedExtensions())
     ->name('public.sitemap.index');
+
+// geerate dynamic image for post cover/og
+Route::get('/post/{type}/{post:slug}.png', [PostController::class, 'generateCover'])
+    ->whereIn('type', ['cover', 'og'])
+    ->name('posts.cover');    
 // Blog
 Route::get('/blog',[PostController::class,'blogpost'])->name('blog');
 // Post

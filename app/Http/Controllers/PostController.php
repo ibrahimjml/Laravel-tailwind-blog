@@ -8,7 +8,7 @@ use App\DTOs\{CreatePostDTO, UpdatePostDTO};
 use App\Http\Middleware\CheckIfBlocked;
 use App\Http\Requests\App\{CreatePostRequest, UpdatePostRequest};
 use App\Models\{AdPlacement, Category, Hashtag, Post};
-use App\Services\{PostService, SearchService, ViewPostService};
+use App\Services\{ImageGenerator\ImageGenerator, PostService, SearchService, ViewPostService};
 use Illuminate\Http\Request;
 
 
@@ -31,7 +31,17 @@ class PostController extends Controller
   {
      return $this->service->handleBlogPage($request);
   }
-  
+  public function generateCover($type, Post $post, ImageGenerator $generator)
+  {
+       $image = match($type) {
+           'cover' => $generator->forHandlePostUpload($post->title),
+           'og' => $generator->forHandleOgImage($post),
+           default => abort(404),
+       };
+       return response($image)
+            ->header('Content-Type', 'image/png')
+            ->header('Cache-Control', 'public, max-age=31536000');
+  }
   public function viewPost(Post $post,CreatePostViewAction $createPostViewAction)
   {
     $post = $this->postservice->getPost($post);

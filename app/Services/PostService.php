@@ -7,7 +7,6 @@ use App\Actions\CreatePostAction;
 use App\Actions\ResolvePostStatusAction;
 use App\Actions\SyncPostTagsAction;
 use App\DTOs\CreatePostDTO;
-use App\DTOs\PostFilterDTO;
 use App\DTOs\UpdatePostDTO;
 use App\Enums\PostStatus;
 use App\Events\PostCreatedEvent;
@@ -17,6 +16,7 @@ use App\Models\AdPlacement;
 use App\Models\Post;
 use App\Repositories\Interfaces\NewsInterface;
 use App\Repositories\Interfaces\PostInterface;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
@@ -92,11 +92,12 @@ class PostService
     try {
 
       $post = DB::transaction(function () use ($dto, $imageslug, &$newimage) {
-
-        $newimage = $this->uploadImage($dto->image, $imageslug);
+        if ($dto->image) {
+          $newimage = $this->uploadImage($dto->image, $imageslug);
+        }
         $status = $this->resolveStatusAction->handle($dto->status);
 
-        $post = $this->createPostAction->execute($dto,$newimage,$status);
+        $post = $this->createPostAction->execute($dto, $newimage, $status);
 
         if(n8n_webhook_enabled() && $status === PostStatus::PENDING){
           dispatch(new SendPostModerationWhatsappJob($post));
@@ -133,14 +134,17 @@ class PostService
   public function update(Post $post, UpdatePostDTO $dto): ?Post
   {
     $newImage = null;
-    $oldImage = $post->image_path;
+    $oldImage = $post->getOriginal('image_path');
 
     try {
 
-      DB::transaction(function () use ($post, $dto, &$newImage) {
+      DB::transaction(function () use ($post, $dto, &$newImage, &$oldImage) {
         $status = $this->resolveStatusAction->handle($dto->status);
         $data = array_merge($dto->toArray(), ['status' => $status]);
-        if ($dto->image) {
+        if ($dto->removeImage) {
+          DeleteFile::existImage('uploads/' . $oldImage);
+          $data['image_path'] = $newImage;
+        } elseif ($dto->image) {
 
           $imageSlug = Str::slug($dto->title);
 

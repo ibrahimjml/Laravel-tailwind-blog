@@ -12,7 +12,7 @@ class CreatePostDTO
        public readonly string $title,
        public readonly string $shortExcerpt,
        public readonly string $description,
-       public readonly UploadedFile $image,
+       public readonly ?UploadedFile $image,
        public readonly ?bool $allowComments,
        public readonly int $userId,
        public readonly ?string $hashtags, 

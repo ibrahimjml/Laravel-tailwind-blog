@@ -2,62 +2,7 @@
   @push('vite')
     @vite(['resources/js/prism.js','resources/js/medium-zoom.js'])
   @endpush
-  @push('styles')
-    <style>
-      /************************
-     Sticky bar nav on scroll
-    *************************/
-      .sticky-bar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 50;
-        background-color: #f3f4f6;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.4s ease-in-out;
-        z-index: 50;
-      }
 
-      .sticky-bar::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 4px;
-        width: 0;
-        background-color: #3b82f6;
-        transition: width 0.1s linear;
-        width: var(--progress-width, 0%);
-      }
-
-      .sticky-bar.visible {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      /*************************************
-     observe action bar on inseraction menu
-    ***************************************/
-      #action-bar.fixed-bottom {
-        position: fixed;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        z-index: 50;
-      }
-
-      #action-bar.hidden-bottom {
-        transform: translateY(100%);
-        opacity: 0;
-        pointer-events: none;
-        transition: transform 0.3s ease, opacity 0.3s ease;
-      }
-    </style>
-  @endpush
   <!-- begin Sponsor Ad Top article -->
   <x-ad-placement :ads="$ads" :position="\App\Enums\Adplacements\AdPosition::TOP_ARTICLE" />
   <!-- end Sponsor Ad Top article -->
@@ -154,23 +99,25 @@
     </div><!-- end User Info Section -->
   </div><!-- end container -->
   {{-- 3- post Image --}}
-  <div class="relative mx-auto w-full max-w-6xl mt-2 h-[300px] md:h-[450px]">
-    <img class="absolute top-0 left-0 w-full h-full lg:object-cover  rounded-none shadow-lg hover:shadow-md"
-      src="{{$post->image_url}}" alt="{{$post->title}}">
-    {{-- delete|edit model --}}
+  <div class="relative mx-auto w-full max-w-6xl mt-2 aspect-[12/6]">
+    <img
+        src="{{ $post->image_url }}"
+        alt="{{ $post->title }}"
+        class="absolute inset-0 w-full h-full object-cover"
+    >
+    {{-- delete|edit modal --}}
     @can('update', $post)
-      @include('partials.delete-edit-post-model')
+        @include('partials.delete-edit-post-model')
     @endcan
-    {{-- hashtags on post --}}
+
     <div class="absolute z-10 bottom-1 left-4 flex flex-wrap gap-2">
-      @foreach($post->hashtags->pluck('name') as $tag)
-        <span
-          class="px-2 py-1 text-white text-xs rounded-md bg-gray-700 bg-opacity-70 font-semibold hover:bg-gray-500 transition-all">
-          <a href="{{route('viewhashtag', $tag)}}"># {{ $tag }}</a>
-        </span>
-      @endforeach
+        @foreach($post->hashtags->pluck('name') as $tag)
+            <span class="px-2 py-1 text-white text-xs rounded-md bg-gray-700/70 font-semibold hover:bg-gray-500 transition-all">
+                <a href="{{ route('viewhashtag', $tag) }}"># {{ $tag }}</a>
+            </span>
+        @endforeach
     </div>
-  </div>
+</div>
   <hr class="my-4 lg:max-w-4xl max-w-[12rem] mx-auto">
   <div class="font-bold my-4 max-w-4xl  md:mx-auto mx-4">
     {{ $post->short_excerpt }}
@@ -294,6 +241,64 @@
     {{-- open reports model --}}
     @include('partials.reports-model')
   @endauth
+
+  @push('styles')
+    <style>
+      /************************
+     Sticky bar nav on scroll
+    *************************/
+      .sticky-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        background-color: #f3f4f6;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease-in-out;
+        z-index: 50;
+      }
+
+      .sticky-bar::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        width: 0;
+        background-color: #3b82f6;
+        transition: width 0.1s linear;
+        width: var(--progress-width, 0%);
+      }
+
+      .sticky-bar.visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /*************************************
+     observe action bar on inseraction menu
+    ***************************************/
+      #action-bar.fixed-bottom {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 50;
+      }
+
+      #action-bar.hidden-bottom {
+        transform: translateY(100%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+      }
+    </style>
+  @endpush
+
   @push('scripts')
     {{-- fetch follow --}}
     <script>

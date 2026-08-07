@@ -6,7 +6,7 @@ use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('guest')->controller(AuthController::class)->group(function(){
+Route::middleware('guest')->prefix('auth')->controller(AuthController::class)->group(function(){
   Route::get('/register','registerpage')->name('register');
   Route::post('/register','register')->name('register.post');
   
@@ -29,6 +29,7 @@ Route::prefix('2fa')->name('2fa.')->controller(TwoFactorController::class)->grou
 });
 
 Route::middleware('auth')
+->prefix('auth')
 ->group(function(){
   Route::controller(AuthController::class)->group(function(){
   Route::post('/logout','logout')->name('logout');

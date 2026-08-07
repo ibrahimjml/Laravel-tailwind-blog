@@ -26,13 +26,14 @@ class UpdatePostRequest extends FormRequest
     {
         return [
 
-        'title' => 'nullable|string|regex:/^[A-Za-z0-9\s]+$/|max:50|min:6',
+        'title' => 'nullable|string|regex:/^[A-Za-z0-9\s]+$/|max:70|min:6',
         'short_excerpt' => 'required|string|max:200|min:10',
         'description' => 'required|string',
         'categories' => 'sometimes|nullable|array|min:1|max:4', 
         'categories.*' => 'integer|exists:categories,id',
         'hashtag' => ['nullable', 'string', new ValidHashtag(5)],
         'image' => 'sometimes|image|mimes:jpg,png,jpeg,webp|max:5120',
+        'remove_image' => 'sometimes|nullable|boolean',
         'status' => ['required', Rule::in(array_keys(PostStatus::forUserCreation()))],
         'enabled' => 'sometimes|nullable|boolean',
         'featured' => 'sometimes|nullable|boolean'

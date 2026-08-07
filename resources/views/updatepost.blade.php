@@ -78,8 +78,9 @@
                 </label>
                 <input type="file" id="imageSelected" name="image"
                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-gray-300 rounded-md cursor-pointer @error('image') border-red-500 @enderror">
+                <input type="hidden" name="remove_image" id="removeImage" value="0">
                 {{-- Image Preview --}}
-                <div class="mt-4 relative w-fit {{ $post->image_url ? '' : 'hidden' }}" id="imageContainer">
+                <div class="mt-4 relative w-fit {{ $post->image_path ? '' : 'hidden' }}" id="imageContainer">
                   <img id="imagePreview" src="{{ $post->image_url ?? '#' }}" alt="Image Preview"
                     class="max-w-[300px] rounded-md shadow-lg border-2 border-gray-200">
                   <button type="button" id="cancelPreview"
@@ -248,6 +249,8 @@
       const fileSize = document.getElementById('fileSize');
 
       imageSelected.addEventListener('change', event => {
+        document.getElementById('removeImage').value = '0';
+
         const file = event.target.files[0];
         if (file) {
           const reader = new FileReader();
@@ -266,6 +269,7 @@
 
       cancelPreview.addEventListener('click', function () {
         imageSelected.value = '';
+        document.getElementById('removeImage').value = '1';
         imagePreview.src = '#';
         imageContainer.classList.add('hidden');
       });

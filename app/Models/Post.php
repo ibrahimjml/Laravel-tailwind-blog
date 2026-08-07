@@ -122,7 +122,7 @@ class Post extends Model
 {
     return $this->image_path 
         ? Storage::url( 'uploads/' .$this->image_path)
-        : Storage::url('covers/sunset.jpg');
+        : route('posts.cover', ['type' => 'cover', 'post' => $this->slug]).'?v='.$this->updated_at->timestamp;
 }
   public function comments(){
     return $this->hasMany(Comment::class)

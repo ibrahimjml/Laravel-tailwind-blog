@@ -1,4 +1,12 @@
 User-agent: *
+
 Allow: /
+
+Disallow: /auth/*
+Disallow: /admin/*
+Disallow: /dashboard
+Disallow: /notifications/*
+Disallow: /profile/settings
+Disallow: /api/
 
 Sitemap: https://myblog4u.site/sitemap.xml
