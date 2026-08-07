@@ -1,19 +1,22 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><a href="https://myblog4u.site" target="_blank"><img src="https://myblog4u.site/img/logo2.png" width="400" alt="Myblog4u"></a></p>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-FF2D20?style=flat&logo=laravel&logoColor=white" alt="Laravel"></a>
+<a href="https://www.php.net"><img src="https://img.shields.io/badge/PHP-777BB4?style=flat&logo=php&logoColor=white" alt="PHP"></a>
+<a href="https://tailwindcss.com"><img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white" alt="Tailwind CSS"></a>
+<a href="https://www.digitalocean.com"><img src="https://img.shields.io/badge/DigitalOcean-0080FF?style=flat&logo=digitalocean&logoColor=white" alt="DigitalOcean"></a>
+<a href="https://nginx.org"><img src="https://img.shields.io/badge/Nginx-009639?style=flat&logo=nginx&logoColor=white" alt="Nginx"></a>
 </p>
 
-## About Laravel
-# Laravel Blog Application
-## 📸 Screenshots
+<h2 align="center">MyBlog4u Social Networking</h2>
 
+## About 
+
+MyBlog4u is a scalable, production-ready social networking platform comes with advanced features, ready for monetization, Custom Ad banners/Google AdSense, Web and Rss scraping (Setup Auto crawl settings), ultimate custom rate limiting, Full ACL, Dynamic Sitemap + RSS generation, Google Analytics GA4 Full widgets tracking sites, Custom pages creation, Image Optimization, Multi media drivers support (R2, DO spaces, S3, local ).
+
+## Screenshots
 👉 [View Screenshots](SCREENSHOTS.md)
 
----
 
 ## 🚀 Features
 
@@ -238,31 +241,14 @@ php artisan migrate --seed --env=testing
 ```
 php artisan serve --env=testing
 ```
-## Admin Login
-`Use these credentails to log in as admin`
 
-- Email: admin@mail.ru.
-- Pass : adminadmin123.
+## Production
 
-## Laravel RESTful API for this project <img height="20" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1200px-Laravel.svg.png" />
+MyBlog4u runs on a production stack built for reliability and performance:
 
-All Requests start with http://127.0.0.1:8000/api
-
-`Login`
-
-- `POST /api/login` - login to get token access.
-
- `posts`
-- `GET /api/blog` - Get all posts.No authentication required.
-- `GET /api/posts/{post}` - Get single post.No authentication required.
-- `POST /api/create` - Create new post , authentication required.
-- `PUT /api/post/update/{post}` - Update authorized post, authentication required.
-- `DELETE /api/post/{post}` - Delete authorized post, authentication required.
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- ☁️ **Hosting** — DigitalOcean, served via Nginx
+- 📦 **Object storage** — Cloudflare R2 for file uploads
+- 🔔 **Real-time notifications** — Laravel Reverb
+- ⚙️ **Queue management** — Supervisor for handling background jobs
+- 📧 **Email delivery** — Brevo
+- ⚡ **Caching** — Redis

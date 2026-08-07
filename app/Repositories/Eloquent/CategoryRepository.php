@@ -33,7 +33,9 @@ class CategoryRepository implements CategoryInterface
                         ->select([
                             'posts.id',
                             'posts.title',
+                            'posts.slug',
                             'posts.image_path',
+                            'posts.updated_at',
                         ])
                         ->latest('posts.created_at')
                         ->take(5)

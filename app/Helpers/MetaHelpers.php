@@ -26,7 +26,7 @@ class MetaHelpers
       'meta_keywords'    => $metaKeywords ,
       'og_image'         => $post->image_path 
                               ? Storage::disk(media_driver())->url('uploads/' . $post->image_path) 
-                              : route('posts.cover', ['type' => 'og', 'post' => $post->slug]) . '?v=' . $post->updated_at->timestamp,
+                              : route('posts.cover', ['type' => 'og', 'post' => $post->slug]) . '?v=' . ($post->updated_at?->timestamp ?? time()),
       'favicon_url'      => $seoSettings?->favicon_url ?? url('img/icon.png'),
       'header_scripts'   => $seoSettings?->header_scripts ?? '',
       'footer_scripts'   => $seoSettings?->footer_scripts ?? '',

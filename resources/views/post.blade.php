@@ -161,18 +161,20 @@
   <p class="text-gray-500 text-xl text-center font-semibold mt-5 uppercase ">More Articles</p>
   <div class="flex flex-col md:flex-row  md:justify-center md:items-center md:gap-2 gap-4 mt-4 mb-3">
     @foreach($morearticles as $article)
-      <div class=" p-3 mx-auto md:mx-0 w-[400px] md:w-[500px] h-fit flex flex-col ">
-        <div class="flex gap-2 items-center">
+      <div class="p-3 mx-auto md:mx-0 w-[400px] md:w-[500px] h-full flex flex-col">
+        <div class="flex gap-2 items-center mb-2 shrink-0">
           <a href='{{route('profile.home', $article->user->username)}}'>
             <img loading="lazy" src="{{$article->user->avatar_url}}"
-              class="w-[40px] h-[40px] overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
+              class="w-[40px] h-[40px]  overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
           </a>
           <a href='{{route('profile.home', $article->user->username)}}' class="hover:underline">
             {{$article->user->username}}
           </a>
         </div>
-        <a href="{{route('single.post', $article->slug)}}">
-          <img src="{{$article->image_url}}" alt="" class="w-full h-[270px] object-cover mt-2">
+        <a href="{{route('single.post', $article->slug)}}" class="flex flex-1 flex-col">
+          <div class="flex h-[270px] min-h-[270px] w-full items-center justify-center overflow-hidden rounded-lg bg-slate-100 shrink-0">
+            <img src="{{$article->image_url}}" alt="" class="h-full w-full object-cover object-center">
+          </div>
           <div class="flex justify-between text-sm text-gray-400 my-3">
             <p>{{$article->total_comments_count}} comments</p>
             <p>{{$article->created_at->format('F d, Y')}}</p>
@@ -200,8 +202,8 @@
 
     <div class="carousel" id="carousel">
       @foreach($latestblogs as $blogs)
-        <div class="carousel-item p-3 flex-shrink-0">
-          <div class="flex gap-2 items-center">
+        <div class="carousel-item p-3 flex-shrink-0 w-[320px] sm:w-[360px] flex flex-col">
+          <div class="flex gap-2 items-center mb-2 shrink-0">
             <a href="{{ route('profile.home', $blogs->user->username) }}">
               <img loading="lazy" src="{{ $blogs->user->avatar_url }}"
                 class="w-[40px] h-[40px] rounded-full object-cover">
@@ -210,8 +212,10 @@
               {{ $blogs->user->username }}
             </a>
           </div>
-          <a href="{{ route('single.post', $blogs->slug) }}">
-            <img src="{{ $blogs->image_url }}" alt="{{$blogs->title}}" class="w-full h-[270px] object-cover mt-2">
+          <a href="{{ route('single.post', $blogs->slug) }}" class="flex flex-1 flex-col">
+            <div class="flex h-[270px] min-h-[270px] w-full items-center justify-center overflow-hidden rounded-lg bg-slate-100 shrink-0">
+              <img src="{{ $blogs->image_url }}" alt="{{$blogs->title}}" class="h-full w-full object-cover object-center">
+            </div>
             <div class="flex justify-between text-sm text-gray-400 my-3">
               <p>{{$blogs->total_comments_count}} comments</p>
               <p>{{$blogs->created_at->format('F d, Y')}}</p>
