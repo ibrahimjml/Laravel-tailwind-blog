@@ -23,7 +23,7 @@ class PostController extends Controller
     $this->postservice = $postservice;
     $this->service = $service;
     $this->middleware(CheckIfBlocked::class);
-    $this->middleware(['auth', 'verified'])->except(['blogpost', 'viewPost','search']);
+    $this->middleware(['auth', 'verified'])->except(['blogpost', 'viewPost','search','generateCover']);
     $this->middleware('password.confirm')->only(['editpost', 'delete','update']);
   }
 
