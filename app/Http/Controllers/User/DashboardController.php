@@ -16,7 +16,7 @@ class DashboardController extends Controller
   }
   public function overview()
   {
-    $user = request()->user()->loadCount(['post', 'followers', 'followings','pendingFollowers','profileViews','likes','comments']);
+    $user = request()->user()->loadCount(['posts', 'followers', 'followings','pendingFollowers','profileViews','likes','comments']);
     $postsQuery = Post::query()->where('user_id', $user->id);
     $totallikes = (clone $postsQuery)->sum('likes_count');
     $totalPostViews = (clone $postsQuery)->sum('views');
@@ -38,7 +38,7 @@ class DashboardController extends Controller
     $sort = new Fluent(request()->only('sort'));
 
     $posts = request()->user()
-      ->post()
+      ->posts()
       ->withCount(['likes', 'comments'])
       ->with(['hashtags','categories'])
       ->DashboardFilter($sort)
@@ -90,7 +90,7 @@ class DashboardController extends Controller
       return array_merge([
         'user' => $user,
         'section' => $section,
-        'total_posts' => $user->post()->count(),
+        'total_posts' => $user->posts()->count(),
       ], $data);
     }
 

@@ -65,10 +65,8 @@ class AuthController extends Controller
     if ($user->is_blocked) {
         return back();
     }
-    // activation check
-    if($user->hasRole(\App\Enums\UserRole::USER->value) && 
-    (! $user->activation || ! $user->activation->completed))
-     {
+
+    if(! $user->activation?->completed){
       toastr()->info('Your account has not yet been activated, please be passiont.', ['timeOut' => 7000]);
       return back();
    }

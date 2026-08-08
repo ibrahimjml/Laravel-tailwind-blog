@@ -104,6 +104,7 @@
                 class="w-full rounded-2xl border border-gray-300 bg-gray-50 p-3 text-gray-900 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
                 name="password_confirmation" required autocomplete="new-password">
             </div>
+            @if($terms && $privacy)
             <!-- accept terms checkbox -->
             <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-3">
               <div class="flex items-center gap-2">
@@ -115,6 +116,7 @@
               </div>
               @error('accept')<p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>@enderror
             </div>
+            @endif
             <!-- Google reCAPTCHA v2 checkbox -->
             @recaptcha_enabled
             <div class="g-recaptcha" data-sitekey="{{config('services.captcha.sitekey')}}"></div>

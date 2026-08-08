@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin;
 
+use App\Actions\CreateUserActivationAction;
 use App\DTOs\Admin\CreateUserDTO;
 use App\DTOs\Admin\UpdateUserDTO;
 use App\Enums\UserRole;
@@ -17,14 +18,14 @@ class UsersService
         $filter = new Fluent($filters);
 
   return User::with(['roles','roles.permissions','userPermissions','activation']) 
-                ->withCount(['reportsSubmitted', 'reportsReceived','followings','followers','post'])
+                ->withCount(['reportsSubmitted', 'reportsReceived','followings','followers','posts'])
                ->latest()
                ->filter($filter)
                ->paginate(6)
                ->withQueryString();
     }
 
-    public function createUser(CreateUserDTO $dto):User
+    public function createUser(CreateUserDTO $dto, CreateUserActivationAction $createUserActivationAction): User
     {
 
     $user = User::create([
@@ -35,6 +36,9 @@ class UsersService
          'age' => $dto->age,
         'password' => Hash::make($dto->password),
       ]);
+
+       $createUserActivationAction->create($user, true);
+
       $this->syncRolesAndPermissions($user,$dto->roles,$dto->permissions ?? []);
       return $user;
     }

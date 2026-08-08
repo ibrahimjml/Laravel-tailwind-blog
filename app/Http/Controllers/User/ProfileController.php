@@ -23,7 +23,7 @@ class ProfileController extends Controller
       $this->view->createView($user,$viewer);
     }
     
-    $posts = $user->post()
+    $posts = $user->posts()
              ->published()
              ->with('user')
              ->orderByDesc('is_pinned')
@@ -56,9 +56,9 @@ private function ProfileData(User $user, string $section)
   return [
       'user' => $user,
       'section' => $section,
-      'postcount' => $user->post()->published()->count(),
-      'likescount' => $user->post()->withCount('likes')->get()->sum('likes_count'),
-      'commentscount' => $user->post()->withCount('comments')->get()->sum('comments_count'),
+      'postcount' => $user->posts()->published()->count(),
+      'likescount' => $user->posts()->withCount('likes')->get()->sum('likes_count'),
+      'commentscount' => $user->posts()->withCount('comments')->get()->sum('comments_count'),
       'profileviews' => ProfileView::where('profile_id', $user->id)->with('viewer')->get(),
   ];
 }

@@ -32,11 +32,9 @@ if (! function_exists('abort_unless_require_registration')) {
 if(! function_exists('abort_if_user_not_activated')){
    function abort_if_user_not_activated($user)
    {
-     if ($user->hasRole(\App\Enums\UserRole::USER->value) &&
-        (! $user->activation || ! $user->activation->completed))
-         {
-      abort(404);
-      }
+     if (! $user->activation?->completed){
+         abort(404);
+        }
    }
 }
 if(! function_exists('media_driver')){

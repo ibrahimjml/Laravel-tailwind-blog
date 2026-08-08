@@ -78,9 +78,17 @@ class AdminSeeder extends Seeder
       'created_at'        => Carbon::now(),
       'email_verified_at' => now()
     ]);
+    
+    $admin->activation()->create([
+      'user_id' => $admin->id,
+      'completed' => true,
+      'completed_at' => now()
+    ]);
+
     $admin->profile()->create([
       'is_public' => true,
     ]);
+
     $admin->roles()->syncWithoutDetaching([$adminrole->id]);
     
     foreach(NotificationType::cases() as $type){

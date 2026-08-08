@@ -41,6 +41,11 @@ class UserFactory extends Factory
     public function configure()
     {
       return $this->afterCreating(function (User $user) {
+        $user->activation()->create([
+                'user_id' => $user->id,
+                'completed' => true,
+                'completed_at' => now(),
+            ]);
         $user->profile()->create([
           'is_public' => $this->faker->boolean(),
         ]);

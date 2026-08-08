@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\CreateUserActivationAction;
 use App\DTOs\Admin\CreateUserDTO;
 use App\DTOs\Admin\UpdateUserDTO;
 use App\Http\Controllers\Controller;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
-     public function __construct(private UsersService $service){
+     public function __construct(private UsersService $service, private CreateUserActivationAction $createUserActivationAction){
         $this->middleware('permission:user.view')->only('users');
         $this->middleware('permission:user.create')->only('createUser');
      }
@@ -38,7 +39,7 @@ public function createUser(CreateUserRequest $request)
     try{
 
     $dto = CreateUserDTO::fromRequest($request);
-    $this->service->createUser($dto);
+    $this->service->createUser($dto, $this->createUserActivationAction);
     // clear cached roles and permissions
     Cache::tags(['user_permissions','has_any_role'])->flush();
     toastr()->success('user created',['timeOut'=>1000]);

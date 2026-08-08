@@ -26,13 +26,16 @@ class RegisterRequest extends FormRequest
      */
     public function rules(): array
     {
+       $terms =   \App\Models\CustomPage::where('slug', 'terms-of-service')->exists();
+       $privacy = \App\Models\CustomPage::where('slug', 'privacy-policy')->exists();
+
         return [
             "email" => ["required", "email", "min:5", "max:50", Rule::unique(User::class),new EmailProviders()],
             "name" => ["required", "min:5", "max:50", "alpha"],
             "username" => ["required", "min:5", "max:15", "alpha_num", Rule::unique(User::class)],
             "phone" => ['required', 'regex:/^\+\d{8,15}$/', Rule::unique(User::class)],
             "password" => ["required","confirmed",new PasswordRule()],
-            "accept" => ['required'],
+            "accept" => [ Rule::requiredIf($terms && $privacy) ],
             "g-recaptcha-response" => [new Recaptcha()]
         ];
     }
