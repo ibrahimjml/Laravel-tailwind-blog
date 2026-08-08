@@ -6,7 +6,6 @@ use App\Builders\UserBuilder;
 use App\Enums\FollowerStatus;
 use App\Notifications\VerifyEmailQueued;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,10 +50,10 @@ class User extends Authenticatable implements MustVerifyEmail
   {
     return new UserBuilder($query);
   }
-   public function receivesBroadcastNotificationsOn(): string
-    {
-        return 'notifications.' . $this->id;
-    }
+  public function receivesBroadcastNotificationsOn(): string
+  {
+    return 'notifications.' . $this->id;
+  }
   public function sendEmailVerificationNotification()
   {
     $this->notify(new VerifyEmailQueued);
@@ -64,16 +63,21 @@ class User extends Authenticatable implements MustVerifyEmail
     return $this->hasOne(Activation::class);
   }
   public function scopeActivated($query)
-  {
-    return $query->whereHas('activation', function ($q) {
-      $q->where('completed', true);
+{
+    return $query->whereHas('activation', function ($query) {
+        $query->where('completed', true);
     });
-  }
-  public function post()
+}
+  public function posts()
   {
     return $this->hasMany(Post::class);
   }
-
+  public function scopeHasPublishedPosts($query)
+  {
+    return $query->whereHas('posts', function ($query): void {
+      $query->published();
+    });
+  }
   public function identityVerification()
   {
     return $this->hasOne(IdentityVerification::class);
@@ -81,6 +85,18 @@ class User extends Authenticatable implements MustVerifyEmail
   public function profile(): HasOne
   {
     return $this->hasOne(Profile::class);
+  }
+  public function scopePublicProfile($query)
+  {
+    return $query->whereHas('profile', function ($query): void {
+      $query->where('is_public', true);
+    });
+  }
+  public function scopePrivateProfile($query)
+  {
+    return $query->whereHas('profile', function ($query): void {
+      $query->where('is_public', false);
+    });
   }
   public function likes()
   {
@@ -158,13 +174,13 @@ class User extends Authenticatable implements MustVerifyEmail
       : Storage::url('covers/' . $this->cover_photo);
   }
   public function toSearchableArray(): array
-{
+  {
     return [
-        'id' => $this->id,
-        'name' => $this->name,
-        'username' => $this->username,
+      'id' => $this->id,
+      'name' => $this->name,
+      'username' => $this->username,
     ];
-}
+  }
   protected $hidden = [
     'password',
     'remember_token',

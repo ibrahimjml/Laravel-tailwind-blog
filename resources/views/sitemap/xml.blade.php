@@ -25,23 +25,23 @@
             @endif
 
             @if (!empty($item['images']))
-                @foreach ($item['images'] as $image)
+                
                     <image:image>
-                        <image:loc>{{ $image['url'] }}</image:loc>
-                        @if (isset($image['title']))
-                            <image:title>{{ $image['title'] }}</image:title>
+                        <image:loc>{{ $item['images']['url'] }}</image:loc>
+                        @if (isset($item['images']['title']))
+                            <image:title>{{ $item['images']['title'] }}</image:title>
                         @endif
-                        @if (isset($image['caption']))
-                            <image:caption>{{ $image['caption'] }}</image:caption>
+                        @if (isset($item['images']['caption']))
+                            <image:caption>{{ $item['images']['caption'] }}</image:caption>
                         @endif
-                        @if (isset($image['geo_location']))
-                            <image:geo_location>{{ $image['geo_location'] }}</image:geo_location>
+                        @if (isset($item['images']['geo_location']))
+                            <image:geo_location>{{ $item['images']['geo_location'] }}</image:geo_location>
                         @endif
-                        @if (isset($image['license']))
-                            <image:license>{{ $image['license'] }}</image:license>
+                        @if (isset($item['images']['license']))
+                            <image:license>{{ $item['images']['license'] }}</image:license>
                         @endif
                     </image:image>
-                @endforeach
+                
             @endif
 
           

@@ -14,5 +14,11 @@ return [
     ],
 
     'default' => ['priority' => '0.8', 'changefreq' => 'daily'],
-    'rss' => ['title' => env('APP_NAME', 'Blog').' sitemap'],
+
+    'rss' => [
+          'title' => env('APP_NAME', 'Myblog4u Social Network').' sitemap',
+          'description' => 'Myblog4u a social network that connect creators, writes, publishers',
+          'link' => env('APP_URL', 'https://myblog4u.site/blog'),
+          'image' => 'https://myblog4u.site/blog/img/logo2.png',
+         ]
 ];

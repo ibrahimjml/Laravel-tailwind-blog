@@ -80,10 +80,27 @@ class SitemapManager
         return $this;
     }
 
-    public function add(string $url, ?string $date = null, ?string $priority = null, ?string $changeFrequency = null, array $images = [], ?string $title = null, ?string $description = null, ?string $author = null): self
+    public function add(string $url,
+         ?string $date = null,
+         ?string $priority = null,
+         ?string $changeFrequency = null, 
+         array $images = [], 
+         ?string $title = null,
+         ?string $short_excerpt = null,
+         ?string $description = null,
+         ?string $author = null): self
     {
         if (! $this->isCached()) {
-            $this->siteMap->add($url, $date, $priority, $changeFrequency, $images, $title, $description, $author);
+              $this->siteMap->add(
+              $url,
+              $date, 
+              $priority,
+              $changeFrequency,
+              $images, 
+              $title,
+              $short_excerpt,
+              $description,
+              $author);
         }
 
         return $this;
@@ -122,7 +139,13 @@ class SitemapManager
         ->where('is_active', 1)
         ->orderByDesc('updated_at')
         ->each(function (CustomPage $page): void {
-            $this->add(route('custom.page', $page), $page->updated_at?->toAtomString(), '0.8', 'daily', [], $page->title);
+            $this->add(
+            route('custom.page', $page),
+            $page->updated_at?->toAtomString(),
+            '0.8',
+            'daily',
+            [],
+            $page->title);
         });
 
         return $this;
@@ -135,8 +158,21 @@ class SitemapManager
         ->published()
         ->orderByDesc('updated_at')
         ->each(function (Post $post): void {
-            $images = $post->image_path ? [['url' => $post->image_url, 'title' => $post->title]] : [];
-            $this->add(route('single.post', $post), $post->updated_at?->toAtomString(), '0.9', 'daily', $images, $post->title, $post->description, $post->user?->name);
+            $images  = [
+               'url' => $post->image_url,
+               'title' => $post->title
+               ];
+            $this->add(
+               route('single.post', $post),
+               $post->updated_at?->toAtomString(),
+               '0.9',
+               'daily',
+                $images,
+                $post->title,
+                $post->short_excerpt,
+                $post->description,
+                $post->user?->name
+                );
         });
 
         return $this;
@@ -145,10 +181,20 @@ class SitemapManager
    {
       User::query()
       ->activated()
+      ->publicProfile()
+      ->hasPublishedPosts()
       ->where('is_blocked', false)
       ->orderByDesc('updated_at')
       ->each(function (User $user): void {
-          $this->add(route('profile.home', $user->username), $user->updated_at?->toAtomString(), '0.8', 'daily', [], $user->name, $user->bio);
+          $this->add(
+               route('profile.home', $user->username),
+               $user->updated_at?->toAtomString(),
+              '0.8', 
+              'daily',
+               [], 
+               $user->name, 
+               $user->bio
+               );
       });
       return $this;
        
@@ -158,20 +204,26 @@ class SitemapManager
         Hashtag::query()
         ->active()
          ->withWhereHas('posts', function ($query) {
-             $query->select('posts.id', 'posts.title', 'posts.image_path')
+             $query->select('posts.id', 'posts.title','posts.slug', 'posts.image_path')
                    ->latest('posts.created_at');
           })
         ->orderByDesc('updated_at')
         ->each(function (Hashtag $hashtag): void {
-            $images = [];
-
+             $images = [];
             if ($post = $hashtag->posts->first()) {
-                $images[] = [
+                $images = [
                     'url' => $post->image_url,
                     'title' => $post->title,
                 ];
             }
-            $this->add(route('viewhashtag', $hashtag), $hashtag->updated_at?->toAtomString(), '0.8', 'daily', $images, $hashtag->name);
+            $this->add(
+               route('viewhashtag', $hashtag),
+               $hashtag->updated_at?->toAtomString(),
+               '0.8', 
+               'daily',
+                $images,
+                $hashtag->name
+                );
         });
 
         return $this;
@@ -181,7 +233,7 @@ class SitemapManager
     {
        Category::query()
          ->withWhereHas('posts', function ($query) {
-             $query->select('posts.id', 'posts.title', 'posts.image_path')
+             $query->select('posts.id', 'posts.title','posts.slug', 'posts.image_path')
                    ->latest('posts.created_at');
           })
         ->orderByDesc('updated_at')
@@ -190,12 +242,19 @@ class SitemapManager
             $images = [];
 
             if ($post = $category->posts->first()) {
-                $images[] = [
+                $images = [
                     'url' => $post->image_url,
                     'title' => $post->title,
                 ];
             }
-            $this->add(route('viewcategory', $category), $category->updated_at?->toAtomString(), '0.8', 'daily', $images, $category->name);
+            $this->add(
+               route('viewcategory', $category),
+               $category->updated_at?->toAtomString(),
+               '0.8', 
+               'daily',
+                $images,
+                $category->name
+                  );
         });
 
         return $this;

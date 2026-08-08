@@ -45,6 +45,7 @@ class Sitemap
           ?string $freq = null, 
           array $images = [], 
           ?string $title = null, 
+          ?string $short_excerpt = null,
           ?string $description = null,
           ?string $author = null): void
     {
@@ -55,6 +56,7 @@ class Sitemap
             'freq' => $freq ?? $this->config->get('sitemap.default.changefreq'),
             'images' => $images,
             'title' => $title,
+            'short_excerpt' => $short_excerpt,
             'description' => $description,
             'author' => $author,
         ];
@@ -70,7 +72,9 @@ class Sitemap
                 $item['freq'] ?? null, 
                 $item['images'] ?? [], 
                 $item['title'] ?? null, 
+                $item['short_excerpt'] ?? null,
                 $item['description'] ?? null,
+                $item['author'] ?? null
             );
         }
     }
@@ -119,7 +123,9 @@ class Sitemap
 
         $channel = [
             'title' => (string) $this->config->get('sitemap.rss.title', 'Sitemap for '.config('app.name')),
-            'link' => URL::to('/'),
+            'description' => (string) $this->config->get('sitemap.rss.description'),
+            'image' =>  $this->config->get('sitemap.rss.image'),
+            'link' =>  $this->config->get('sitemap.rss.link', config('app.url')),
         ];
 
         $data = match ($format) {
