@@ -14,13 +14,6 @@ if (!function_exists('render_mentions')) {
   }
 }
 
-if (! function_exists('hasCompleted2FA')) {
-  function hasCompleted2FA()
-  {
-    return auth()->check() && session()->get('2fa:passed', true);
-  }
-}
-
 if (! function_exists('abort_unless_require_registration')) {
   function abort_unless_require_registration()
   {
@@ -73,5 +66,27 @@ if(! function_exists('infinite_scroll_response')){
         'hasMore' => $posts->hasMorePages(),
         'nextPage' => $posts->hasMorePages() ? $posts->currentPage() + 1 : null
     ], $extra));
+}
+
+if(! function_exists('resolve_login_type')){
+  function resolve_login_type(string $login): string {
+    return filter_var($login, FILTER_VALIDATE_EMAIL)
+            ? 'email'
+            : 'username';
+  }
+}
+if (! function_exists('ensure_pending_two_factor_challenge')) {
+    function ensure_pending_two_factor_challenge(): ?\Illuminate\Http\RedirectResponse
+    {
+        if (session()->has('2fa:user:id')) {
+            return null;
+        }
+
+        if (auth()->check()) {
+            return back();
+        }
+
+        return redirect()->route('login');
+    }
 }
 }

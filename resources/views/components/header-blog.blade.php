@@ -2,7 +2,6 @@
     $isTransparent = Route::is(['home', 'profile.*']);
     $isFixed = Route::is(['blog', 'news', 'viewhashtag', 'viewcategory']);
     $isHome = Route::is('home');
-    $has2FA = auth()->check() && hasCompleted2FA();
 @endphp
 
 <nav
@@ -29,21 +28,8 @@
         @guest
             <x-guest-links :transparent="$isTransparent" />
         @else
-            @if($has2FA)
-                <x-desktop-nav :transparent="$isTransparent" />
-                <x-mobile-nav :transparent="$isTransparent" />
-            @else
-                <form id="logoutFRM" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                </form>
-
-                <button
-                    form="logoutFRM"
-                    class="rounded bg-red-500 px-4 py-2 text-xs font-bold uppercase text-white"
-                >
-                    Logout
-                </button>
-            @endif
+            <x-desktop-nav :transparent="$isTransparent" />
+            <x-mobile-nav :transparent="$isTransparent" />
         @endguest
 
     </div>

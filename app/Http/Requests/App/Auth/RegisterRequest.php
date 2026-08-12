@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Requests\App;
+namespace App\Http\Requests\App\Auth;
 
+use App\DTOs\Auth\RegisterUserDTO;
 use App\Models\User;
 use App\Rules\EmailProviders;
 use App\Rules\PasswordRule;
 use App\Rules\Recaptcha;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
 class RegisterRequest extends FormRequest
@@ -39,6 +42,11 @@ class RegisterRequest extends FormRequest
             "g-recaptcha-response" => [new Recaptcha()]
         ];
     }
+    public function toDTO(): RegisterUserDTO
+    {
+        return RegisterUserDTO::fromRequest($this->validated());
+    }
+
      public function messages(): array
     {
         return [

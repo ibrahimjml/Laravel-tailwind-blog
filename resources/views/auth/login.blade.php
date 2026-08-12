@@ -47,7 +47,12 @@
                 </p>
               @enderror
             </div>
-
+  
+              <div class="flex items-center gap-2">
+                <input id="remember" type="checkbox" name="remember"
+                  class="h-4 w-4 rounded text-blue-600 border-gray-300 focus:ring-blue-500">
+                <label for="remember" class="text-sm text-gray-700">Remember Me</label>
+              </div>
             <div class="flex flex-col gap-4">
               <button type="submit"
                 class="w-full font-bold p-3 rounded-2xl text-base leading-normal text-white bg-gray-700 hover:bg-gray-500 transition sm:py-4">
@@ -87,11 +92,69 @@
     @endif
   </main>
   @push('scripts')
-    <script>
-      function onSubmit(token) {
-        document.getElementById("recaptcha").submit();
+   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('recaptcha');
+      if (! loginForm) {
+        return;
       }
-    </script>
+
+      const submitButton = loginForm.querySelector('button[type="submit"]');
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const login = loginForm.querySelector('#login')?.value.trim();
+        const password = loginForm.querySelector('#password')?.value;
+        const remember = loginForm.querySelector('#remember')?.checked ?? false;
+
+        if (! login || ! password) {
+          return;
+        }
+
+        submitButton.disabled = true;
+        const originalLabel = submitButton.textContent;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+        try {
+          const response = await fetch(loginForm.action, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'X-CSRF-TOKEN': csrfToken ,
+              'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({ login, password, remember }),
+          });
+
+          const data = await response.json();
+
+          if (! response.ok) {
+            const message = data.message || Object.values(data.errors || {})?.flat()?.[0] || 'Login failed.';
+            toastr.error(message);
+            return;
+          }
+
+          if (data.redirect) {
+            window.location.assign(data.redirect);
+             if (!data.require_2fa) {
+                   toastr.success(data.message);
+                 }
+            return;
+          }
+
+          window.location.reload();
+        } catch (error) {
+          console.error(error);
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = originalLabel;
+        }
+      });
+    });
+   </script>
   @endpush
 @endsection
 

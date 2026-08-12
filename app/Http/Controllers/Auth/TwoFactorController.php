@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Middleware\CheckIfBlocked;
 use App\Models\User;
 use SimpleSoftwareIO\QrCode\Generator;
 use Illuminate\Http\Request;
@@ -12,24 +11,30 @@ use Illuminate\Support\Facades\Crypt;
 
 class TwoFactorController extends Controller
 {
-  public function __construct()
+   public function __construct()
   {
-    $this->middleware(['auth', 'verified', CheckIfBlocked::class])->except(['show', 'verify']);
+    $this->middleware(['auth', 'verified'])->except(['show', 'verify','verifyRecovery','showRecovery']);
   }
   public function show()
   {
-    abort_unless(session()->has('2fa:user:id'), 403);
+    if ($redirect = ensure_pending_two_factor_challenge()) {
+        return $redirect;
+    }
 
     return view('auth.two-factor-challenge');
   }
   public function showRecovery()
   {
-    abort_unless(session()->has('2fa:user:id'), 403);
+    if ($redirect = ensure_pending_two_factor_challenge()) {
+        return $redirect;
+    }
     return view('auth.recovery-two-factor');
   }
   public function verifyRecovery(Request $request)
   {
-    abort_unless(session()->has('2fa:user:id'), 403);
+    if ($redirect = ensure_pending_two_factor_challenge()) {
+        return $redirect;
+    }
     $request->validate([
       'recovery_code' => 'required|string',
     ]);
@@ -44,11 +49,13 @@ class TwoFactorController extends Controller
     $codes = array_diff($codes, [$inputHash]);
     $user->two_factor_recovery_codes = encrypt(json_encode(array_values($codes)));
     $user->save();
-    return $this->loginUser($user);
+    return $this->hasPassedChallenge($user, $request);
   }
   public function verify(Request $request, Google2FA $google2fa)
   {
-    abort_unless(session()->has('2fa:user:id'), 403);
+    if ($redirect = ensure_pending_two_factor_challenge()) {
+        return $redirect;
+    }
 
     $request->validate([
       'code' => 'required|digits:6',
@@ -65,7 +72,7 @@ class TwoFactorController extends Controller
     }
 
     if ($google2fa->verifyKey($secret, $request->code)) {
-      return $this->loginUser($user);
+      return $this->hasPassedChallenge($user, $request);
     }
 
     return back()->withErrors([
@@ -138,6 +145,9 @@ class TwoFactorController extends Controller
         $recoveryCodes->pluck('code')->toJson()
       ),
     ]);
+
+    $request->session()->put(['2fa:passed' => true]);
+
     return response()->json(['success' => true]);
   }
   public function downloadRecoveryCodes()
@@ -194,23 +204,35 @@ class TwoFactorController extends Controller
       'two_factor_recovery_codes' => null,
       'recovery_codes_downloaded' => false,
     ]);
+    
+     $request->session()->forget([
+        '2fa:passed',
+        '2fa:user:id',
+        '2fa:remember',
+    ]);
 
     return response()->json([
       'success' => true,
       'message' => 'Two factor authentication disabled',
     ]);
   }
-  protected function loginUser(User $user)
+  protected function hasPassedChallenge(User $user, Request $request)
   {
-    auth()->login($user);
-    session(['2fa:passed' => true]);
-    session()->forget('2fa:user:id');
+    $remember = $request->session()->pull('2fa:remember', false);
+    $request->session()->regenerate();
+
+    $request->session()->put(['2fa:passed' => true]);
+
+    $request->session()->forget(['2fa:user:id']);
+
+    auth()->login($user, $remember);
+
     toastr()->success('Logged in successfully', ['timeOut' => 1000]);
 
     return redirect()->intended(
       $user->is_admin
-        ? '/admin/panel'
-        : '/'
+        ? route('admin.panel')
+        : route('home')
     );
   }
 }
