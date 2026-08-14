@@ -148,10 +148,10 @@ public function scrape(ScrapingSource $source): void
             if (!$absolute) {
                 return;
             }
-
+            // stay on the same domain
             $linkHost = parse_url($absolute, PHP_URL_HOST);
             if ($linkHost !== $host) {
-                return; // stay on the same domain
+                return; 
             }
 
             // Drop fragments and query strings so variants of the same article dedupe
@@ -162,7 +162,7 @@ public function scrape(ScrapingSource $source): void
                 return;
             }
 
-            $links[$clean] = true; // dedupe while preserving order via keys
+            $links[$clean] = true; // preserving order via keys
         });
 
         return array_slice(array_keys($links), 0, $maxLinks);
@@ -173,13 +173,13 @@ public function scrape(ScrapingSource $source): void
         $path = trim(parse_url($url, PHP_URL_PATH) ?? '', '/');
 
         if ($path === '') {
-            return false; // homepage 
+            return false;  
         }
 
         $segments = explode('/', $path);
-
+        // bare sections
         if (count($segments) < 2) {
-            return false; // bare sections
+            return false; 
         }
 
         if (in_array(strtolower($segments[0]), $this->blockedFirstSegments, true)) {
@@ -188,8 +188,16 @@ public function scrape(ScrapingSource $source): void
 
         $slug = end($segments);
 
-        // Article slugs hyphenated
-        return strlen($slug) > 15 && str_contains($slug, '-');
+        // Slug style
+        if (strlen($slug) > 15 && str_contains($slug, '-')) {
+            return true;
+        }
+
+        // Numeric style
+        if (ctype_digit($slug) && strlen($slug) >= 5) {
+            return true;
+        }
+        return false;
     }
 
     protected function resolveUrl(string $href, Crawler $node): ?string
