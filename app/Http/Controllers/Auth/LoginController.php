@@ -38,7 +38,7 @@ class LoginController extends Controller
 
   public function logout()
   {
-    auth()->logout();
+    auth()->logoutCurrentDevice();
 
     session()->invalidate();
     session()->regenerateToken();

@@ -39,7 +39,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\CheckIfBlocked::class,
             \App\Http\Middleware\EnsureIdentityVerified::class,
-            \App\Http\Middleware\EnsureTwoFactorMiddleware::class,
+            \App\Http\Middleware\EnsureTwoFactorHasTrustedDevice::class,
             \App\Http\Middleware\DynamicRateLimitMiddleware::class,
 
         ],
@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'check' => \App\Http\Middleware\CheckIfBlocked::class,
         'role' => \App\Http\Middleware\CheckRole::class,
+        '2fa.login' => \App\Http\Middleware\EnsureLoginTwoFactor::class,
         'permission' => \App\Http\Middleware\CheckPermission::class,
         'demo' => \App\Http\Middleware\DemoModeMiddleware::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

@@ -27,8 +27,14 @@
           </p>
           @enderror
         </div>
+        {{-- trust device --}}
+        <div class="flex items-center gap-2 mt-3">
+              <input id="trust_device" type="checkbox" name="trust_device"
+                     class="h-4 w-4 rounded text-blue-600 border-gray-300 focus:ring-blue-500">
+              <label for="trust_device" class="text-sm text-gray-700">Trust this Device For 30 Days ?</label>
+        </div>
         <button type="submit" class="bg-black/60 mt-3 text-white  font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150">
-          Login
+          Verify
         </button>
         <p class="text-blueGray-400 text-xs hover:text-gray-400">
           having problem ?

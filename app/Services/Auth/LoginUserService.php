@@ -6,9 +6,15 @@ use App\DTOs\Auth\LoginUserDTO;
 use App\Enums\Auth\LoginResults;
 use App\Exceptions\Auth\LoginException;
 use App\Models\User;
+use App\Services\TrustedDeviceService;
 
 class LoginUserService
 {
+     public function __construct(
+        protected TrustedDeviceService $trustedDevices,
+        protected TwoFactorChallengeService $twoFactorService,
+    ) {}
+
     public function handleLogin(LoginUserDTO $dto): LoginResults
     {
         if (! auth()->validate($dto->credentials())) {
@@ -20,7 +26,21 @@ class LoginUserService
         $this->validateUser($user);
 
         if ($user->has_two_factor_enabled) {
-            $this->prepareTwoFactor($user, $dto->remember);
+           
+            if ($this->trustedDevices->isTrusted(request(), $user)) {
+
+                auth()->login($user, $dto->remember);
+                request()->session()->regenerate();
+
+                request()->session()->put([
+                  '2fa:passed' => true,
+                  '2fa:passed_at' => now()->timestamp
+                  ]);
+                
+                return LoginResults::SUCCESS;
+            }
+
+            $this->twoFactorService->prepareLoginChallenge($user, $dto->remember);
 
             return LoginResults::TWO_FACTOR_REQUIRED;
         }
@@ -47,17 +67,6 @@ class LoginUserService
         if (! $user->activation?->completed) {
             throw LoginException::notActivated();
         }
-    }
-
-    private function prepareTwoFactor(User $user, bool $remember): void
-    {
-        session()->regenerate();
-        session()->put([
-            '2fa:user:id' => $user->id,
-            '2fa:passed' => false,
-            '2fa:remember' => $remember,
-        ]);
-
     }
 }
 

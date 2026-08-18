@@ -7,6 +7,7 @@ use App\Enums\FollowerStatus;
 use App\Notifications\VerifyEmailQueued;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
@@ -63,11 +64,11 @@ class User extends Authenticatable implements MustVerifyEmail
     return $this->hasOne(Activation::class);
   }
   public function scopeActivated($query)
-{
+  {
     return $query->whereHas('activation', function ($query) {
-        $query->where('completed', true);
+      $query->where('completed', true);
     });
-}
+  }
   public function posts()
   {
     return $this->hasMany(Post::class);
@@ -78,6 +79,11 @@ class User extends Authenticatable implements MustVerifyEmail
       $query->published();
     });
   }
+  public function twoFactorTrustedDevices(): HasMany
+  {
+    return $this->hasMany(TwoFactorTrustedDevices::class);
+  }
+
   public function identityVerification()
   {
     return $this->hasOne(IdentityVerification::class);

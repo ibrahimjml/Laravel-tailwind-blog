@@ -16,7 +16,6 @@ use App\Models\AdPlacement;
 use App\Models\Post;
 use App\Repositories\Interfaces\NewsInterface;
 use App\Repositories\Interfaces\PostInterface;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;

@@ -46,13 +46,14 @@ Route::prefix('auth')
       });
 
   });
-    // two factor confirmation
-    Route::prefix('2fa')
+    // two factor challenge
+    Route::prefix('two-factor')
+          ->middleware('2fa.login')
           ->controller(TwoFactorController::class)
           ->name('2fa.')
           ->group(function () {
-      Route::get('2fa-challenge', 'show')->name('confirmation');
-      Route::post('2fa-challenge', 'verify')->name('verify');
-      Route::get('recovery', 'showRecovery')->name('recovery');
+      Route::view('challenge', 'auth.two-factor-challenge')->name('confirmation');
+      Route::post('challenge', 'verifyChallenge')->name('verify');
+      Route::view('recovery', 'auth.recovery-two-factor')->name('recovery');
       Route::post('recovery', 'verifyRecovery')->name('verify.recovery');
     });

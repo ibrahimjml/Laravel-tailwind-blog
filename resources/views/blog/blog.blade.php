@@ -88,21 +88,21 @@
     <script>
       const newsContainer = document.getElementById('news-container');
       const showNews = document.getElementById('show-news');
-      const label = showNews.querySelector('.label');
-      let expanded = false;
-
-      showNews.addEventListener('click', () => {
-        if (!expanded) {
-          newsContainer.style.height = `${newsContainer.scrollHeight}px`;
-          expanded = true;
-          label.textContent = 'Hide News';
-        } else {
-          newsContainer.style.height = '0';
-          expanded = false;
-          label.textContent = 'All News';
-        }
-      });
-
+      if(showNews){
+         const label = showNews.querySelector('.label');
+         let expanded = false;
+         showNews.addEventListener('click', () => {
+           if (!expanded) {
+             newsContainer.style.height = `${newsContainer.scrollHeight}px`;
+             expanded = true;
+             label.textContent = 'Hide News';
+           } else {
+             newsContainer.style.height = '0';
+             expanded = false;
+             label.textContent = 'All News';
+            }
+        });
+      }
     </script>
   @endpush
 </x-layout>
