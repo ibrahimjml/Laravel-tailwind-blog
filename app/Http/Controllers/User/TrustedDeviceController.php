@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Services\TrustedDeviceService;
+use App\Services\User\TrustedDeviceService;
 use Illuminate\Http\Request;
 
 class TrustedDeviceController extends Controller

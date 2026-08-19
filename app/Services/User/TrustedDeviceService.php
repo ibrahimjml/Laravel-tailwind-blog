@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\User;
 
 use App\Models\User;
+use App\Support\UserAgentSupport;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -19,7 +20,7 @@ class TrustedDeviceService
 
     $device = $user->twoFactorTrustedDevices()->create([
       'token_hash' => hash('sha256', $selector . $validator),
-      'device_name' => $this->getUserAgent($request),
+      'device_name' => UserAgentSupport::describe($request->userAgent()),
       'user_agent' => substr((string) $request->userAgent(), 0, 255),
       'ip' => $request->ip(),
       'last_used_at' => now(),
@@ -148,31 +149,4 @@ class TrustedDeviceService
     session()->forget('2fa:current_device_id');
   }
 
-  private function getUserAgent($request): string
-  {
-    $userAgent = (string) $request->userAgent();
-
-    $browser = match (true) {
-      str_contains($userAgent, 'Edg/') => 'Edge',
-      str_contains($userAgent, 'OPR/') => 'Opera',
-      str_contains($userAgent, 'Chrome/') => 'Chrome',
-      str_contains($userAgent, 'Firefox/') => 'Firefox',
-      str_contains($userAgent, 'Safari/')
-      && !str_contains($userAgent, 'Chrome/') => 'Safari',
-      str_contains($userAgent, 'MSIE'),
-      str_contains($userAgent, 'Trident/') => 'Internet Explorer',
-      default => 'Unknown Browser',
-
-    };
-    $platform = match (true) {
-      str_contains($userAgent, 'Windows NT') => 'Windows',
-      str_contains($userAgent, 'Macintosh') => 'macOS',
-      str_contains($userAgent, 'iPhone') => 'iPhone',
-      str_contains($userAgent, 'iPad') => 'iPad',
-      str_contains($userAgent, 'Android') => 'Android',
-      str_contains($userAgent, 'Linux') => 'Linux',
-      default => 'Unknown',
-    };
-    return $deviceName = "{$browser} on {$platform}";
-  }
 }

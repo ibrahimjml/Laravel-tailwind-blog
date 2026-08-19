@@ -2,11 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use App\Services\ActiveSessionService;
-use App\Services\TrustedDeviceService;
+
+use App\Services\User\TrustedDeviceService;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Auth;
+
 use Symfony\Component\HttpFoundation\Response;
 
 class EnsureTwoFactorHasTrustedDevice
@@ -55,7 +56,7 @@ class EnsureTwoFactorHasTrustedDevice
     }
     protected function invalidateSessions($request){
 
-      auth()->logoutCurrentDevice();
+      Auth::logoutCurrentDevice();
 
       $request->session()->invalidate();
       $request->session()->regenerateToken();

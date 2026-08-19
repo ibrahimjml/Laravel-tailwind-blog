@@ -28,6 +28,10 @@
           <i class="fas fa-shield-alt"></i>
           Two-Factor Auth
         </a>
+        <a href="{{route('active.sessions')}}" class="py-2 px-4 text-gray-500 rounded-xl flex items-center gap-4 {{request()->routeIs('active.sessions*') ? 'bg-gray-200':''}}">
+          <i class="fas fa-desktop"></i>
+          Active Sessions
+        </a>
       </div>
       <div class="mt-auto py-4 border-t border-gray-300 w-full">
         <button 
@@ -65,6 +69,10 @@
 
      @case('security')
        @include('profile-settings.security2fa',['user'=>$user])
+       @break
+
+     @case('active-sessions')
+       @include('profile-settings.active-sessions', ['sessions' => $sessions])
        @break
        @endswitch
     </section>

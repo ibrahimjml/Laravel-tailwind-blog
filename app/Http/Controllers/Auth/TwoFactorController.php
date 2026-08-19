@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\Auth\TwoFactorChallengeService;
-use App\Services\TrustedDeviceService;
+use App\Services\User\TrustedDeviceService;
 use SimpleSoftwareIO\QrCode\Generator;
 use Illuminate\Http\Request;
 use PragmaRX\Google2FA\Google2FA;

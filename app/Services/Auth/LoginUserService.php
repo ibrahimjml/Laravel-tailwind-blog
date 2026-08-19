@@ -6,7 +6,7 @@ use App\DTOs\Auth\LoginUserDTO;
 use App\Enums\Auth\LoginResults;
 use App\Exceptions\Auth\LoginException;
 use App\Models\User;
-use App\Services\TrustedDeviceService;
+use App\Services\User\TrustedDeviceService;
 
 class LoginUserService
 {
