@@ -38,8 +38,29 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/auth.php'));
             Route::middleware('web')
                 ->group(base_path('routes/health.php'));
-            Route::middleware('web')
-                ->group(base_path('routes/admin.php'));    
+            Route::middleware(['web','can:makeAdminActions','demo'])
+                  ->prefix('admin')
+                  ->as('admin.')
+                ->group(function () {
+                  require base_path('routes/admin/admin.php');
+                  require base_path('routes/admin/ads-routes.php');
+                  require base_path('routes/admin/categories-routes.php');
+                  require base_path('routes/admin/custom-pages-routes.php');
+                  require base_path('routes/admin/google-analytics-routes.php');
+                  require base_path('routes/admin/notifications-routes.php');
+                  require base_path('routes/admin/optimization-routes.php');
+                  require base_path('routes/admin/post-moderation-routes.php');
+                  require base_path('routes/admin/posts-routes.php');
+                  require base_path('routes/admin/rate-limit-routes.php');
+                  require base_path('routes/admin/reports-routes.php');
+                  require base_path('routes/admin/roles-permissions-routes.php');
+                  require base_path('routes/admin/seo-routes.php');
+                  require base_path('routes/admin/settings-routes.php');
+                  require base_path('routes/admin/slides-routes.php');
+                  require base_path('routes/admin/tags-routes.php');
+                  require base_path('routes/admin/users-routes.php');
+                  require base_path('routes/admin/web-scraping-routes.php');
+                });    
         });
     }
 
