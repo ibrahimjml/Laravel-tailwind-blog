@@ -38,7 +38,7 @@
           <div class="search-list-item" role="option" data-value="Write a post" onclick="@redirectUrl(fn() => route('createpage'))"><i class="fas fa-pen" aria-hidden="true" ></i>Write a post</div>
           <div class="search-list-item" role="option" data-value="Blog" onclick="window.location.href='{{ route('blog') }}'"><i class="fas fa-image" aria-hidden="true"></i>Blog</div>
           <div class="search-list-item" role="option" data-value="Bookmarks" onclick="@redirectUrl(fn() => route('bookmarks'))"><i class="far fa-bookmark" aria-hidden="true"></i>Bookmarks</div>
-          <div class="search-list-item" role="option" data-value="Latest News" onclick="window.location.href='{{ route('news') }}'"><i class="fas fa-rss" aria-hidden="true"></i>Latest News</div>
+          <a class="search-list-item" role="option" data-value="Latest News" href="{{ route('news') }}" rel="nofollow"><i class="fas fa-rss" aria-hidden="true"></i>Latest News</a>
           <div class="search-list-item" role="option" data-value="Profile" onclick="@redirectUrl(fn() => route('profile.home', auth()->user()->username))"><i class="far fa-user" aria-hidden="true" ></i>Profile</div>
           <div class="search-list-item" role="option" data-value="Settings" onclick="@redirectUrl(fn() => route('info'))"><i class="fas fa-cog" aria-hidden="true"></i>Settings</div>
         </div>

@@ -122,6 +122,20 @@ class AppServiceProvider extends ServiceProvider
            ?>
            PHP;
     });
+
+    Blade::directive('svg', function ($arguments) {
+        return "<?php 
+            \$args = [$arguments];
+            \$name = \$args[0] ?? '';
+            
+            \$path = resource_path(\"svg/{\$name}.svg\");
+            
+            if (file_exists(\$path)) {
+                \$svg = file_get_contents(\$path);
+                echo \$svg;
+            }
+        ?>";
+    });
   }
   public function bootDynamicConfigSmtp()
   {

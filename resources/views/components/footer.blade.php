@@ -34,6 +34,7 @@
                 class="transition-colors hover:text-slate-900 dark:hover:text-white">Blog</a></li>
                 <li>
                     <a  href="{{ route('news') }}" 
+                       rel="nofollow"
                        class="transition-colors hover:text-slate-900 dark:hover:text-white">Latest News</a>
                 </li>
             <li>
@@ -41,6 +42,7 @@
                    class="transition-colors hover:text-slate-900 dark:hover:text-white cursor-pointer">Profile</a>
             </li>
             <li><a href="{{ route('bookmarks') }}"
+                 rel="nofollow"
                 class="transition-colors hover:text-slate-900 dark:hover:text-white">Bookmarks</a></li>
           </ul>
         </div>
@@ -66,6 +68,8 @@
             @endforeach
             <li><a href="{{ route('public.sitemap.index',['key' => 'sitemap','extension' => 'rss']) }}"
                 class="transition-colors hover:text-slate-900 dark:hover:text-white">RSS</a></li>
+            <li><a href="{{ route('public.sitemap.index',['key' => 'sitemap','extension' => 'xml']) }}"
+                class="transition-colors hover:text-slate-900 dark:hover:text-white">Sitemap</a></li>
           </ul>
         </div>
       </div>
@@ -79,33 +83,7 @@
       <div class="flex flex-wrap items-center gap-4">
         <div class="flex items-center gap-2">
           <span class="font-medium">Built on</span>
-          <svg version="1.1" id="Layer_1" width="16px" xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.88 122.88"
-            style="enable-background:new 0 0 122.88 122.88" xml:space="preserve">
-            <style type="text/css">
-              <![CDATA[
-              .st0 {
-                fill: #0080FF;
-              }
-
-              .st1 {
-                fill-rule: evenodd;
-                clip-rule: evenodd;
-                fill: #0080FF;
-              }
-              ]]>
-            </style>
-            <g>
-              <path class="st0"
-                d="M61.45,122.88V99.05c25.22,0,44.8-25.01,35.11-51.56c-3.55-9.75-11.43-17.63-21.25-21.18 c-26.54-9.61-51.56,9.89-51.56,35.11l0,0H0c0-40.2,38.88-71.55,81.03-58.38c18.39,5.78,33.09,20.41,38.81,38.81 C133,84,101.65,122.88,61.45,122.88L61.45,122.88z" />
-              <polygon class="st1"
-                points="61.52,99.19 37.76,99.19 37.76,75.43 37.76,75.43 61.52,75.43 61.52,75.43 61.52,99.19" />
-              <polygon class="st1"
-                points="37.76,117.38 19.58,117.38 19.58,117.38 19.58,99.19 37.76,99.19 37.76,117.38" />
-              <polygon class="st1"
-                points="19.58,99.19 4.32,99.19 4.32,99.19 4.32,83.93 4.32,83.93 19.58,83.93 19.58,83.93 19.58,99.19" />
-            </g>
-          </svg>
+          @svg('digital-ocean')
           <span>DigitalOcean</span>
         </div>
         <div class="flex items-center gap-2">

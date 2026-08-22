@@ -4,6 +4,7 @@
   <div class="flex flex-wrap gap-2">
     @foreach($news as $new)
       <a href="{{ route('news') }}?source={{ $new->name }}"
+        rel="nofollow"
         class="flex items-center gap-3 px-3 py-1 text-sm rounded-xl  border-2 border-gray-300 bg-white text-blueGray-500">
           <img src="{{ $new->favicon_url }}" alt="{{ $new->name }}" width="26" height="26" class="rounded-full">
           <b>{{ $new->name }}</b>

@@ -7,6 +7,8 @@ Disallow: /admin/*
 Disallow: /dashboard
 Disallow: /notifications/*
 Disallow: /profile/settings
+Disallow: /bookmarks
+Disallow: /discover-news
 Disallow: /api/
 
 Sitemap: https://myblog4u.site/sitemap.xml

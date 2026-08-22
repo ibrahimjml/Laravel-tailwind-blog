@@ -164,7 +164,7 @@
       <div class="p-3 mx-auto md:mx-0 w-[400px] md:w-[500px] h-full flex flex-col">
         <div class="flex gap-2 items-center mb-2 shrink-0">
           <a href='{{route('profile.home', $article->user->username)}}'>
-            <img loading="lazy" src="{{$article->user->avatar_url}}"
+            <img loading="lazy" src="{{$article->user->avatar_url}}" alt="{{ $article->user->name }}"
               class="w-[40px] h-[40px]  overflow-hidden flex justify-center items-center  shrink-0 grow-0 rounded-full">
           </a>
           <a href='{{route('profile.home', $article->user->username)}}' class="hover:underline">
@@ -173,16 +173,19 @@
         </div>
         <a href="{{route('single.post', $article->slug)}}" class="flex flex-1 flex-col">
           <div class="flex h-[270px] min-h-[270px] w-full items-center justify-center overflow-hidden rounded-lg bg-slate-100 shrink-0">
-            <img src="{{$article->image_url}}" alt="" class="h-full w-full object-cover object-center">
+            <img src="{{$article->image_url}}" alt="{{ $article->title }}" class="h-full w-full object-cover object-center">
           </div>
+        </a>
           <div class="flex justify-between text-sm text-gray-400 my-3">
             <p>{{$article->total_comments_count}} comments</p>
             <p>{{$article->created_at->format('F d, Y')}}</p>
           </div>
           <div class="flex flex-col">
+             <a href="{{route('single.post', $article->slug)}}">
             <p class="text-xl font-bold mt-1">{{$article->title}}</p>
+          </a>
           </div>
-        </a>
+          
       </div>
     @endforeach
   </div>
@@ -206,6 +209,7 @@
           <div class="flex gap-2 items-center mb-2 shrink-0">
             <a href="{{ route('profile.home', $blogs->user->username) }}">
               <img loading="lazy" src="{{ $blogs->user->avatar_url }}"
+                alt="{{ $blogs->user->name }}"
                 class="w-[40px] h-[40px] rounded-full object-cover">
             </a>
             <a href="{{ route('profile.home', $blogs->user->username) }}" class="hover:underline">
@@ -216,21 +220,23 @@
             <div class="flex h-[270px] min-h-[270px] w-full items-center justify-center overflow-hidden rounded-lg bg-slate-100 shrink-0">
               <img src="{{ $blogs->image_url }}" alt="{{$blogs->title}}" class="h-full w-full object-cover object-center">
             </div>
+          </a>
             <div class="flex justify-between text-sm text-gray-400 my-3">
               <p>{{$blogs->total_comments_count}} comments</p>
               <p>{{$blogs->created_at->format('F d, Y')}}</p>
             </div>
+            <a href="{{ route('single.post', $blogs->slug) }}">
             <p class="text-xl font-bold mt-1">{{ $blogs->title }}</p>
-          </a>
+            </a>
         </div>
       @endforeach
     </div>
   </div>
   <div class="flex justify-center my-10">
-    <button onclick="window.location.href='{{route('blog')}}'"
+    <a href="{{ route('blog') }}"
       class="p-3 text-center text border border-black hover:text-white hover:bg-black transition-all duration-150 ease-in">
       View all blogs <i class="fas fa-arrow-right ml-2"></i>
-    </button>
+    </a>
   </div>
   {{-- contianer random hearts--}}
   <div id="containerheart"></div>

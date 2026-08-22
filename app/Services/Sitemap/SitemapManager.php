@@ -186,11 +186,33 @@ class SitemapManager
       ->where('is_blocked', false)
       ->orderByDesc('updated_at')
       ->each(function (User $user): void {
+        $lastModified = $user->updated_at?->toAtomString();
+        // profile
           $this->add(
                route('profile.home', $user->username),
-               $user->updated_at?->toAtomString(),
+               $lastModified,
               '0.8', 
               'daily',
+               [], 
+               $user->name, 
+               $user->bio
+               );
+          // activity
+          $this->add(
+               route('profile.activity', $user->username),
+               $lastModified,
+              '0.6', 
+              'daily',
+               [], 
+               $user->name, 
+               $user->bio
+               );
+          // about
+          $this->add(
+               route('profile.aboutme', $user->username),
+               $lastModified,
+              '0.6', 
+              'weekly',
                [], 
                $user->name, 
                $user->bio

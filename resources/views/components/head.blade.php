@@ -10,6 +10,9 @@
 {!! $header_scripts ?? '' !!}
 
 {{-- SEO --}}
+@if(Route::is('news'))
+<meta name="robots" content="noindex, nofollow">
+@endif
 <meta name="description" content="{{ $meta_description ?? 'Myblog4u a social network that connect creators'}}" />
 <meta name="keywords" content="{{ $meta_keywords  }}">
 <meta name="author" content="{{ $author }}">
