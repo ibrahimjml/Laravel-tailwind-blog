@@ -10,13 +10,6 @@ use Illuminate\Http\Request;
 
 class ScrapingSourceController extends Controller
 {
-    public function __construct()
-    {
-      $this->middleware('permission:scrap.source.create')->only('store');
-      $this->middleware('permission:scrap.source.update')->only('update');
-      $this->middleware('permission:scrap.source.delete')->only('destroy');
-      $this->middleware('permission:scrap.source.crawl')->only('run');
-    }
     public function store(SourceScrapingRequest $request)
     {
        if($request->expectsJson()){

@@ -12,14 +12,6 @@ use Illuminate\Support\Carbon;
 
 class ScrapSettingController extends Controller
 {
-    public function __construct(protected ForceCreateAllScrapSources $forceCreate)
-    {
-      $this->middleware('permission:cron.view')->only('index');
-      $this->middleware('permission:cron.update')->only('scrapUpdate');
-      $this->middleware('permission:cron.token.update')->only('regenerateToken');
-      $this->middleware('permission:cron.crawl.all')->only('forceRunAll');
-    }
-
     public function index()
     {
       $settings = Setting::pluck('value', 'key')->toArray();

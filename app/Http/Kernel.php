@@ -42,6 +42,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\EnsureIdentityVerified::class,
             \App\Http\Middleware\EnsureTwoFactorHasTrustedDevice::class,
             \App\Http\Middleware\DynamicRateLimitMiddleware::class,
+            \App\Http\Middleware\CheckPermission::class
 
         ],
 

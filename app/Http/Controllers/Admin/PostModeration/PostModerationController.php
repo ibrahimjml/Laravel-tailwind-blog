@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class PostModerationController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:postmoderation.view')->only('moderationPage');
-        $this->middleware('permission:postmoderation.update')->only('updateRules');
-    }
     public function moderationPage()
     {
        

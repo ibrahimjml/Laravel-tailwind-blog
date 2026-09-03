@@ -8,11 +8,6 @@ use App\Models\Setting;
 
 class ImageOptimizationController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:imageoptimization.view')->only('index');
-        $this->middleware('permission:imageoptimization.update')->only('imageOptimizationUpdate');
-    }
     public function index()
     {
         $settings = Setting::pluck('value', 'key')->toArray();

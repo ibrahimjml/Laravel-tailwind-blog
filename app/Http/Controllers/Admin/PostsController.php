@@ -15,10 +15,7 @@ use Illuminate\Validation\Rules\Enum;
 
 class PostsController extends Controller
 {
-      public function __construct(private PostsService $getService)
-       {
-          $this->middleware('permission:post.view')->only(['posts','featuredPage']);
-       }
+    public function __construct(private PostsService $getService){}
     public function posts(Request $request)
   {
      $filter = new Fluent(request()->only('search','sort','featured','reported'));

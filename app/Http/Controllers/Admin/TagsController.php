@@ -9,20 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Fluent;
 use App\Services\ClearCacheService;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Enum;
 
 class TagsController extends Controller
 {
-      public  function __construct() {
-    
-    $this->middleware('permission:tag.view')->only('hashtags');
-    $this->middleware('permission:tag.create')->only('create');
-    $this->middleware('permission:tag.update')->only('edit');
-    $this->middleware('permission:tag.delete')->only('delete');
-    $this->middleware('permission:tag.feature')->only('toggle');
-  }
     public function create(Request $request){
   $fields = $request->validate([
   'name' =>'required|string',

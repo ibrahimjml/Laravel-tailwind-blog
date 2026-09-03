@@ -9,13 +9,6 @@ use App\Models\ApiRateLimit;
 
 class ApiRateLimitController extends Controller
 {
-  public function __construct()
-  {
-    $this->middleware('permission:limit.view')->only('index');
-    $this->middleware('permission:limit.create')->only('store');
-    $this->middleware('permission:limit.update')->only(['update', 'toggleStatus']);
-    $this->middleware('permission:limit.delete')->only('destroy');
-  }
   public function index()
   {
     $limits = ApiRateLimit::query()->latest()->paginate(10);

@@ -10,13 +10,6 @@ use Illuminate\Validation\Rules\Enum;
 
 class CommentReportController extends Controller
 {
-        public function __construct()
-{
-    $this->middleware('permission:commentreport.view')->only('reports');
-    $this->middleware('permission:commentreport.delete')->only('delete');
-    $this->middleware('permission:commentreport.status')->only('status');
-  
-}
     public function reports(Request $request)
     {
           $sort = $request->get('sort'); 
