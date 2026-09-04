@@ -10,13 +10,6 @@ use Illuminate\Validation\Rules\Enum;
 
 class ProfileReportController extends Controller
 {
-        public function __construct()
-{
-    $this->middleware('permission:profilereport.view')->only('reports');
-    $this->middleware('permission:profilereport.delete')->only('delete');
-    $this->middleware('permission:profilereport.status')->only('status');
-  
-}
     public function reports(Request $request)
     {
           $sort = $request->get('sort'); 

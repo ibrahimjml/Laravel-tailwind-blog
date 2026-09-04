@@ -17,10 +17,7 @@ use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
-     public function __construct(private UsersService $service, private CreateUserActivationAction $createUserActivationAction){
-        $this->middleware('permission:user.view')->only('users');
-        $this->middleware('permission:user.create')->only('createUser');
-     }
+     public function __construct(private UsersService $service, private CreateUserActivationAction $createUserActivationAction){}
       public function users(Request $request)
   {
     $users = $this->service->getUsers($request->only('search','blocked','sort','activate'));

@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\File;
 
 class MaintenanceController extends Controller
 {
-  public function __construct()
-  {
-    $this->middleware('can:maintenance.view')->only('maintenance_page');
-    $this->middleware('can:maintenance.update')->only('run_artisans');
-  }
   public function maintenance_page()
   {
     $cacheMeta = $this->computeCacheSize();

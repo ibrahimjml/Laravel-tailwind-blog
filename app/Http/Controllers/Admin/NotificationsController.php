@@ -9,9 +9,6 @@ use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationsController extends Controller
 {
-  public function __construct(){
-    $this->middleware('permission:notifications.view')->only('notifications');
-  }
     public function notifications(NotificationService $service)
     {
     $sortoption = request()->get('sort');

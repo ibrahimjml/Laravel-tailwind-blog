@@ -13,10 +13,6 @@ use Spatie\Analytics\Exceptions\InvalidConfiguration;
 
 class AnalyticsController extends Controller
 {
-    public function __construct(){
-      $this->middleware('permission:analytics.view')->only('index');
-      $this->middleware('permission:analytics.update')->only(['jsonUploadFile','updateAnalytics']);
-    }
     public function index()
     {
       $settings = Setting::pluck('value', 'key')->toArray();

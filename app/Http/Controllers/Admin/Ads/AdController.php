@@ -16,13 +16,6 @@ use Illuminate\Support\Facades\Storage;
 class AdController extends Controller
 {
   use ImageUploadTrait;
-  public function __construct()
-  {
-    $this->middleware('permission:ad.view')->only('index');
-    $this->middleware('permission:ad.create')->only('store');
-    $this->middleware('permission:ad.update')->only('update', 'toggleStatus');
-    $this->middleware('permission:ad.delete')->only('destroy');
-  }
   public function index()
   {
     $ads = AdPlacement::query()->latest()->paginate(10);

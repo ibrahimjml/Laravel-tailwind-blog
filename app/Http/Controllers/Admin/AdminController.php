@@ -10,10 +10,7 @@ use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {
-  public function __construct(protected DashboardStatsService $stats)
-  {
-    $this->middleware('permission:Access')->only('admin');
-  }
+  public function __construct(protected DashboardStatsService $stats){}
   public function admin()
   {
 

@@ -11,13 +11,6 @@ use Illuminate\Validation\Rules\Enum;
 
 class PostReportController extends Controller
 {
-      public function __construct()
-{
-    $this->middleware('permission:postreport.view')->only('reports');
-    $this->middleware('permission:postreport.delete')->only('delete');
-    $this->middleware('permission:postreport.status')->only('status');
-  
-}
       public function reports(Request $request)
   {
     $sort = $request->get('sort'); 

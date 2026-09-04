@@ -9,14 +9,6 @@ use Illuminate\Support\Fluent;
 
 class CategoriesController extends Controller
 {
-    public  function __construct() {
-    
-    $this->middleware('permission:category.view')->only('categories');
-    $this->middleware('permission:category.create')->only('create');
-    $this->middleware('permission:category.update')->only('edit');
-    $this->middleware('permission:category.delete')->only('delete');
-    $this->middleware('permission:category.feature')->only('toggle');
-  }
     public function categories()
     {
       $categories = Category::filterCategory(new Fluent(request()->only('sort','search','featured')))

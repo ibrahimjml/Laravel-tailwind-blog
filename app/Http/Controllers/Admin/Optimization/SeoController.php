@@ -12,11 +12,6 @@ class SeoController extends Controller
 {
   use ImageUploadTrait;
 
-  public function __construct()
-  {
-    $this->middleware('permission:seo.view')->only('index');
-    $this->middleware('permission:seo.update')->only('update');
-  }
   public function index()
   {
     $seoSettings = SeoSetting::first();

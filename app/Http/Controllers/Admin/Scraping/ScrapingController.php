@@ -11,12 +11,6 @@ use Illuminate\Http\Request;
 
 class ScrapingController extends Controller
 {
-    public function __construct()
-    {
-      $this->middleware('permission:scrap.view')->only('index');
-      $this->middleware('permission:scrap.post.delete')->only('destroyScrapedData');
-      $this->middleware('permission:scrap.log.delete')->only('destroyScrapedLogs');
-    }
     public function index()
     {
         $sources = ScrapingSource::query()->withCount('scrapedData as posts_count')
